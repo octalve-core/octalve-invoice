@@ -4,7 +4,7 @@
   "branch": "phase/00-finzefy-authority-ui-bootstrap",
   "mainBootstrapSha": "87ad423dba3ced2445e109baa85114aea3d30037",
   "latestMigration": null,
-  "previewUrl": null,
+  "previewUrl": "https://octalve-invoice-178ughgam-octalve-vault.vercel.app",
   "productionUrl": null,
   "databaseState": "DEFERRED_UNTIL_MERCHANT_BACKEND",
   "qualification": {
@@ -14,20 +14,20 @@
     "tests": "PASS_SOURCE_SMOKE_ONLY",
     "build": "PASS",
     "githubCodeQL": "PASS",
-    "vercelPreview": "DEPLOYMENT_CHECK_SUCCESS; PUBLIC_URL_NOT_VERIFIED",
-    "goldenPdf": "NOT_RUN",
+    "vercelPreview": "READY VERIFIED, HTTP 200 on 9 routes",
+    "goldenPdf": "BLOCKED_EXACT_BRAND_ASSETS; MODERN_CLASSIC_EXPORT_DISPATCH_FIXED; PDF_VISUAL_GOLDENS_NOT_RUN",
     "branding": "COMPONENTS_READY; EXACT PNG FILES NOT COMMITTED",
-    "mobileScreenshot": "NOT_RUN",
+    "mobileScreenshot": "BROWSER_ACTION_IN_PROGRESS_RUN_38736348042",
     "merchantAuth": "NOT_IMPLEMENTED",
     "documentEngine": "IMPORTED_MODERN_AND_CLASSIC_LEDGER; LIVE_UI_PREVIEW_BUILD_PASS; VISUAL_REGRESSION_PENDING"
   },
   "blockers": [
     "Octalve original icon and wordmark supplied in chat, but binary assets are not yet committed to public/branding; download and upload original PNGs from branding package",
-    "Vercel shows no Production deployment because main only contains bootstrap; phase Preview check succeeds, but Preview hostname/route visual inspection not confirmed",
     "Sapphire invoice golden browser/PNG/PDF regression tests not executed in Octalve source",
-    "No real merchant database/auth/payment; Preview figures and issuer identity are deliberately samples"
+    "No real merchant database/auth/payment; Preview figures and issuer identity are deliberately samples",
+    "UI and PDF golden screenshots must be visually accepted after Playwright artifacts and exact brand assets are present"
   ],
-  "nextPhase": "Complete official branding asset upload, verify Vercel Preview route /dashboard/invoice/create, capture golden document/browser/mobile evidence, then section refactor and merchant backend",
-  "currentCodeCheckpoint": "1948b0f6f486dfe7e65ce625883fec6c1f0b15c0",
-  "lastVerifiedApplicationCommit": "1948b0f6f486dfe7e65ce625883fec6c1f0b15c0"
+  "nextPhase": "Finish Playwright evidence, upload exact user artwork, then visually approve Modern/Classic PDF screenshot goldens before any backend",
+  "currentCodeCheckpoint": "4939cc7b3b77a9fecebc74d41a609fe08c6658b7",
+  "lastVerifiedApplicationCommit": "1972ddb1631762071c187e57ce8463bf4ff6a07f"
 }
