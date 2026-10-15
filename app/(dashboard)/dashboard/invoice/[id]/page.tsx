@@ -7,10 +7,12 @@ import {createPreviewInvoice} from "@/src/features/invoices/lib/preview-fixture"
 import {useMerchantPreview} from "@/src/features/merchant-preview/MerchantPreviewProvider";
 import {merchantCompany,merchantPayment} from "@/src/features/merchant-preview/merchant-presentation";
 import {useState} from "react";
+
 import {RecordTypeIcon,RecordStatusBadge} from "@/src/features/records/components/RecordVisual";
 import {formatDocumentNumber} from "@/src/features/invoices/lib/document-number";
 export default function InvoiceDetailsPage(){
  const {id}=useParams<{id:string}>();
+
  const invoice=getPreviewInvoice(id);
  const [draft,setDraft]=useState(()=>{
   const d=createPreviewInvoice();
@@ -34,7 +36,10 @@ export default function InvoiceDetailsPage(){
     <div><Link href="/dashboard/invoice" className="text-xs text-[#0064E0]">← Back to invoices</Link>
      <h1 className="text-xl font-bold">Invoice {formatDocumentNumber(settings.businessName||"Octalve Limited",Number(id),"invoice")}</h1>
     </div>
-    <Link href={`/dashboard/invoice/${id}/edit`} className="rounded-full bg-[#0064E0] px-4 py-2 text-sm font-medium text-white">Edit Invoice</Link>
+    <div className="flex flex-wrap gap-2">
+    {invoice.status==="paid"?<Link href={`/dashboard/receipt/create?invoice=${id}`} className="rounded-full border border-[#0064E0] px-4 py-2 text-sm font-medium text-[#0064E0]">Generate receipt</Link>:null}
+    {["pending","partial","overdue"].includes(invoice.status)? paymentMode==="manual"?<Link href={`/dashboard/invoice/${id}/record-payment`} className="rounded-full border border-[#0064E0] px-4 py-2 text-sm font-medium text-[#0064E0]">Record payment</Link>:<span className="rounded-full bg-amber-50 px-3 py-2 text-xs text-amber-800">Awaiting provider verification</span>:null}
+    <Link href={`/dashboard/invoice/${id}/edit`} className="rounded-full bg-[#0064E0] px-4 py-2 text-sm font-medium text-white">Edit Invoice</Link></div>
   </div>
   <div className="grid min-w-0 items-start gap-4 lg:grid-cols-[minmax(260px,340px)_minmax(0,1fr)]">
    <aside aria-label="Invoice history" className="hidden min-w-0 rounded-2xl bg-white p-3 lg:block">

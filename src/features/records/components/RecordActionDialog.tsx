@@ -1,5 +1,7 @@
 "use client";
 import {useEffect} from "react";
+import Link from "next/link";
+import {useMerchantPreview} from "@/src/features/merchant-preview/MerchantPreviewProvider";
 import {Eye,Pencil,Send,Copy,Trash2,RotateCcw,X,ChevronRight,UserRoundCheck} from "lucide-react";
 import type {PreviewRecord} from "../preview-records";
 import {definitions} from "../preview-records";
@@ -7,6 +9,7 @@ import {RecordTypeIcon} from "./RecordVisual";
 export type RecordAction="view"|"edit"|"send"|"duplicate"|"delete"|"refund"|"deactivate";
 export function RecordActionDialog({record,onClose,onAction}:{record:PreviewRecord;onClose:()=>void;onAction:(action:RecordAction,record:PreviewRecord)=>void}){
  useEffect(()=>{function key(e:KeyboardEvent){if(e.key==="Escape")onClose();}document.addEventListener("keydown",key);return ()=>document.removeEventListener("keydown",key);},[onClose]);
+ const {paymentMode}=useMerchantPreview();
  const title=definitions[record.kind].title;
  const actions:{key:RecordAction;label:string;icon:typeof Eye;danger?:boolean}[]=[
  {key:"view",label:"View "+title,icon:Eye},
@@ -31,6 +34,12 @@ export function RecordActionDialog({record,onClose,onAction}:{record:PreviewReco
     className={"flex w-full items-center gap-3 rounded-lg bg-[#f8f8f8] px-3 py-3 text-left text-sm hover:bg-gray-100 "+(danger?"text-red-600":"text-[#344357]")}>
     <Icon size={17}/><span className="flex-1">{label}</span><ChevronRight size={15} className={danger?"text-red-500":"text-gray-400"}/>
    </button>)}</div>
+   {record.kind==="invoice"&&["pending","partial","overdue"].includes(record.status)?
+     paymentMode==="manual"?<Link href={"/dashboard/invoice/"+record.id+"/record-payment"} onClick={onClose}
+       className="mt-3 block rounded-lg bg-blue-50 px-3 py-3 text-center text-sm font-medium text-[#0064E0]">Record bank-transfer payment →</Link>:
+     <p className="mt-3 rounded-lg bg-amber-50 p-3 text-xs text-amber-800">Paid status for gateway or virtual-account invoices is controlled by verified provider events, not manual marking.</p>:null}
+   {record.kind==="invoice"&&record.status==="paid"?<Link href={"/dashboard/receipt/create?invoice="+record.id} onClick={onClose}
+     className="mt-3 block rounded-lg bg-blue-50 px-3 py-3 text-center text-sm font-medium text-[#0064E0]">Issue a receipt for this paid invoice →</Link>:null}
    <button onClick={onClose} className="mt-4 w-full rounded-full border border-[#0064E0] py-2.5 text-sm font-medium text-[#0064E0]">Cancel</button>
    <p className="mt-2 text-center text-[10px] text-gray-400">Preview-only actions; no record will be sent, deleted or refunded.</p>
   </section>
