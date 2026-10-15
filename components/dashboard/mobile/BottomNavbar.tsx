@@ -9,7 +9,7 @@ const navItems = [
   { label: "Invoices", href: "/dashboard/invoice", icon: FileText },
   { label: "Receipts", href: "/dashboard/receipt", icon: Receipt },
   { label: "Customers", href: "/dashboard/customer", icon: Users },
-  { label: "More", href: "/dashboard/settings", icon: MoreHorizontal },
+  { label: "More", href: "/dashboard/other-services", icon: MoreHorizontal },
 ];
 
 export default function BottomNavbar() {

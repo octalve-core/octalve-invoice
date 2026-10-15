@@ -1,0 +1,41 @@
+"use client";
+import Link from "next/link";
+import {useRouter} from "next/navigation";
+import {ArrowLeft,FileText,Users,Wallet,FileSpreadsheet,BarChart3,Scale,ScrollText,Package,RefreshCw,ReceiptText,Calculator,ContactRound,TrendingUp,WalletCards,IdCard} from "lucide-react";
+import {otherServiceItems} from "@/src/features/other-services/feature-links";
+const others=[BarChart3,Scale,ScrollText,Package,Users,RefreshCw,ReceiptText,Calculator,ContactRound,TrendingUp,WalletCards,IdCard] as const;
+const quick=[
+ {label:"New Invoice",href:"/dashboard/invoice/create",icon:FileText,tone:"bg-blue-100 text-[#0064E0]"},
+ {label:"New Customer",href:"/dashboard/customer/add",icon:Users,tone:"bg-green-100 text-green-600"},
+ {label:"New Expenses",href:"/dashboard/expenses",icon:Wallet,tone:"bg-red-100 text-red-600"},
+ {label:"New Quotation",href:"/dashboard/quotation",icon:FileSpreadsheet,tone:"bg-orange-100 text-orange-600"}
+] as const;
+export default function OtherServicesPage(){
+ const router=useRouter();
+ return <div className="mx-auto min-w-0 max-w-6xl space-y-5 pb-8">
+  <header className="flex items-center gap-4 border-b border-gray-200 pb-4">
+    <button onClick={()=>router.back()} aria-label="Go back" className="rounded-full p-2 text-slate-800 hover:bg-gray-100"><ArrowLeft size={23}/></button>
+    <div><h1 className="text-xl font-semibold text-slate-800">More</h1><p className="text-xs text-slate-500">Explore tools and services</p></div>
+  </header>
+  <section aria-label="Quick Create" className="rounded-2xl bg-white p-4 shadow-sm sm:p-6">
+   <h2 className="mb-5 text-lg font-medium text-slate-700">⚡ Quick Create</h2>
+   <div className="grid grid-cols-4 gap-2 sm:gap-5">{quick.map(item=><Link key={item.label} href={item.href} className="flex min-w-0 flex-col items-center gap-3 text-center hover:opacity-80">
+     <span className={`grid h-12 w-12 place-items-center rounded-full sm:h-16 sm:w-16 ${item.tone}`}><item.icon size={26}/></span>
+     <span className="text-[11px] leading-4 text-slate-700 sm:text-sm">{item.label}</span>
+   </Link>)}</div>
+  </section>
+  <section aria-label="Other services" className="rounded-2xl bg-white px-3 py-6 shadow-sm sm:px-6">
+   <h2 className="mb-6 text-lg font-medium text-slate-700">Others</h2>
+   <div className="grid grid-cols-3 gap-x-3 gap-y-9 lg:grid-cols-4 lg:gap-x-8">{otherServiceItems.map((item,i)=>{
+     const Icon=others[i];
+     return <Link key={item.slug} href={item.href} className="flex min-w-0 flex-col items-center gap-3 text-center hover:opacity-80">
+      <span className="grid h-14 w-14 place-items-center rounded-full bg-green-50 text-green-600 sm:h-20 sm:w-20">
+        <Icon size={30} strokeWidth={1.8}/>
+      </span>
+      <span className="text-xs leading-5 text-slate-700 sm:text-sm">{item.title}</span>
+      {!item.ready?<span className="text-[10px] text-gray-400">Coming soon</span>:null}
+     </Link>;
+    })}</div>
+  </section>
+ </div>;
+}
