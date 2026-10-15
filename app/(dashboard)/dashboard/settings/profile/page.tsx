@@ -140,7 +140,8 @@ export default function ProfileSettingsPage() {
             </label>
             <input
               type="text"
-              value={settings.fullName}
+              aria-label="Full Name"
+                value={settings.fullName}
               onChange={(e) =>
                 setSettings({ ...settings, fullName: e.target.value })
               }
@@ -342,6 +343,7 @@ export default function ProfileSettingsPage() {
               </label>
               <input
                 type="text"
+                aria-label="Full Name"
                 value={settings.fullName}
                 onChange={(e) =>
                   setSettings({ ...settings, fullName: e.target.value })
