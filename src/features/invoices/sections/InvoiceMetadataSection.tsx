@@ -39,7 +39,7 @@ export function InvoiceMetadataSection({draft,setDraft}:Props){
  function close(){setPicker(null);setQuery("");setAdding(false);}
  function addCustomer(){
   if(!customer.name.trim())return;
-  const next:CatalogCustomer={...customer,id:String(Date.now())};
+  const next:CatalogCustomer={...customer,id:String(customers.length+1)};
   setCustomers(p=>[...p,next]);chooseCustomer(next);setCustomer({name:"",email:"",phone:"",address:"",company:""});
  }
  function addStaff(){

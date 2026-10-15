@@ -12,7 +12,7 @@ export function StaffEditor({editId}:{editId?:string}){
  function save(){
   if(!form.name.trim()||!/^\S+@\S+\.\S+$/.test(form.email)){setError("A staff name and valid email are required.");return;}
   if(editId&&!initial){setError("Staff member not found.");return;}
-  const row={...form,id:editId||String(Date.now())};
+  const row={...form,id:editId||String(staff.length+1)};
   setStaff(p=>editId?p.map(x=>x.id===editId?row:x):[...p,row]);router.push("/dashboard/staff");
  }
  return <main className="mx-auto max-w-3xl space-y-5"><header className="flex items-center gap-3">

@@ -17,7 +17,7 @@ export function ItemEditor({editId}:{editId?:string}){
   const rate=Number(form.rate),tax=Number(form.taxPercent),disc=Number(form.discountPercent);
   if(!form.name.trim()||!Number.isFinite(rate)||rate<0||!Number.isFinite(tax)||tax<0||tax>100||!Number.isFinite(disc)||disc<0||disc>100){setIssue("Enter a name, non-negative price and percentage values from 0 to 100.");return;}
   if(editId&&!existing){setIssue("This item is not in the current workspace.");return;}
-  const row={...form,id:editId||String(Date.now())};
+  const row={...form,id:editId||String(items.length+1)};
   setItems(p=>editId?p.map(x=>x.id===editId?row:x):[...p,row]);router.push("/dashboard/items");
  }
  return <main className="mx-auto max-w-3xl space-y-5">

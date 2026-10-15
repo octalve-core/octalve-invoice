@@ -19,7 +19,7 @@ export function InvoiceItemsSection({draft,setDraft}:Props){
  function close(){setSelection(null);setAdding(false);setSearch("");setForm(empty);}
  function save(){
   if(!form.name.trim()||!(Number(form.rate)>=0))return;
-  const item={...form,id:String(Date.now())};setItems(p=>[...p,item]);pick(item);
+  const item={...form,id:String(items.length+1)};setItems(p=>[...p,item]);pick(item);
  }
  return <section aria-label="Invoice products and services" className="space-y-3">
   <h2 className="text-sm font-semibold text-[#1D2838]">Add product or service</h2>
@@ -39,7 +39,7 @@ export function InvoiceItemsSection({draft,setDraft}:Props){
       className="text-xs text-red-600 disabled:opacity-30">Remove row</button>
    </div>)}
   <button type="button" className="rounded-full border border-[#0064E0] px-4 py-2 text-xs text-[#0064E0]"
-    onClick={()=>setDraft(p=>({...p,rows:[...p.rows,{id:"preview-item-"+Date.now(),serviceName:"",description:"",quantity:"1",unitPrice:"0",discount:"0"}]}))}>+ Add row</button>
+    onClick={()=>setDraft(p=>({...p,rows:[...p.rows,{id:"preview-item-"+(p.rows.length+1),serviceName:"",description:"",quantity:"1",unitPrice:"0",discount:"0"}]}))}>+ Add row</button>
   {selection?<div className="fixed inset-0 z-[100] flex items-end justify-center bg-black/50 md:items-center md:p-4" onClick={close}>
    <section role="dialog" aria-modal="true" aria-label="Select product or service" onClick={e=>e.stopPropagation()}
      className="max-h-[88dvh] w-full max-w-lg overflow-y-auto rounded-t-2xl bg-white p-4 pb-8 shadow-2xl md:rounded-2xl md:p-5">
