@@ -1,10 +1,10 @@
 {
   "updatedAt": "2026-10-15",
-  "phase": "0G-unified-record-lists-optional-receipts",
+  "phase": "0H-ui-workflow-finalization",
   "branch": "phase/00-finzefy-authority-ui-bootstrap",
   "mainBootstrapSha": "87ad423dba3ced2445e109baa85114aea3d30037",
   "latestMigration": null,
-  "previewUrl": "https://octalve-invoice-njcepwivv-octalve-vault.vercel.app",
+  "previewUrl": "https://octalve-invoice-8iqvewmvc-octalve-vault.vercel.app",
   "productionUrl": null,
   "databaseState": "DEFERRED_UNTIL_PHASE_1_BACKEND",
   "qualification": {
@@ -24,15 +24,22 @@
     "database": "NOT PROVISIONED. Phase 1 remains blocked",
     "browserScreenshotArtifacts": "CAPTURED at GitHub Actions run 38771308968; owner visual approval pending",
     "phase0fFeatures": "PASS in Preview; user/account changes and document IDs remain in-session sample data",
-    "phase0gFeatures": "Implemented on branch b7496224: shared 8-module table/card architecture, mobile record action sheet, desktop modal, receipt independently recorded vs invoice-linked samples, quotation status distinction, four approved overview filters, refund/delete safety"
+    "phase0gFeatures": "Implemented on branch b7496224: shared 8-module table/card architecture, mobile record action sheet, desktop modal, receipt independently recorded vs invoice-linked samples, quotation status distinction, four approved overview filters, refund/delete safety",
+    "previousHead": "d27538ecdbdee25b88e0496a4c2237308e024f2c: TypeScript/lint/tests/build/CodeQL PASS, 105/111 browser checks; six failures fixed in follow-up",
+    "correctedBrowserRun": "PASS at 3befc581a0cc16925a65064b6997e14a9379e349 (111/111 browser routes×viewports); additional changes awaiting final qualification",
+    "latestCode": "30ee903d4c8653c97d80b3b482ea78d695c480e3",
+    "nativePdfVisualGoldens": "NOT RUN: layout/output owner reference compare pending",
+    "realFinancialOperations": "DISABLED",
+    "userUIApproval": "PENDING"
   },
   "blockers": [
-    "Owner has not signed off screenshot-to-reference comparison of 8-module shared responsive lists and four-chip Overview.",
-    "Native invoice/receipt/ledger PDF browser/image/golden parity still NOT RUN; no production document issuance.",
-    "Merchant authentication, verified payments, optional receipt issuance, manual payment evidence and refunds need Phase 1 database/server controls; frontend previews do not perform any action."
+    "Phase 0H final code qualification and Vercel deployment need exact completion verification.",
+    "Merchant owner has not signed off final desktop/mobile and browser/PNG/native PDF golden evidence.",
+    "NRS-compliant per-item tax mapping and exact-amount calculations are not yet implemented; no safe automatic application of catalog tax preset.",
+    "Authentication/Neon/Prisma migrations and financial provider operations must remain disabled until approved Phase 1."
   ],
-  "nextPhase": "Phase 0G owner visual review and PDF golden regression. Begin backend/Neon only after explicit UI approval.",
-  "currentCodeCheckpoint": "b7496224e9373d3ea5b5aff83458c77a0870b857",
+  "nextPhase": "Complete Phase 0H responsive visual, document golden and branch CI verification; request owner approval before Phase 1.",
+  "currentCodeCheckpoint": "30ee903d4c8653c97d80b3b482ea78d695c480e3",
   "lastVerifiedApplicationCommit": "b7496224e9373d3ea5b5aff83458c77a0870b857",
-  "exactNextPhase": "Phase 0G owner visual review and PDF golden regression. Begin backend/Neon only after explicit UI approval."
+  "exactNextPhase": "Complete Phase 0H responsive visual, document golden and branch CI verification; request owner approval before Phase 1."
 }

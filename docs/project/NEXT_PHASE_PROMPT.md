@@ -1,23 +1,9 @@
-# OCTALVE INVOICE — PHASE 0G VISUAL SIGN-OFF & DOCUMENT GOLDEN QUALIFICATION
-Repository: https://github.com/octalve-core/octalve-invoice
-Working branch: phase/00-finzefy-authority-ui-bootstrap
-Draft PR: https://github.com/octalve-core/octalve-invoice/pull/1 (do not merge)
-Current code checkpoint at documentation update: b7496224e9373d3ea5b5aff83458c77a0870b857
-Architecture authorities: docs/project/OCTALVE_INVOICE_MASTER_IMPLEMENTATION.md, UI_REFERENCE_MAP.md, DECISIONS.md, INVOICE_RECEIPT_PAYMENT_AUTHORITY.md, NUMBERING_AND_CREDIT_AUTHORITY.md, state.json
-
-FIRST retrieve latest GitHub HEAD, CI, Vercel preview and screenshot artifacts. Never assume stored SHA is HEAD.
-
-Task: Verify the shared Phase 0G Invoice, Receipt, Quotation, Expenses, Credit Note, Customer, Staff and Items tables against the owner-supplied October 15 mobile/desktop image references, including:
-1. Desktop table header, inset gray rows, document-specific ID columns, consistent search/status filters/export/create, icon/status colors, pagination and desktop action modal.
-2. Mobile page title/back, search/filter/export row, full-width create CTA, wrap-safe chips, card alignment and tappable full card opening bottom action sheet (not navigating). Explicit View/Edit choices; Delete shown red; cancellation and overlays compact with accessible keyboard controls.
-3. Overview Recent Transactions uses same card component and shows FOUR approved filter chips: All, Invoices, Expenses, Quotation. Receipts and Credit Notes can still appear in All.
-4. Record numbering is [MERCHANT_INITIALS]-[SEQUENCE][CODE]; approved INV, RP, QUO, CR, EXP, SF; CUS and ITM are only provisional until confirmed.
-5. Receipt ≠ invoice ≠ payment. No automatic receipt on invoice paid, no receipt on quotation acceptance; explicit optional receipt issuance from a verified payment, or from independently recorded/manual payment evidence once backend exists. Existing UI only shows honest linked/manual samples. No double counting or automatic refund.
-6. Retain previously approved invoice Modern/Classic Ledger rendering, 50/50 editor/preview, merchant business identity, logo initials, responsive dashboard charts, owner branding and other Phase 0E/F behavior. Qualify actual native browser/PNG/PDF goldens separately; never claim untested output parity.
-7. Run Node 24 frozen pnpm install, strict TypeScript, ESLint, tests, 25-route × 3-viewport Playwright snapshots (75 assertions, plus receipt link/independence checks), CodeQL and Vercel preview, recording exact results.
-8. Fix real regressions in small feature-specific components; push coherent commits ONLY to phase branch; update DECISIONS, UI_REFERENCE_MAP and state.json with SHA, Preview URL, artifacts and PASS/BLOCKED/NOT RUN.
-
-Constraints: no live auth, Neon, Prisma migrations, webhooks, payment operations, receipt issuance, fake ledger successes or production deployments. No force-push or merge to main. Request owner visual/PDF approval before Phase 1.
-
-Exact next continuation request:
-"Continue Phase 0G visual qualification from the latest GitHub state. Inspect and compare desktop/mobile Invoice, Receipt, Quotation, Expense, Credit Note, Customer, Staff, Items and Overview against the supplied references. Fix any genuine differences, verify browser/PNG/native PDF golden evidence, run all CI and security checks, update project-control documents and return the review-ready Vercel Preview. Do not merge main or start Phase 1 until I approve."
+# OCTALVE INVOICE — PHASE 0H FINAL OWNER UI/PDF QUALIFICATION
+Read master project authority, Phase 0H implementation review, PAYMENT_AND_RECEIPT_PHASE0H.md, DECISIONS.md, UI_REFERENCE_MAP.md, state.json and the current GitHub HEAD, Actions and deployed Vercel Preview before editing.
+Continue on `phase/00-finzefy-authority-ui-bootstrap` ONLY. Preserve donor Finzefy desktop/mobile UI and Sapphire Modern/Classic document engine without redesign.
+1. Compare the full desktop/mobile interactive screens for invoice creation/view, customer/item/salesperson/payment selection, receipts, quotations, item editing, staff editing, reports, profile, More, announcements/updates, notifications against owner's images.
+2. Verify payment channel is locked by issued invoice record; manual bank payment may be recorded only after merchant actual bank credit verification and secure backend; gateway/virtual account use provider verification only. Do not infer verification from browser.
+3. Support merchant choice to issue receipt later on paid invoices or configure opt-in automatic receipt generation/email after verified ONLINE payments. OFF remains default. UI controls only until backend.
+4. Test that descriptions/notes omit empty values and Modern/Classic browser output matches actual generated native PDF and PNG golden references. No production tax calculation until official NRS per-line mapping and exact money.
+5. Run frozen pnpm install, TypeScript, ESLint, unit tests, 37 routes x 3 viewports browser screenshot evidence, CodeQL and Vercel Preview. Resolve actual errors, record exact SHAs, PASS/BLOCKED/NOT RUN.
+6. Append decisions and update state.json; retain PR #1 draft, no main merge, no Neon, no money movement, no live user accounts or email sends. Owner must visually approve before Phase 1 backend.
