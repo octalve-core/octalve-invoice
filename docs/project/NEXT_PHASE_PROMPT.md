@@ -1,11 +1,13 @@
-# OCTALVE INVOICE — NEXT CHAT / PHASE 0H ONLY
+# OCTALVE INVOICE — NEXT CONTINUATION, STILL PHASE 0H
 
-**Start with [OCTALVE_INVOICE_NEW_CHAT_HANDOFF_2026-10-15.md](./OCTALVE_INVOICE_NEW_CHAT_HANDOFF_2026-10-15.md).** It contains the complete source hierarchy, pinned donor commits, architecture, implemented UI, owner's October 15 corrections, finance/receipts rules, current verified URLs/CI and exact continuation prompt.
+Begin at [OCTALVE_INVOICE_NEW_CHAT_HANDOFF_2026-10-15.md](./OCTALVE_INVOICE_NEW_CHAT_HANDOFF_2026-10-15.md), then read `OCTALVE_INVOICE_MASTER_IMPLEMENTATION.md`, `DECISIONS.md`, `PAYMENT_AND_RECEIPT_PHASE0H.md`, `RELEASE_CHECKLIST.md`, `state.json` and full live GitHub branch. Preserve approved Finzefy visuals, Octalve branding, Sapphire Modern/Classic Ledger/Classic Receipt templates and all financial/source-of-truth rules. Do not ask the owner to repeat earlier approvals. The current authority is the newest explicit owner correction above all older docs.
 
-**Do not begin Phase 1, ask for Neon, merge main, or execute financial/auth actions. Phase 0 is still open.**
+**Branch:** `phase/00-finzefy-authority-ui-bootstrap`; **PR:** #1 DRAFT, unmerged. **Phase 0 remains OPEN — no explicit owner approval.** Never merge to main, move to Phase 1, provision Neon, switch on auth or run financial processing without owner's approval.
 
-Last verified source before handoff: `4997858e74ba2bcff657d739167347ff7d35b5c1`. Branch: `phase/00-finzefy-authority-ui-bootstrap`. Latest READY preview at that SHA: https://octalve-invoice-nl1yl0g1c-octalve-vault.vercel.app. Current code SHA must be rechecked after documentation updates.
+**Latest verified application CI:** at `666d61cf232b3cfa2457698e8904716cfa37d4a4`, Github browser run `38796782601` PASS 111/111 (37 routes at desktop/tablet/mobile). Actual browser PNG download test for both Modern/Classic Ledger PASS, and native A4 PDF downloads passed selectable text/geometry plus PDF-to-PNG raster capture. Phase qualification and CodeQL PASS at same SHA. SEE `RELEASE_CHECKLIST.md` for the limits of that evidence and exact CI links.
 
-Current verified CI: frozen pnpm, TS, lint (105 warnings, 0 errors), tests, build, CodeQL PASS; 111/111 responsive browser checks. Native PDF/PNG layout parity and owner approval are STILL PENDING. Read `PAYMENT_AND_RECEIPT_PHASE0H.md` for 12-point implementation status.
+New changes since earlier handoff: fixed draft row-ID collision after add/delete/add, rejected contradictory refund replay and unsafe totals, corrected desktop invoice prefix and active Octalve blue tabs; exposed original inherited browser PNG export adapter with Octalve filenames and preserved native PDF templates. No persistence or receipts are now live. Owner's twelve requested correction statuses, including remaining gaps, are in `PAYMENT_AND_RECEIPT_PHASE0H.md`.
 
-Copy-paste the FULL `J` prompt from the new-chat handoff for the next message.
+**Still outstanding:** exact owner-reference pixel golden screenshots versus app for desktop/mobile, Modern and Classic Ledger exported browser PNG vs approved reference, PDF rendered page comparison, Classic Receipt browser/PNG/native PDF A5 landscape and signatures, correction of any owner-provided new UI notes, final Vercel commit-matched Preview READY verification, owner explicit Phase 0 acceptance. UI References central Library folder currently contains no reference files; do not fake pixel comparisons. A successful PDF text smoke test is not golden parity.
+
+**Next actions:** inspect the current branch and CI again, finish owner corrections and document golden regressions, check Vercel deployment matching the branch commit, update project control files accurately, present Preview for owner review. Do not jump ahead to backend.
