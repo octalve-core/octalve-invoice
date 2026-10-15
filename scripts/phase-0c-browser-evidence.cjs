@@ -21,8 +21,9 @@ const origin = process.env.OCTALVE_BASE_URL || "http://127.0.0.1:3000";
         const name = route.replace(/[^\w]+/g, "-").replace(/^-|-$/g, "") || "home";
         const record = { viewport: view, route, status: "UNKNOWN", screenshot: view + "-" + name + ".png" };
         try {
-          const response = await page.goto(origin + route, { waitUntil: "networkidle", timeout: 45000 });
+          const response = await page.goto(origin + route, { waitUntil: "domcontentloaded", timeout: 16000 });
           record.statusCode = response?.status();
+          await page.waitForTimeout(350);
           if (record.statusCode !== 200) throw new Error("Non-200 status: " + record.statusCode);
           if (route === "/dashboard/invoice/create") {
             await page.getByRole("heading", { name: "Create invoice" }).waitFor();
