@@ -1,5 +1,7 @@
 "use client";
 import { useMemo,useState } from "react";
+import {useRouter} from "next/navigation";
+import {InvoiceFiltersDialog,type InvoiceFilterCriteria} from "./InvoiceFiltersDialog";
 import Link from "next/link";
 import {Search,Plus,SlidersHorizontal,Download,MoreVertical,FileText,Eye,Pencil,Send,Copy,Trash2,RotateCcw,X,ChevronRight,} from "lucide-react";
 import {previewInvoices,type PreviewInvoice,type InvoiceStatus} from "../lib/preview-records";
@@ -45,13 +47,23 @@ function InvoiceActionSheet({invoice,close,action}:{
  </div>;
 }
 export function InvoiceListSection(){
+ const router=useRouter();
+ const [filtersOpen,setFiltersOpen]=useState(false);
+ const [criteria,setCriteria]=useState<InvoiceFilterCriteria>({status:"all",from:"",to:""});
  const [query,setQuery]=useState("");
  const [status,setStatus]=useState<InvoiceStatus|"all">("all");
  const [selected,setSelected]=useState<PreviewInvoice|null>(null);
  const [notice,setNotice]=useState("");
  const [page,setPage]=useState(1);
- const list=useMemo(()=>previewInvoices.filter(r=>(status==="all"||r.status===status)&&
-  [r.customer,r.reference,r.email].some(x=>x.toLowerCase().includes(query.toLowerCase()))),[status,query]);
+ const list=useMemo(()=>previewInvoices.filter(r=>{
+    if(status!=="all"&&r.status!==status) return false;
+    if(criteria.status!=="all"&&r.status!==criteria.status)return false;
+    const [day,month,year]=r.date.split("/").map(Number);
+    const date=[year,String(month).padStart(2,"0"),String(day).padStart(2,"0")].join("-");
+    if(criteria.from&&date<criteria.from)return false;
+    if(criteria.to&&date>criteria.to)return false;
+    return [r.customer,r.reference,r.email].some(x=>x.toLowerCase().includes(query.toLowerCase()));
+  }),[status,query,criteria]);
  const pageSize=10;
  const visible=list.slice((page-1)*pageSize,page*pageSize);
  function selectStatus(value:InvoiceStatus|"all"){setStatus(value);setPage(1);}
@@ -83,7 +95,7 @@ export function InvoiceListSection(){
     <div className="flex flex-wrap items-center gap-2 sm:justify-end">
       <button type="button" onClick={()=>previewAction("export",previewInvoices[0])}
         className="flex h-9 items-center gap-1 rounded-lg border border-gray-200 bg-white px-3 text-xs"><Download size={15}/>Export</button>
-      <button type="button" onClick={()=>setNotice("Select a status chip or search to filter sample invoices.")}
+      <button type="button" onClick={()=>setFiltersOpen(true)}
         className="flex h-9 items-center gap-1 rounded-lg border border-gray-200 bg-white px-3 text-xs"><SlidersHorizontal size={15}/>Filters</button>
       <Link href="/dashboard/invoice/create" className="flex h-9 flex-1 items-center justify-center gap-1 rounded-full bg-[#0064E0] px-4 text-xs font-medium text-white hover:bg-[#0052B8] sm:flex-none">
         <Plus size={15}/>Create Invoice</Link>
@@ -103,7 +115,10 @@ export function InvoiceListSection(){
       <th className="w-[14%] px-2 py-3 lg:px-3">Status</th>
       <th className="w-[5%] py-3"><span className="sr-only">Actions</span></th>
      </tr></thead>
-     <tbody>{visible.map(i=><tr key={i.id} className="border-t border-gray-100 align-middle hover:bg-gray-50">
+     <tbody>{visible.map(i=><tr key={i.id} role="link" tabIndex={0} aria-label={`View ${i.reference}`}
+     onClick={e=>{if(!(e.target as HTMLElement).closest("button,a"))router.push(`/dashboard/invoice/${i.id}`);}}
+     onKeyDown={e=>{if(e.key==="Enter"&&e.target===e.currentTarget)router.push(`/dashboard/invoice/${i.id}`);}}
+     className="cursor-pointer border-t border-gray-100 align-middle hover:bg-blue-50/40 focus-visible:outline-2 focus-visible:outline-[#0064E0]">
        <td className="truncate px-2 py-4 font-medium text-[#172f4d] lg:px-3"><Link href={`/dashboard/invoice/${i.id}`} className="hover:underline">{i.reference}</Link></td>
        <td className="truncate px-2 py-4 text-[#172f4d] lg:px-3">{i.customer}</td>
        <td className="truncate px-2 py-4 font-semibold text-[#172f4d] lg:px-3">{i.amount}</td>
@@ -114,8 +129,10 @@ export function InvoiceListSection(){
          className="rounded p-1 hover:bg-blue-50"><MoreVertical size={17}/></button></td>
      </tr>)}</tbody></table>
    </div>
-   <div className="space-y-2 md:hidden">{visible.map(i=><article key={i.id}
-     className="rounded-xl border border-gray-100 bg-white px-3 py-3 shadow-sm">
+   <div className="space-y-2 md:hidden">{visible.map(i=><article key={i.id} role="link" tabIndex={0} aria-label={`View ${i.reference}`}
+     onClick={e=>{if(!(e.target as HTMLElement).closest("button,a"))router.push(`/dashboard/invoice/${i.id}`);}}
+     onKeyDown={e=>{if(e.key==="Enter"&&e.target===e.currentTarget)router.push(`/dashboard/invoice/${i.id}`);}}
+     className="cursor-pointer rounded-xl border border-gray-100 bg-white px-3 py-3 shadow-sm focus-visible:outline-2 focus-visible:outline-[#0064E0]">
     <div className="flex items-start gap-3">
       <Link href={`/dashboard/invoice/${i.id}`} className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-blue-50 text-[#0064E0]" aria-label={`View ${i.reference}`}>
         <FileText size={19}/></Link>
@@ -139,6 +156,7 @@ export function InvoiceListSection(){
     <span>Page {page} of {Math.max(1,Math.ceil(list.length/pageSize))}</span>
     <button disabled={page*pageSize>=list.length} onClick={()=>setPage(p=>p+1)} className="rounded border px-3 py-2 disabled:opacity-30">Next →</button>
    </nav>
+   {filtersOpen&&<InvoiceFiltersDialog criteria={criteria} onChange={c=>{setCriteria(c);setPage(1);}} onClose={()=>setFiltersOpen(false)}/>}
    {selected&&<InvoiceActionSheet invoice={selected} close={()=>setSelected(null)} action={previewAction}/>}
  </section>;
 }

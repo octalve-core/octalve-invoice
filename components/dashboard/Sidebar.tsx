@@ -65,7 +65,7 @@ export default function Sidebar() {
   return (
     <aside className="hidden lg:flex flex-col w-64 min-h-screen bg-[#0052B8] text-white">
       {/* Logo */}
-      <div className="flex items-center gap-2 px-6 py-5 border-b border-white/10">
+      <div className="flex items-center gap-2 border-b border-white/10 bg-white px-6 py-4">
         <BrandWordmark width={166} className="text-white" />
       </div>
 

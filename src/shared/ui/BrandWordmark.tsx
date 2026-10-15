@@ -3,7 +3,7 @@ import { useState } from "react";
 type Props = { className?: string; compact?: boolean; width?: number };
 /**
  * Exact official user-supplied PNG assets, not a fabricated Octalve logo.
- * Until the uploaded binaries are committed, the textual placeholder remains.
+ * Official binaries have been uploaded to public/branding/.
  */
 export function BrandWordmark({ className = "", compact = false, width = 166 }: Props) {
   const [missing, setMissing] = useState(false);

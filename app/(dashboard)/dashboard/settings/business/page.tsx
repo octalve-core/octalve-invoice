@@ -23,7 +23,7 @@ const banks = [
 
 export default function BusinessSettingsPage() {
   const router = useRouter();
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading] = useState(false);
   const {settings,setSettings,logoPreview,setLogoPreview,paymentMode,setPaymentMode}=useMerchantPreview();
   const [signaturePreview,setSignaturePreview]=useState<string|null>(null);
   const handleLogoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -536,9 +536,7 @@ export default function BusinessSettingsPage() {
                   placeholder="Enter account number"
                   className="auth-input-gray"
                 />
-                <p className="text-xs text-[#0064E0] mt-1">
-                  OLAMIDE TAD DANJUMA
-                </p>
+                <p className="text-xs text-gray-500 mt-1">Account holder: {settings.businessName || "Set business name"}</p>
               </div>
             </div>
           </div>
