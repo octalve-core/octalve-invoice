@@ -1,6 +1,8 @@
 "use client";
 
 import { useState } from "react";
+import {useMerchantPreview} from "@/src/features/merchant-preview/MerchantPreviewProvider";
+import {formatDocumentNumber} from "@/src/features/invoices/lib/document-number";
 import {
   Search,
   Plus,
@@ -26,7 +28,7 @@ interface CreditNote {
   email: string;
 }
 
-const creditNotes: CreditNote[] = [
+const creditNotesFixtures: CreditNote[] = [
   {
     id: "1",
     reference: "RPP0081",
@@ -106,6 +108,8 @@ export default function CreditNoteTable({
   onCreateClick,
   onViewClick,
 }: CreditNoteTableProps) {
+  const {settings:merchantSettings}=useMerchantPreview();
+  const creditNotes=creditNotesFixtures.map((entry,index)=>({...entry,reference:formatDocumentNumber(merchantSettings.businessName||"Octalve Limited",index+1,"creditNote")}));
   const [filter, setFilter] = useState<FilterType>("all");
   const [searchQuery, setSearchQuery] = useState("");
   const [activeMenu, setActiveMenu] = useState<string | null>(null);

@@ -1,6 +1,8 @@
 "use client";
 
 import { useState } from "react";
+import {useMerchantPreview} from "@/src/features/merchant-preview/MerchantPreviewProvider";
+import {formatDocumentNumber} from "@/src/features/invoices/lib/document-number";
 import {
   Search,
   Plus,
@@ -22,7 +24,7 @@ interface Staff {
   status: "active" | "inactive";
 }
 
-const dummyStaff: Staff[] = [
+const dummyStaffFixtures: Staff[] = [
   {
     id: "1",
     refNo: "RFP0001",
@@ -59,6 +61,8 @@ export default function StaffTable({
   onDeleteClick,
   onDeactivateClick,
 }: StaffTableProps) {
+  const {settings:merchantSettings}=useMerchantPreview();
+  const dummyStaff=dummyStaffFixtures.map((entry,index)=>({...entry,refNo:formatDocumentNumber(merchantSettings.businessName||"Octalve Limited",index+1,"staff")}));
   const [searchQuery, setSearchQuery] = useState("");
   const [openActionMenuId, setOpenActionMenuId] = useState<string | null>(null);
 

@@ -1,7 +1,7 @@
 /** Display references are provisional until server allocation is implemented.
  * NEVER allocate an issued reference on the client. NumberSeries is merchant scoped.
  */
-export const DOCUMENT_CODES = {invoice:"INV",receipt:"RP",quotation:"QUO",creditNote:"CR"} as const;
+export const DOCUMENT_CODES = {invoice:"INV",receipt:"RP",quotation:"QUO",creditNote:"CR",expense:"EXP",staff:"SF"} as const;
 export type DocumentType = keyof typeof DOCUMENT_CODES;
 export function merchantInitials(name:string):string {
  const words=name.normalize("NFKC").trim().split(/\s+/).filter(Boolean)
@@ -14,7 +14,7 @@ export function formatDocumentNumber(merchant:string,sequence:number,type:Docume
  return `${merchantInitials(merchant)}-${String(sequence).padStart(5,"0")}${DOCUMENT_CODES[type]}`;
 }
 export function parseDocumentNumber(reference:string) {
- const match=/^([A-Z]{1,5})-(\d{5,})(INV|RP|QUO|CR)$/.exec(reference);
+ const match=/^([A-Z]{1,5})-(\d{5,})(INV|RP|QUO|CR|EXP|SF)$/.exec(reference);
  if(!match) return null;
  return {initials:match[1],sequence:Number(match[2]),code:match[3]};
 }

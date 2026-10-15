@@ -1,6 +1,8 @@
 "use client";
 
 import { useState } from "react";
+import {useMerchantPreview} from "@/src/features/merchant-preview/MerchantPreviewProvider";
+import {formatDocumentNumber} from "@/src/features/invoices/lib/document-number";
 import {
   Search,
   Download,
@@ -29,7 +31,7 @@ interface Quotation {
   status: "paid" | "pending" | "draft" | "overdue" | "sent" | "declined";
 }
 
-const quotations: Quotation[] = [
+const quotationsFixtures: Quotation[] = [
   {
     id: "1",
     reference: "FZ-000HYV",
@@ -121,6 +123,8 @@ export default function QuotationTable({
   onCreateClick,
   onViewClick,
 }: QuotationTableProps) {
+  const {settings:merchantSettings}=useMerchantPreview();
+  const quotations=quotationsFixtures.map((entry,index)=>({...entry,reference:formatDocumentNumber(merchantSettings.businessName||"Octalve Limited",index+1,"quotation")}));
   const [activeFilter, setActiveFilter] = useState("All");
   const [searchQuery, setSearchQuery] = useState("");
   const [openMenuId, setOpenMenuId] = useState<string | null>(null);

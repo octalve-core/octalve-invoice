@@ -1,6 +1,8 @@
 "use client";
 
 import { useState } from "react";
+import {useMerchantPreview} from "@/src/features/merchant-preview/MerchantPreviewProvider";
+import {formatDocumentNumber} from "@/src/features/invoices/lib/document-number";
 import {
   ArrowLeft,
   Search,
@@ -27,7 +29,7 @@ interface ExpenseItem {
   status: "paid" | "pending" | "draft" | "overdue" | "refunded";
 }
 
-const expenses: ExpenseItem[] = [
+const expensesFixtures: ExpenseItem[] = [
   {
     id: "1",
     reference: "EXP-001HYV",
@@ -95,6 +97,8 @@ export default function MobileExpenseList({
   onExpenseClick,
   showEmptyState = false,
 }: MobileExpenseListProps) {
+  const {settings:merchantSettings}=useMerchantPreview();
+  const expenses=expensesFixtures.map((entry,index)=>({...entry,reference:formatDocumentNumber(merchantSettings.businessName||"Octalve Limited",index+1,"expense")}));
   const [filter, setFilter] = useState<string>("All");
   const [searchQuery, setSearchQuery] = useState("");
   const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);

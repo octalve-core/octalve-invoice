@@ -1,6 +1,8 @@
 "use client";
 
 import { useState } from "react";
+import {useMerchantPreview} from "@/src/features/merchant-preview/MerchantPreviewProvider";
+import {formatDocumentNumber} from "@/src/features/invoices/lib/document-number";
 import {
   ArrowLeft,
   Search,
@@ -26,7 +28,7 @@ interface ReceiptItem {
   status: "paid" | "pending" | "draft" | "overdue" | "refunded" | "sent";
 }
 
-const receipts: ReceiptItem[] = [
+const receiptsFixtures: ReceiptItem[] = [
   {
     id: "1",
     reference: "FZ-000HYV",
@@ -94,6 +96,8 @@ export default function MobileReceiptList({
   onCreateClick,
   onReceiptClick,
 }: MobileReceiptListProps) {
+  const {settings:merchantSettings}=useMerchantPreview();
+  const receipts=receiptsFixtures.map((entry,index)=>({...entry,reference:formatDocumentNumber(merchantSettings.businessName||"Octalve Limited",index+1,"receipt")}));
   const [filter, setFilter] = useState<string>("All");
   const [searchQuery, setSearchQuery] = useState("");
   const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);

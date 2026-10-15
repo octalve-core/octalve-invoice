@@ -1,6 +1,8 @@
 "use client";
 
 import { useState } from "react";
+import {useMerchantPreview} from "@/src/features/merchant-preview/MerchantPreviewProvider";
+import {formatDocumentNumber} from "@/src/features/invoices/lib/document-number";
 import {
   ArrowLeft,
   Search,
@@ -27,7 +29,7 @@ interface QuotationItem {
   status: "paid" | "pending" | "draft" | "overdue" | "sent" | "declined";
 }
 
-const quotations: QuotationItem[] = [
+const quotationsFixtures: QuotationItem[] = [
   {
     id: "1",
     reference: "FZ-000HYV",
@@ -79,6 +81,8 @@ export default function MobileQuotationList({
   onCreateClick,
   onQuotationClick,
 }: MobileQuotationListProps) {
+  const {settings:merchantSettings}=useMerchantPreview();
+  const quotations=quotationsFixtures.map((entry,index)=>({...entry,reference:formatDocumentNumber(merchantSettings.businessName||"Octalve Limited",index+1,"quotation")}));
   const [filter, setFilter] = useState<string>("All");
   const [searchQuery, setSearchQuery] = useState("");
   const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
