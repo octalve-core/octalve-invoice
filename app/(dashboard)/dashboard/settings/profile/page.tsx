@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import {useMerchantPreview} from "@/src/features/merchant-preview/MerchantPreviewProvider";
+import {getInitials,useMerchantPreview} from "@/src/features/merchant-preview/MerchantPreviewProvider";
 import {toast} from "sonner";
 import { useRouter } from "next/navigation";
 import {
@@ -114,7 +114,7 @@ export default function ProfileSettingsPage() {
                 />
               ) : (
                 <div className="w-full h-full bg-gray-200 flex items-center justify-center">
-                  <Camera className="w-8 h-8 text-gray-400" />
+                  <span className="text-2xl font-bold text-[#0064E0]">{getInitials(settings.fullName||"Preview User")}</span>
                 </div>
               )}
             </div>
@@ -313,7 +313,7 @@ export default function ProfileSettingsPage() {
                     className="w-full h-full object-cover"
                   />
                 ) : (
-                  <Camera className="w-10 h-10 text-gray-400" />
+                  <span className="text-3xl font-bold text-[#0064E0]">{getInitials(settings.fullName||"Preview User")}</span>
                 )}
               </div>
               {/* Edit icon */}

@@ -182,7 +182,7 @@ export default function SettingsPage() {
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-4">
                 <div className="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center">
-                  <User className="w-8 h-8 text-[#0064E0]" />
+                  <UserAvatar size="lg"/>
                 </div>
                 <div>
                   <div className="flex items-center gap-3">
