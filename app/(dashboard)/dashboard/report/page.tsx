@@ -56,3 +56,4 @@ export default function ReportPage(){
  </div>
  <p className="flex items-start gap-2 rounded-xl bg-blue-50 p-4 text-xs leading-5 text-[#285174]"><ShieldCheck className="mt-0.5 shrink-0" size={17}/>Financial integrity: invoice amounts represent receivables, verified payments represent collections, and receipts represent documents rather than additional cash. Production date-scoped reconciliation, reversals and immutable exports require the Phase 1 server ledger.</p>
  </main>;
+}
