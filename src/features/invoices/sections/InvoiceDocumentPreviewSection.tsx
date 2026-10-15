@@ -16,6 +16,7 @@ type Props={
 export function InvoiceDocumentPreviewSection({draft,setDraft,profile,setProfile,payment,setPayment,template,merchantLogo=null,paymentMode="manual"}:Props){
  const [downloadError,setDownloadError]=useState("");
  const [showDownloadPrompt,setShowDownloadPrompt]=useState(false);
+ const [downloadFormat,setDownloadFormat]=useState<"pdf"|"png">("pdf");
  const [dismissedLogo,setDismissedLogo]=useState(false);
  const [dismissedPayment,setDismissedPayment]=useState(false);
  const hasBank=Boolean(payment.bankName.trim()&&payment.accountNumber.trim());
@@ -38,10 +39,17 @@ export function InvoiceDocumentPreviewSection({draft,setDraft,profile,setProfile
  const shared={draft:renderDraft,paymentSettings:payment,totals,onDraftChange,onDateChange,onDueDateChange,
    onInvoiceSequenceChange:onSeq,onLineChange,onLineUnitPriceBlur:noop,onLineQuantityBlur:noop,
    onLineDiscountBlur:noop,onPercentageBlur:onPercent,onPaymentSettingChange:onPaymentChange};
- const performDownload=async()=>{
+ const performDownload=async(format:"pdf"|"png")=>{
    setDownloadError("");
    setShowDownloadPrompt(false);
    try {
+     if(format==="png"){
+       const node=document.getElementById("invoice-document");
+       if(!node)throw new Error("Document preview unavailable for PNG.");
+       const {exportRenderedDocumentPng}=await import("@/src/features/invoice/lib/export-adapter");
+       await exportRenderedDocumentPng(node,template==="modern"?"octalve-modern-preview":"octalve-classic-ledger-preview",{paperSize:draft.paperSize,currency:draft.currency});
+       return;
+     }
      const {buildInvoicePresentation}=await import("@/src/features/invoice/presentation/invoice-presentation");
      const presentation=buildInvoicePresentation({draft:renderDraft,paymentSettings:paymentReady?payment:{bankName:"",accountName:"",accountNumber:""},totals,companyProfile:profile});
      if(template==="modern"){
@@ -53,15 +61,16 @@ export function InvoiceDocumentPreviewSection({draft,setDraft,profile,setProfile
      }
    }catch(err){setDownloadError(err instanceof Error?err.message:"PDF preview unavailable.");}
  };
- const download=()=>{
+ const download=(format:"pdf"|"png")=>{
+   setDownloadFormat(format);
    if(!merchantLogo||!paymentReady){setShowDownloadPrompt(true);return;}
-   void performDownload();
+   void performDownload(format);
  };
  return <section aria-label="Live document preview" className="min-w-0 space-y-3">
    <div className="flex flex-wrap items-center justify-between gap-3">
      <div><h2 className="font-semibold text-[#1D2838]">Live {template==="modern"?"Modern Invoice":"Classic Ledger"} preview</h2>
        <p className="text-xs text-gray-500">Browser and PDF use the same presentation data; preview only, not issued.</p></div>
-     <button onClick={download} type="button" className="rounded-lg bg-[#0064E0] px-4 py-2 text-xs font-semibold text-white hover:bg-[#0052B8]">Download preview PDF</button>
+     <div className="flex flex-wrap gap-2"><button onClick={()=>download("png")} type="button" className="rounded-lg border border-[#0064E0] px-4 py-2 text-xs font-semibold text-[#0064E0] hover:bg-blue-50">Download preview PNG</button><button onClick={()=>download("pdf")} type="button" className="rounded-lg bg-[#0064E0] px-4 py-2 text-xs font-semibold text-white hover:bg-[#0052B8]">Download preview PDF</button></div>
    </div>
    {!merchantLogo&&!dismissedLogo?<div className="flex flex-wrap items-center justify-between gap-2 rounded-lg border border-blue-100 bg-white p-3 text-xs"><span>Your business logo is missing. You can preview and download without it.</span><span className="flex gap-3"><Link href="/dashboard/settings/business" className="font-semibold text-[#0064E0]">Business Settings</Link><button type="button" className="text-gray-500" onClick={()=>setDismissedLogo(true)}>Continue without logo</button></span></div>:null}
    {!paymentReady&&!dismissedPayment?<div className="flex flex-wrap items-center justify-between gap-2 rounded-lg border border-amber-100 bg-white p-3 text-xs"><span>{paymentMode==="manual"?"Bank/account details have not been configured.":"The chosen online payment provider is not connected yet."} Payment instructions will be omitted.</span><span className="flex gap-3"><Link href="/dashboard/settings/business" className="font-semibold text-[#0064E0]">Payment Settings</Link><button type="button" className="text-gray-500" onClick={()=>setDismissedPayment(true)}>Continue without payment details</button></span></div>:null}
@@ -72,6 +81,6 @@ export function InvoiceDocumentPreviewSection({draft,setDraft,profile,setProfile
        <ClassicLedgerRenderer {...shared} businessProfile={profile} companyLogo={merchantLogo} onBusinessProfileChange={onProfileChange}/>}
      </div>
    </div>
-   {showDownloadPrompt?<div role="presentation" className="fixed inset-0 z-[100] flex items-end justify-center bg-black/40 p-0 sm:items-center sm:p-4" onClick={()=>setShowDownloadPrompt(false)}><section role="dialog" aria-modal="true" aria-label="Complete invoice details" className="w-full max-w-md space-y-3 rounded-t-2xl bg-white p-5 shadow-xl sm:rounded-2xl" onClick={e=>e.stopPropagation()}><h3 className="text-lg font-semibold">Review missing business details</h3><p className="text-sm text-gray-600">{!merchantLogo?"No merchant logo is uploaded. ":""}{!paymentReady?"Payment instructions are incomplete or not connected. ":""}You can download a preview without these details.</p><div className="grid gap-2 sm:grid-cols-2"><Link href="/dashboard/settings/business" className="rounded-full bg-[#0064E0] px-4 py-3 text-center text-sm font-medium text-white">Go to Business Settings</Link><button type="button" onClick={()=>void performDownload()} className="rounded-full border border-[#0064E0] px-4 py-3 text-sm font-medium text-[#0064E0]">Continue without details</button></div><button type="button" onClick={()=>setShowDownloadPrompt(false)} className="w-full p-2 text-sm text-gray-500">Cancel</button></section></div>:null}
+   {showDownloadPrompt?<div role="presentation" className="fixed inset-0 z-[100] flex items-end justify-center bg-black/40 p-0 sm:items-center sm:p-4" onClick={()=>setShowDownloadPrompt(false)}><section role="dialog" aria-modal="true" aria-label="Complete invoice details" className="w-full max-w-md space-y-3 rounded-t-2xl bg-white p-5 shadow-xl sm:rounded-2xl" onClick={e=>e.stopPropagation()}><h3 className="text-lg font-semibold">Review missing business details</h3><p className="text-sm text-gray-600">{!merchantLogo?"No merchant logo is uploaded. ":""}{!paymentReady?"Payment instructions are incomplete or not connected. ":""}You can download a preview without these details.</p><div className="grid gap-2 sm:grid-cols-2"><Link href="/dashboard/settings/business" className="rounded-full bg-[#0064E0] px-4 py-3 text-center text-sm font-medium text-white">Go to Business Settings</Link><button type="button" onClick={()=>void performDownload(downloadFormat)} className="rounded-full border border-[#0064E0] px-4 py-3 text-sm font-medium text-[#0064E0]">Continue without details</button></div><button type="button" onClick={()=>setShowDownloadPrompt(false)} className="w-full p-2 text-sm text-gray-500">Cancel</button></section></div>:null}
  </section>;
 }
