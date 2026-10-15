@@ -1,6 +1,8 @@
 "use client";
 
 import { useState } from "react";
+import {toast} from "sonner";
+import {useMerchantPreview} from "@/src/features/merchant-preview/MerchantPreviewProvider";
 import { useRouter } from "next/navigation";
 import {
   ChevronLeft,
@@ -9,17 +11,6 @@ import {
   Camera,
   Upload,
 } from "lucide-react";
-
-interface BusinessSettings {
-  businessName: string;
-  businessAddress: string;
-  businessPhone: string;
-  businessDescription: string;
-  rcNumber: string;
-  taxId: string;
-  bankName: string;
-  accountNumber: string;
-}
 
 const banks = [
   { value: "gtb", label: "Guaranty Trust Bank" },
@@ -33,23 +24,14 @@ const banks = [
 export default function BusinessSettingsPage() {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
-  const [logoPreview, setLogoPreview] = useState<string | null>(null);
-  const [signaturePreview, setSignaturePreview] = useState<string | null>(null);
-  const [settings, setSettings] = useState<BusinessSettings>({
-    businessName: "Giant's Tech",
-    businessAddress: "2 Abayomi Street, Chevron Rd, Akoka, Yaba, Lagos",
-    businessPhone: "+234 9012345678",
-    businessDescription:
-      "Number one Gadget's Plug in Lagos Nigeria. We can't wait to deal with you!",
-    rcNumber: "616525617771",
-    taxId: "616525617771",
-    bankName: "gtb",
-    accountNumber: "0052678976",
-  });
-
+  const {settings,setSettings,logoPreview,setLogoPreview,paymentMode,setPaymentMode}=useMerchantPreview();
+  const [signaturePreview,setSignaturePreview]=useState<string|null>(null);
   const handleLogoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
+      if(!["image/png","image/jpeg","image/webp"].includes(file.type)||file.size>2*1024*1024){
+        toast.error("Please select PNG, JPG or WEBP under 2 MB.");return;
+      }
       const reader = new FileReader();
       reader.onloadend = () => {
         setLogoPreview(reader.result as string);
@@ -69,15 +51,22 @@ export default function BusinessSettingsPage() {
     }
   };
 
-  const handleSave = async () => {
-    setIsLoading(true);
-    await new Promise((resolve) => setTimeout(resolve, 1500));
-    setIsLoading(false);
-    router.push("/dashboard/settings");
+  const handleSave = () => {
+    toast.info("Business settings updated for this Preview session only. They are not stored on a server.");
+    router.push("/dashboard/invoice/create");
   };
 
   return (
     <>
+      <section className="mb-4 rounded-xl border border-blue-100 bg-blue-50 p-3 text-sm text-[#00489F]">
+        <p className="font-medium">Preview-only business settings</p>
+        <p className="mt-1 text-xs">Company identity and payment information are shared with your invoice previews until you refresh this application. No server account is created or saved.</p>
+        <label className="mt-3 block text-xs font-medium">Payment method for invoice preview
+          <select aria-label="Payment method for invoice preview" value={paymentMode} onChange={e=>setPaymentMode(e.target.value as typeof paymentMode)} className="mt-1 block h-10 w-full rounded-lg border border-blue-200 bg-white px-3 text-sm">
+            <option value="manual">Bank transfer (manual)</option><option value="monnify">Monnify (coming later)</option><option value="flutterwave">Flutterwave (coming later)</option><option value="paystack">Paystack (coming later)</option>
+          </select>
+        </label>
+      </section>
       {/* ==================== MOBILE VIEW ==================== */}
       <div className="smallScreen min-h-screen pb-8">
         {/* Header */}

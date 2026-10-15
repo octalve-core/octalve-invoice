@@ -2,17 +2,31 @@
 import Link from "next/link";
 import {getPreviewInvoice} from "@/src/features/invoices/lib/preview-records";
 import { useState } from "react";
+import {useMerchantPreview} from "@/src/features/merchant-preview/MerchantPreviewProvider";
+import {merchantCompany,merchantPayment} from "@/src/features/merchant-preview/merchant-presentation";
 import { InvoiceEditorSection } from "@/src/features/invoices/sections/InvoiceEditorSection";
 import { InvoiceDocumentPreviewSection } from "@/src/features/invoices/sections/InvoiceDocumentPreviewSection";
-import { createPreviewInvoice,previewMerchant,previewPayment } from "@/src/features/invoices/lib/preview-fixture";
+import { createPreviewInvoice } from "@/src/features/invoices/lib/preview-fixture";
 export function InvoiceComposer({mode="create",invoiceId}:{mode?:"create"|"edit";invoiceId?:string}){
  const [draft,setDraft]=useState(()=>{
   const initial=createPreviewInvoice();
   const matching=invoiceId?getPreviewInvoice(invoiceId):undefined;
   return matching?{...initial,invoiceNo:matching.reference,clientName:matching.customer,clientEmail:matching.email}:initial;
  });
- const [profile,setProfile]=useState(previewMerchant);
- const [payment,setPayment]=useState(previewPayment);
+ const {settings,setSettings,logoPreview,paymentMode}=useMerchantPreview();
+ const profile=merchantCompany(settings);
+ const payment=merchantPayment(settings);
+ const setProfile:React.Dispatch<React.SetStateAction<typeof profile>>=(value)=>setSettings(old=>{
+   const now=merchantCompany(old);
+   const changed=typeof value==="function"?value(now):value;
+   return {...old,businessName:changed.name,businessPhone:changed.phone,email:changed.email,
+      businessAddress:changed.address,website:changed.website,rcNumber:changed.rcNo,taxId:changed.tinNo};
+ });
+ const setPayment:React.Dispatch<React.SetStateAction<typeof payment>>=(value)=>setSettings(old=>{
+   const now=merchantPayment(old);
+   const changed=typeof value==="function"?value(now):value;
+   return {...old,bankName:changed.bankName,accountNumber:changed.accountNumber};
+ });
  const [template,setTemplate]=useState<"modern"|"ledger">("modern");
  return <div className="space-y-5">
    <header className="flex flex-wrap items-center justify-between gap-3">
@@ -30,7 +44,7 @@ export function InvoiceComposer({mode="create",invoiceId}:{mode?:"create"|"edit"
    <div className="grid grid-cols-1 items-start gap-5 xl:grid-cols-2">
      <InvoiceEditorSection draft={draft} setDraft={setDraft}/>
      <InvoiceDocumentPreviewSection draft={draft} setDraft={setDraft} profile={profile} setProfile={setProfile}
-       payment={payment} setPayment={setPayment} template={template}/>
+       payment={payment} setPayment={setPayment} template={template} merchantLogo={logoPreview} paymentMode={paymentMode}/>
    </div>
  </div>;
 }

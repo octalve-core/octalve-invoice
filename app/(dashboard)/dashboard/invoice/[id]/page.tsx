@@ -3,7 +3,9 @@ import {useParams} from "next/navigation";
 import Link from "next/link";
 import {getPreviewInvoice,previewInvoices} from "@/src/features/invoices/lib/preview-records";
 import {InvoiceDocumentPreviewSection} from "@/src/features/invoices/sections/InvoiceDocumentPreviewSection";
-import {createPreviewInvoice,previewMerchant,previewPayment} from "@/src/features/invoices/lib/preview-fixture";
+import {createPreviewInvoice} from "@/src/features/invoices/lib/preview-fixture";
+import {useMerchantPreview} from "@/src/features/merchant-preview/MerchantPreviewProvider";
+import {merchantCompany,merchantPayment} from "@/src/features/merchant-preview/merchant-presentation";
 import {useState} from "react";
 export default function InvoiceDetailsPage(){
  const {id}=useParams<{id:string}>();
@@ -12,8 +14,17 @@ export default function InvoiceDetailsPage(){
   const d=createPreviewInvoice();
   return invoice?{...d,invoiceNo:invoice.reference,clientName:invoice.customer,clientEmail:invoice.email}:d;
  });
- const [company,setCompany]=useState(previewMerchant);
- const [payment,setPayment]=useState(previewPayment);
+ const {settings,setSettings,logoPreview,paymentMode}=useMerchantPreview();
+ const company=merchantCompany(settings),payment=merchantPayment(settings);
+ const setCompany:React.Dispatch<React.SetStateAction<typeof company>>=(action)=>setSettings(p=>{
+   const next=typeof action==="function"?action(merchantCompany(p)):action;
+   return {...p,businessName:next.name,businessPhone:next.phone,email:next.email,website:next.website,
+     businessAddress:next.address,taxId:next.tinNo,rcNumber:next.rcNo};
+ });
+ const setPayment:React.Dispatch<React.SetStateAction<typeof payment>>=(action)=>setSettings(p=>{
+   const next=typeof action==="function"?action(merchantPayment(p)):action;
+   return {...p,bankName:next.bankName,accountNumber:next.accountNumber};
+ });
  if(!invoice)return <div className="rounded-lg bg-white p-8">Invoice not found. <Link href="/dashboard/invoice" className="text-[#0064E0]">Back to invoices</Link></div>;
  return <div className="min-w-0 space-y-4">
   <div className="flex flex-wrap items-center justify-between gap-3">
@@ -32,7 +43,7 @@ export default function InvoiceDetailsPage(){
      </Link>)}</div>
    </aside>
    <div className="min-w-0"><InvoiceDocumentPreviewSection draft={draft} setDraft={setDraft}
-    profile={company} setProfile={setCompany} payment={payment} setPayment={setPayment} template="modern"/></div>
+    profile={company} setProfile={setCompany} payment={payment} setPayment={setPayment} template="modern" merchantLogo={logoPreview} paymentMode={paymentMode}/></div>
   </div>
  </div>;
 }

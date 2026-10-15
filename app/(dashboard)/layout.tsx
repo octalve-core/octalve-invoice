@@ -1,3 +1,4 @@
+import {MerchantPreviewProvider} from "@/src/features/merchant-preview/MerchantPreviewProvider";
 import Sidebar from "@/components/dashboard/Sidebar";
 import TopNavbar from "@/components/dashboard/TopNavbar";
 import MobileHeader from "@/components/dashboard/mobile/MobileHeader";
@@ -9,7 +10,7 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="flex min-h-screen min-w-0 max-w-full overflow-x-clip bg-[#F9FAFB]">
+    <MerchantPreviewProvider><div className="flex min-h-screen min-w-0 max-w-full overflow-x-clip bg-[#F9FAFB]">
       {/* Desktop Sidebar */}
       <Sidebar />
 
@@ -29,6 +30,6 @@ export default function DashboardLayout({
         {/* Mobile Bottom Navigation */}
         <BottomNavbar />
       </div>
-    </div>
+    </div></MerchantPreviewProvider>
   );
 }
