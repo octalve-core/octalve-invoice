@@ -4,35 +4,34 @@
   "branch": "phase/00-finzefy-authority-ui-bootstrap",
   "mainBootstrapSha": "87ad423dba3ced2445e109baa85114aea3d30037",
   "latestMigration": null,
-  "previewUrl": "https://octalve-invoice-nt1ec7mvv-octalve-vault.vercel.app",
+  "previewUrl": "https://octalve-invoice-eefw5covn-octalve-vault.vercel.app",
   "productionUrl": null,
   "databaseState": "DEFERRED_UNTIL_PHASE_1_BACKEND",
   "qualification": {
-    "frozenInstall": "PASS at 3aec902b and 4dc4e151",
-    "typecheck": "PASS at 3aec902b and 4dc4e151",
-    "lint": "PASS at 3aec902b and 4dc4e151 with tracked imported warnings",
-    "sourceUnitTests": "PASS at 3aec902b and 4dc4e151; six-code extension at 4dc4e151",
-    "nextProductionBuild": "PASS at 3aec902b and 4dc4e151",
-    "githubCodeQL": "PASS at 3aec902b and 4dc4e151",
-    "browserResponsiveRoutes": "PASS previous 36/36 at 3aec902b; expanded 69-route responsive run underway at 2ead1069",
+    "frozenInstall": "PASS at 8208f03c",
+    "typecheck": "PASS at 8208f03c",
+    "lint": "PASS at 8208f03c (tracked imported warnings)",
+    "sourceUnitTests": "PASS at 8208f03c with INV/RP/QUO/CR/EXP/SF numbering regression",
+    "nextProductionBuild": "PASS at 8208f03c",
+    "githubCodeQL": "PASS at 8208f03c",
+    "browserResponsiveRoutes": "PASS 69/69 (23 routes x mobile/tablet/desktop) at 8208f03c, run 38763572060",
     "officialBrandAssets": "PASS original icon and wordmark PNG HTTP 200 on Vercel",
-    "vercelPreview": "READY at 4dc4e151; latest HEAD pending inspection",
+    "vercelPreview": "READY at 8208f03c https://octalve-invoice-eefw5covn-octalve-vault.vercel.app",
     "browserPixelPerfect": "PENDING owner review vs supplied October 15 mobile and desktop images",
     "pdfNativeGoldenParity": "NOT RUN; do not claim approval",
     "merchantProfileLinkage": "PREVIEW IN-MEMORY ONLY, user profile likewise; no server account/session",
     "mainMerge": "BLOCKED until owner visual approval",
     "database": "DEFERRED until separate Phase 1 authorization",
-    "browserScreenshotArtifacts": "CAPTURED run 38755409212; owner pixel-level approval pending",
-    "phase0fFeatures": "COMMITTED on phase branch: receipt RP, quotation QUO, expense EXP, credit CR, staff SF, coming-soon routes, profile initials, preview logout and centered settings"
+    "browserScreenshotArtifacts": "CAPTURED run 38763572060, artifact 11987111645, 9.7 MB; owner pixel-level signoff still pending",
+    "phase0fFeatures": "PASS in Preview; user/account changes and document IDs remain in-session sample data"
   },
   "blockers": [
-    "Owner mobile/desktop screenshot-by-screenshot approval is outstanding; especially Recent Transactions/Other Services and centered settings.",
-    "No live authenticated account exists: name, avatar and Log out are in-session Preview UI and do not destroy any server session.",
-    "Native PDF image/PDF golden parity is not complete; no issued financial document can be produced.",
-    "Server-backed atomic reference allocation per merchant and type requires Phase 1 database and qualification; sample display references are illustrative only."
+    "User has not yet approved the final screenshot-to-reference comparison of the 69-route browser artifacts.",
+    "Native Modern and Classic Ledger PDF golden output comparison is still NOT RUN; no live issuance.",
+    "Real authenticated username, server-backed logout/session invalidation, permanent settings and payment integrations require a separately authorized backend phase."
   ],
-  "nextPhase": "Phase 0F owner Preview review, complete expanded browser CI, document goldens; no Phase 1 authorization yet.",
-  "currentCodeCheckpoint": "2ead10693604417f9c00a72fb8b011c211fa3ee6",
-  "lastVerifiedApplicationCommit": "3aec902b09e8472d7f993b2687254b973d2f8260",
-  "exactNextPhase": "Phase 0F owner Preview review, complete expanded browser CI, document goldens; no Phase 1 authorization yet."
+  "nextPhase": "Owner visual review of Phase 0F screenshots and native PDF goldens. Do not merge PR #1 or begin Phase 1 before explicit authorization.",
+  "currentCodeCheckpoint": "8208f03c3707c0a0a317dbc6372f5feb56f5b6a9",
+  "lastVerifiedApplicationCommit": "8208f03c3707c0a0a317dbc6372f5feb56f5b6a9",
+  "exactNextPhase": "Owner visual review of Phase 0F screenshots and native PDF goldens. Do not merge PR #1 or begin Phase 1 before explicit authorization."
 }
