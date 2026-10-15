@@ -17,7 +17,7 @@ export default function BottomNavbar() {
 
   return (
     <nav className="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-gray-200 safe-area-bottom">
-      <div className="flex items-center justify-around px-4 py-2">
+      <div className="grid grid-cols-5 items-center gap-1 px-1 py-2">
         {navItems.map((item) => {
           const isActive = pathname === item.href;
           const Icon = item.icon;
@@ -26,14 +26,14 @@ export default function BottomNavbar() {
             <Link
               key={item.href}
               href={item.href}
-              className={`flex flex-col items-center gap-1 py-2 px-3 rounded-lg transition-colors ${
+              className={`flex flex-col items-center gap-1 py-2 px-1 rounded-lg transition-colors ${
                 isActive
-                  ? "text-[#41B63E]"
+                  ? "text-[#0064E0]"
                   : "text-gray-500 hover:text-gray-700"
               }`}
             >
               <Icon className="w-6 h-6" />
-              <span className="text-xs font-medium">{item.label}</span>
+              <span className="text-[10px] font-medium">{item.label}</span>
             </Link>
           );
         })}

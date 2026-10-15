@@ -415,3 +415,16 @@ body {
 .success-icon-ring {
   @apply w-16 h-16 rounded-full border-4 border-[#0064E0] flex items-center justify-center;
 }
+
+/* Phase 0D: a browser document preview is scaled to the available mobile
+ * viewport, not forced into a sideways-scrolling 794px document canvas.
+ * Browser/PNG/PDF document geometry within the renderer is not modified. */
+.invoice-preview-viewport { container-type: inline-size; }
+.invoice-preview-paper { width: 794px; max-width: none; transform-origin: top left; }
+@container (max-width: 793px) {
+  .invoice-preview-paper { zoom: calc(100cqw / 794px); }
+}
+@media (max-width: 767px) {
+  body, #__next { max-width:100%; overflow-x:clip; }
+  .recharts-wrapper, .recharts-surface { max-width:100%; }
+}

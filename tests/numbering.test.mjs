@@ -1,0 +1,6 @@
+import test from "node:test";
+import assert from "node:assert/strict";
+import {formatDocumentNumber,merchantInitials,parseDocumentNumber} from "../src/features/invoices/lib/document-number.ts";
+test("company initials match approved examples",()=>{assert.equal(merchantInitials("Octalve Limited"),"OL");assert.equal(merchantInitials("Weyport Energy Ltd"),"WE");assert.equal(merchantInitials("Giants Tech"),"GT");});
+test("all four merchant document suffixes",()=>{assert.equal(formatDocumentNumber("Octalve Limited",1,"invoice"),"OL-00001INV");assert.equal(formatDocumentNumber("Octalve Limited",1,"receipt"),"OL-00001RP");assert.equal(formatDocumentNumber("Octalve Limited",1,"quotation"),"OL-00001QUO");assert.equal(formatDocumentNumber("Octalve Limited",1,"creditNote"),"OL-00001CR");});
+test("sequence pads to a minimum of five digits and must be positive integer",()=>{assert.equal(formatDocumentNumber("Octalve Limited",999999,"invoice"),"OL-999999INV");assert.throws(()=>formatDocumentNumber("Octalve Limited",0,"invoice"));assert.throws(()=>formatDocumentNumber("Octalve Limited",1.2,"invoice"));assert.equal(parseDocumentNumber("OL-00001CR")?.code,"CR");assert.equal(parseDocumentNumber("FZ-000HIV"),null);});

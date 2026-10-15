@@ -2,7 +2,7 @@
 const fs = require("node:fs");
 const path = require("node:path");
 const { chromium } = require("playwright");
-const routes = ["/onboarding", "/login", "/signup", "/verify-email", "/business-info", "/set-currency", "/dashboard", "/dashboard/getting-started", "/dashboard/invoice", "/dashboard/invoice/create"];
+const routes = ["/onboarding", "/login", "/signup", "/verify-email", "/business-info", "/set-currency", "/dashboard", "/dashboard/getting-started", "/dashboard/invoice", "/dashboard/invoice/create", "/dashboard/invoice/1", "/dashboard/invoice/1/edit"];
 const viewports = {
   desktop: { width: 1440, height: 900 },
   tablet: { width: 768, height: 1024 },
@@ -25,6 +25,7 @@ const origin = process.env.OCTALVE_BASE_URL || "http://127.0.0.1:3000";
           const response = await page.goto(origin + route, { waitUntil: "domcontentloaded", timeout: 16000 });
           record.statusCode = response?.status();
           await page.waitForTimeout(350);
+          if (viewport.width < 768) { const overflow = await page.evaluate(() => document.documentElement.scrollWidth > window.innerWidth + 2); if (overflow) throw new Error("Unexpected page-level horizontal overflow"); }
           if (record.statusCode !== 200) throw new Error("Non-200 status: " + record.statusCode);
           if (route === "/dashboard/invoice/create") {
             await page.getByRole("heading", { name: "Create invoice" }).waitFor();

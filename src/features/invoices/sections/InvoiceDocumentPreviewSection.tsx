@@ -52,8 +52,8 @@ export function InvoiceDocumentPreviewSection({draft,setDraft,profile,setProfile
      <button onClick={download} type="button" className="rounded-lg bg-[#0064E0] px-4 py-2 text-xs font-semibold text-white hover:bg-[#0052B8]">Download preview PDF</button>
    </div>
    {downloadError&&<p role="alert" className="text-sm text-red-600">{downloadError}</p>}
-   <div className="overflow-x-auto rounded-xl border border-gray-200 bg-[#edf2f8] p-2 py-6">
-     <div className="min-w-[794px]">{template==="modern" ?
+   <div className="invoice-preview-viewport min-w-0 overflow-hidden rounded-xl border border-gray-200 bg-[#edf2f8] p-2 py-6">
+     <div className="invoice-preview-paper">{template==="modern" ?
        <SapphireInvoiceRenderer {...shared}/> :
        <ClassicLedgerRenderer {...shared} businessProfile={profile} onBusinessProfileChange={onProfileChange}/>}
      </div>

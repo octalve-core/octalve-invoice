@@ -94,6 +94,15 @@ export default function DashboardPage() {
       </div>
 
       <p className="text-xs text-gray-500">Sample financial figures — UI Preview only</p>
+      {/* Small-screen financial card grouping from the approved Flutter reference. */}
+      <section aria-label="Mobile receivables" className="md:hidden grid grid-cols-2 gap-2">
+        {[["Current invoice","₦506,000.00"],["Total inflow","₦506,000.00"],["Overdue invoice","₦0.00"],["Total outflow","₦240,000.00"]].map(([label,value])=>(
+          <div key={label} className="min-w-0 rounded-lg border border-gray-100 bg-white px-3 py-3">
+            <p className="text-[11px] text-gray-600">{label}</p>
+            <p className="mt-1 truncate text-sm font-semibold text-[#172f4d]">{value}</p>
+          </div>
+        ))}
+      </section>
       {/* Stats Cards */}
       <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-3 gap-4">
         {statsData.map((stat) => (
@@ -111,7 +120,7 @@ export default function DashboardPage() {
       {/* Receivable Summary */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
         {/* Summary Cards - Mobile Only */}
-        <div className="lg:hidden space-y-4">
+        <div className="hidden">
           <div className="bg-white rounded-xl p-4 shadow-sm border border-gray-100">
             <p className="text-sm text-gray-500">Current</p>
             <p className="text-xl font-bold text-gray-900">₦506,000.00</p>

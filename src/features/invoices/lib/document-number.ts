@@ -5,7 +5,7 @@ export const DOCUMENT_CODES = {invoice:"INV",receipt:"RP",quotation:"QUO",credit
 export type DocumentType = keyof typeof DOCUMENT_CODES;
 export function merchantInitials(name:string):string {
  const words=name.normalize("NFKC").trim().split(/\s+/).filter(Boolean)
-   .filter(w=>!["ltd","limited","llc","inc","plc","company","co","enterprise","enterprises"].includes(w.toLowerCase()));
+   .filter(w=>!["ltd","llc","inc","plc","company","co","enterprise","enterprises"].includes(w.toLowerCase()));
  const initials=words.map(w=>w[0]).join("").replace(/[^a-zA-Z]/g,"").toUpperCase();
  return (initials||"ORG").slice(0,5);
 }
