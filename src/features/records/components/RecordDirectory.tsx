@@ -43,6 +43,7 @@ export function RecordDirectory({kind,onCreate,onView,onEdit,showDesktopHeader=t
  const total=Math.max(1,Math.ceil(filtered.length/10)),visible=filtered.slice((page-1)*10,page*10);
  function openView(record:PreviewRecord){
   if(kind==="invoice"){router.push("/dashboard/invoice/"+record.id);return;}
+  if(kind==="receipt"){router.push("/dashboard/receipt/"+record.id);return;}
   if(onView){onView(record);return;}
   setViewing(record);
  }
