@@ -194,6 +194,14 @@ const origin = process.env.OCTALVE_BASE_URL || "http://127.0.0.1:3000";
           if(route==="/dashboard/settings"&&view==="mobile"){
             await page.getByRole("navigation",{name:"Primary mobile navigation"}).getByRole("link",{name:"Me",exact:true}).waitFor();
             await page.getByRole("link",{name:/Deleted Records/}).waitFor();
+            const moreTab=page.getByRole("navigation",{name:"Primary mobile navigation"}).getByRole("link",{name:"More",exact:true});
+            if(await moreTab.getAttribute("href")!=="/dashboard/other-services")throw Error("Mobile More tab must target Other Services");
+            if(await page.getByRole("navigation",{name:"Primary mobile navigation"}).getByRole("link",{name:"Clients",exact:true}).count())throw Error("Clients tab should not be in five-tab navigation");
+            await moreTab.click();
+            await page.waitForURL(/\/dashboard\/other-services(?:\/|$)/);
+            await page.goBack();
+            await page.waitForURL(/\/dashboard\/settings(?:\/|$)/);
+            record.mobileMoreNavigation="PASS";
             record.premiumMeNavigation="PASS";
           }
           if(route==="/dashboard/customer"&&view==="desktop"){
