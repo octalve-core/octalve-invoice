@@ -142,7 +142,7 @@ export function RecordDirectory({kind,onCreate,onView,onEdit,showDesktopHeader=t
   {filtersOpen?<RecordFilterDialog statuses={def.statuses} initial={filters} onClose={()=>setFiltersOpen(false)} onApply={v=>{setFilters(v);setPage(1);}}/>:null}
   {selected?<RecordActionDialog record={selected} onClose={()=>setSelected(null)} onAction={action}/>:null}
   {deleteTarget?<div role="presentation" className="fixed inset-0 z-[120] flex items-end justify-center bg-[#06192A]/60 lg:items-center lg:p-4" onClick={()=>setDeleteTarget(null)}>
-   <section role="alertdialog" aria-modal="true" aria-label={"Delete "+definitions[deleteTarget.kind].title} onClick={e=>e.stopPropagation()} className="w-full max-w-md space-y-4 rounded-t-[28px] bg-white p-6 pb-[max(1.5rem,env(safe-area-inset-bottom))] shadow-2xl lg:rounded-2xl">
+   <section role="alertdialog" aria-modal="true" aria-label={"Delete "+(deleteTarget.kind==="customer"?"Customer":deleteTarget.kind==="expense"?"Expense":definitions[deleteTarget.kind].title)} onClick={e=>e.stopPropagation()} className="w-full max-w-md space-y-4 rounded-t-[28px] bg-white p-6 pb-[max(1.5rem,env(safe-area-inset-bottom))] shadow-2xl lg:rounded-2xl">
     <div className="mx-auto h-1 w-12 rounded-full bg-slate-100 lg:hidden"/>
     <span className="mx-auto grid h-12 w-12 place-items-center rounded-2xl bg-red-50 text-red-600"><Trash2 size={23}/></span>
     <div className="text-center"><h2 className="text-lg font-bold text-[#16334F]">Move to Deleted Records?</h2><p className="mt-2 text-sm leading-6 text-slate-600">Remove <strong>{deleteTarget.reference}</strong> ({deleteTarget.title}) from the active list? It can be restored within 14 days in the proposed retention workflow.</p></div>
