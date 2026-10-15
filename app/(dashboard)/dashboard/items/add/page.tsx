@@ -15,9 +15,7 @@ const categories = [
   "Other",
 ];
 
-interface AddItemPageProps {}
-
-export default function AddItemPage({}: AddItemPageProps) {
+export default function AddItemPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const editId = searchParams.get("edit");
