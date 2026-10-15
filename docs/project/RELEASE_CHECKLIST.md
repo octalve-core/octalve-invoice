@@ -30,3 +30,11 @@
 - Multi-page PDF/raster comparison, visual overflow/clipping inspection and font raster parity against owner authority not certified by the current A4 document text smoke tests.
 - Per-item NRS tax, quotation conversion and image storage, real server reports, invitations, payments, receipt issuance and automatic email require later approved implementation. No background financial events or database exist.
 - Explicit owner approval is required to close Phase 0 and authorize any Phase 1 activity.
+
+## Final owner UI corrections — continuation (15 October 2026)
+- New reference scope: 9 screenshots for PalmPay-inspired nav, profile/settings, subscription states, delete sheet, invoice theme controls, full-width analytics; see `PHASE_0H_FINAL_UI_CORRECTIONS_2026-10-15.md`.
+- Five-tab mobile navigation and premium Me/Settings with all prior modules reachable; proposed subscription plans/pricing review without simulated checkout; deletion confirm+reason+recoverable session archive; searchable FAQs; theme appearance editor; full-width reports with factual existing fixture chart data implemented on branch.
+- Latest **passing expanded browser qualification** at application commit `c064ef53cf0a9b2553cc301cb1e9c9f527e482c2`: `123/123` responsive route screens (41 routes × 3 viewports), GitHub Actions run `38809249855`. Pass includes prior real browser PNG and native Modern/Classic PDF checks, plus new subscription no-fake-payment, FAQ search, in-session theme, deletion confirmation and Me tab accessibility.
+- Frozen pnpm, TypeScript, ESLint, source tests and production build **PASS** at commit `c064ef53`, run `38809249756`; CodeQL **PASS**, run `38809249901`.
+- Subsequent source-only Settings refinements preserve links to Other Services, Items, Staff, Quotations, Expenses, Credit Notes, Recurring Expenses and Payments Received and add a premium blue hero; new GitHub qualification must be checked at later commit rather than claiming the previous SHA covers it.
+- Explicitly **NOT APPROVED**: owner visual pixel matching, production authorization/tenant data, real billing, hard-delete retention, custom Modern native PDF font/layout parity, Classic Receipt A5 golden qualification, final live Vercel Preview at latest code SHA. No main merge, Phase 1 or database provisioning permitted.
