@@ -2,7 +2,7 @@
 const fs = require("node:fs");
 const path = require("node:path");
 const { chromium } = require("playwright");
-const routes = ["/onboarding", "/login", "/signup", "/verify-email", "/business-info", "/set-currency", "/dashboard", "/dashboard/getting-started", "/dashboard/invoice", "/dashboard/invoice/create", "/dashboard/invoice/1", "/dashboard/invoice/1/edit", "/dashboard/receipt", "/dashboard/receipt/1", "/dashboard/receipt/create", "/dashboard/quotation", "/dashboard/expenses", "/dashboard/customer", "/dashboard/items", "/dashboard/items/add", "/dashboard/items/1/edit", "/dashboard/staff", "/dashboard/staff/create", "/dashboard/staff/1/edit", "/dashboard/credit-note", "/dashboard/other-services", "/dashboard/other-services/pay-tax", "/dashboard/report", "/dashboard/notifications", "/dashboard/payment-received", "/dashboard/announcement", "/dashboard/updates", "/dashboard/invoice/4/record-payment", "/dashboard/settings", "/dashboard/settings/profile", "/dashboard/settings/invoice", "/dashboard/settings/business"];
+const routes = ["/onboarding", "/login", "/signup", "/verify-email", "/business-info", "/set-currency", "/dashboard", "/dashboard/getting-started", "/dashboard/invoice", "/dashboard/invoice/create", "/dashboard/invoice/1", "/dashboard/invoice/1/edit", "/dashboard/receipt", "/dashboard/receipt/1", "/dashboard/receipt/create", "/dashboard/quotation", "/dashboard/expenses", "/dashboard/customer", "/dashboard/items", "/dashboard/items/add", "/dashboard/items/1/edit", "/dashboard/staff", "/dashboard/staff/create", "/dashboard/staff/1/edit", "/dashboard/credit-note", "/dashboard/other-services", "/dashboard/other-services/pay-tax", "/dashboard/report", "/dashboard/notifications", "/dashboard/payment-received", "/dashboard/announcement", "/dashboard/updates", "/dashboard/invoice/3/record-payment", "/dashboard/settings", "/dashboard/settings/profile", "/dashboard/settings/invoice", "/dashboard/settings/business"];
 const viewports = {
   desktop: { width: 1440, height: 900 },
   tablet: { width: 768, height: 1024 },
@@ -106,7 +106,7 @@ const origin = process.env.OCTALVE_BASE_URL || "http://127.0.0.1:3000";
             await page.getByRole("button",{name:/Preview receipt/}).waitFor();
             record.receiptFromPaidInvoice="PASS";
           }
-          if(route==="/dashboard/invoice/4/record-payment"){
+          if(route==="/dashboard/invoice/3/record-payment"){
             await page.getByRole("heading",{name:"Record bank-transfer payment"}).waitFor();
             await page.getByRole("button",{name:"Review payment"}).waitFor();
             record.manualBankGuard="PASS";
@@ -128,7 +128,8 @@ const origin = process.env.OCTALVE_BASE_URL || "http://127.0.0.1:3000";
             await page.getByRole("dialog",{name:"Select customer"}).getByRole("button",{name:/Add new customer/}).click();
             await page.getByRole("dialog",{name:"Select customer"}).getByLabel("Customer name *").fill("Golden Preview Customer");
             await page.getByRole("button",{name:"Add and select customer"}).click();
-            await page.locator('#invoice-document').getByText("Golden Preview Customer").waitFor();
+            await page.locator('#invoice-document').getByRole("textbox",{name:"Customer name"}).waitFor();
+              if(await page.locator('#invoice-document').getByRole("textbox",{name:"Customer name"}).inputValue()!=="Golden Preview Customer")throw new Error("Customer picker did not update the selected-template document");
             await page.locator('#invoice-document').waitFor();
             await page.locator('#invoice-document').getByText("Octalve Limited").waitFor();
             if(await page.locator('#invoice-document').getByText("Sapphire Quest").count()) throw new Error("Legacy merchant branding remains");

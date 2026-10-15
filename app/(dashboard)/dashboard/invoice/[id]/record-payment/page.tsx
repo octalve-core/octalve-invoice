@@ -6,13 +6,13 @@ import {ArrowLeft,ShieldCheck,Banknote,LockKeyhole} from "lucide-react";
 import {getPreviewInvoice} from "@/src/features/invoices/lib/preview-records";
 import {useMerchantPreview} from "@/src/features/merchant-preview/MerchantPreviewProvider";
 export default function RecordPaymentPage(){
- const {id}=useParams<{id:string}>(),{paymentMode,settings}=useMerchantPreview(),invoice=getPreviewInvoice(id);
+ const {id}=useParams<{id:string}>(),{settings}=useMerchantPreview(),invoice=getPreviewInvoice(id);
  const [amount,setAmount]=useState(""),[date,setDate]=useState("2026-10-15"),[reference,setReference]=useState(""),[notes,setNotes]=useState("");
  const [verified,setVerified]=useState(false),[review,setReview]=useState(false);
  const total=useMemo(()=>Number((invoice?.amount||"0").replace(/[^\d.]/g,""))||0,[invoice]);
  const valid=Number(amount)>0&&Number(amount)<=total&&Boolean(reference.trim())&&Boolean(date)&&verified;
  if(!invoice)return <div className="rounded-lg bg-white p-8">Invoice not found. <Link href="/dashboard/invoice" className="text-[#0064E0]">Back</Link></div>;
- const allowed=paymentMode==="manual"&&["pending","partial","overdue"].includes(invoice.status);
+ const allowed=invoice.paymentMode==="manual"&&["pending","partial","overdue"].includes(invoice.status);
  return <main className="mx-auto max-w-3xl space-y-5"><header className="flex items-center gap-3">
   <Link href={"/dashboard/invoice/"+id} aria-label="Back to invoice" className="rounded-full p-2"><ArrowLeft size={20}/></Link>
   <div><h1 className="text-xl font-bold text-[#1b3048]">Record bank-transfer payment</h1><p className="text-xs text-gray-500">{invoice.reference} · {invoice.customer}</p></div></header>

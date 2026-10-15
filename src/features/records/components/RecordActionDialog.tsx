@@ -1,7 +1,7 @@
 "use client";
 import {useEffect} from "react";
 import Link from "next/link";
-import {useMerchantPreview} from "@/src/features/merchant-preview/MerchantPreviewProvider";
+import {getPreviewInvoice} from "@/src/features/invoices/lib/preview-records";
 import {Eye,Pencil,Send,Copy,Trash2,RotateCcw,X,ChevronRight,UserRoundCheck} from "lucide-react";
 import type {PreviewRecord} from "../preview-records";
 import {definitions} from "../preview-records";
@@ -9,7 +9,8 @@ import {RecordTypeIcon} from "./RecordVisual";
 export type RecordAction="view"|"edit"|"send"|"duplicate"|"delete"|"refund"|"deactivate";
 export function RecordActionDialog({record,onClose,onAction}:{record:PreviewRecord;onClose:()=>void;onAction:(action:RecordAction,record:PreviewRecord)=>void}){
  useEffect(()=>{function key(e:KeyboardEvent){if(e.key==="Escape")onClose();}document.addEventListener("keydown",key);return ()=>document.removeEventListener("keydown",key);},[onClose]);
- const {paymentMode}=useMerchantPreview();
+ const invoice=record.kind==="invoice"?getPreviewInvoice(record.id):undefined;
+ const paymentMode=invoice?.paymentMode;
  const title=definitions[record.kind].title;
  const actions:{key:RecordAction;label:string;icon:typeof Eye;danger?:boolean}[]=[
  {key:"view",label:"View "+title,icon:Eye},
