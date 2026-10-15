@@ -1,7 +1,7 @@
 "use client";
 import {useMemo} from "react";
 import {useMerchantPreview} from "@/src/features/merchant-preview/MerchantPreviewProvider";
-import {getPreviewRecords,type RecordKind,type RecordStatus} from "../preview-records";
+import {getPreviewRecords} from "../preview-records";
 /** UI-only summary: derived from the same list fixtures, not independent fabricated accounting values. */
 export function RecordMetricsSection({kind}:{kind:"receipt"|"creditNote"}){
  const {settings}=useMerchantPreview();

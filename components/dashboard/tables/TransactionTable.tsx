@@ -4,7 +4,7 @@ import Link from "next/link";
 import {useRouter} from "next/navigation";
 import {X} from "lucide-react";
 import {useMerchantPreview} from "@/src/features/merchant-preview/MerchantPreviewProvider";
-import {getPreviewRecords,type PreviewRecord,type RecordKind} from "@/src/features/records/preview-records";
+import {getPreviewRecords,type PreviewRecord} from "@/src/features/records/preview-records";
 import {RecordMobileCard} from "@/src/features/records/components/RecordVisual";
 import {RecordActionDialog,type RecordAction} from "@/src/features/records/components/RecordActionDialog";
 import {RecordDetailDialog} from "@/src/features/records/components/RecordDetailDialog";
