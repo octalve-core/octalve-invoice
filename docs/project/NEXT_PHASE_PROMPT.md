@@ -1,11 +1,13 @@
-# OCTALVE INVOICE — PHASE 0C CONTINUATION PROMPT
-Continue Octalve Invoice at https://github.com/octalve-core/octalve-invoice, branch `phase/00-finzefy-authority-ui-bootstrap`. Latest qualified code commit before state commit: `1948b0f6f486dfe7e65ce625883fec6c1f0b15c0`. Fetch HEAD, README, docs/project/OCTALVE_INVOICE_MASTER_IMPLEMENTATION.md, UI_REFERENCE_MAP.md, state.json, decisions and CI before edits. Never assume this SHA remains HEAD.
-Current verified functionality: imported Finzefy Next.js UI; preliminary Octalve colour identity; Getting Started preview; Sapphire Modern and Classic Ledger import; /dashboard/invoice/create has left-side editable preview form and right-side true document renderer; native PDF exporter wired but exact logo file/visual goldens not yet proven.
-First verify user-uploaded PNG originals are in public/branding/octalve-invoice-icon.png and octalve-wordmark.png (the exact attached images); make navbar/signup/onboarding logo placements consistent and configure favicon.
-Then obtain Vercel Preview hostname from actual phase deployment and inspect /onboarding, /login, /signup, /verify-email, /dashboard, /dashboard/getting-started, /dashboard/invoice, /dashboard/invoice/create at desktop and mobile dimensions. Fix layout regressions without arbitrary redesign; capture screenshots.
-Establish modern and Classic Ledger deterministic browser/PNG/native PDF goldens using approved Sapphire commit dfd2657fc22f56c4b82808ca4072ad0300cb753c, protect A4/A5/Letter, fixed headers/signatures. Do not enable issue/send/pay actions, backend or Prisma. Real financial status must be server-authoritative in backend phase.
-Refactor long auth, invoice and settings components into feature sections; keep source-style visual appearance.
-Run pnpm --frozen-lockfile, typecheck, lint, tests, build, CodeQL; update docs/DECISIONS.md, state.json, qualified SHA, Preview URL and blocks; push clean commits only to phase branch. Do not merge to main without visual approval.
-Provide exact backend continuation prompt only after Golden UI/Preview approval.
+# OCTALVE INVOICE — PHASE 0D FINAL ACCEPTANCE CONTINUATION
 
-Latest continuation note: Vercel Preview verified URL https://octalve-invoice-178ughgam-octalve-vault.vercel.app; modern/classic PDF dispatch corrected. Browser qualification GitHub Actions workflow `Phase 0C browser evidence` runs route screenshots on local production-mode Next.js. Obtain run artifacts and perform real visual review before approving merge. Exact official uploaded brand PNGs still need to be committed.
+Resume from https://github.com/octalve-core/octalve-invoice branch `phase/00-finzefy-authority-ui-bootstrap`, Draft PR https://github.com/octalve-core/octalve-invoice/pull/1.
+Known qualified application source: `a5a4ead60834b370e06f27e828e4b2939d8dc145`; fetch latest HEAD and CI before proceeding.
+
+1. Verify exact official source PNGs at `public/branding/octalve-invoice-icon.png` and `octalve-wordmark.png`. If missing, ask owner to upload files supplied in chat; do not redraw, recolour, invent or accept temporary fallbacks as final.
+2. Confirm favicon and all logo placements visually across signup/login/onboarding/splash/mobile header/desktop shell.
+3. Inspect Vercel Preview `https://octalve-invoice-p24arn6l9-octalve-vault.vercel.app` and screenshot artifact https://github.com/octalve-core/octalve-invoice/actions/runs/38744966614. Check invoice list, View `/dashboard/invoice/1`, Edit `/dashboard/invoice/1/edit`, Create `/dashboard/invoice/create`; match desktop/mobile reference images supplied by owner.
+4. Run deterministic Modern and Classic Ledger browser/PNG/native PDF golden comparison using pinned Sapphire commit dfd2657fc22f56c4b82808ca4072ad0300cb753c. Never claim PDF parity based on a successful Next.js build alone.
+5. Correct any layout/reflow defects and keep all money movement, signup/session and provider operations unimplemented. Document numbering and credit-note authority already recorded in `NUMBERING_AND_CREDIT_AUTHORITY.md`; server must use atomic allocation later.
+6. Record source SHA, Vercel deployment, golden screenshot approvals and PASS/BLOCKED/NOT RUN results; use coherent phase commits, protect main and obtain explicit owner visual sign-off.
+
+Only after those acceptance gates PASS, prepare Phase 1 merchant platform: strict Prisma/Neon PostgreSQL, authenticated signup and recovery, organization isolation/RBAC, OpenAPI and secure session architecture. Request Neon Preview/DIRECT URLs via Vercel encrypted environment variables then, not before. Server-authoritative invoice issuance and payment reconciliation in later phases.

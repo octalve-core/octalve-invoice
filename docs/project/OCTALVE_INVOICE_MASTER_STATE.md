@@ -1,21 +1,21 @@
-# OCTALVE INVOICE — PHASE 0C STATE
-As of 2026-10-15; branch: `phase/00-finzefy-authority-ui-bootstrap`; last verified code: `1948b0f6f486dfe7e65ce625883fec6c1f0b15c0`.
-## Completed and evidenced
-- Finzefy frontend donor imported, original auth JPEG assets retained, Octalve identity and blue visual tokens applied on first-pass shell.
-- Official provided branding assets mapped to `public/branding/octalve-invoice-icon.png` and `octalve-wordmark.png`; actual original PNG bytes still require repository upload.
-- Getting Started page introduced with four setup actions, no fraudulent completion checkmarks.
-- Six-digit OTP UI preview no longer pretends verification succeeded; signup/login only show explicit preview notifications.
-- Sapphire document engine imported from pinned source with modern and Classic Ledger renderers and native PDF path; unused Sapphire application controls/localStorage hooks removed from active module.
-- Live form + shared renderer route `/dashboard/invoice/create` added, with template switch and actual exporter invocation; clearly marked non-persistent Preview data.
-- Phase CI at `1948b0f6f486dfe7e65ce625883fec6c1f0b15c0`: frozen install, typecheck, ESLint, tests, production build PASS; CodeQL PASS. View https://github.com/octalve-core/octalve-invoice/actions/runs/38733978805
-- GitHub Vercel check for above commit SUCCESS, target is deployment dashboard; **public preview URL and screenshot acceptance not yet verified**.
-## Outstanding
-- Official image bytes upload (originals supplied by user), logo/favicon verification.
-- UI mobile/desktop visual regression against user screenshots, screenshot capture and Vercel end-user approval.
-- Modern/Classic Ledger golden browser/PNG/PDF output regression and test fixtures.
-- Complete section extraction for long auth and current donor components.
-- Merchant backend, Prisma/Neon, OpenAPI, secure sessions, NRS, payment adapters.
-## Vercel details
-The user has linked the project to Vercel. Their screenshot displays **No Production Deployment** because production branch main has only README bootstrap at 87ad423. Do NOT switch production branch to phase or merge to main merely to remove the message. Open Vercel > Octalve Invoice > Deployments > Preview > phase/00-finzefy-authority-ui-bootstrap, then Visit to inspect preview and copy URL; production remains reserved for accepted release.
-## Next
-Request public Preview URL and exact brand assets committed. Qualify both PDF templates and desktop/mobile views, address any failures, then refactor remaining oversized UI components. Do not ask for Neon before authenticated merchant backend work.
+# OCTALVE INVOICE — PHASE 0D CURRENT STATE
+Last qualified application source: `a5a4ead60834b370e06f27e828e4b2939d8dc145`; branch: `phase/00-finzefy-authority-ui-bootstrap`. Draft PR #1 remains open, not merged.
+## Verified
+- Finzefy Next.js migration and pinned Sapphire Modern + Classic Ledger renderers remain isolated.
+- Responsive invoice list uses a shared typed fixture source; desktop constrained table and mobile cards, filtering, search, appropriate status labels and actions.
+- Invoice View: `/dashboard/invoice/1`; Invoice Edit: `/dashboard/invoice/1/edit`; Create: `/dashboard/invoice/create`. Pages remain preview-only, with sample data.
+- Eight brand hex variants remapped from obsolete Finzefy primary green to Octalve blue across remaining UI screens. Paid/success state green preserved.
+- Mobile dashboard cards, finance chart size and recent transactions adapted for narrow view; normal route-level horizontal overflow checks included in browser CI.
+- Invoice editor extracted to feature-specific sections; form supports customer, invoice meta/dates, subject, line items, taxes, notes, preview-only payment and disabled Save/Send.
+- Document number references: OL-00001INV and suffixes RP, QUO, CR; Node 24 unit tests passing.
+- Credit notes: settle through verified refund/application balance, not record deletion.
+- Node 24 pnpm frozen install, TS strict, lint, tests, production build and CodeQL all PASS on `a5a4ead60834b370e06f27e828e4b2939d8dc145`.
+- GitHub Actions browser check **36/36 passed**: https://github.com/octalve-core/octalve-invoice/actions/runs/38744966614 (43+ desktop/tablet/mobile screenshots and both document template views).
+- Vercel READY deployment: https://octalve-invoice-p24arn6l9-octalve-vault.vercel.app (source `a5a4ead60834b370e06f27e828e4b2939d8dc145`).
+## Blocked / not yet qualified
+- Exact official PNGs remain attached in conversation but not in source folder. Required original files: `public/branding/octalve-invoice-icon.png`, `octalve-wordmark.png`. Do not pretend fallback is official icon.
+- Screenshots collected by automation, but not visually approved against user's supplied references.
+- Sapphire browser/PNG/native-PDF golden parity and actual PDF download test remain NOT RUN, awaiting official asset integration and full visual comparison.
+- No production auth, Prisma/Neon, provider payments, NRS, credit transaction engine, backend OpenAPI.
+## Policy
+Do not merge Draft PR #1 into main. Do not start backend Phase 1 until branding/screenshot/doc fidelity is signed off by user.

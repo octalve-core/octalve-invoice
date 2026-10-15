@@ -1,33 +1,35 @@
 {
   "updatedAt": "2026-10-15",
-  "phase": "0C-sapphire-live-preview-integration",
+  "phase": "0D-responsive-routing-brand-refinement",
   "branch": "phase/00-finzefy-authority-ui-bootstrap",
   "mainBootstrapSha": "87ad423dba3ced2445e109baa85114aea3d30037",
   "latestMigration": null,
-  "previewUrl": "https://octalve-invoice-178ughgam-octalve-vault.vercel.app",
+  "previewUrl": "https://octalve-invoice-p24arn6l9-octalve-vault.vercel.app",
   "productionUrl": null,
-  "databaseState": "DEFERRED_UNTIL_MERCHANT_BACKEND",
+  "databaseState": "DEFERRED_UNTIL_PHASE_1_BACKEND",
   "qualification": {
     "frozenInstall": "PASS",
     "typecheck": "PASS",
-    "lint": "PASS_WITH_LEGACY_WARNINGS",
-    "tests": "PASS_SOURCE_SMOKE_ONLY",
-    "build": "PASS",
+    "lint": "PASS_WITH_TRACKED_LEGACY_WARNINGS",
+    "sourceUnitTests": "PASS including document-number tests",
+    "nextProductionBuild": "PASS",
     "githubCodeQL": "PASS",
-    "vercelPreview": "READY VERIFIED, HTTP 200 on 9 routes",
-    "goldenPdf": "BLOCKED_EXACT_BRAND_ASSETS; MODERN_CLASSIC_EXPORT_DISPATCH_FIXED; PDF_VISUAL_GOLDENS_NOT_RUN",
-    "branding": "COMPONENTS_READY; EXACT PNG FILES NOT COMMITTED",
-    "mobileScreenshot": "BROWSER_ACTION_IN_PROGRESS_RUN_38736348042",
-    "merchantAuth": "NOT_IMPLEMENTED",
-    "documentEngine": "IMPORTED_MODERN_AND_CLASSIC_LEDGER; LIVE_UI_PREVIEW_BUILD_PASS; VISUAL_REGRESSION_PENDING"
+    "vercelPreview": "READY at a5a4ead commit",
+    "browserResponsiveRoutes": "PASS 36/36 across desktop tablet mobile at a5a4ead",
+    "browserModernLedgerScreenshotEvidence": "CAPTURED downloadable artifact, golden visual approval pending",
+    "pdfNativeOutputParity": "NOT_RUN",
+    "exactOfficialBrandAssets": "BLOCKED original full resolution PNGs not committed",
+    "realMerchantAuth": "NOT_IMPLEMENTED",
+    "prMerge": "BLOCKED awaiting visual review"
   },
   "blockers": [
-    "Octalve original icon and wordmark supplied in chat, but binary assets are not yet committed to public/branding; download and upload original PNGs from branding package",
-    "Sapphire invoice golden browser/PNG/PDF regression tests not executed in Octalve source",
-    "No real merchant database/auth/payment; Preview figures and issuer identity are deliberately samples",
-    "UI and PDF golden screenshots must be visually accepted after Playwright artifacts and exact brand assets are present"
+    "Original official PNG files are attached in conversation but not yet stored at public/branding/octalve-invoice-icon.png and octalve-wordmark.png on phase branch. BrandIcon and BrandWordmark currently use fallback.",
+    "Browser screenshot evidence is collected but not visually approved pixel-by-pixel against user screenshots.",
+    "Browser PNG and native Modern/Classic Ledger PDF golden parity has not passed; do not assert document fidelity.",
+    "All displayed invoices and dashboard metrics are declared sample data; no real merchant database, financial allocation or authentication exists."
   ],
   "nextPhase": "Finish Playwright evidence, upload exact user artwork, then visually approve Modern/Classic PDF screenshot goldens before any backend",
-  "currentCodeCheckpoint": "4939cc7b3b77a9fecebc74d41a609fe08c6658b7",
-  "lastVerifiedApplicationCommit": "1972ddb1631762071c187e57ce8463bf4ff6a07f"
+  "currentCodeCheckpoint": "a5a4ead60834b370e06f27e828e4b2939d8dc145",
+  "lastVerifiedApplicationCommit": "a5a4ead60834b370e06f27e828e4b2939d8dc145",
+  "exactNextPhase": "Phase 0D visual approval and official original PNG asset upload; then Phase 1 merchant backend only when authorized"
 }
