@@ -25,3 +25,12 @@ test("invalid allocation and unverified refund are rejected",()=>{
  assert.throws(()=>financeProjection(invoices,[{...paymentPreview[0],allocations:[{invoiceId:"4",amountMinor:9000000}]}],[]));
  assert.throws(()=>financeProjection(invoices,paymentPreview,[{id:"R1",paymentId:"missing",amountMinor:100,status:"verified"}]));
 });
+
+test("conflicting payment replay cannot be silently deduplicated",()=>{
+ assert.throws(()=>financeProjection(invoices,[...paymentPreview,{...paymentPreview[0],amountMinor:12000000}],[]),/Conflicting payment replay/);
+});
+test("refunds cannot cumulatively exceed their source payment",()=>{
+ assert.throws(()=>financeProjection(invoices,paymentPreview,[
+ {id:"R1",paymentId:"PAY-00001",amountMinor:6000000,status:"verified"},
+ {id:"R2",paymentId:"PAY-00001",amountMinor:3000000,status:"verified"}]),/Refunds exceed source payment/);
+});

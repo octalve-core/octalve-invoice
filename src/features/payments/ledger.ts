@@ -17,7 +17,11 @@ export function financeProjection(invoices:InvoiceClaim[],payments:PaymentEntry[
  const unique=new Map<string,PaymentEntry>();
  for(const p of payments){
   amount(p.amountMinor);
-  if(!unique.has(p.id))unique.set(p.id,p);
+  const existing=unique.get(p.id);
+  if(existing){
+   const immutable=(v:PaymentEntry)=>JSON.stringify({reference:v.reference,customer:v.customer,amountMinor:v.amountMinor,source:v.source,status:v.status,date:v.date,allocations:v.allocations});
+   if(immutable(existing)!==immutable(p))throw new Error("Conflicting payment replay");
+  }else unique.set(p.id,p);
  }
  const approved=[...unique.values()].filter(p=>p.status==="verified");
  const invoiceAllocations=new Map<string,number>();
@@ -37,15 +41,20 @@ export function financeProjection(invoices:InvoiceClaim[],payments:PaymentEntry[
  for(const [id,allocated] of invoiceAllocations){
   if(allocated>(claims.get(id)||0))throw new Error("Invoice allocations exceed invoice balance");
  }
- const seenRefunds=new Set<string>();let refundedMinor=0;
+ const seenRefunds=new Set<string>();const refundedByPayment=new Map<string,number>();let refundedMinor=0;
  for(const refund of refunds){
   if(seenRefunds.has(refund.id))continue;seenRefunds.add(refund.id);
   amount(refund.amountMinor);
   if(refund.status!=="verified")continue;
   if(!unique.get(refund.paymentId)||unique.get(refund.paymentId)?.status!=="verified")throw new Error("Refund has no verified source payment");
+  const prior=refundedByPayment.get(refund.paymentId)||0;
+  const paid=unique.get(refund.paymentId)!.amountMinor;
+  if(prior+refund.amountMinor>paid)throw new Error("Refunds exceed source payment amount");
+  refundedByPayment.set(refund.paymentId,prior+refund.amountMinor);
   refundedMinor+=refund.amountMinor;
  }
  if(refundedMinor>collectedMinor)throw new Error("Refunds exceed collected funds");
+ for(const value of [collectedMinor,unallocatedMinor,refundedMinor])if(!Number.isSafeInteger(value))throw new Error("Financial sum exceeds safe integer limit");
  const invoicedMinor=[...claims.values()].reduce((a,b)=>a+b,0);
  const allocatedMinor=[...invoiceAllocations.values()].reduce((a,b)=>a+b,0);
  return {invoicedMinor,allocatedMinor,outstandingMinor:invoicedMinor-allocatedMinor,collectedMinor,unallocatedMinor,refundedMinor,netCollectedMinor:collectedMinor-refundedMinor};
