@@ -8,6 +8,7 @@ import {RecordStatusBadge,RecordTypeIcon,RecordMobileCard,statusLabels} from "./
 import {RecordActionDialog,type RecordAction} from "./RecordActionDialog";
 import {RecordFilterDialog,type FilterCriteria} from "./RecordFilterDialog";
 import {RecordDetailDialog} from "./RecordDetailDialog";
+import {formatDocumentNumber} from "@/src/features/invoices/lib/document-number";
 
 function tableValue(record:PreviewRecord,field:RecordField):string{
  switch(field){case "title":return record.title;case "date":return record.date;case "status":return statusLabels[record.status];
@@ -16,8 +17,13 @@ function tableValue(record:PreviewRecord,field:RecordField):string{
 function dateISO(day:string){const [d,m,y]=day.split("/");return [y,m?.padStart(2,"0"),d?.padStart(2,"0")].join("-");}
 export function RecordDirectory({kind,onCreate,onView,onEdit,showDesktopHeader=true}:{kind:RecordKind;onCreate?:()=>void;onView?:(record:PreviewRecord)=>void;onEdit?:(record:PreviewRecord)=>void;showDesktopHeader?:boolean}){
  const def=definitions[kind],router=useRouter();
- const {settings}=useMerchantPreview(),merchant=settings.businessName||"Octalve Limited";
- const records=useMemo(()=>getPreviewRecords(kind,merchant),[kind,merchant]);
+ const {settings,customers,staff,items,paymentMode}=useMerchantPreview(),merchant=settings.businessName||"Octalve Limited";
+ const records=useMemo(()=>{
+  if(kind==="customer")return customers.map((c,i):PreviewRecord=>({id:c.id,kind,reference:formatDocumentNumber(merchant,i+1,"customer"),title:c.name,email:c.email,category:c.company,date:"12/6/2024",status:"active"}));
+  if(kind==="staff")return staff.map((c,i):PreviewRecord=>({id:c.id,kind,reference:formatDocumentNumber(merchant,i+1,"staff"),title:c.name,email:c.email,category:c.role,date:"12/6/2024",status:"active"}));
+  if(kind==="item")return items.map((c,i):PreviewRecord=>({id:c.id,kind,reference:formatDocumentNumber(merchant,i+1,"item"),title:c.name,amount:"₦"+Number(c.rate||0).toLocaleString("en-NG",{minimumFractionDigits:2}),category:c.category,date:"12/6/2024",status:"available"}));
+  return getPreviewRecords(kind,merchant);
+ },[kind,merchant,customers,staff,items]);
  const [search,setSearch]=useState("");
  const [status,setStatus]=useState<RecordStatus|"all">("all");
  const [filters,setFilters]=useState<FilterCriteria>({status:"all",from:"",to:""});
@@ -43,6 +49,8 @@ export function RecordDirectory({kind,onCreate,onView,onEdit,showDesktopHeader=t
  function action(key:RecordAction,record:PreviewRecord){
   if(key==="view"){openView(record);return;}
   if(key==="edit"&&kind==="invoice"){router.push("/dashboard/invoice/"+record.id+"/edit");return;}
+  if(key==="edit"&&kind==="item"){router.push("/dashboard/items/"+record.id+"/edit");return;}
+  if(key==="edit"&&kind==="staff"){router.push("/dashboard/staff/"+record.id+"/edit");return;}
   if(key==="edit"&&onEdit){onEdit(record);return;}
   const message:Record<Exclude<RecordAction,"view">,string>={
    edit:"Editing is not live for this module yet.",
@@ -59,6 +67,7 @@ export function RecordDirectory({kind,onCreate,onView,onEdit,showDesktopHeader=t
   if(kind==="invoice"){router.push("/dashboard/invoice/create");return;}
   if(kind==="customer"){router.push("/dashboard/customer/add");return;}
   if(kind==="item"){router.push("/dashboard/items/add");return;}
+  if(kind==="staff"){router.push("/dashboard/staff/create");return;}
   setNotice("Creating "+def.title.toLowerCase()+" records is not live yet. This screen displays preview-only examples.");
  }
  function tab(next:RecordStatus|"all"){setStatus(next);setPage(1);}
