@@ -42,7 +42,7 @@ export const CustomButton = ({
   return (
     <Button
       type={type}
-      className={`!mt-0 w-full h-14 cursor-pointer bg-[#41B63E] hover:bg-[#36a137] text-white rounded-[30px] ${className}`}
+      className={`!mt-0 w-full h-14 cursor-pointer bg-[#0064E0] hover:bg-[#0052B8] text-white rounded-[30px] ${className}`}
       {...props}
     >
       {label}

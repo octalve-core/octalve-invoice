@@ -106,7 +106,7 @@ export default function RecurringExpenseTable({
               placeholder="Search"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="h-9 pl-9 pr-4 text-sm bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#41B63E]/20 focus:border-[#41B63E]"
+              className="h-9 pl-9 pr-4 text-sm bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0064E0]/20 focus:border-[#0064E0]"
             />
           </div>
         </div>
@@ -119,7 +119,7 @@ export default function RecurringExpenseTable({
           </button>
           <button
             onClick={onCreateClick}
-            className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-[#41B63E] rounded-lg hover:bg-[#36a137]"
+            className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-[#0064E0] rounded-lg hover:bg-[#0052B8]"
           >
             <Plus className="w-4 h-4" /> Add recurring expense
           </button>
@@ -144,7 +144,7 @@ export default function RecurringExpenseTable({
             <tbody className="divide-y divide-gray-100">
               {filtered.map((exp) => (
                 <tr key={exp.id} className="hover:bg-gray-50">
-                  <td className="px-5 py-4 text-sm font-medium text-[#41B63E]">{exp.name}</td>
+                  <td className="px-5 py-4 text-sm font-medium text-[#0064E0]">{exp.name}</td>
                   <td className="px-5 py-4 text-sm text-gray-900">{exp.customer}</td>
                   <td className="px-5 py-4 text-sm text-gray-600 hidden md:table-cell">{exp.frequency}</td>
                   <td className="px-5 py-4 text-sm font-medium text-gray-900">{exp.amount}</td>
@@ -189,7 +189,7 @@ export default function RecurringExpenseTable({
       ) : (
         <div className="flex flex-col items-center justify-center py-16">
           <div className="w-20 h-20 mb-4 rounded-full bg-green-100 flex items-center justify-center">
-            <svg className="w-10 h-10 text-[#41B63E]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-10 h-10 text-[#0064E0]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 4h16v16H4z" />
             </svg>
           </div>
@@ -199,7 +199,7 @@ export default function RecurringExpenseTable({
           </p>
           <button
             onClick={onCreateClick}
-            className="flex items-center gap-2 px-6 py-3 text-sm font-medium text-white bg-[#41B63E] rounded-lg hover:bg-[#36a137]"
+            className="flex items-center gap-2 px-6 py-3 text-sm font-medium text-white bg-[#0064E0] rounded-lg hover:bg-[#0052B8]"
           >
             <Plus className="w-5 h-5" /> Add recurring expense
           </button>

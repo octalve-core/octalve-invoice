@@ -62,7 +62,7 @@ export default function SettingsPage() {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="w-12 h-12 rounded-full bg-green-100 flex items-center justify-center">
-                <User className="w-6 h-6 text-[#41B63E]" />
+                <User className="w-6 h-6 text-[#0064E0]" />
               </div>
               <div>
                 <div className="flex items-center gap-2">
@@ -177,7 +177,7 @@ export default function SettingsPage() {
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-4">
                 <div className="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center">
-                  <User className="w-8 h-8 text-[#41B63E]" />
+                  <User className="w-8 h-8 text-[#0064E0]" />
                 </div>
                 <div>
                   <div className="flex items-center gap-3">
@@ -192,7 +192,7 @@ export default function SettingsPage() {
                   <p className="text-gray-500 mt-1">giantstech@gmail.com</p>
                 </div>
               </div>
-              <button className="px-4 py-2 text-sm font-medium text-[#41B63E] border border-[#41B63E] rounded-lg hover:bg-green-50 transition-colors">
+              <button className="px-4 py-2 text-sm font-medium text-[#0064E0] border border-[#0064E0] rounded-lg hover:bg-green-50 transition-colors">
                 Edit Profile
               </button>
             </div>
@@ -233,12 +233,12 @@ export default function SettingsPage() {
             </div>
           </Link>
 
-          <div className="bg-gradient-to-br from-[#41B63E] to-[#2D7A2A] rounded-xl p-6 text-white">
+          <div className="bg-gradient-to-br from-[#0064E0] to-[#0052B8] rounded-xl p-6 text-white">
             <h3 className="font-semibold text-lg mb-2">Upgrade to Pro</h3>
             <p className="text-sm text-white/80 mb-4">
               Get more features and unlock advanced tools
             </p>
-            <button className="px-4 py-2 bg-white text-[#41B63E] font-medium rounded-lg text-sm hover:bg-gray-100 transition-colors">
+            <button className="px-4 py-2 bg-white text-[#0064E0] font-medium rounded-lg text-sm hover:bg-gray-100 transition-colors">
               Upgrade Now
             </button>
           </div>

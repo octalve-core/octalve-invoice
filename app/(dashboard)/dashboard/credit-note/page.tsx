@@ -12,7 +12,7 @@ const statsData = [
     value: "2,420",
     change: 40,
     chartData: [30, 40, 25, 50, 49, 60, 70, 91, 85, 95],
-    chartColor: "#41B63E",
+    chartColor: "#0064E0",
   },
   {
     title: "Total Credit note", // Matching the context
@@ -26,7 +26,7 @@ const statsData = [
     value: "316",
     change: 23,
     chartData: [20, 35, 40, 50, 55, 60, 65, 70, 80, 85],
-    chartColor: "#41B63E",
+    chartColor: "#0064E0",
   },
 ];
 

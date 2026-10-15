@@ -21,7 +21,7 @@ export default function StatCard({
   chartColor,
 }: StatCardProps) {
   const isPositive = change >= 0;
-  const color = chartColor || (isPositive ? "#41B63E" : "#EF4444");
+  const color = chartColor || (isPositive ? "#0064E0" : "#EF4444");
 
   return (
     <div className="bg-white rounded-xl p-5 shadow-sm border border-gray-100">

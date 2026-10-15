@@ -109,7 +109,7 @@ export default function CreateInvoiceModal({
                 onChange={(e) =>
                   setFormData({ ...formData, customerName: e.target.value })
                 }
-                className="w-full h-11 px-4 pr-10 text-sm bg-gray-50 border border-gray-200 rounded-lg appearance-none focus:outline-none focus:ring-2 focus:ring-[#41B63E]/20 focus:border-[#41B63E]"
+                className="w-full h-11 px-4 pr-10 text-sm bg-gray-50 border border-gray-200 rounded-lg appearance-none focus:outline-none focus:ring-2 focus:ring-[#0064E0]/20 focus:border-[#0064E0]"
               >
                 <option value="">Select a customer</option>
                 <option value="abdulsamad">Abdulsamad Ojedokun</option>
@@ -133,7 +133,7 @@ export default function CreateInvoiceModal({
                   setFormData({ ...formData, invoiceNumber: e.target.value })
                 }
                 placeholder="FZ-000001"
-                className="w-full h-11 px-4 text-sm bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#41B63E]/20 focus:border-[#41B63E]"
+                className="w-full h-11 px-4 text-sm bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0064E0]/20 focus:border-[#0064E0]"
               />
             </div>
             <div>
@@ -147,7 +147,7 @@ export default function CreateInvoiceModal({
                   onChange={(e) =>
                     setFormData({ ...formData, invoiceDate: e.target.value })
                   }
-                  className="w-full h-11 px-4 text-sm bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#41B63E]/20 focus:border-[#41B63E]"
+                  className="w-full h-11 px-4 text-sm bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0064E0]/20 focus:border-[#0064E0]"
                 />
               </div>
             </div>
@@ -165,7 +165,7 @@ export default function CreateInvoiceModal({
                 onChange={(e) =>
                   setFormData({ ...formData, dueDate: e.target.value })
                 }
-                className="w-full h-11 px-4 text-sm bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#41B63E]/20 focus:border-[#41B63E]"
+                className="w-full h-11 px-4 text-sm bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0064E0]/20 focus:border-[#0064E0]"
               />
             </div>
             <div>
@@ -179,7 +179,7 @@ export default function CreateInvoiceModal({
                   setFormData({ ...formData, poNumber: e.target.value })
                 }
                 placeholder="Enter PO number"
-                className="w-full h-11 px-4 text-sm bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#41B63E]/20 focus:border-[#41B63E]"
+                className="w-full h-11 px-4 text-sm bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0064E0]/20 focus:border-[#0064E0]"
               />
             </div>
           </div>
@@ -203,7 +203,7 @@ export default function CreateInvoiceModal({
                         updateLineItem(item.id, "description", e.target.value)
                       }
                       placeholder="Item description"
-                      className="col-span-12 sm:col-span-5 h-10 px-3 text-sm bg-white border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#41B63E]/20"
+                      className="col-span-12 sm:col-span-5 h-10 px-3 text-sm bg-white border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0064E0]/20"
                     />
                     <input
                       type="number"
@@ -217,7 +217,7 @@ export default function CreateInvoiceModal({
                       }
                       placeholder="Qty"
                       min="1"
-                      className="col-span-4 sm:col-span-2 h-10 px-3 text-sm bg-white border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#41B63E]/20"
+                      className="col-span-4 sm:col-span-2 h-10 px-3 text-sm bg-white border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0064E0]/20"
                     />
                     <input
                       type="number"
@@ -230,7 +230,7 @@ export default function CreateInvoiceModal({
                         )
                       }
                       placeholder="Rate"
-                      className="col-span-4 sm:col-span-3 h-10 px-3 text-sm bg-white border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#41B63E]/20"
+                      className="col-span-4 sm:col-span-3 h-10 px-3 text-sm bg-white border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0064E0]/20"
                     />
                     <div className="col-span-4 sm:col-span-2 h-10 px-3 flex items-center text-sm font-medium text-gray-900 bg-gray-100 rounded-lg">
                       ₦{item.amount.toLocaleString()}
@@ -247,7 +247,7 @@ export default function CreateInvoiceModal({
             </div>
             <button
               onClick={addLineItem}
-              className="flex items-center gap-2 mt-3 text-sm font-medium text-[#41B63E] hover:underline"
+              className="flex items-center gap-2 mt-3 text-sm font-medium text-[#0064E0] hover:underline"
             >
               <Plus className="w-4 h-4" />
               Add Line Item
@@ -288,7 +288,7 @@ export default function CreateInvoiceModal({
               }
               placeholder="Add a note for your customer..."
               rows={3}
-              className="w-full px-4 py-3 text-sm bg-gray-50 border border-gray-200 rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-[#41B63E]/20 focus:border-[#41B63E]"
+              className="w-full px-4 py-3 text-sm bg-gray-50 border border-gray-200 rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-[#0064E0]/20 focus:border-[#0064E0]"
             />
           </div>
 
@@ -304,7 +304,7 @@ export default function CreateInvoiceModal({
               }
               placeholder="Enter terms and conditions..."
               rows={3}
-              className="w-full px-4 py-3 text-sm bg-gray-50 border border-gray-200 rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-[#41B63E]/20 focus:border-[#41B63E]"
+              className="w-full px-4 py-3 text-sm bg-gray-50 border border-gray-200 rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-[#0064E0]/20 focus:border-[#0064E0]"
             />
           </div>
         </div>
@@ -322,7 +322,7 @@ export default function CreateInvoiceModal({
               onSubmit?.({ ...formData, lineItems, total });
               onClose();
             }}
-            className="px-5 py-2.5 text-sm font-medium text-white bg-[#41B63E] rounded-lg hover:bg-[#36a137] transition-colors"
+            className="px-5 py-2.5 text-sm font-medium text-white bg-[#0064E0] rounded-lg hover:bg-[#0052B8] transition-colors"
           >
             Create Invoice
           </button>

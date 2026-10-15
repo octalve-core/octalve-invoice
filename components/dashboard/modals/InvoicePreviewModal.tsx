@@ -55,7 +55,7 @@ export default function InvoicePreviewModal({
             <div className="flex items-start justify-between mb-8">
               <div>
                 <div className="flex items-center gap-2 mb-2">
-                  <div className="w-10 h-10 rounded-lg bg-[#41B63E] flex items-center justify-center">
+                  <div className="w-10 h-10 rounded-lg bg-[#0064E0] flex items-center justify-center">
                     <span className="text-white font-bold text-lg">F</span>
                   </div>
                   <span className="font-bold text-xl text-gray-900">
@@ -193,7 +193,7 @@ export default function InvoicePreviewModal({
 
             {/* Action Buttons */}
             <div className="bg-white border border-gray-200 rounded-xl p-4 space-y-3">
-              <button className="flex items-center gap-3 w-full px-4 py-3 text-sm font-medium text-white bg-[#41B63E] rounded-lg hover:bg-[#36a137] transition-colors">
+              <button className="flex items-center gap-3 w-full px-4 py-3 text-sm font-medium text-white bg-[#0064E0] rounded-lg hover:bg-[#0052B8] transition-colors">
                 <Mail className="w-4 h-4" />
                 Send via Email
               </button>

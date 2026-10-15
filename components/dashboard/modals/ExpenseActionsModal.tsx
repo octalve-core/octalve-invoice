@@ -57,7 +57,7 @@ export default function ExpenseActionsModal({
         {/* Header */}
         <div className="flex items-center gap-3 px-6 py-4 border-b border-gray-100">
           <div className="w-10 h-10 rounded-lg bg-green-100 flex items-center justify-center">
-            <Receipt className="w-5 h-5 text-[#41B63E]" />
+            <Receipt className="w-5 h-5 text-[#0064E0]" />
           </div>
           <div>
             <span className="font-semibold text-gray-900 block">
@@ -95,7 +95,7 @@ export default function ExpenseActionsModal({
         <div className="px-6 py-4 border-t border-gray-100">
           <button
             onClick={onClose}
-            className="w-full py-3 text-sm font-medium text-[#41B63E] bg-white border border-[#41B63E] rounded-lg hover:bg-green-50"
+            className="w-full py-3 text-sm font-medium text-[#0064E0] bg-white border border-[#0064E0] rounded-lg hover:bg-green-50"
           >
             Cancel
           </button>

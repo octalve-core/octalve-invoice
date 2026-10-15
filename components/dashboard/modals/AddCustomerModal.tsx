@@ -62,7 +62,7 @@ export default function AddCustomerModal({
         {/* Form */}
         <div className="p-6 space-y-4 max-h-[70vh] overflow-y-auto">
           {/* Customer Information Header */}
-          <div className="bg-[#41B63E] text-white px-4 py-2 rounded-lg text-sm font-medium">
+          <div className="bg-[#0064E0] text-white px-4 py-2 rounded-lg text-sm font-medium">
             Customer Information
           </div>
 
@@ -78,7 +78,7 @@ export default function AddCustomerModal({
                 setFormData({ ...formData, businessName: e.target.value })
               }
               placeholder="Enter business name"
-              className="w-full h-11 px-4 text-sm bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#41B63E]/20 focus:border-[#41B63E]"
+              className="w-full h-11 px-4 text-sm bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0064E0]/20 focus:border-[#0064E0]"
             />
           </div>
 
@@ -95,7 +95,7 @@ export default function AddCustomerModal({
                   setFormData({ ...formData, firstName: e.target.value })
                 }
                 placeholder="First name"
-                className="w-full h-11 px-4 text-sm bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#41B63E]/20 focus:border-[#41B63E]"
+                className="w-full h-11 px-4 text-sm bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0064E0]/20 focus:border-[#0064E0]"
               />
             </div>
             <div>
@@ -109,7 +109,7 @@ export default function AddCustomerModal({
                   setFormData({ ...formData, lastName: e.target.value })
                 }
                 placeholder="Last name"
-                className="w-full h-11 px-4 text-sm bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#41B63E]/20 focus:border-[#41B63E]"
+                className="w-full h-11 px-4 text-sm bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0064E0]/20 focus:border-[#0064E0]"
               />
             </div>
           </div>
@@ -126,7 +126,7 @@ export default function AddCustomerModal({
                 setFormData({ ...formData, email: e.target.value })
               }
               placeholder="customer@email.com"
-              className="w-full h-11 px-4 text-sm bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#41B63E]/20 focus:border-[#41B63E]"
+              className="w-full h-11 px-4 text-sm bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0064E0]/20 focus:border-[#0064E0]"
             />
           </div>
 
@@ -142,7 +142,7 @@ export default function AddCustomerModal({
                 setFormData({ ...formData, phone: e.target.value })
               }
               placeholder="+234 xxx xxx xxxx"
-              className="w-full h-11 px-4 text-sm bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#41B63E]/20 focus:border-[#41B63E]"
+              className="w-full h-11 px-4 text-sm bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0064E0]/20 focus:border-[#0064E0]"
             />
           </div>
 
@@ -163,7 +163,7 @@ export default function AddCustomerModal({
                 setFormData({ ...formData, address: e.target.value })
               }
               placeholder="Street address"
-              className="w-full h-11 px-4 text-sm bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#41B63E]/20 focus:border-[#41B63E]"
+              className="w-full h-11 px-4 text-sm bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0064E0]/20 focus:border-[#0064E0]"
             />
           </div>
 
@@ -180,7 +180,7 @@ export default function AddCustomerModal({
                   setFormData({ ...formData, city: e.target.value })
                 }
                 placeholder="City"
-                className="w-full h-11 px-4 text-sm bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#41B63E]/20 focus:border-[#41B63E]"
+                className="w-full h-11 px-4 text-sm bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0064E0]/20 focus:border-[#0064E0]"
               />
             </div>
             <div>
@@ -193,7 +193,7 @@ export default function AddCustomerModal({
                   onChange={(e) =>
                     setFormData({ ...formData, state: e.target.value })
                   }
-                  className="w-full h-11 px-4 pr-10 text-sm bg-gray-50 border border-gray-200 rounded-lg appearance-none focus:outline-none focus:ring-2 focus:ring-[#41B63E]/20 focus:border-[#41B63E]"
+                  className="w-full h-11 px-4 pr-10 text-sm bg-gray-50 border border-gray-200 rounded-lg appearance-none focus:outline-none focus:ring-2 focus:ring-[#0064E0]/20 focus:border-[#0064E0]"
                 >
                   <option value="">Select state</option>
                   <option value="lagos">Lagos</option>
@@ -217,7 +217,7 @@ export default function AddCustomerModal({
           </button>
           <button
             onClick={handleSubmit}
-            className="px-5 py-2.5 text-sm font-medium text-white bg-[#41B63E] rounded-lg hover:bg-[#36a137]"
+            className="px-5 py-2.5 text-sm font-medium text-white bg-[#0064E0] rounded-lg hover:bg-[#0052B8]"
           >
             Add Customer
           </button>

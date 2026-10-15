@@ -79,7 +79,7 @@ export default function InvoiceSettingsPage() {
                 onChange={(e) =>
                   setSettings({ ...settings, currency: e.target.value })
                 }
-                className="w-full h-[44px] px-4 pr-10 text-gray-900 rounded-lg border border-[#CFD4DC] bg-white shadow-sm focus:border-[#41B63E] focus:ring-2 focus:ring-[#41B63E]/20 focus:outline-none appearance-none"
+                className="w-full h-[44px] px-4 pr-10 text-gray-900 rounded-lg border border-[#CFD4DC] bg-white shadow-sm focus:border-[#0064E0] focus:ring-2 focus:ring-[#0064E0]/20 focus:outline-none appearance-none"
               >
                 {currencies.map((c) => (
                   <option key={c.value} value={c.value}>
@@ -118,7 +118,7 @@ export default function InvoiceSettingsPage() {
                 onChange={(e) =>
                   setSettings({ ...settings, preferredDueDate: e.target.value })
                 }
-                className="w-full h-[44px] px-4 pr-10 text-gray-900 rounded-lg border border-[#CFD4DC] bg-white shadow-sm focus:border-[#41B63E] focus:ring-2 focus:ring-[#41B63E]/20 focus:outline-none appearance-none"
+                className="w-full h-[44px] px-4 pr-10 text-gray-900 rounded-lg border border-[#CFD4DC] bg-white shadow-sm focus:border-[#0064E0] focus:ring-2 focus:ring-[#0064E0]/20 focus:outline-none appearance-none"
               >
                 {dueDates.map((d) => (
                   <option key={d.value} value={d.value}>
@@ -168,7 +168,7 @@ export default function InvoiceSettingsPage() {
               </div>
               <div
                 className={`relative w-11 h-6 rounded-full transition-colors ${
-                  settings.showPaymentHistory ? "bg-[#41B63E]" : "bg-gray-300"
+                  settings.showPaymentHistory ? "bg-[#0064E0]" : "bg-gray-300"
                 }`}
               >
                 <div
@@ -201,7 +201,7 @@ export default function InvoiceSettingsPage() {
               </div>
               <div
                 className={`relative w-11 h-6 rounded-full transition-colors ${
-                  settings.enableAutoReminder ? "bg-[#41B63E]" : "bg-gray-300"
+                  settings.enableAutoReminder ? "bg-[#0064E0]" : "bg-gray-300"
                 }`}
               >
                 <div
@@ -219,7 +219,7 @@ export default function InvoiceSettingsPage() {
               <span className="text-sm text-gray-900">Auto Enable Tax</span>
               <div
                 className={`relative w-11 h-6 rounded-full transition-colors ${
-                  settings.autoEnableTax ? "bg-[#41B63E]" : "bg-gray-300"
+                  settings.autoEnableTax ? "bg-[#0064E0]" : "bg-gray-300"
                 }`}
                 onClick={() =>
                   setSettings({
@@ -241,7 +241,7 @@ export default function InvoiceSettingsPage() {
           <button
             onClick={handleSave}
             disabled={isLoading}
-            className="w-full bg-[#41B63E] hover:bg-[#36a137] text-white font-semibold py-3 rounded-lg transition-colors flex items-center justify-center gap-2 mt-6"
+            className="w-full bg-[#0064E0] hover:bg-[#0052B8] text-white font-semibold py-3 rounded-lg transition-colors flex items-center justify-center gap-2 mt-6"
           >
             {isLoading ? (
               <>
@@ -289,7 +289,7 @@ export default function InvoiceSettingsPage() {
                   onChange={(e) =>
                     setSettings({ ...settings, currency: e.target.value })
                   }
-                  className="w-full h-[44px] px-4 pr-10 text-gray-900 rounded-lg border border-[#CFD4DC] bg-white shadow-sm focus:border-[#41B63E] focus:ring-2 focus:ring-[#41B63E]/20 focus:outline-none appearance-none"
+                  className="w-full h-[44px] px-4 pr-10 text-gray-900 rounded-lg border border-[#CFD4DC] bg-white shadow-sm focus:border-[#0064E0] focus:ring-2 focus:ring-[#0064E0]/20 focus:outline-none appearance-none"
                 >
                   {currencies.map((c) => (
                     <option key={c.value} value={c.value}>
@@ -331,7 +331,7 @@ export default function InvoiceSettingsPage() {
                       preferredDueDate: e.target.value,
                     })
                   }
-                  className="w-full h-[44px] px-4 pr-10 text-gray-900 rounded-lg border border-[#CFD4DC] bg-white shadow-sm focus:border-[#41B63E] focus:ring-2 focus:ring-[#41B63E]/20 focus:outline-none appearance-none"
+                  className="w-full h-[44px] px-4 pr-10 text-gray-900 rounded-lg border border-[#CFD4DC] bg-white shadow-sm focus:border-[#0064E0] focus:ring-2 focus:ring-[#0064E0]/20 focus:outline-none appearance-none"
                 >
                   {dueDates.map((d) => (
                     <option key={d.value} value={d.value}>
@@ -373,7 +373,7 @@ export default function InvoiceSettingsPage() {
               </span>
               <div
                 className={`relative w-11 h-6 rounded-full transition-colors ${
-                  settings.showPaymentHistory ? "bg-[#41B63E]" : "bg-gray-300"
+                  settings.showPaymentHistory ? "bg-[#0064E0]" : "bg-gray-300"
                 }`}
                 onClick={() =>
                   setSettings({
@@ -399,7 +399,7 @@ export default function InvoiceSettingsPage() {
               </span>
               <div
                 className={`relative w-11 h-6 rounded-full transition-colors ${
-                  settings.enableAutoReminder ? "bg-[#41B63E]" : "bg-gray-300"
+                  settings.enableAutoReminder ? "bg-[#0064E0]" : "bg-gray-300"
                 }`}
                 onClick={() =>
                   setSettings({
@@ -423,7 +423,7 @@ export default function InvoiceSettingsPage() {
               <span className="text-sm text-gray-900">Auto Enable Tax</span>
               <div
                 className={`relative w-11 h-6 rounded-full transition-colors ${
-                  settings.autoEnableTax ? "bg-[#41B63E]" : "bg-gray-300"
+                  settings.autoEnableTax ? "bg-[#0064E0]" : "bg-gray-300"
                 }`}
                 onClick={() =>
                   setSettings({
@@ -446,7 +446,7 @@ export default function InvoiceSettingsPage() {
             <button
               onClick={handleSave}
               disabled={isLoading}
-              className="px-6 py-3 bg-[#41B63E] hover:bg-[#36a137] text-white font-semibold rounded-lg transition-colors flex items-center justify-center gap-2"
+              className="px-6 py-3 bg-[#0064E0] hover:bg-[#0052B8] text-white font-semibold rounded-lg transition-colors flex items-center justify-center gap-2"
             >
               {isLoading ? (
                 <>

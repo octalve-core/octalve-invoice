@@ -33,7 +33,7 @@ export default function TaxesPage() {
         </div>
         <button
           onClick={() => setIsCreateTaxOpen(true)}
-          className="flex items-center gap-2 px-4 py-2.5 text-sm font-medium text-white bg-[#41B63E] rounded-lg hover:bg-[#36a137] transition-colors"
+          className="flex items-center gap-2 px-4 py-2.5 text-sm font-medium text-white bg-[#0064E0] rounded-lg hover:bg-[#0052B8] transition-colors"
         >
           <Plus className="w-4 h-4" />
           Create Tax
@@ -56,7 +56,7 @@ export default function TaxesPage() {
               >
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center">
-                    <Percent className="w-5 h-5 text-[#41B63E]" />
+                    <Percent className="w-5 h-5 text-[#0064E0]" />
                   </div>
                   <span className="font-medium text-gray-900">{tax.name}</span>
                 </div>
@@ -69,7 +69,7 @@ export default function TaxesPage() {
           <div className="p-4">
             <button
               onClick={() => setIsCreateTaxOpen(true)}
-              className="flex items-center justify-center gap-2 w-full py-3 text-sm font-medium text-[#41B63E] bg-green-50 rounded-lg hover:bg-green-100 transition-colors"
+              className="flex items-center justify-center gap-2 w-full py-3 text-sm font-medium text-[#0064E0] bg-green-50 rounded-lg hover:bg-green-100 transition-colors"
             >
               <Plus className="w-4 h-4" />
               Create Tax
@@ -108,7 +108,7 @@ export default function TaxesPage() {
             <h3 className="font-medium text-gray-900 mb-3">New Tax</h3>
             <button
               onClick={() => setIsCreateGroupOpen(true)}
-              className="flex items-center justify-center gap-2 w-full py-3 text-sm font-medium text-[#41B63E] bg-green-50 rounded-lg hover:bg-green-100 transition-colors"
+              className="flex items-center justify-center gap-2 w-full py-3 text-sm font-medium text-[#0064E0] bg-green-50 rounded-lg hover:bg-green-100 transition-colors"
             >
               <Plus className="w-4 h-4" />
               Create Tax

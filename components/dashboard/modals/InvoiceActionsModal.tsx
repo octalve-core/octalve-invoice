@@ -103,7 +103,7 @@ export default function InvoiceActionsModal({
               </button>
               <button
                 onClick={() => setStep("options")}
-                className="flex items-center gap-3 w-full px-4 py-3 text-sm font-medium text-white bg-[#41B63E] rounded-lg hover:bg-[#36a137]"
+                className="flex items-center gap-3 w-full px-4 py-3 text-sm font-medium text-white bg-[#0064E0] rounded-lg hover:bg-[#0052B8]"
               >
                 <Send className="w-5 h-5" />
                 Send Invoice
@@ -143,10 +143,10 @@ export default function InvoiceActionsModal({
 
             {/* Send Options */}
             <div className="space-y-3">
-              <label className="flex items-center gap-3 p-4 border border-gray-200 rounded-xl cursor-pointer hover:border-[#41B63E]">
+              <label className="flex items-center gap-3 p-4 border border-gray-200 rounded-xl cursor-pointer hover:border-[#0064E0]">
                 <input
                   type="checkbox"
-                  className="w-5 h-5 rounded border-gray-300 text-[#41B63E] focus:ring-[#41B63E]"
+                  className="w-5 h-5 rounded border-gray-300 text-[#0064E0] focus:ring-[#0064E0]"
                 />
                 <div className="flex-1">
                   <p className="font-medium text-gray-900">Email Invoice</p>
@@ -155,10 +155,10 @@ export default function InvoiceActionsModal({
                   </p>
                 </div>
               </label>
-              <label className="flex items-center gap-3 p-4 border border-gray-200 rounded-xl cursor-pointer hover:border-[#41B63E]">
+              <label className="flex items-center gap-3 p-4 border border-gray-200 rounded-xl cursor-pointer hover:border-[#0064E0]">
                 <input
                   type="checkbox"
-                  className="w-5 h-5 rounded border-gray-300 text-[#41B63E] focus:ring-[#41B63E]"
+                  className="w-5 h-5 rounded border-gray-300 text-[#0064E0] focus:ring-[#0064E0]"
                 />
                 <div className="flex-1">
                   <p className="font-medium text-gray-900">Send Reminder</p>
@@ -167,10 +167,10 @@ export default function InvoiceActionsModal({
                   </p>
                 </div>
               </label>
-              <label className="flex items-center gap-3 p-4 border border-gray-200 rounded-xl cursor-pointer hover:border-[#41B63E]">
+              <label className="flex items-center gap-3 p-4 border border-gray-200 rounded-xl cursor-pointer hover:border-[#0064E0]">
                 <input
                   type="checkbox"
-                  className="w-5 h-5 rounded border-gray-300 text-[#41B63E] focus:ring-[#41B63E]"
+                  className="w-5 h-5 rounded border-gray-300 text-[#0064E0] focus:ring-[#0064E0]"
                 />
                 <div className="flex-1">
                   <p className="font-medium text-gray-900">Send via WhatsApp</p>
@@ -179,10 +179,10 @@ export default function InvoiceActionsModal({
                   </p>
                 </div>
               </label>
-              <label className="flex items-center gap-3 p-4 border border-gray-200 rounded-xl cursor-pointer hover:border-[#41B63E]">
+              <label className="flex items-center gap-3 p-4 border border-gray-200 rounded-xl cursor-pointer hover:border-[#0064E0]">
                 <input
                   type="checkbox"
-                  className="w-5 h-5 rounded border-gray-300 text-[#41B63E] focus:ring-[#41B63E]"
+                  className="w-5 h-5 rounded border-gray-300 text-[#0064E0] focus:ring-[#0064E0]"
                 />
                 <div className="flex-1">
                   <p className="font-medium text-gray-900">Mark as collected</p>
@@ -203,7 +203,7 @@ export default function InvoiceActionsModal({
               </button>
               <button
                 onClick={() => setStep("success")}
-                className="flex-1 px-4 py-3 text-sm font-medium text-white bg-[#41B63E] rounded-lg hover:bg-[#36a137]"
+                className="flex-1 px-4 py-3 text-sm font-medium text-white bg-[#0064E0] rounded-lg hover:bg-[#0052B8]"
               >
                 Submit
               </button>
@@ -214,7 +214,7 @@ export default function InvoiceActionsModal({
         {step === "success" && (
           <div className="px-5 pb-6 text-center">
             <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-green-100 flex items-center justify-center">
-              <Check className="w-8 h-8 text-[#41B63E]" />
+              <Check className="w-8 h-8 text-[#0064E0]" />
             </div>
             <h3 className="text-lg font-semibold text-gray-900 mb-2">
               Invoice Sent!
@@ -224,7 +224,7 @@ export default function InvoiceActionsModal({
             </p>
             <button
               onClick={onClose}
-              className="w-full px-4 py-3 text-sm font-medium text-white bg-[#41B63E] rounded-lg hover:bg-[#36a137]"
+              className="w-full px-4 py-3 text-sm font-medium text-white bg-[#0064E0] rounded-lg hover:bg-[#0052B8]"
             >
               Done
             </button>

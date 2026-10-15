@@ -39,7 +39,7 @@ export default function ItemActionsModal({
         {/* Item Info */}
         {item && (
           <div className="flex items-center gap-3 px-6 pb-4 border-b border-gray-100">
-            <div className="w-16 h-16 bg-[#41B63E] rounded-xl flex items-center justify-center">
+            <div className="w-16 h-16 bg-[#0064E0] rounded-xl flex items-center justify-center">
               <Package className="w-8 h-8 text-white" />
             </div>
             <div>
@@ -87,7 +87,7 @@ export default function ItemActionsModal({
         <div className="px-6 pb-8">
           <button
             onClick={onClose}
-            className="w-full py-3 text-sm font-medium text-[#41B63E] bg-white border border-[#41B63E] rounded-lg hover:bg-green-50"
+            className="w-full py-3 text-sm font-medium text-[#0064E0] bg-white border border-[#0064E0] rounded-lg hover:bg-green-50"
           >
             Close
           </button>

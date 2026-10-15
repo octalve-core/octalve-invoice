@@ -91,7 +91,7 @@ export default function EnterOtpPage() {
           {/* Resend Link */}
           <button
             onClick={handleResend}
-            className="text-[#41B63E] font-medium text-center hover:underline"
+            className="text-[#0064E0] font-medium text-center hover:underline"
           >
             Resend Code
           </button>
@@ -125,7 +125,7 @@ export default function EnterOtpPage() {
 
             {/* Success Icon */}
             <div className="flex justify-center mb-4">
-              <div className="w-12 h-12 rounded-full bg-[#41B63E] flex items-center justify-center">
+              <div className="w-12 h-12 rounded-full bg-[#0064E0] flex items-center justify-center">
                 <svg
                   className="w-6 h-6 text-white"
                   fill="none"
@@ -162,7 +162,7 @@ export default function EnterOtpPage() {
             <button
               onClick={handleSubmit}
               disabled={isLoading}
-              className="w-full bg-[#41B63E] hover:bg-[#36a137] text-white font-semibold py-3 rounded-lg transition-colors flex items-center justify-center gap-2"
+              className="w-full bg-[#0064E0] hover:bg-[#0052B8] text-white font-semibold py-3 rounded-lg transition-colors flex items-center justify-center gap-2"
             >
               {isLoading ? (
                 <>
@@ -179,7 +179,7 @@ export default function EnterOtpPage() {
               Didn&apos;t receive code?{" "}
               <button
                 onClick={handleResend}
-                className="text-[#41B63E] hover:underline font-medium"
+                className="text-[#0064E0] hover:underline font-medium"
               >
                 Resend
               </button>

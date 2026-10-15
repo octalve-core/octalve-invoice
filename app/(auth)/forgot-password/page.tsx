@@ -171,7 +171,7 @@ export default function ForgotPasswordPage() {
                 <button
                   type="submit"
                   disabled={isLoading}
-                  className="w-full bg-[#41B63E] hover:bg-[#36a137] text-white font-semibold py-3 rounded-lg transition-colors flex items-center justify-center gap-2"
+                  className="w-full bg-[#0064E0] hover:bg-[#0052B8] text-white font-semibold py-3 rounded-lg transition-colors flex items-center justify-center gap-2"
                 >
                   {isLoading ? (
                     <>
@@ -190,7 +190,7 @@ export default function ForgotPasswordPage() {
               Remember your password?{" "}
               <Link
                 href="/login"
-                className="text-[#41B63E] hover:underline font-medium"
+                className="text-[#0064E0] hover:underline font-medium"
               >
                 Log in
               </Link>

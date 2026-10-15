@@ -72,7 +72,7 @@ export default function ExpensesFilterModal({
                     type="date"
                     value={dateFrom}
                     onChange={(e) => setDateFrom(e.target.value)}
-                    className="w-full h-11 px-4 pr-10 text-sm bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#41B63E]/20 focus:border-[#41B63E]"
+                    className="w-full h-11 px-4 pr-10 text-sm bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0064E0]/20 focus:border-[#0064E0]"
                   />
                   <Calendar className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
                 </div>
@@ -85,7 +85,7 @@ export default function ExpensesFilterModal({
                     type="date"
                     value={dateTo}
                     onChange={(e) => setDateTo(e.target.value)}
-                    className="w-full h-11 px-4 pr-10 text-sm bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#41B63E]/20 focus:border-[#41B63E]"
+                    className="w-full h-11 px-4 pr-10 text-sm bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0064E0]/20 focus:border-[#0064E0]"
                   />
                   <Calendar className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
                 </div>
@@ -125,7 +125,7 @@ export default function ExpensesFilterModal({
                     value={option}
                     checked={status === option}
                     onChange={(e) => setStatus(e.target.value)}
-                    className="w-5 h-5 text-[#41B63E] focus:ring-[#41B63E] accent-[#41B63E]"
+                    className="w-5 h-5 text-[#0064E0] focus:ring-[#0064E0] accent-[#0064E0]"
                   />
                 </label>
               ))}
@@ -136,13 +136,13 @@ export default function ExpensesFilterModal({
           <div className="flex items-center gap-3 pt-2">
             <button
               onClick={onClose}
-              className="flex-1 py-3 text-sm font-medium text-[#41B63E] bg-white border border-[#41B63E] rounded-lg hover:bg-green-50"
+              className="flex-1 py-3 text-sm font-medium text-[#0064E0] bg-white border border-[#0064E0] rounded-lg hover:bg-green-50"
             >
               Cancel
             </button>
             <button
               onClick={handleApply}
-              className="flex-1 py-3 text-sm font-medium text-white bg-[#41B63E] rounded-lg hover:bg-[#36a137]"
+              className="flex-1 py-3 text-sm font-medium text-white bg-[#0064E0] rounded-lg hover:bg-[#0052B8]"
             >
               Apply Filter
             </button>

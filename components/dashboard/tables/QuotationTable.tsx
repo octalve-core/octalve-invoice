@@ -182,7 +182,7 @@ export default function QuotationTable({
               placeholder="Query k"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="h-9 pl-9 pr-4 text-sm bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#41B63E]/20 focus:border-[#41B63E]"
+              className="h-9 pl-9 pr-4 text-sm bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0064E0]/20 focus:border-[#0064E0]"
             />
           </div>
         </div>
@@ -200,7 +200,7 @@ export default function QuotationTable({
           </button>
           <button
             onClick={onCreateClick}
-            className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-[#41B63E] rounded-lg hover:bg-[#36a137]"
+            className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-[#0064E0] rounded-lg hover:bg-[#0052B8]"
           >
             <Plus className="w-4 h-4" />
             Create quotation
@@ -242,7 +242,7 @@ export default function QuotationTable({
               {filteredQuotations.map((quotation) => (
                 <tr key={quotation.id} className="hover:bg-gray-50">
                   <td className="px-5 py-4">
-                    <span className="text-sm font-medium text-[#41B63E]">
+                    <span className="text-sm font-medium text-[#0064E0]">
                       {quotation.reference}
                     </span>
                   </td>
@@ -252,7 +252,7 @@ export default function QuotationTable({
                     </span>
                   </td>
                   <td className="px-5 py-4">
-                    <span className="text-sm font-medium text-[#41B63E]">
+                    <span className="text-sm font-medium text-[#0064E0]">
                       {quotation.amount}
                     </span>
                   </td>
@@ -327,7 +327,7 @@ export default function QuotationTable({
         <div className="flex flex-col items-center justify-center py-16">
           <div className="w-20 h-20 mb-4 rounded-full bg-green-100 flex items-center justify-center">
             <svg
-              className="w-10 h-10 text-[#41B63E]"
+              className="w-10 h-10 text-[#0064E0]"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -350,7 +350,7 @@ export default function QuotationTable({
           </p>
           <button
             onClick={onCreateClick}
-            className="flex items-center gap-2 px-6 py-3 text-sm font-medium text-white bg-[#41B63E] rounded-lg hover:bg-[#36a137]"
+            className="flex items-center gap-2 px-6 py-3 text-sm font-medium text-white bg-[#0064E0] rounded-lg hover:bg-[#0052B8]"
           >
             <Plus className="w-5 h-5" />
             Create Quotation

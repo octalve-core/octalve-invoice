@@ -209,7 +209,7 @@ export default function CustomerDetailsPanel({
               onClick={() => setActiveFilter(filter)}
               className={`px-3 py-1.5 text-xs font-medium rounded-full whitespace-nowrap transition-colors ${
                 activeFilter === filter
-                  ? "bg-[#41B63E] text-white"
+                  ? "bg-[#0064E0] text-white"
                   : "bg-gray-100 text-gray-600 hover:bg-gray-200"
               }`}
             >
@@ -228,7 +228,7 @@ export default function CustomerDetailsPanel({
               >
                 <div className="w-10 h-10 rounded-lg bg-green-100 flex items-center justify-center flex-shrink-0">
                   <svg
-                    className="w-5 h-5 text-[#41B63E]"
+                    className="w-5 h-5 text-[#0064E0]"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"

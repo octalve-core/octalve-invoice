@@ -64,12 +64,12 @@ export default function SendInvoiceModal({
               </p>
 
               <div className="space-y-3 mb-6">
-                <label className="flex items-center gap-3 p-4 border border-gray-200 rounded-xl cursor-pointer hover:border-[#41B63E] transition-colors">
+                <label className="flex items-center gap-3 p-4 border border-gray-200 rounded-xl cursor-pointer hover:border-[#0064E0] transition-colors">
                   <input
                     type="checkbox"
                     checked={sendEmail}
                     onChange={(e) => setSendEmail(e.target.checked)}
-                    className="w-5 h-5 rounded border-gray-300 text-[#41B63E] focus:ring-[#41B63E]"
+                    className="w-5 h-5 rounded border-gray-300 text-[#0064E0] focus:ring-[#0064E0]"
                   />
                   <Mail className="w-5 h-5 text-gray-500" />
                   <div className="flex-1">
@@ -78,12 +78,12 @@ export default function SendInvoiceModal({
                   </div>
                 </label>
 
-                <label className="flex items-center gap-3 p-4 border border-gray-200 rounded-xl cursor-pointer hover:border-[#41B63E] transition-colors">
+                <label className="flex items-center gap-3 p-4 border border-gray-200 rounded-xl cursor-pointer hover:border-[#0064E0] transition-colors">
                   <input
                     type="checkbox"
                     checked={sendSms}
                     onChange={(e) => setSendSms(e.target.checked)}
-                    className="w-5 h-5 rounded border-gray-300 text-[#41B63E] focus:ring-[#41B63E]"
+                    className="w-5 h-5 rounded border-gray-300 text-[#0064E0] focus:ring-[#0064E0]"
                   />
                   <MessageSquare className="w-5 h-5 text-gray-500" />
                   <div className="flex-1">
@@ -92,12 +92,12 @@ export default function SendInvoiceModal({
                   </div>
                 </label>
 
-                <label className="flex items-center gap-3 p-4 border border-gray-200 rounded-xl cursor-pointer hover:border-[#41B63E] transition-colors">
+                <label className="flex items-center gap-3 p-4 border border-gray-200 rounded-xl cursor-pointer hover:border-[#0064E0] transition-colors">
                   <input
                     type="checkbox"
                     checked={sendWhatsapp}
                     onChange={(e) => setSendWhatsapp(e.target.checked)}
-                    className="w-5 h-5 rounded border-gray-300 text-[#41B63E] focus:ring-[#41B63E]"
+                    className="w-5 h-5 rounded border-gray-300 text-[#0064E0] focus:ring-[#0064E0]"
                   />
                   <Share2 className="w-5 h-5 text-gray-500" />
                   <div className="flex-1">
@@ -120,7 +120,7 @@ export default function SendInvoiceModal({
                 <button
                   onClick={handleSend}
                   disabled={!sendEmail && !sendSms && !sendWhatsapp}
-                  className="flex-1 px-4 py-3 text-sm font-medium text-white bg-[#41B63E] rounded-lg hover:bg-[#36a137] disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="flex-1 px-4 py-3 text-sm font-medium text-white bg-[#0064E0] rounded-lg hover:bg-[#0052B8] disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   Send Invoice
                 </button>
@@ -140,7 +140,7 @@ export default function SendInvoiceModal({
             </p>
             <button
               onClick={handleClose}
-              className="w-full px-4 py-3 text-sm font-medium text-white bg-[#41B63E] rounded-lg hover:bg-[#36a137]"
+              className="w-full px-4 py-3 text-sm font-medium text-white bg-[#0064E0] rounded-lg hover:bg-[#0052B8]"
             >
               Done
             </button>

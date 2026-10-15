@@ -79,7 +79,7 @@ export default function ItemsFilterModal({
                 onChange={(e) =>
                   onApply({ ...currentFilters, category: e.target.value })
                 }
-                className="w-full h-11 px-4 pr-10 text-sm bg-gray-50 border border-gray-200 rounded-lg appearance-none focus:outline-none focus:ring-2 focus:ring-[#41B63E]/20 focus:border-[#41B63E]"
+                className="w-full h-11 px-4 pr-10 text-sm bg-gray-50 border border-gray-200 rounded-lg appearance-none focus:outline-none focus:ring-2 focus:ring-[#0064E0]/20 focus:border-[#0064E0]"
               >
                 {categories.map((cat) => (
                   <option key={cat} value={cat}>
@@ -102,7 +102,7 @@ export default function ItemsFilterModal({
                 onChange={(e) =>
                   onApply({ ...currentFilters, type: e.target.value })
                 }
-                className="w-full h-11 px-4 pr-10 text-sm bg-gray-50 border border-gray-200 rounded-lg appearance-none focus:outline-none focus:ring-2 focus:ring-[#41B63E]/20 focus:border-[#41B63E]"
+                className="w-full h-11 px-4 pr-10 text-sm bg-gray-50 border border-gray-200 rounded-lg appearance-none focus:outline-none focus:ring-2 focus:ring-[#0064E0]/20 focus:border-[#0064E0]"
               >
                 {types.map((type) => (
                   <option key={type} value={type}>
@@ -127,7 +127,7 @@ export default function ItemsFilterModal({
                 onChange={(e) =>
                   onApply({ ...currentFilters, priceFrom: e.target.value })
                 }
-                className="flex-1 h-11 px-4 text-sm bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#41B63E]/20 focus:border-[#41B63E]"
+                className="flex-1 h-11 px-4 text-sm bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0064E0]/20 focus:border-[#0064E0]"
               />
               <span className="text-gray-400">-</span>
               <input
@@ -137,7 +137,7 @@ export default function ItemsFilterModal({
                 onChange={(e) =>
                   onApply({ ...currentFilters, priceTo: e.target.value })
                 }
-                className="flex-1 h-11 px-4 text-sm bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#41B63E]/20 focus:border-[#41B63E]"
+                className="flex-1 h-11 px-4 text-sm bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0064E0]/20 focus:border-[#0064E0]"
               />
             </div>
           </div>
@@ -153,7 +153,7 @@ export default function ItemsFilterModal({
           </button>
           <button
             onClick={handleApply}
-            className="flex-1 py-2.5 text-sm font-medium text-white bg-[#41B63E] rounded-lg hover:bg-[#36a137]"
+            className="flex-1 py-2.5 text-sm font-medium text-white bg-[#0064E0] rounded-lg hover:bg-[#0052B8]"
           >
             Apply Filter
           </button>

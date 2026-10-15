@@ -160,7 +160,7 @@ export default function CreateReceiptModal({
                   onChange={(e) =>
                     setFormData({ ...formData, receiptNumber: e.target.value })
                   }
-                  className="w-full h-11 px-4 text-sm bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#41B63E]/20 focus:border-[#41B63E]"
+                  className="w-full h-11 px-4 text-sm bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0064E0]/20 focus:border-[#0064E0]"
                 />
               </div>
 
@@ -175,7 +175,7 @@ export default function CreateReceiptModal({
                     onChange={(e) =>
                       setFormData({ ...formData, vendor: e.target.value })
                     }
-                    className="w-full h-11 px-4 pr-10 text-sm bg-gray-50 border border-gray-200 rounded-lg appearance-none focus:outline-none focus:ring-2 focus:ring-[#41B63E]/20 focus:border-[#41B63E]"
+                    className="w-full h-11 px-4 pr-10 text-sm bg-gray-50 border border-gray-200 rounded-lg appearance-none focus:outline-none focus:ring-2 focus:ring-[#0064E0]/20 focus:border-[#0064E0]"
                   >
                     <option value="">Select Vendor</option>
                     <option value="vendor1">Olamide Israel</option>
@@ -208,7 +208,7 @@ export default function CreateReceiptModal({
                               paymentMethod: e.target.value,
                             })
                           }
-                          className="w-4 h-4 text-[#41B63E] focus:ring-[#41B63E]"
+                          className="w-4 h-4 text-[#0064E0] focus:ring-[#0064E0]"
                         />
                         <span className="text-sm text-gray-700">{method}</span>
                       </label>
@@ -228,7 +228,7 @@ export default function CreateReceiptModal({
                     onChange={(e) =>
                       setFormData({ ...formData, currency: e.target.value })
                     }
-                    className="w-full h-11 px-4 pr-10 text-sm bg-gray-50 border border-gray-200 rounded-lg appearance-none focus:outline-none focus:ring-2 focus:ring-[#41B63E]/20 focus:border-[#41B63E]"
+                    className="w-full h-11 px-4 pr-10 text-sm bg-gray-50 border border-gray-200 rounded-lg appearance-none focus:outline-none focus:ring-2 focus:ring-[#0064E0]/20 focus:border-[#0064E0]"
                   >
                     <option value="NGN">NGN - Nigerian Naira</option>
                     <option value="USD">USD - US Dollar</option>
@@ -246,7 +246,7 @@ export default function CreateReceiptModal({
                 <input
                   type="text"
                   placeholder="09012045..."
-                  className="w-full h-11 px-4 text-sm bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#41B63E]/20 focus:border-[#41B63E]"
+                  className="w-full h-11 px-4 text-sm bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0064E0]/20 focus:border-[#0064E0]"
                 />
               </div>
             </div>
@@ -259,7 +259,7 @@ export default function CreateReceiptModal({
                   #Bill payment
                 </label>
                 <div className="relative">
-                  <select className="w-full h-11 px-4 pr-10 text-sm bg-gray-50 border border-gray-200 rounded-lg appearance-none focus:outline-none focus:ring-2 focus:ring-[#41B63E]/20 focus:border-[#41B63E]">
+                  <select className="w-full h-11 px-4 pr-10 text-sm bg-gray-50 border border-gray-200 rounded-lg appearance-none focus:outline-none focus:ring-2 focus:ring-[#0064E0]/20 focus:border-[#0064E0]">
                     <option>Select a bill payment method</option>
                   </select>
                   <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 pointer-events-none" />
@@ -280,7 +280,7 @@ export default function CreateReceiptModal({
                         recurringPeriod: e.target.value,
                       })
                     }
-                    className="w-full h-11 px-4 pr-10 text-sm bg-gray-50 border border-gray-200 rounded-lg appearance-none focus:outline-none focus:ring-2 focus:ring-[#41B63E]/20 focus:border-[#41B63E]"
+                    className="w-full h-11 px-4 pr-10 text-sm bg-gray-50 border border-gray-200 rounded-lg appearance-none focus:outline-none focus:ring-2 focus:ring-[#0064E0]/20 focus:border-[#0064E0]"
                   >
                     <option value="Weekly">Weekly</option>
                     <option value="Monthly">Monthly</option>
@@ -299,7 +299,7 @@ export default function CreateReceiptModal({
                 <input
                   type="text"
                   placeholder="What is the invoice for?"
-                  className="w-full h-11 px-4 text-sm bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#41B63E]/20 focus:border-[#41B63E]"
+                  className="w-full h-11 px-4 text-sm bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0064E0]/20 focus:border-[#0064E0]"
                 />
               </div>
 
@@ -310,12 +310,12 @@ export default function CreateReceiptModal({
                 </label>
                 <div className="flex items-center gap-2">
                   <div className="relative flex-1">
-                    <select className="w-full h-11 px-4 pr-10 text-sm bg-gray-50 border border-gray-200 rounded-lg appearance-none focus:outline-none focus:ring-2 focus:ring-[#41B63E]/20 focus:border-[#41B63E]">
+                    <select className="w-full h-11 px-4 pr-10 text-sm bg-gray-50 border border-gray-200 rounded-lg appearance-none focus:outline-none focus:ring-2 focus:ring-[#0064E0]/20 focus:border-[#0064E0]">
                       <option>Select or Add Statement</option>
                     </select>
                     <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 pointer-events-none" />
                   </div>
-                  <button className="h-11 px-4 text-sm font-medium text-white bg-[#41B63E] rounded-lg hover:bg-[#36a137]">
+                  <button className="h-11 px-4 text-sm font-medium text-white bg-[#0064E0] rounded-lg hover:bg-[#0052B8]">
                     Generate
                   </button>
                 </div>
@@ -333,7 +333,7 @@ export default function CreateReceiptModal({
                   }
                   placeholder="Customer note"
                   rows={2}
-                  className="w-full px-4 py-3 text-sm bg-gray-50 border border-gray-200 rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-[#41B63E]/20 focus:border-[#41B63E]"
+                  className="w-full px-4 py-3 text-sm bg-gray-50 border border-gray-200 rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-[#0064E0]/20 focus:border-[#0064E0]"
                 />
               </div>
             </div>
@@ -384,7 +384,7 @@ export default function CreateReceiptModal({
                             )
                           }
                           placeholder="Type or click to search for item"
-                          className="w-full px-3 py-2 text-sm bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:border-[#41B63E]"
+                          className="w-full px-3 py-2 text-sm bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:border-[#0064E0]"
                         />
                       </td>
                       <td className="py-3">
@@ -394,7 +394,7 @@ export default function CreateReceiptModal({
                           onChange={(e) =>
                             updateLineItem(item.id, "index", e.target.value)
                           }
-                          className="w-24 px-3 py-2 text-sm bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:border-[#41B63E]"
+                          className="w-24 px-3 py-2 text-sm bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:border-[#0064E0]"
                         />
                       </td>
                       <td className="py-3">
@@ -408,7 +408,7 @@ export default function CreateReceiptModal({
                               parseInt(e.target.value) || 0
                             )
                           }
-                          className="w-20 px-3 py-2 text-sm bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:border-[#41B63E]"
+                          className="w-20 px-3 py-2 text-sm bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:border-[#0064E0]"
                         />
                       </td>
                       <td className="py-3">
@@ -422,7 +422,7 @@ export default function CreateReceiptModal({
                               parseFloat(e.target.value) || 0
                             )
                           }
-                          className="w-28 px-3 py-2 text-sm bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:border-[#41B63E]"
+                          className="w-28 px-3 py-2 text-sm bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:border-[#0064E0]"
                         />
                       </td>
                       <td className="py-3">
@@ -437,7 +437,7 @@ export default function CreateReceiptModal({
                                 parseFloat(e.target.value) || 0
                               )
                             }
-                            className="w-16 px-3 py-2 text-sm bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:border-[#41B63E]"
+                            className="w-16 px-3 py-2 text-sm bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:border-[#0064E0]"
                           />
                           <span className="text-gray-500">%</span>
                         </div>
@@ -505,13 +505,13 @@ export default function CreateReceiptModal({
         <div className="flex items-center justify-center gap-4 px-6 py-4 border-t border-gray-200">
           <button
             onClick={handleSubmit}
-            className="px-8 py-2.5 text-sm font-medium text-white bg-[#41B63E] rounded-lg hover:bg-[#36a137]"
+            className="px-8 py-2.5 text-sm font-medium text-white bg-[#0064E0] rounded-lg hover:bg-[#0052B8]"
           >
             Save Draft
           </button>
           <button
             onClick={handleSubmit}
-            className="px-8 py-2.5 text-sm font-medium text-[#41B63E] bg-green-50 border border-[#41B63E] rounded-lg hover:bg-green-100"
+            className="px-8 py-2.5 text-sm font-medium text-[#0064E0] bg-green-50 border border-[#0064E0] rounded-lg hover:bg-green-100"
           >
             Finalize and Send
           </button>

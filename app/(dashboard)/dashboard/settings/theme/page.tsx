@@ -22,7 +22,7 @@ const themes: ThemePreview[] = [
     headerBg: "bg-white",
     bodyBg: "bg-white",
     textColor: "text-gray-900",
-    accentColor: "#41B63E",
+    accentColor: "#0064E0",
   },
   {
     id: "dark",
@@ -60,7 +60,7 @@ function InvoicePreviewCard({
   return (
     <div
       className={`relative rounded-xl overflow-hidden border-2 transition-all ${
-        isSelected ? "border-[#41B63E] shadow-lg" : "border-gray-200"
+        isSelected ? "border-[#0064E0] shadow-lg" : "border-gray-200"
       }`}
     >
       {/* Invoice Preview Mock */}
@@ -198,7 +198,7 @@ export default function ThemeSettingsPage() {
                 <div
                   className={`w-4 h-4 rounded-full border-2 flex items-center justify-center transition-colors ${
                     selectedTheme === theme.id
-                      ? "border-[#41B63E] bg-[#41B63E]"
+                      ? "border-[#0064E0] bg-[#0064E0]"
                       : "border-gray-300"
                   }`}
                 >
@@ -226,7 +226,7 @@ export default function ThemeSettingsPage() {
         <button
           onClick={handleSave}
           disabled={isLoading}
-          className="w-full bg-[#41B63E] hover:bg-[#36a137] text-white font-semibold py-3 rounded-lg transition-colors flex items-center justify-center gap-2"
+          className="w-full bg-[#0064E0] hover:bg-[#0052B8] text-white font-semibold py-3 rounded-lg transition-colors flex items-center justify-center gap-2"
         >
           {isLoading ? (
             <>
@@ -280,7 +280,7 @@ export default function ThemeSettingsPage() {
                   <div
                     className={`w-5 h-5 rounded-full border-2 flex items-center justify-center transition-colors ${
                       selectedTheme === theme.id
-                        ? "border-[#41B63E] bg-[#41B63E]"
+                        ? "border-[#0064E0] bg-[#0064E0]"
                         : "border-gray-300 hover:border-gray-400"
                     }`}
                     onClick={() => setSelectedTheme(theme.id)}
@@ -579,7 +579,7 @@ export default function ThemeSettingsPage() {
             <button
               onClick={handleSave}
               disabled={isLoading}
-              className="px-6 py-3 bg-[#41B63E] hover:bg-[#36a137] text-white font-semibold rounded-lg transition-colors flex items-center justify-center gap-2"
+              className="px-6 py-3 bg-[#0064E0] hover:bg-[#0052B8] text-white font-semibold rounded-lg transition-colors flex items-center justify-center gap-2"
             >
               {isLoading ? (
                 <>

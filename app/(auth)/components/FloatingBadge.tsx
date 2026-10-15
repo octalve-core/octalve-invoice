@@ -13,7 +13,7 @@ interface FloatingBadgeProps {
 
 const variantStyles = {
   white: "bg-white text-gray-700 shadow-lg",
-  green: "bg-[#41B63E] text-white shadow-lg",
+  green: "bg-[#0064E0] text-white shadow-lg",
   purple: "bg-purple-500 text-white shadow-lg",
   yellow: "bg-yellow-400 text-gray-800 shadow-lg",
 };

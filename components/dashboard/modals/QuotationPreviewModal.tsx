@@ -75,7 +75,7 @@ export default function QuotationPreviewModal({
               Quotation Details
             </h2>
           </div>
-          <span className="px-3 py-1 text-xs font-medium text-[#41B63E] bg-green-100 rounded-full">
+          <span className="px-3 py-1 text-xs font-medium text-[#0064E0] bg-green-100 rounded-full">
             Pending
           </span>
         </div>
@@ -194,7 +194,7 @@ export default function QuotationPreviewModal({
               </div>
               <div className="flex justify-between pt-2 border-t border-gray-200">
                 <span className="font-medium text-gray-900">Total</span>
-                <span className="font-bold text-[#41B63E]">₦970,218.75</span>
+                <span className="font-bold text-[#0064E0]">₦970,218.75</span>
               </div>
             </div>
           </div>
@@ -414,7 +414,7 @@ export default function QuotationPreviewModal({
 
           {/* Action Buttons */}
           <div className="grid grid-cols-2 gap-3 mb-4">
-            <button className="flex items-center justify-center gap-2 px-4 py-3 text-sm font-medium text-white bg-[#41B63E] rounded-lg hover:bg-[#36a137]">
+            <button className="flex items-center justify-center gap-2 px-4 py-3 text-sm font-medium text-white bg-[#0064E0] rounded-lg hover:bg-[#0052B8]">
               <Check className="w-4 h-4" />
               Approve Quotation
             </button>
@@ -429,7 +429,7 @@ export default function QuotationPreviewModal({
               <Share2 className="w-4 h-4" />
               Share Quotation
             </button>
-            <button className="flex items-center justify-center gap-2 px-4 py-3 text-sm font-medium text-[#41B63E] bg-green-50 rounded-lg hover:bg-green-100">
+            <button className="flex items-center justify-center gap-2 px-4 py-3 text-sm font-medium text-[#0064E0] bg-green-50 rounded-lg hover:bg-green-100">
               <Download className="w-4 h-4" />
               Download Quotation
             </button>

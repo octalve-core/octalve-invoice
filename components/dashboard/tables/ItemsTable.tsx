@@ -162,7 +162,7 @@ export default function ItemsTable({
               placeholder="Search"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="h-9 pl-9 pr-4 text-sm bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#41B63E]/20 focus:border-[#41B63E]"
+              className="h-9 pl-9 pr-4 text-sm bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0064E0]/20 focus:border-[#0064E0]"
             />
           </div>
         </div>
@@ -180,7 +180,7 @@ export default function ItemsTable({
           </button>
           <button
             onClick={onCreateClick}
-            className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-[#41B63E] rounded-lg hover:bg-[#36a137]"
+            className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-[#0064E0] rounded-lg hover:bg-[#0052B8]"
           >
             <Plus className="w-4 h-4" />
             Add Product / Service
@@ -223,7 +223,7 @@ export default function ItemsTable({
                 {paginatedItems.map((item) => (
                   <tr key={item.id} className="hover:bg-gray-50">
                     <td className="px-5 py-4">
-                      <span className="text-sm font-medium text-[#41B63E]">
+                      <span className="text-sm font-medium text-[#0064E0]">
                         {item.productId}
                       </span>
                     </td>
@@ -325,7 +325,7 @@ export default function ItemsTable({
                       onClick={() => setCurrentPage(page)}
                       className={`w-8 h-8 text-sm font-medium rounded-lg ${
                         currentPage === page
-                          ? "bg-[#41B63E] text-white"
+                          ? "bg-[#0064E0] text-white"
                           : "text-gray-600 hover:bg-gray-100"
                       }`}
                     >
@@ -349,7 +349,7 @@ export default function ItemsTable({
       ) : (
         <div className="flex flex-col items-center justify-center py-16">
           <div className="w-20 h-20 mb-4 rounded-full bg-green-100 flex items-center justify-center">
-            <Package className="w-10 h-10 text-[#41B63E]" />
+            <Package className="w-10 h-10 text-[#0064E0]" />
           </div>
           <h3 className="text-lg font-medium text-gray-900 mb-1">
             No Product/Service Added Yet
@@ -361,7 +361,7 @@ export default function ItemsTable({
           </p>
           <button
             onClick={onCreateClick}
-            className="flex items-center gap-2 px-6 py-3 text-sm font-medium text-white bg-[#41B63E] rounded-lg hover:bg-[#36a137]"
+            className="flex items-center gap-2 px-6 py-3 text-sm font-medium text-white bg-[#0064E0] rounded-lg hover:bg-[#0052B8]"
           >
             <Plus className="w-5 h-5" />
             Add Product / Service

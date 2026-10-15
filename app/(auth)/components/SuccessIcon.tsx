@@ -27,7 +27,7 @@ export const SuccessIcon: React.FC<SuccessIconProps> = ({
   return (
     <div
       className={cn(
-        "rounded-full bg-[#41B63E] flex items-center justify-center animate-scale-in",
+        "rounded-full bg-[#0064E0] flex items-center justify-center animate-scale-in",
         sizeStyles[size],
         className
       )}
@@ -57,13 +57,13 @@ export const SuccessRingIcon: React.FC<SuccessIconProps> = ({
   return (
     <div
       className={cn(
-        "rounded-full border-4 border-[#41B63E] flex items-center justify-center animate-scale-in",
+        "rounded-full border-4 border-[#0064E0] flex items-center justify-center animate-scale-in",
         sizeStyles[size],
         className
       )}
     >
       <svg
-        className={cn("text-[#41B63E]", checkSizes[size])}
+        className={cn("text-[#0064E0]", checkSizes[size])}
         fill="none"
         stroke="currentColor"
         viewBox="0 0 24 24"

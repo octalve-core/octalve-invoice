@@ -55,7 +55,7 @@ function AddItemPageContent() {
     <div className="min-h-screen bg-gray-50">
       {/* Success Notification */}
       {showSuccessNotification && (
-        <div className="fixed top-4 right-4 z-50 flex items-center gap-2 px-4 py-3 bg-[#41B63E] text-white rounded-lg shadow-lg">
+        <div className="fixed top-4 right-4 z-50 flex items-center gap-2 px-4 py-3 bg-[#0064E0] text-white rounded-lg shadow-lg">
           <Check className="w-5 h-5" />
           <span className="text-sm font-medium">
             {isEditMode
@@ -122,7 +122,7 @@ function AddItemPageContent() {
                         name="type"
                         checked={formData.type === "goods"}
                         onChange={() => handleInputChange("type", "goods")}
-                        className="w-4 h-4 text-[#41B63E] border-gray-300 focus:ring-[#41B63E]"
+                        className="w-4 h-4 text-[#0064E0] border-gray-300 focus:ring-[#0064E0]"
                       />
                       <span className="text-sm text-gray-700">Goods</span>
                     </label>
@@ -132,7 +132,7 @@ function AddItemPageContent() {
                         name="type"
                         checked={formData.type === "service"}
                         onChange={() => handleInputChange("type", "service")}
-                        className="w-4 h-4 text-[#41B63E] border-gray-300 focus:ring-[#41B63E]"
+                        className="w-4 h-4 text-[#0064E0] border-gray-300 focus:ring-[#0064E0]"
                       />
                       <span className="text-sm text-gray-700">Service</span>
                     </label>
@@ -149,7 +149,7 @@ function AddItemPageContent() {
                     placeholder="iPhone 16 Pro Max"
                     value={formData.name}
                     onChange={(e) => handleInputChange("name", e.target.value)}
-                    className="w-full h-11 px-4 text-sm bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#41B63E]/20 focus:border-[#41B63E]"
+                    className="w-full h-11 px-4 text-sm bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0064E0]/20 focus:border-[#0064E0]"
                   />
                 </div>
 
@@ -165,7 +165,7 @@ function AddItemPageContent() {
                     onChange={(e) =>
                       handleInputChange("unitPrice", e.target.value)
                     }
-                    className="w-full h-11 px-4 text-sm bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#41B63E]/20 focus:border-[#41B63E]"
+                    className="w-full h-11 px-4 text-sm bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0064E0]/20 focus:border-[#0064E0]"
                   />
                 </div>
 
@@ -180,7 +180,7 @@ function AddItemPageContent() {
                       onChange={(e) =>
                         handleInputChange("quantity", e.target.value)
                       }
-                      className="w-full h-11 px-4 pr-10 text-sm bg-gray-50 border border-gray-200 rounded-lg appearance-none focus:outline-none focus:ring-2 focus:ring-[#41B63E]/20 focus:border-[#41B63E]"
+                      className="w-full h-11 px-4 pr-10 text-sm bg-gray-50 border border-gray-200 rounded-lg appearance-none focus:outline-none focus:ring-2 focus:ring-[#0064E0]/20 focus:border-[#0064E0]"
                     >
                       {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((n) => (
                         <option key={n} value={n}>
@@ -207,7 +207,7 @@ function AddItemPageContent() {
                         onClick={() =>
                           setIsCategoryDropdownOpen(!isCategoryDropdownOpen)
                         }
-                        className="w-full h-11 px-4 pr-10 text-sm text-left bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#41B63E]/20 focus:border-[#41B63E]"
+                        className="w-full h-11 px-4 pr-10 text-sm text-left bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0064E0]/20 focus:border-[#0064E0]"
                       >
                         {formData.category || "Categorical Expenses"}
                       </button>
@@ -232,7 +232,7 @@ function AddItemPageContent() {
                     </div>
                     <button
                       type="button"
-                      className="flex items-center gap-1 px-3 py-2 text-sm font-medium text-white bg-[#41B63E] rounded-lg hover:bg-[#36a137]"
+                      className="flex items-center gap-1 px-3 py-2 text-sm font-medium text-white bg-[#0064E0] rounded-lg hover:bg-[#0052B8]"
                     >
                       <Plus className="w-4 h-4" />
                       Add New
@@ -250,7 +250,7 @@ function AddItemPageContent() {
                       <button
                         type="button"
                         onClick={() => setIsTaxDropdownOpen(!isTaxDropdownOpen)}
-                        className="w-full h-11 px-4 pr-10 text-sm text-left bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#41B63E]/20 focus:border-[#41B63E]"
+                        className="w-full h-11 px-4 pr-10 text-sm text-left bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0064E0]/20 focus:border-[#0064E0]"
                       >
                         {formData.tax || "Select Tax"}
                       </button>
@@ -275,7 +275,7 @@ function AddItemPageContent() {
                     </div>
                     <button
                       type="button"
-                      className="flex items-center gap-1 px-3 py-2 text-sm font-medium text-[#41B63E] bg-white border border-[#41B63E] rounded-lg hover:bg-green-50"
+                      className="flex items-center gap-1 px-3 py-2 text-sm font-medium text-[#0064E0] bg-white border border-[#0064E0] rounded-lg hover:bg-green-50"
                     >
                       <Plus className="w-4 h-4" />
                       Create Tax
@@ -296,7 +296,7 @@ function AddItemPageContent() {
                       }
                       className={`px-3 py-2 text-sm font-medium rounded-lg border ${
                         formData.discountType === "percentage"
-                          ? "bg-[#41B63E] text-white border-[#41B63E]"
+                          ? "bg-[#0064E0] text-white border-[#0064E0]"
                           : "bg-white text-gray-600 border-gray-200"
                       }`}
                     >
@@ -307,7 +307,7 @@ function AddItemPageContent() {
                       onClick={() => handleInputChange("discountType", "naira")}
                       className={`px-3 py-2 text-sm font-medium rounded-lg border ${
                         formData.discountType === "naira"
-                          ? "bg-[#41B63E] text-white border-[#41B63E]"
+                          ? "bg-[#0064E0] text-white border-[#0064E0]"
                           : "bg-white text-gray-600 border-gray-200"
                       }`}
                     >
@@ -320,7 +320,7 @@ function AddItemPageContent() {
                       onChange={(e) =>
                         handleInputChange("discountValue", e.target.value)
                       }
-                      className="flex-1 h-11 px-4 text-sm bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#41B63E]/20 focus:border-[#41B63E]"
+                      className="flex-1 h-11 px-4 text-sm bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0064E0]/20 focus:border-[#0064E0]"
                     />
                   </div>
                 </div>
@@ -335,7 +335,7 @@ function AddItemPageContent() {
                     value={formData.note}
                     onChange={(e) => handleInputChange("note", e.target.value)}
                     rows={3}
-                    className="w-full px-4 py-3 text-sm bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#41B63E]/20 focus:border-[#41B63E] resize-none"
+                    className="w-full px-4 py-3 text-sm bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0064E0]/20 focus:border-[#0064E0] resize-none"
                   />
                 </div>
               </div>
@@ -353,7 +353,7 @@ function AddItemPageContent() {
               <button
                 type="button"
                 onClick={() => handleSubmit(false)}
-                className="px-6 py-2.5 text-sm font-medium text-white bg-[#41B63E] rounded-lg hover:bg-[#36a137]"
+                className="px-6 py-2.5 text-sm font-medium text-white bg-[#0064E0] rounded-lg hover:bg-[#0052B8]"
               >
                 {isEditMode ? "Save" : "Save"}
               </button>

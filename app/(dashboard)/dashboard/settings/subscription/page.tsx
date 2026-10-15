@@ -194,8 +194,8 @@ export default function SubscriptionPage() {
         <div className="space-y-2">
           {currentPlan.benefits.map((benefit, index) => (
             <div key={index} className="flex items-start gap-2">
-              <div className="w-5 h-5 rounded-full bg-[#41B63E]/10 flex items-center justify-center flex-shrink-0 mt-0.5">
-                <Check className="w-3 h-3 text-[#41B63E]" />
+              <div className="w-5 h-5 rounded-full bg-[#0064E0]/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                <Check className="w-3 h-3 text-[#0064E0]" />
               </div>
               <span className="text-sm text-gray-600">{benefit}</span>
             </div>
@@ -206,7 +206,7 @@ export default function SubscriptionPage() {
       {/* Subscribe Button */}
       <button
         onClick={() => setShowPaymentModal(true)}
-        className="w-full bg-[#41B63E] hover:bg-[#36a137] text-white font-semibold py-3 rounded-lg transition-colors"
+        className="w-full bg-[#0064E0] hover:bg-[#0052B8] text-white font-semibold py-3 rounded-lg transition-colors"
       >
         Subscribe to Plan
       </button>
@@ -222,7 +222,7 @@ export default function SubscriptionPage() {
           <span
             className={`px-3 py-1 text-xs font-medium rounded-full ${
               planStatus === "active"
-                ? "bg-[#41B63E]/10 text-[#41B63E]"
+                ? "bg-[#0064E0]/10 text-[#0064E0]"
                 : "bg-red-100 text-red-600"
             }`}
           >
@@ -252,7 +252,7 @@ export default function SubscriptionPage() {
           {planStatus === "expired" && (
             <button
               onClick={() => setShowRenewModal(true)}
-              className="flex-1 px-4 py-2 text-sm font-medium text-white bg-[#41B63E] rounded-lg hover:bg-[#36a137] transition-colors"
+              className="flex-1 px-4 py-2 text-sm font-medium text-white bg-[#0064E0] rounded-lg hover:bg-[#0052B8] transition-colors"
             >
               Renew Plan
             </button>
@@ -269,8 +269,8 @@ export default function SubscriptionPage() {
           <div className="space-y-2">
             {plans.monthly.benefits.map((benefit, index) => (
               <div key={index} className="flex items-start gap-2">
-                <div className="w-5 h-5 rounded-full bg-[#41B63E]/10 flex items-center justify-center flex-shrink-0 mt-0.5">
-                  <Check className="w-3 h-3 text-[#41B63E]" />
+                <div className="w-5 h-5 rounded-full bg-[#0064E0]/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                  <Check className="w-3 h-3 text-[#0064E0]" />
                 </div>
                 <span className="text-sm text-gray-600">{benefit}</span>
               </div>
@@ -342,7 +342,7 @@ export default function SubscriptionPage() {
           <label
             className={`flex items-center justify-between p-4 rounded-xl border-2 cursor-pointer transition-colors ${
               selectedPaymentMethod === "paystack"
-                ? "border-[#41B63E] bg-green-50/30"
+                ? "border-[#0064E0] bg-green-50/30"
                 : "border-gray-200 hover:border-gray-300"
             }`}
           >
@@ -357,7 +357,7 @@ export default function SubscriptionPage() {
             <div
               className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${
                 selectedPaymentMethod === "paystack"
-                  ? "border-[#41B63E] bg-[#41B63E]"
+                  ? "border-[#0064E0] bg-[#0064E0]"
                   : "border-gray-300"
               }`}
               onClick={() => setSelectedPaymentMethod("paystack")}
@@ -371,7 +371,7 @@ export default function SubscriptionPage() {
           <label
             className={`flex items-center justify-between p-4 rounded-xl border-2 cursor-pointer transition-colors ${
               selectedPaymentMethod === "flutterwave"
-                ? "border-[#41B63E] bg-green-50/30"
+                ? "border-[#0064E0] bg-green-50/30"
                 : "border-gray-200 hover:border-gray-300"
             }`}
           >
@@ -386,7 +386,7 @@ export default function SubscriptionPage() {
             <div
               className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${
                 selectedPaymentMethod === "flutterwave"
-                  ? "border-[#41B63E] bg-[#41B63E]"
+                  ? "border-[#0064E0] bg-[#0064E0]"
                   : "border-gray-300"
               }`}
               onClick={() => setSelectedPaymentMethod("flutterwave")}
@@ -400,7 +400,7 @@ export default function SubscriptionPage() {
 
         {/* Selected Plan Summary */}
         <div className="bg-gray-50 rounded-xl p-4 mb-6">
-          <p className="text-xs text-[#41B63E] font-medium mb-1">Paying for</p>
+          <p className="text-xs text-[#0064E0] font-medium mb-1">Paying for</p>
           <p className="font-semibold text-gray-900">
             {currentPlan.name} - {formatPrice(currentPlan.price)}
           </p>
@@ -413,7 +413,7 @@ export default function SubscriptionPage() {
         <button
           onClick={handleSubscribe}
           disabled={isLoading}
-          className="w-full bg-[#41B63E] hover:bg-[#36a137] text-white font-semibold py-3 rounded-lg transition-colors flex items-center justify-center gap-2"
+          className="w-full bg-[#0064E0] hover:bg-[#0052B8] text-white font-semibold py-3 rounded-lg transition-colors flex items-center justify-center gap-2"
         >
           {isLoading ? (
             <>
@@ -441,7 +441,7 @@ export default function SubscriptionPage() {
 
         <button
           onClick={handleRenew}
-          className="w-full bg-[#41B63E] hover:bg-[#36a137] text-white font-semibold py-3 rounded-lg transition-colors mb-3"
+          className="w-full bg-[#0064E0] hover:bg-[#0052B8] text-white font-semibold py-3 rounded-lg transition-colors mb-3"
         >
           Upgrade Plan
         </button>
@@ -460,7 +460,7 @@ export default function SubscriptionPage() {
   const SuccessModal = () => (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
       <div className="bg-white rounded-2xl w-full max-w-md p-6 text-center animate-fade-in-up">
-        <div className="w-16 h-16 rounded-full bg-[#41B63E] flex items-center justify-center mx-auto mb-4">
+        <div className="w-16 h-16 rounded-full bg-[#0064E0] flex items-center justify-center mx-auto mb-4">
           <Check className="w-8 h-8 text-white" />
         </div>
         <h2 className="text-lg font-semibold text-gray-900 mb-2">
@@ -475,7 +475,7 @@ export default function SubscriptionPage() {
             setShowSuccessModal(false);
             router.push("/dashboard");
           }}
-          className="w-full bg-[#41B63E] hover:bg-[#36a137] text-white font-semibold py-3 rounded-lg transition-colors"
+          className="w-full bg-[#0064E0] hover:bg-[#0052B8] text-white font-semibold py-3 rounded-lg transition-colors"
         >
           Go Home
         </button>
@@ -571,8 +571,8 @@ export default function SubscriptionPage() {
                   <div className="grid grid-cols-2 gap-3">
                     {currentPlan.benefits.map((benefit, index) => (
                       <div key={index} className="flex items-start gap-2">
-                        <div className="w-5 h-5 rounded-full bg-[#41B63E]/10 flex items-center justify-center flex-shrink-0 mt-0.5">
-                          <Check className="w-3 h-3 text-[#41B63E]" />
+                        <div className="w-5 h-5 rounded-full bg-[#0064E0]/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                          <Check className="w-3 h-3 text-[#0064E0]" />
                         </div>
                         <span className="text-sm text-gray-600">{benefit}</span>
                       </div>
@@ -583,7 +583,7 @@ export default function SubscriptionPage() {
                 {/* Subscribe Button */}
                 <button
                   onClick={() => setShowPaymentModal(true)}
-                  className="mt-6 px-8 py-3 bg-[#41B63E] hover:bg-[#36a137] text-white font-semibold rounded-lg transition-colors"
+                  className="mt-6 px-8 py-3 bg-[#0064E0] hover:bg-[#0052B8] text-white font-semibold rounded-lg transition-colors"
                 >
                   Subscribe to Plan
                 </button>
@@ -597,7 +597,7 @@ export default function SubscriptionPage() {
                     <span
                       className={`px-3 py-1 text-xs font-medium rounded-full ${
                         planStatus === "active"
-                          ? "bg-[#41B63E]/10 text-[#41B63E]"
+                          ? "bg-[#0064E0]/10 text-[#0064E0]"
                           : "bg-red-100 text-red-600"
                       }`}
                     >
@@ -608,7 +608,7 @@ export default function SubscriptionPage() {
                     {planStatus === "active" && (
                       <button
                         onClick={() => setShowChangePlanModal(true)}
-                        className="text-sm text-[#41B63E] font-medium hover:underline"
+                        className="text-sm text-[#0064E0] font-medium hover:underline"
                       >
                         Change Plan
                       </button>
@@ -639,7 +639,7 @@ export default function SubscriptionPage() {
                     {planStatus === "expired" && (
                       <button
                         onClick={() => setShowRenewModal(true)}
-                        className="px-6 py-2.5 text-sm font-medium text-white bg-[#41B63E] rounded-lg hover:bg-[#36a137] transition-colors"
+                        className="px-6 py-2.5 text-sm font-medium text-white bg-[#0064E0] rounded-lg hover:bg-[#0052B8] transition-colors"
                       >
                         Renew Plan
                       </button>
@@ -656,8 +656,8 @@ export default function SubscriptionPage() {
                     <div className="grid grid-cols-2 gap-3">
                       {plans.monthly.benefits.map((benefit, index) => (
                         <div key={index} className="flex items-start gap-2">
-                          <div className="w-5 h-5 rounded-full bg-[#41B63E]/10 flex items-center justify-center flex-shrink-0 mt-0.5">
-                            <Check className="w-3 h-3 text-[#41B63E]" />
+                          <div className="w-5 h-5 rounded-full bg-[#0064E0]/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                            <Check className="w-3 h-3 text-[#0064E0]" />
                           </div>
                           <span className="text-sm text-gray-600">
                             {benefit}
@@ -761,8 +761,8 @@ export default function SubscriptionPage() {
                 "Dolor fermentum imperdiet fermentum nibh ut",
               ].map((benefit, index) => (
                 <div key={index} className="flex items-start gap-2">
-                  <div className="w-5 h-5 rounded-full bg-[#41B63E]/10 flex items-center justify-center flex-shrink-0 mt-0.5">
-                    <Check className="w-3 h-3 text-[#41B63E]" />
+                  <div className="w-5 h-5 rounded-full bg-[#0064E0]/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <Check className="w-3 h-3 text-[#0064E0]" />
                   </div>
                   <span className="text-sm text-gray-600">{benefit}</span>
                 </div>
@@ -775,7 +775,7 @@ export default function SubscriptionPage() {
                 setShowChangePlanModal(false);
                 setShowPaymentModal(true);
               }}
-              className="w-full bg-[#41B63E] hover:bg-[#36a137] text-white font-semibold py-3 rounded-lg transition-colors"
+              className="w-full bg-[#0064E0] hover:bg-[#0052B8] text-white font-semibold py-3 rounded-lg transition-colors"
             >
               Upgrade to Professional
             </button>

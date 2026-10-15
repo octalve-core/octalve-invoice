@@ -115,7 +115,7 @@ export default function ProfileSettingsPage() {
         <div className="flex flex-col items-center mb-6">
           <p className="text-xs text-gray-500 mb-3">Profile Image</p>
           <label className="cursor-pointer relative">
-            <div className="w-24 h-24 rounded-full bg-gradient-to-b from-[#41B63E]/20 to-[#41B63E]/5 border-2 border-[#41B63E]/30 flex items-center justify-center relative overflow-hidden">
+            <div className="w-24 h-24 rounded-full bg-gradient-to-b from-[#0064E0]/20 to-[#0064E0]/5 border-2 border-[#0064E0]/30 flex items-center justify-center relative overflow-hidden">
               {profileImage ? (
                 <img
                   src={profileImage}
@@ -222,7 +222,7 @@ export default function ProfileSettingsPage() {
                     state: "",
                   })
                 }
-                className="w-full h-[44px] px-4 pr-10 text-gray-900 rounded-lg border border-[#CFD4DC] bg-white shadow-sm focus:border-[#41B63E] focus:ring-2 focus:ring-[#41B63E]/20 focus:outline-none appearance-none"
+                className="w-full h-[44px] px-4 pr-10 text-gray-900 rounded-lg border border-[#CFD4DC] bg-white shadow-sm focus:border-[#0064E0] focus:ring-2 focus:ring-[#0064E0]/20 focus:outline-none appearance-none"
               >
                 {countries.map((c) => (
                   <option key={c.value} value={c.value}>
@@ -243,7 +243,7 @@ export default function ProfileSettingsPage() {
                 onChange={(e) =>
                   setSettings({ ...settings, state: e.target.value })
                 }
-                className="w-full h-[44px] px-4 pr-10 text-gray-900 rounded-lg border border-[#CFD4DC] bg-white shadow-sm focus:border-[#41B63E] focus:ring-2 focus:ring-[#41B63E]/20 focus:outline-none appearance-none"
+                className="w-full h-[44px] px-4 pr-10 text-gray-900 rounded-lg border border-[#CFD4DC] bg-white shadow-sm focus:border-[#0064E0] focus:ring-2 focus:ring-[#0064E0]/20 focus:outline-none appearance-none"
               >
                 <option value="">Select State</option>
                 {currentStates.map((s) => (
@@ -276,7 +276,7 @@ export default function ProfileSettingsPage() {
           <button
             onClick={handleSave}
             disabled={isLoading}
-            className="w-full bg-[#41B63E] hover:bg-[#36a137] text-white font-semibold py-3 rounded-lg transition-colors flex items-center justify-center gap-2 mt-6"
+            className="w-full bg-[#0064E0] hover:bg-[#0052B8] text-white font-semibold py-3 rounded-lg transition-colors flex items-center justify-center gap-2 mt-6"
           >
             {isLoading ? (
               <>
@@ -315,7 +315,7 @@ export default function ProfileSettingsPage() {
           {/* Profile Image Upload */}
           <div className="flex justify-center mb-8">
             <label className="cursor-pointer relative">
-              <div className="w-28 h-28 rounded-full bg-gradient-to-b from-[#41B63E]/20 to-[#41B63E]/5 border-2 border-[#41B63E]/30 flex items-center justify-center overflow-hidden hover:bg-gray-50 transition-colors">
+              <div className="w-28 h-28 rounded-full bg-gradient-to-b from-[#0064E0]/20 to-[#0064E0]/5 border-2 border-[#0064E0]/30 flex items-center justify-center overflow-hidden hover:bg-gray-50 transition-colors">
                 {profileImage ? (
                   <img
                     src={profileImage}
@@ -440,7 +440,7 @@ export default function ProfileSettingsPage() {
                       state: "",
                     })
                   }
-                  className="w-full h-[44px] px-4 pr-10 text-gray-900 rounded-lg border border-[#CFD4DC] bg-white shadow-sm focus:border-[#41B63E] focus:ring-2 focus:ring-[#41B63E]/20 focus:outline-none appearance-none"
+                  className="w-full h-[44px] px-4 pr-10 text-gray-900 rounded-lg border border-[#CFD4DC] bg-white shadow-sm focus:border-[#0064E0] focus:ring-2 focus:ring-[#0064E0]/20 focus:outline-none appearance-none"
                 >
                   {countries.map((c) => (
                     <option key={c.value} value={c.value}>
@@ -463,7 +463,7 @@ export default function ProfileSettingsPage() {
                   onChange={(e) =>
                     setSettings({ ...settings, state: e.target.value })
                   }
-                  className="w-full h-[44px] px-4 pr-10 text-gray-900 rounded-lg border border-[#CFD4DC] bg-white shadow-sm focus:border-[#41B63E] focus:ring-2 focus:ring-[#41B63E]/20 focus:outline-none appearance-none"
+                  className="w-full h-[44px] px-4 pr-10 text-gray-900 rounded-lg border border-[#CFD4DC] bg-white shadow-sm focus:border-[#0064E0] focus:ring-2 focus:ring-[#0064E0]/20 focus:outline-none appearance-none"
                 >
                   <option value="">Select State</option>
                   {currentStates.map((s) => (
@@ -482,7 +482,7 @@ export default function ProfileSettingsPage() {
             <button
               onClick={handleSave}
               disabled={isLoading}
-              className="px-6 py-3 bg-[#41B63E] hover:bg-[#36a137] text-white font-semibold rounded-lg transition-colors flex items-center justify-center gap-2"
+              className="px-6 py-3 bg-[#0064E0] hover:bg-[#0052B8] text-white font-semibold rounded-lg transition-colors flex items-center justify-center gap-2"
             >
               {isLoading ? (
                 <>

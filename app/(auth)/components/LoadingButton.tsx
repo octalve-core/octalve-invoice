@@ -13,7 +13,7 @@ interface LoadingButtonProps
 }
 
 const variantStyles = {
-  primary: "bg-[#41B63E] hover:bg-[#36a137] text-white border-transparent",
+  primary: "bg-[#0064E0] hover:bg-[#0052B8] text-white border-transparent",
   secondary: "bg-gray-100 hover:bg-gray-200 text-gray-900 border-transparent",
   outline: "bg-white hover:bg-gray-50 text-gray-700 border-gray-300",
 };
@@ -37,7 +37,7 @@ export const LoadingButton: React.FC<LoadingButtonProps> = ({
     <button
       className={cn(
         "w-full rounded-[30px] font-semibold border-2 transition-all duration-200",
-        "focus:outline-none focus:ring-2 focus:ring-[#41B63E]/50 focus:ring-offset-2",
+        "focus:outline-none focus:ring-2 focus:ring-[#0064E0]/50 focus:ring-offset-2",
         "flex items-center justify-center gap-2",
         "cursor-pointer",
         variantStyles[variant],

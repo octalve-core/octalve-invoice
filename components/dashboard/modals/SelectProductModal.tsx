@@ -104,7 +104,7 @@ export default function SelectProductModal({
               placeholder="Search products..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full h-11 pl-10 pr-4 text-sm bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#41B63E]/20 focus:border-[#41B63E]"
+              className="w-full h-11 pl-10 pr-4 text-sm bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0064E0]/20 focus:border-[#0064E0]"
             />
           </div>
         </div>
@@ -113,7 +113,7 @@ export default function SelectProductModal({
         <div className="px-4 py-3 border-b border-gray-100">
           <button
             onClick={onAddNew}
-            className="flex items-center gap-2 w-full px-4 py-3 text-sm font-medium text-[#41B63E] bg-green-50 rounded-lg hover:bg-green-100 transition-colors"
+            className="flex items-center gap-2 w-full px-4 py-3 text-sm font-medium text-[#0064E0] bg-green-50 rounded-lg hover:bg-green-100 transition-colors"
           >
             <Plus className="w-5 h-5" />
             Add New Product

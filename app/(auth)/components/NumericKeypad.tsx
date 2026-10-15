@@ -37,7 +37,7 @@ export const NumericKeypad: React.FC<NumericKeypadProps> = ({
             disabled={disabled || key === ""}
             className={cn(
               "h-14 rounded-lg text-2xl font-medium transition-all duration-150",
-              "focus:outline-none focus:ring-2 focus:ring-[#41B63E]/50",
+              "focus:outline-none focus:ring-2 focus:ring-[#0064E0]/50",
               key === ""
                 ? "invisible"
                 : key === "backspace"

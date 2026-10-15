@@ -158,7 +158,7 @@ export default function MobileReceiptList({
         {/* Empty State */}
         <div className="flex flex-col items-center justify-center py-20 px-6 text-center">
           <div className="w-24 h-24 mb-6 rounded-full bg-green-100 flex items-center justify-center">
-            <FileText className="w-12 h-12 text-[#41B63E]" />
+            <FileText className="w-12 h-12 text-[#0064E0]" />
           </div>
           <h2 className="text-lg font-semibold text-gray-900 mb-2">
             No Receipt Yet
@@ -169,7 +169,7 @@ export default function MobileReceiptList({
           </p>
           <button
             onClick={onCreateClick}
-            className="flex items-center gap-2 px-6 py-3 text-sm font-medium text-white bg-[#41B63E] rounded-lg hover:bg-[#36a137]"
+            className="flex items-center gap-2 px-6 py-3 text-sm font-medium text-white bg-[#0064E0] rounded-lg hover:bg-[#0052B8]"
           >
             <Plus className="w-5 h-5" />
             Create Receipt
@@ -204,7 +204,7 @@ export default function MobileReceiptList({
               placeholder="Search"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full h-10 pl-9 pr-4 text-sm bg-gray-100 border-0 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#41B63E]/20"
+              className="w-full h-10 pl-9 pr-4 text-sm bg-gray-100 border-0 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0064E0]/20"
             />
           </div>
           <button
@@ -218,7 +218,7 @@ export default function MobileReceiptList({
         {/* Create Button */}
         <button
           onClick={onCreateClick}
-          className="flex items-center justify-center gap-2 w-full py-3 text-sm font-medium text-white bg-[#41B63E] rounded-lg hover:bg-[#36a137]"
+          className="flex items-center justify-center gap-2 w-full py-3 text-sm font-medium text-white bg-[#0064E0] rounded-lg hover:bg-[#0052B8]"
         >
           <Plus className="w-5 h-5" />
           Create Receipt
@@ -234,7 +234,7 @@ export default function MobileReceiptList({
               onClick={() => setFilter(f)}
               className={`px-4 py-1.5 text-sm font-medium rounded-full whitespace-nowrap transition-colors ${
                 filter === f
-                  ? "bg-[#41B63E] text-white"
+                  ? "bg-[#0064E0] text-white"
                   : "bg-gray-100 text-gray-600 hover:bg-gray-200"
               }`}
             >
@@ -256,7 +256,7 @@ export default function MobileReceiptList({
               <div className="flex items-start justify-between mb-2">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center">
-                    <Receipt className="w-5 h-5 text-[#41B63E]" />
+                    <Receipt className="w-5 h-5 text-[#0064E0]" />
                   </div>
                   <div>
                     <p className="font-medium text-gray-900">

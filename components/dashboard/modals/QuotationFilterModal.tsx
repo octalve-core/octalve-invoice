@@ -91,7 +91,7 @@ export default function QuotationFilterModal({
               Time
             </label>
             <div className="relative">
-              <select className="w-full h-11 px-4 pr-10 text-sm bg-gray-50 border border-gray-200 rounded-lg appearance-none focus:outline-none focus:ring-2 focus:ring-[#41B63E]/20 focus:border-[#41B63E]">
+              <select className="w-full h-11 px-4 pr-10 text-sm bg-gray-50 border border-gray-200 rounded-lg appearance-none focus:outline-none focus:ring-2 focus:ring-[#0064E0]/20 focus:border-[#0064E0]">
                 <option>Last 30 days</option>
                 <option>Last 60 days</option>
                 <option>Last 90 days</option>
@@ -113,7 +113,7 @@ export default function QuotationFilterModal({
                 onChange={(e) =>
                   setFilters({ ...filters, dateFrom: e.target.value })
                 }
-                className="w-full h-11 px-4 text-sm bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#41B63E]/20 focus:border-[#41B63E]"
+                className="w-full h-11 px-4 text-sm bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0064E0]/20 focus:border-[#0064E0]"
               />
             </div>
             <div>
@@ -126,7 +126,7 @@ export default function QuotationFilterModal({
                 onChange={(e) =>
                   setFilters({ ...filters, dateTo: e.target.value })
                 }
-                className="w-full h-11 px-4 text-sm bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#41B63E]/20 focus:border-[#41B63E]"
+                className="w-full h-11 px-4 text-sm bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0064E0]/20 focus:border-[#0064E0]"
               />
             </div>
           </div>
@@ -156,7 +156,7 @@ export default function QuotationFilterModal({
                         [key]: e.target.checked,
                       })
                     }
-                    className="w-4 h-4 text-[#41B63E] border-gray-300 rounded focus:ring-[#41B63E]"
+                    className="w-4 h-4 text-[#0064E0] border-gray-300 rounded focus:ring-[#0064E0]"
                   />
                   <span className="text-sm text-gray-700">{label}</span>
                 </label>
@@ -169,7 +169,7 @@ export default function QuotationFilterModal({
         <div className="px-6 py-4 border-t border-gray-200">
           <button
             onClick={handleApply}
-            className="w-full py-3 text-sm font-medium text-white bg-[#41B63E] rounded-lg hover:bg-[#36a137]"
+            className="w-full py-3 text-sm font-medium text-white bg-[#0064E0] rounded-lg hover:bg-[#0052B8]"
           >
             Apply Filter
           </button>

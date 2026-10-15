@@ -44,7 +44,7 @@ export default function DeleteItemModal({
           </button>
           <button
             onClick={onClose}
-            className="w-full py-2.5 text-sm font-medium text-[#41B63E] bg-white border border-[#41B63E] rounded-lg hover:bg-green-50"
+            className="w-full py-2.5 text-sm font-medium text-[#0064E0] bg-white border border-[#0064E0] rounded-lg hover:bg-green-50"
           >
             Cancel
           </button>

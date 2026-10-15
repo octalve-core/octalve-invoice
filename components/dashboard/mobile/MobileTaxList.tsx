@@ -46,7 +46,7 @@ export default function MobileTaxList({
         {/* Empty State */}
         <div className="flex flex-col items-center justify-center py-16 text-center">
           <div className="w-24 h-24 mb-6 rounded-full bg-green-100 flex items-center justify-center">
-            <FileText className="w-12 h-12 text-[#41B63E]" />
+            <FileText className="w-12 h-12 text-[#0064E0]" />
           </div>
           <h2 className="text-lg font-semibold text-gray-900 mb-2">
             There are no entries on your list
@@ -57,7 +57,7 @@ export default function MobileTaxList({
           </p>
           <button
             onClick={onCreateClick}
-            className="flex items-center gap-2 px-6 py-3 text-sm font-medium text-white bg-[#41B63E] rounded-lg hover:bg-[#36a137]"
+            className="flex items-center gap-2 px-6 py-3 text-sm font-medium text-white bg-[#0064E0] rounded-lg hover:bg-[#0052B8]"
           >
             <Plus className="w-5 h-5" />
             Create Tax
@@ -134,7 +134,7 @@ export default function MobileTaxList({
       {/* Create Button */}
       <button
         onClick={onCreateClick}
-        className="flex items-center justify-center gap-2 w-full py-3 text-sm font-medium text-[#41B63E] bg-green-50 rounded-lg hover:bg-green-100"
+        className="flex items-center justify-center gap-2 w-full py-3 text-sm font-medium text-[#0064E0] bg-green-50 rounded-lg hover:bg-green-100"
       >
         <Plus className="w-5 h-5" />
         Create Tax

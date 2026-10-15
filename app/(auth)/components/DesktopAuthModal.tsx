@@ -87,13 +87,13 @@ export const DesktopSplitLayout: React.FC<DesktopSplitLayoutProps> = ({
             <div className="absolute top-[8%] right-[10%] bg-purple-100 text-purple-600 shadow-lg px-4 py-2 rounded-xl text-sm animate-float-delayed">
               Expenses
             </div>
-            <div className="absolute top-[35%] right-[5%] bg-[#41B63E] text-white shadow-lg px-4 py-2 rounded-xl text-sm animate-float">
+            <div className="absolute top-[35%] right-[5%] bg-[#0064E0] text-white shadow-lg px-4 py-2 rounded-xl text-sm animate-float">
               Receipt
             </div>
             <div className="absolute bottom-[35%] left-[15%] bg-yellow-400 text-gray-800 shadow-lg px-4 py-2 rounded-xl text-sm animate-float-slow">
               Invoice
             </div>
-            <div className="absolute bottom-[15%] right-[8%] bg-white text-[#41B63E] shadow-lg px-4 py-2 rounded-xl text-sm flex items-center gap-2 animate-float-delayed">
+            <div className="absolute bottom-[15%] right-[8%] bg-white text-[#0064E0] shadow-lg px-4 py-2 rounded-xl text-sm flex items-center gap-2 animate-float-delayed">
               <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
                 <path d="M4 4a2 2 0 00-2 2v1h16V6a2 2 0 00-2-2H4z" />
                 <path

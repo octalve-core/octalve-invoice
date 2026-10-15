@@ -72,7 +72,7 @@ export default function DuplicateInvoiceModal({
                 </button>
                 <button
                   onClick={handleDuplicate}
-                  className="flex-1 px-4 py-3 text-sm font-medium text-white bg-[#41B63E] rounded-lg hover:bg-[#36a137]"
+                  className="flex-1 px-4 py-3 text-sm font-medium text-white bg-[#0064E0] rounded-lg hover:bg-[#0052B8]"
                 >
                   Duplicate
                 </button>
@@ -92,7 +92,7 @@ export default function DuplicateInvoiceModal({
             </p>
             <button
               onClick={handleClose}
-              className="w-full px-4 py-3 text-sm font-medium text-white bg-[#41B63E] rounded-lg hover:bg-[#36a137]"
+              className="w-full px-4 py-3 text-sm font-medium text-white bg-[#0064E0] rounded-lg hover:bg-[#0052B8]"
             >
               View Duplicate
             </button>

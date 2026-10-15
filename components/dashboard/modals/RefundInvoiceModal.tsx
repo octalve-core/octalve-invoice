@@ -74,7 +74,7 @@ export default function RefundInvoiceModal({
                   onChange={(e) => setReason(e.target.value)}
                   placeholder="Enter the reason for this refund..."
                   rows={3}
-                  className="w-full px-4 py-3 text-sm bg-gray-50 border border-gray-200 rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-[#41B63E]/20 focus:border-[#41B63E]"
+                  className="w-full px-4 py-3 text-sm bg-gray-50 border border-gray-200 rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-[#0064E0]/20 focus:border-[#0064E0]"
                 />
               </div>
 
@@ -108,7 +108,7 @@ export default function RefundInvoiceModal({
             </p>
             <button
               onClick={handleClose}
-              className="w-full px-4 py-3 text-sm font-medium text-white bg-[#41B63E] rounded-lg hover:bg-[#36a137]"
+              className="w-full px-4 py-3 text-sm font-medium text-white bg-[#0064E0] rounded-lg hover:bg-[#0052B8]"
             >
               Done
             </button>

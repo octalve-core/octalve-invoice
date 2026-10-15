@@ -71,7 +71,7 @@ export default function SelectTaxModal({
 
         {/* Info Banner */}
         <div className="mx-6 mt-4 p-3 bg-green-50 rounded-lg flex items-start gap-2">
-          <Info className="w-5 h-5 text-[#41B63E] mt-0.5" />
+          <Info className="w-5 h-5 text-[#0064E0] mt-0.5" />
           <p className="text-sm text-gray-600">
             Select one or more taxes to apply to this invoice
           </p>
@@ -84,7 +84,7 @@ export default function SelectTaxModal({
               key={tax.id}
               className={`flex items-center justify-between p-4 border rounded-xl cursor-pointer transition-colors ${
                 selected.includes(tax.id)
-                  ? "border-[#41B63E] bg-green-50"
+                  ? "border-[#0064E0] bg-green-50"
                   : "border-gray-200 hover:border-gray-300"
               }`}
             >
@@ -92,7 +92,7 @@ export default function SelectTaxModal({
                 <div
                   className={`w-6 h-6 rounded-full border-2 flex items-center justify-center ${
                     selected.includes(tax.id)
-                      ? "bg-[#41B63E] border-[#41B63E]"
+                      ? "bg-[#0064E0] border-[#0064E0]"
                       : "border-gray-300"
                   }`}
                 >
@@ -131,7 +131,7 @@ export default function SelectTaxModal({
           </button>
           <button
             onClick={handleConfirm}
-            className="flex-1 px-4 py-3 text-sm font-medium text-white bg-[#41B63E] rounded-lg hover:bg-[#36a137]"
+            className="flex-1 px-4 py-3 text-sm font-medium text-white bg-[#0064E0] rounded-lg hover:bg-[#0052B8]"
           >
             Done
           </button>

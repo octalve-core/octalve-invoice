@@ -174,7 +174,7 @@ export default function CreateQuotationModal({
                     onChange={(e) =>
                       setFormData({ ...formData, customer: e.target.value })
                     }
-                    className="w-full h-11 px-4 pr-10 text-sm bg-gray-50 border border-gray-200 rounded-lg appearance-none focus:outline-none focus:ring-2 focus:ring-[#41B63E]/20 focus:border-[#41B63E]"
+                    className="w-full h-11 px-4 pr-10 text-sm bg-gray-50 border border-gray-200 rounded-lg appearance-none focus:outline-none focus:ring-2 focus:ring-[#0064E0]/20 focus:border-[#0064E0]"
                   >
                     <option value="">Select Customer</option>
                     <option value="customer1">Abdulsamad Ojedokun</option>
@@ -198,7 +198,7 @@ export default function CreateQuotationModal({
                         quotationPeriod: e.target.value,
                       })
                     }
-                    className="w-full h-11 px-4 pr-10 text-sm bg-gray-50 border border-gray-200 rounded-lg appearance-none focus:outline-none focus:ring-2 focus:ring-[#41B63E]/20 focus:border-[#41B63E]"
+                    className="w-full h-11 px-4 pr-10 text-sm bg-gray-50 border border-gray-200 rounded-lg appearance-none focus:outline-none focus:ring-2 focus:ring-[#0064E0]/20 focus:border-[#0064E0]"
                   >
                     <option value="">Select Period</option>
                     <option value="7">7 days</option>
@@ -221,7 +221,7 @@ export default function CreateQuotationModal({
                   onChange={(e) =>
                     setFormData({ ...formData, validUntil: e.target.value })
                   }
-                  className="w-full h-11 px-4 text-sm bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#41B63E]/20 focus:border-[#41B63E]"
+                  className="w-full h-11 px-4 text-sm bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0064E0]/20 focus:border-[#0064E0]"
                 />
               </div>
 
@@ -236,7 +236,7 @@ export default function CreateQuotationModal({
                     onChange={(e) =>
                       setFormData({ ...formData, currency: e.target.value })
                     }
-                    className="w-full h-11 px-4 pr-10 text-sm bg-gray-50 border border-gray-200 rounded-lg appearance-none focus:outline-none focus:ring-2 focus:ring-[#41B63E]/20 focus:border-[#41B63E]"
+                    className="w-full h-11 px-4 pr-10 text-sm bg-gray-50 border border-gray-200 rounded-lg appearance-none focus:outline-none focus:ring-2 focus:ring-[#0064E0]/20 focus:border-[#0064E0]"
                   >
                     <option value="NGN">NGN - Nigerian Naira</option>
                     <option value="USD">USD - US Dollar</option>
@@ -258,7 +258,7 @@ export default function CreateQuotationModal({
                   onChange={(e) =>
                     setFormData({ ...formData, address: e.target.value })
                   }
-                  className="w-full h-11 px-4 text-sm bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#41B63E]/20 focus:border-[#41B63E]"
+                  className="w-full h-11 px-4 text-sm bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0064E0]/20 focus:border-[#0064E0]"
                 />
               </div>
             </div>
@@ -267,7 +267,7 @@ export default function CreateQuotationModal({
             <div className="space-y-4">
               <div className="flex items-center justify-between">
                 <h3 className="text-sm font-medium text-gray-700">Items</h3>
-                <button className="px-4 py-2 text-sm font-medium text-[#41B63E] bg-green-50 rounded-lg hover:bg-green-100">
+                <button className="px-4 py-2 text-sm font-medium text-[#0064E0] bg-green-50 rounded-lg hover:bg-green-100">
                   + Add to project
                 </button>
               </div>
@@ -301,7 +301,7 @@ export default function CreateQuotationModal({
                       <span className="text-xs text-gray-500">
                         Qty: {item.quantity}
                       </span>
-                      <span className="text-sm font-semibold text-[#41B63E]">
+                      <span className="text-sm font-semibold text-[#0064E0]">
                         ₦{item.amount.toLocaleString()}
                       </span>
                     </div>
@@ -311,7 +311,7 @@ export default function CreateQuotationModal({
 
               <button
                 onClick={addLineItem}
-                className="flex items-center gap-2 text-sm text-[#41B63E] hover:underline"
+                className="flex items-center gap-2 text-sm text-[#0064E0] hover:underline"
               >
                 <Plus className="w-4 h-4" />
                 Add another item
@@ -343,7 +343,7 @@ export default function CreateQuotationModal({
                 </div>
                 <div className="flex justify-between text-sm pt-2 border-t border-gray-200">
                   <span className="font-medium text-gray-900">Total</span>
-                  <span className="font-bold text-[#41B63E]">
+                  <span className="font-bold text-[#0064E0]">
                     ₦{total.toLocaleString()}
                   </span>
                 </div>
@@ -362,7 +362,7 @@ export default function CreateQuotationModal({
           </button>
           <button
             onClick={handleSubmit}
-            className="px-8 py-2.5 text-sm font-medium text-white bg-[#41B63E] rounded-lg hover:bg-[#36a137]"
+            className="px-8 py-2.5 text-sm font-medium text-white bg-[#0064E0] rounded-lg hover:bg-[#0052B8]"
           >
             Create Quotation
           </button>

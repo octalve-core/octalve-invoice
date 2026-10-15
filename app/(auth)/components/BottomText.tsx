@@ -17,7 +17,7 @@ export const BottomText = ({ text = "", className = "" }: BottomTextProps) => {
         ) : (
           <>
             Have an account?{" "}
-            <Link href="/login" className="text-[#41B63E] font-bold">
+            <Link href="/login" className="text-[#0064E0] font-bold">
               Sign in
             </Link>
           </>

@@ -74,7 +74,7 @@ export default function CreateTaxGroupModal({
               value={groupName}
               onChange={(e) => setGroupName(e.target.value)}
               placeholder="e.g. Standard VAT + Service"
-              className="w-full h-11 px-4 text-sm bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#41B63E]/20 focus:border-[#41B63E]"
+              className="w-full h-11 px-4 text-sm bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0064E0]/20 focus:border-[#0064E0]"
             />
           </div>
 
@@ -89,7 +89,7 @@ export default function CreateTaxGroupModal({
                   key={tax.id}
                   className={`flex items-center justify-between p-3 border rounded-lg cursor-pointer transition-colors ${
                     selectedTaxes.includes(tax.id)
-                      ? "border-[#41B63E] bg-green-50"
+                      ? "border-[#0064E0] bg-green-50"
                       : "border-gray-200 hover:border-gray-300"
                   }`}
                 >
@@ -98,7 +98,7 @@ export default function CreateTaxGroupModal({
                       type="checkbox"
                       checked={selectedTaxes.includes(tax.id)}
                       onChange={() => toggleTax(tax.id)}
-                      className="w-4 h-4 rounded border-gray-300 text-[#41B63E] focus:ring-[#41B63E]"
+                      className="w-4 h-4 rounded border-gray-300 text-[#0064E0] focus:ring-[#0064E0]"
                     />
                     <span className="text-sm font-medium text-gray-900">
                       {tax.name}
@@ -137,7 +137,7 @@ export default function CreateTaxGroupModal({
           <button
             onClick={handleSubmit}
             disabled={!groupName || selectedTaxes.length === 0}
-            className="px-5 py-2.5 text-sm font-medium text-white bg-[#41B63E] rounded-lg hover:bg-[#36a137] disabled:opacity-50 disabled:cursor-not-allowed"
+            className="px-5 py-2.5 text-sm font-medium text-white bg-[#0064E0] rounded-lg hover:bg-[#0052B8] disabled:opacity-50 disabled:cursor-not-allowed"
           >
             Save
           </button>

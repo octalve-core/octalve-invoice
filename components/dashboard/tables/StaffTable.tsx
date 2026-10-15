@@ -83,14 +83,14 @@ export default function StaffTable({
               placeholder="Search"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full sm:w-40 h-9 pl-9 pr-3 text-sm bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#41B63E]/20 focus:border-[#41B63E]"
+              className="w-full sm:w-40 h-9 pl-9 pr-3 text-sm bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0064E0]/20 focus:border-[#0064E0]"
             />
           </div>
 
           {/* Add Staff Button */}
           <button
             onClick={onCreateClick}
-            className="flex items-center gap-2 h-9 px-4 text-sm font-medium text-white bg-[#41B63E] rounded-lg hover:bg-[#36a137] transition-colors"
+            className="flex items-center gap-2 h-9 px-4 text-sm font-medium text-white bg-[#0064E0] rounded-lg hover:bg-[#0052B8] transition-colors"
           >
             <Plus className="w-4 h-4" />
             <span className="hidden sm:inline">Add staff</span>

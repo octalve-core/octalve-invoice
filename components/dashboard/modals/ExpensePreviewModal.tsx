@@ -37,7 +37,7 @@ export default function ExpensePreviewModal({
         <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-lg bg-green-100 flex items-center justify-center">
-              <Receipt className="w-5 h-5 text-[#41B63E]" />
+              <Receipt className="w-5 h-5 text-[#0064E0]" />
             </div>
             <div>
               <h2 className="text-lg font-semibold text-gray-900">
@@ -98,7 +98,7 @@ export default function ExpensePreviewModal({
           {/* Amount */}
           <div className="flex items-center justify-between">
             <span className="text-sm text-gray-500">Amount</span>
-            <span className="text-lg font-semibold text-[#41B63E]">
+            <span className="text-lg font-semibold text-[#0064E0]">
               {expense?.amount || "₦25,000.00"}
             </span>
           </div>

@@ -236,7 +236,7 @@ export default function BusinessSettingsPage() {
                 ) : (
                   <>
                     <Upload className="w-8 h-8 text-gray-400 mx-auto mb-2" />
-                    <p className="text-sm text-[#41B63E] font-medium">
+                    <p className="text-sm text-[#0064E0] font-medium">
                       Tap to upload signature
                     </p>
                   </>
@@ -269,7 +269,7 @@ export default function BusinessSettingsPage() {
                   onChange={(e) =>
                     setSettings({ ...settings, bankName: e.target.value })
                   }
-                  className="w-full h-[44px] px-4 pr-10 text-gray-900 rounded-lg border border-[#CFD4DC] bg-white shadow-sm focus:border-[#41B63E] focus:ring-2 focus:ring-[#41B63E]/20 focus:outline-none appearance-none"
+                  className="w-full h-[44px] px-4 pr-10 text-gray-900 rounded-lg border border-[#CFD4DC] bg-white shadow-sm focus:border-[#0064E0] focus:ring-2 focus:ring-[#0064E0]/20 focus:outline-none appearance-none"
                 >
                   {banks.map((b) => (
                     <option key={b.value} value={b.value}>
@@ -295,7 +295,7 @@ export default function BusinessSettingsPage() {
                 placeholder="Enter account number"
                 className="auth-input-gray"
               />
-              <p className="text-xs text-[#41B63E] mt-1">OLAMIDE TAD DANJUMA</p>
+              <p className="text-xs text-[#0064E0] mt-1">OLAMIDE TAD DANJUMA</p>
             </div>
           </div>
 
@@ -303,7 +303,7 @@ export default function BusinessSettingsPage() {
           <button
             onClick={handleSave}
             disabled={isLoading}
-            className="w-full bg-[#41B63E] hover:bg-[#36a137] text-white font-semibold py-3 rounded-lg transition-colors flex items-center justify-center gap-2 mt-6"
+            className="w-full bg-[#0064E0] hover:bg-[#0052B8] text-white font-semibold py-3 rounded-lg transition-colors flex items-center justify-center gap-2 mt-6"
           >
             {isLoading ? (
               <>
@@ -482,7 +482,7 @@ export default function BusinessSettingsPage() {
                   ) : (
                     <>
                       <Upload className="w-10 h-10 text-gray-400 mx-auto mb-2" />
-                      <p className="text-sm text-[#41B63E] font-medium">
+                      <p className="text-sm text-[#0064E0] font-medium">
                         Click to upload signature
                       </p>
                       <p className="text-xs text-gray-400 mt-1">
@@ -521,7 +521,7 @@ export default function BusinessSettingsPage() {
                     onChange={(e) =>
                       setSettings({ ...settings, bankName: e.target.value })
                     }
-                    className="w-full h-[44px] px-4 pr-10 text-gray-900 rounded-lg border border-[#CFD4DC] bg-white shadow-sm focus:border-[#41B63E] focus:ring-2 focus:ring-[#41B63E]/20 focus:outline-none appearance-none"
+                    className="w-full h-[44px] px-4 pr-10 text-gray-900 rounded-lg border border-[#CFD4DC] bg-white shadow-sm focus:border-[#0064E0] focus:ring-2 focus:ring-[#0064E0]/20 focus:outline-none appearance-none"
                   >
                     {banks.map((b) => (
                       <option key={b.value} value={b.value}>
@@ -547,7 +547,7 @@ export default function BusinessSettingsPage() {
                   placeholder="Enter account number"
                   className="auth-input-gray"
                 />
-                <p className="text-xs text-[#41B63E] mt-1">
+                <p className="text-xs text-[#0064E0] mt-1">
                   OLAMIDE TAD DANJUMA
                 </p>
               </div>
@@ -559,7 +559,7 @@ export default function BusinessSettingsPage() {
             <button
               onClick={handleSave}
               disabled={isLoading}
-              className="px-6 py-3 bg-[#41B63E] hover:bg-[#36a137] text-white font-semibold rounded-lg transition-colors flex items-center justify-center gap-2"
+              className="px-6 py-3 bg-[#0064E0] hover:bg-[#0052B8] text-white font-semibold rounded-lg transition-colors flex items-center justify-center gap-2"
             >
               {isLoading ? (
                 <>

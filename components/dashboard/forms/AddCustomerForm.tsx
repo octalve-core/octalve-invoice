@@ -109,7 +109,7 @@ export default function AddCustomerForm({
                     onChange={() =>
                       setFormData({ ...formData, customerType: "business" })
                     }
-                    className="w-4 h-4 text-[#41B63E] accent-[#41B63E]"
+                    className="w-4 h-4 text-[#0064E0] accent-[#0064E0]"
                   />
                   <span className="text-sm text-gray-700">Business</span>
                 </label>
@@ -121,7 +121,7 @@ export default function AddCustomerForm({
                     onChange={() =>
                       setFormData({ ...formData, customerType: "individual" })
                     }
-                    className="w-4 h-4 text-[#41B63E] accent-[#41B63E]"
+                    className="w-4 h-4 text-[#0064E0] accent-[#0064E0]"
                   />
                   <span className="text-sm text-gray-700">Individual</span>
                 </label>
@@ -139,7 +139,7 @@ export default function AddCustomerForm({
                 onChange={(e) =>
                   setFormData({ ...formData, firstName: e.target.value })
                 }
-                className="w-full h-11 px-4 text-sm bg-white border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#41B63E]/20 focus:border-[#41B63E]"
+                className="w-full h-11 px-4 text-sm bg-white border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0064E0]/20 focus:border-[#0064E0]"
               />
             </div>
 
@@ -154,7 +154,7 @@ export default function AddCustomerForm({
                 onChange={(e) =>
                   setFormData({ ...formData, lastName: e.target.value })
                 }
-                className="w-full h-11 px-4 text-sm bg-white border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#41B63E]/20 focus:border-[#41B63E]"
+                className="w-full h-11 px-4 text-sm bg-white border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0064E0]/20 focus:border-[#0064E0]"
               />
             </div>
 
@@ -169,7 +169,7 @@ export default function AddCustomerForm({
                 onChange={(e) =>
                   setFormData({ ...formData, companyName: e.target.value })
                 }
-                className="w-full h-11 px-4 text-sm bg-white border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#41B63E]/20 focus:border-[#41B63E]"
+                className="w-full h-11 px-4 text-sm bg-white border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0064E0]/20 focus:border-[#0064E0]"
               />
             </div>
 
@@ -184,7 +184,7 @@ export default function AddCustomerForm({
                 onChange={(e) =>
                   setFormData({ ...formData, displayName: e.target.value })
                 }
-                className="w-full h-11 px-4 text-sm bg-white border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#41B63E]/20 focus:border-[#41B63E]"
+                className="w-full h-11 px-4 text-sm bg-white border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0064E0]/20 focus:border-[#0064E0]"
               />
             </div>
 
@@ -199,7 +199,7 @@ export default function AddCustomerForm({
                 onChange={(e) =>
                   setFormData({ ...formData, email: e.target.value })
                 }
-                className="w-full h-11 px-4 text-sm bg-white border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#41B63E]/20 focus:border-[#41B63E]"
+                className="w-full h-11 px-4 text-sm bg-white border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0064E0]/20 focus:border-[#0064E0]"
               />
             </div>
 
@@ -214,7 +214,7 @@ export default function AddCustomerForm({
                 onChange={(e) =>
                   setFormData({ ...formData, phone: e.target.value })
                 }
-                className="w-full h-11 px-4 text-sm bg-white border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#41B63E]/20 focus:border-[#41B63E]"
+                className="w-full h-11 px-4 text-sm bg-white border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0064E0]/20 focus:border-[#0064E0]"
               />
             </div>
           </div>
@@ -235,7 +235,7 @@ export default function AddCustomerForm({
                 onChange={(e) =>
                   setFormData({ ...formData, billingAddress: e.target.value })
                 }
-                className="w-full h-11 px-4 text-sm bg-white border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#41B63E]/20 focus:border-[#41B63E]"
+                className="w-full h-11 px-4 text-sm bg-white border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0064E0]/20 focus:border-[#0064E0]"
               />
             </div>
 
@@ -249,7 +249,7 @@ export default function AddCustomerForm({
                 onChange={(e) =>
                   setFormData({ ...formData, addressLine1: e.target.value })
                 }
-                className="w-full h-11 px-4 text-sm bg-white border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#41B63E]/20 focus:border-[#41B63E]"
+                className="w-full h-11 px-4 text-sm bg-white border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0064E0]/20 focus:border-[#0064E0]"
               />
             </div>
 
@@ -264,7 +264,7 @@ export default function AddCustomerForm({
                   onChange={(e) =>
                     setFormData({ ...formData, city: e.target.value })
                   }
-                  className="w-full h-11 px-4 text-sm bg-white border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#41B63E]/20 focus:border-[#41B63E]"
+                  className="w-full h-11 px-4 text-sm bg-white border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0064E0]/20 focus:border-[#0064E0]"
                 />
               </div>
               <div>
@@ -277,7 +277,7 @@ export default function AddCustomerForm({
                   onChange={(e) =>
                     setFormData({ ...formData, state: e.target.value })
                   }
-                  className="w-full h-11 px-4 text-sm bg-white border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#41B63E]/20 focus:border-[#41B63E]"
+                  className="w-full h-11 px-4 text-sm bg-white border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0064E0]/20 focus:border-[#0064E0]"
                 />
               </div>
             </div>
@@ -293,7 +293,7 @@ export default function AddCustomerForm({
                   onChange={(e) =>
                     setFormData({ ...formData, zipCode: e.target.value })
                   }
-                  className="w-full h-11 px-4 text-sm bg-white border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#41B63E]/20 focus:border-[#41B63E]"
+                  className="w-full h-11 px-4 text-sm bg-white border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0064E0]/20 focus:border-[#0064E0]"
                 />
               </div>
               <div>
@@ -306,7 +306,7 @@ export default function AddCustomerForm({
                     onChange={(e) =>
                       setFormData({ ...formData, country: e.target.value })
                     }
-                    className="w-full h-11 px-4 pr-10 text-sm bg-white border border-gray-200 rounded-lg appearance-none focus:outline-none focus:ring-2 focus:ring-[#41B63E]/20 focus:border-[#41B63E]"
+                    className="w-full h-11 px-4 pr-10 text-sm bg-white border border-gray-200 rounded-lg appearance-none focus:outline-none focus:ring-2 focus:ring-[#0064E0]/20 focus:border-[#0064E0]"
                   >
                     <option value="">Select country</option>
                     {countries.map((c) => (
@@ -340,7 +340,7 @@ export default function AddCustomerForm({
                     companyRegistration: e.target.value,
                   })
                 }
-                className="w-full h-11 px-4 text-sm bg-white border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#41B63E]/20 focus:border-[#41B63E]"
+                className="w-full h-11 px-4 text-sm bg-white border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0064E0]/20 focus:border-[#0064E0]"
               />
             </div>
 
@@ -354,7 +354,7 @@ export default function AddCustomerForm({
                 onChange={(e) =>
                   setFormData({ ...formData, companyId: e.target.value })
                 }
-                className="w-full h-11 px-4 text-sm bg-white border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#41B63E]/20 focus:border-[#41B63E]"
+                className="w-full h-11 px-4 text-sm bg-white border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0064E0]/20 focus:border-[#0064E0]"
               />
             </div>
 
@@ -368,7 +368,7 @@ export default function AddCustomerForm({
                   onChange={(e) =>
                     setFormData({ ...formData, currency: e.target.value })
                   }
-                  className="w-full h-11 px-4 pr-10 text-sm bg-white border border-gray-200 rounded-lg appearance-none focus:outline-none focus:ring-2 focus:ring-[#41B63E]/20 focus:border-[#41B63E]"
+                  className="w-full h-11 px-4 pr-10 text-sm bg-white border border-gray-200 rounded-lg appearance-none focus:outline-none focus:ring-2 focus:ring-[#0064E0]/20 focus:border-[#0064E0]"
                 >
                   <option value="">Select currency</option>
                   {currencies.map((c) => (
@@ -391,7 +391,7 @@ export default function AddCustomerForm({
                 onChange={(e) =>
                   setFormData({ ...formData, website: e.target.value })
                 }
-                className="w-full h-11 px-4 text-sm bg-white border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#41B63E]/20 focus:border-[#41B63E]"
+                className="w-full h-11 px-4 text-sm bg-white border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0064E0]/20 focus:border-[#0064E0]"
                 placeholder="https://"
               />
             </div>
@@ -400,7 +400,7 @@ export default function AddCustomerForm({
             <div className="pt-4">
               <button
                 type="submit"
-                className="w-full py-3 text-sm font-medium text-white bg-[#41B63E] rounded-lg hover:bg-[#36a137]"
+                className="w-full py-3 text-sm font-medium text-white bg-[#0064E0] rounded-lg hover:bg-[#0052B8]"
               >
                 Add customer
               </button>

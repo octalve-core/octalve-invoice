@@ -59,7 +59,7 @@ export default function ReceiptPreviewModal({
           {/* Company Info */}
           <div className="flex items-start justify-between mb-6">
             <div>
-              <div className="w-12 h-12 rounded-lg bg-[#41B63E] flex items-center justify-center mb-2">
+              <div className="w-12 h-12 rounded-lg bg-[#0064E0] flex items-center justify-center mb-2">
                 <span className="text-white font-bold">FZ</span>
               </div>
               <h3 className="font-semibold text-gray-900">
@@ -230,7 +230,7 @@ export default function ReceiptPreviewModal({
               <Printer className="w-4 h-4" />
               Print
             </button>
-            <button className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-medium text-white bg-[#41B63E] rounded-lg hover:bg-[#36a137]">
+            <button className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-medium text-white bg-[#0064E0] rounded-lg hover:bg-[#0052B8]">
               <Download className="w-4 h-4" />
               Download
             </button>

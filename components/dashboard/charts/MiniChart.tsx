@@ -7,7 +7,7 @@ interface MiniChartProps {
   color?: string;
 }
 
-export default function MiniChart({ data, color = "#41B63E" }: MiniChartProps) {
+export default function MiniChart({ data, color = "#0064E0" }: MiniChartProps) {
   const chartData = data.map((value, index) => ({ value, index }));
 
   return (

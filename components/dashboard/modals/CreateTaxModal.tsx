@@ -64,7 +64,7 @@ export default function CreateTaxModal({
                 setFormData({ ...formData, name: e.target.value })
               }
               placeholder="VAT"
-              className="w-full h-11 px-4 text-sm bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#41B63E]/20 focus:border-[#41B63E]"
+              className="w-full h-11 px-4 text-sm bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0064E0]/20 focus:border-[#0064E0]"
             />
           </div>
 
@@ -85,7 +85,7 @@ export default function CreateTaxModal({
                 }
                 placeholder="7.5"
                 step="0.1"
-                className="w-full h-11 px-4 pr-12 text-sm bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#41B63E]/20 focus:border-[#41B63E]"
+                className="w-full h-11 px-4 pr-12 text-sm bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0064E0]/20 focus:border-[#0064E0]"
               />
               <span className="absolute right-4 top-1/2 -translate-y-1/2 text-sm text-gray-400">
                 %
@@ -105,7 +105,7 @@ export default function CreateTaxModal({
           <button
             onClick={handleSubmit}
             disabled={!formData.name || formData.rate <= 0}
-            className="px-5 py-2.5 text-sm font-medium text-white bg-[#41B63E] rounded-lg hover:bg-[#36a137] disabled:opacity-50 disabled:cursor-not-allowed"
+            className="px-5 py-2.5 text-sm font-medium text-white bg-[#0064E0] rounded-lg hover:bg-[#0052B8] disabled:opacity-50 disabled:cursor-not-allowed"
           >
             Save
           </button>
