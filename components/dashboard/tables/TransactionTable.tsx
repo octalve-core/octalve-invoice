@@ -94,8 +94,8 @@ export default function TransactionTable() {
           Recent transactions
         </h3>
         <Link
-          href="/dashboard/transactions"
-          className="text-sm text-[#41B63E] font-medium hover:underline"
+          href="/dashboard/invoice"
+          className="text-sm text-[#0064E0] font-medium hover:underline"
         >
           View All
         </Link>
@@ -109,7 +109,7 @@ export default function TransactionTable() {
             onClick={() => setFilter(f.value)}
             className={`px-4 py-1.5 text-sm font-medium rounded-full transition-colors whitespace-nowrap ${
               filter === f.value
-                ? "bg-[#41B63E] text-white"
+                ? "bg-[#0064E0] text-white"
                 : "bg-gray-100 text-gray-600 hover:bg-gray-200"
             }`}
           >

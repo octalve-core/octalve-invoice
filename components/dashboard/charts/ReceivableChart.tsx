@@ -37,7 +37,7 @@ export default function ReceivableChart({
   percentChange = 7,
 }: ReceivableChartProps) {
   return (
-    <div className="bg-white rounded-xl p-5 shadow-sm border border-gray-100">
+    <div className="min-w-0 overflow-hidden bg-white rounded-xl p-3 sm:p-5 shadow-sm border border-gray-100">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 mb-6">
         <div>
@@ -48,7 +48,7 @@ export default function ReceivableChart({
             </span>
           </div>
           <div className="flex flex-wrap items-baseline gap-2 sm:gap-3">
-            <span className="text-3xl font-bold text-gray-900">
+            <span className="text-xl sm:text-3xl font-bold break-all text-gray-900">
               {totalAmount}
             </span>
             <span className="flex items-center gap-1 text-sm text-green-600 font-medium">
@@ -58,14 +58,14 @@ export default function ReceivableChart({
             <span className="text-sm text-gray-400">+ Last month ₦925,000</span>
           </div>
         </div>
-        <select className="px-3 py-2 text-sm border border-gray-200 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-[#41B63E]/20">
+        <select className="px-3 py-2 text-sm border border-gray-200 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-[#0064E0]/20">
           <option>Monthly (2024)</option>
           <option>Monthly (2023)</option>
         </select>
       </div>
 
       {/* Chart */}
-      <div className="h-[300px]">
+      <div className="h-[220px] sm:h-[300px] min-w-0">
         <ResponsiveContainer width="100%" height="100%">
           <BarChart data={chartData} barGap={2} barCategoryGap="20%">
             <CartesianGrid
@@ -77,7 +77,7 @@ export default function ReceivableChart({
               dataKey="month"
               axisLine={false}
               tickLine={false}
-              tick={{ fontSize: 12, fill: "#6B7280" }}
+              tick={{ fontSize: 10, fill: "#6B7280" }}
             />
             <YAxis
               axisLine={false}
@@ -107,7 +107,7 @@ export default function ReceivableChart({
             />
             <Bar
               dataKey="current"
-              fill="#41B63E"
+              fill="#0064E0"
               radius={[4, 4, 0, 0]}
               name="Current"
             />

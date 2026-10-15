@@ -9,12 +9,12 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="flex min-h-screen bg-[#F9FAFB]">
+    <div className="flex min-h-screen min-w-0 max-w-full overflow-x-clip bg-[#F9FAFB]">
       {/* Desktop Sidebar */}
       <Sidebar />
 
       {/* Main Content Area */}
-      <div className="flex-1 flex flex-col min-h-screen">
+      <div className="flex min-w-0 flex-1 flex-col min-h-screen">
         {/* Mobile Header */}
         <MobileHeader />
 
@@ -22,7 +22,7 @@ export default function DashboardLayout({
         <TopNavbar />
 
         {/* Page Content */}
-        <main className="flex-1 p-4 lg:p-6 pb-24 lg:pb-6 overflow-y-auto">
+        <main className="min-w-0 flex-1 overflow-x-clip p-3 pb-24 sm:p-4 lg:p-6 lg:pb-6">
           {children}
         </main>
 

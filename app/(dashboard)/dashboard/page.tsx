@@ -2,6 +2,7 @@
 
 import { FileText, Users, Wallet, FileSpreadsheet } from "lucide-react";
 import { useState } from "react";
+import {useRouter} from "next/navigation";
 import Tabs from "@/components/dashboard/ui/Tabs";
 import StatCard from "@/components/dashboard/cards/StatCard";
 import QuickAction from "@/components/dashboard/cards/QuickAction";
@@ -31,7 +32,7 @@ const statsData = [
     value: "2,420",
     change: 40,
     chartData: [30, 40, 25, 50, 49, 60, 70, 91, 85, 95],
-    chartColor: "#41B63E",
+    chartColor: "#0064E0",
   },
   {
     title: "Total Invoice",
@@ -45,11 +46,12 @@ const statsData = [
     value: "316",
     change: 23,
     chartData: [20, 35, 40, 50, 55, 60, 65, 70, 80, 85],
-    chartColor: "#41B63E",
+    chartColor: "#0064E0",
   },
 ];
 
 export default function DashboardPage() {
+  const router=useRouter();
   const [activeModal, setActiveModal] = useState<string | null>(null);
 
   const closeModals = () => setActiveModal(null);
@@ -79,20 +81,21 @@ export default function DashboardPage() {
         <h2 className="text-sm font-medium text-gray-700 mb-3">
           + Quick Create
         </h2>
-        <div className="flex items-center gap-2 overflow-x-auto pb-2">
+        <div className="grid grid-cols-4 gap-2 min-w-0">
           {quickActions.map((action) => (
             <QuickAction
               key={action.label}
               icon={action.icon}
               label={action.label}
-              onClick={() => setActiveModal(action.action)}
+              onClick={() => action.action==="invoice"?router.push("/dashboard/invoice/create"):setActiveModal(action.action)}
             />
           ))}
         </div>
       </div>
 
+      <p className="text-xs text-gray-500">Sample financial figures — UI Preview only</p>
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-3 gap-4">
         {statsData.map((stat) => (
           <StatCard
             key={stat.title}

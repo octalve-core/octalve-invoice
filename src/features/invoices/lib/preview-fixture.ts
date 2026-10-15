@@ -1,3 +1,4 @@
+import {formatDocumentNumber} from "./document-number";
 import { createEmptyInvoiceDraft } from "@/src/features/invoice/constants";
 import type { BusinessIdentityProfile, BusinessPaymentSettings, InvoiceDraft } from "@/src/features/invoice/types";
 
@@ -17,7 +18,7 @@ export const previewPayment: BusinessPaymentSettings = {
 export function createPreviewInvoice(): InvoiceDraft {
   return {
     ...createEmptyInvoiceDraft(new Date("2026-10-15T12:00:00Z")),
-    invoiceNo: "PREVIEW-001",
+    invoiceNo: formatDocumentNumber("Octalve Limited",1,"invoice"),
     clientName: "Sample Customer",
     clientEmail: "customer@example.invalid",
     rows: [{
