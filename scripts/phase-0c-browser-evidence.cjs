@@ -167,6 +167,9 @@ const origin = process.env.OCTALVE_BASE_URL || "http://127.0.0.1:3000";
             await page.getByRole("button",{name:/Growth/}).first().click();
             await page.getByRole("button",{name:/Review Growth plan/}).click();
             await page.getByText("No subscription was created",{exact:false}).waitFor();
+            await page.getByLabel("Preview subscription state").selectOption("expired");
+            await page.getByRole("heading",{name:"Plan expired example"}).waitFor();
+            record.subscriptionExpiredLayout="PASS";
             record.subscriptionNoFakePurchase="PASS";
           }
           if(route==="/dashboard/settings/theme"){
