@@ -69,7 +69,18 @@ const origin = process.env.OCTALVE_BASE_URL || "http://127.0.0.1:3000";
               await sheet.getByRole("button",{name:/View /}).first().click();
               await page.getByRole("dialog",{name:/ details/i}).waitFor();
               record.sheetAndDetail="PASS";
+              if(route==="/dashboard/receipt"){
+                await page.getByText("Receipt sample linked to Invoice",{exact:false}).waitFor();
+                record.optionalReceiptLink="PASS";
+              }
               await page.getByRole("button",{name:"Close details"}).click();
+              if(route==="/dashboard/receipt"){
+                await page.locator('article[role="link"]').nth(1).click();
+                await page.getByRole("button",{name:"View Receipt"}).click();
+                await page.getByText("recorded independently of an invoice",{exact:false}).waitFor();
+                record.manualIndependentReceipt="PASS";
+                await page.getByRole("button",{name:"Close details"}).click();
+              }
             }
             if(view==="desktop"){
               await page.locator("table").first().waitFor({state:"visible"});
@@ -86,6 +97,11 @@ const origin = process.env.OCTALVE_BASE_URL || "http://127.0.0.1:3000";
             record.overviewActionSheet="PASS";
             await page.getByRole("button",{name:"Close record actions"}).click();
             await page.getByRole("button",{name:"All",exact:true}).last().click();
+          }
+          if(route==="/dashboard/quotation"){
+            await page.getByRole("button",{name:"Accepted",exact:true}).waitFor();
+            if(await page.getByRole("button",{name:"Paid",exact:true}).count())throw new Error("Quotation incorrectly implies payment");
+            record.quotationIsNotPayment="PASS";
           }
           if (route === "/dashboard/invoice/create") {
             await page.getByRole("heading", { name: "Create invoice" }).waitFor();
