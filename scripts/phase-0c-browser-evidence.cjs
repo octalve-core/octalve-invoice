@@ -30,12 +30,14 @@ const origin = process.env.OCTALVE_BASE_URL || "http://127.0.0.1:3000";
           if (route === "/dashboard/invoice/create") {
             await page.getByRole("heading", { name: "Create invoice" }).waitFor();
             await page.getByRole("heading", { name: "Live Modern Invoice preview" }).waitFor();
-            const customer = page.getByLabel("Customer name");
+            const customer = page.locator('section[aria-label="Invoice input"]').getByLabel("Customer name");
             await customer.fill("Golden Preview Customer");
             await page.locator('#invoice-document').waitFor();
+            await page.screenshot({ path: path.join(output, view+"-invoice-modern.png"), fullPage: true, animations: "disabled" });
             await page.getByLabel("Template").selectOption("ledger");
             await page.locator('[data-invoice-renderer="classic-ledger-v1"]').waitFor();
             record.templateSwitch = "PASS";
+            await page.screenshot({ path: path.join(output, view+"-invoice-classic-ledger.png"), fullPage: true, animations: "disabled" });
           }
           await page.screenshot({ path: path.join(output, record.screenshot), fullPage: true, animations: "disabled" });
           record.status = "PASS";
