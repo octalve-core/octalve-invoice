@@ -53,7 +53,7 @@ export default function TransactionTable(){
   {notice?<div role="status" className="mb-3 flex justify-between gap-2 rounded-lg bg-blue-50 p-3 text-xs text-blue-900"><span>{notice}</span><button aria-label="Dismiss notice" onClick={()=>setNotice("")}><X size={16}/></button></div>:null}
   <div className="space-y-2">{visible.map(row=><RecordMobileCard key={row.kind+"-"+row.id} record={row} onSelect={setSelected}/>)}</div>
   {visible.length===0?<p className="p-5 text-center text-sm text-gray-500">No sample records in this category.</p>:null}
-  <p className="mt-3 text-xs text-gray-400">UI Preview — values are examples, not financial records. Receipts are only generated when explicitly requested.</p>
+
   {selected?<RecordActionDialog record={selected} onClose={()=>setSelected(null)} onAction={action}/>:null}
   {viewing?<RecordDetailDialog record={viewing} onClose={()=>setViewing(null)}/>:null}
  </section>;

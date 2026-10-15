@@ -18,7 +18,7 @@ export function RecordDetailDialog({record,onClose}:{record:PreviewRecord;onClos
  return <div className="fixed inset-0 z-[100] flex items-end justify-center bg-black/50 lg:items-center lg:p-4" onClick={onClose}>
   <section role="dialog" aria-modal="true" aria-label={definitions[record.kind].title+" details"} className="max-h-[90dvh] w-full max-w-lg overflow-y-auto rounded-t-2xl bg-white p-5 shadow-xl lg:rounded-2xl" onClick={e=>e.stopPropagation()}>
    <div className="flex items-center justify-between border-b pb-4"><div className="flex items-center gap-3"><RecordTypeIcon kind={record.kind} status={record.status}/>
-    <div><h2 className="font-semibold text-[#18334b]">{definitions[record.kind].title} details</h2><p className="text-xs text-gray-500">Preview-only record</p></div></div>
+    <div><h2 className="font-semibold text-[#18334b]">{definitions[record.kind].title} details</h2><p className="text-xs text-gray-500">Record details</p></div></div>
     <button onClick={onClose} aria-label="Close details" className="rounded p-2 text-gray-600"><X size={19}/></button></div>
    <div className="my-4"><RecordStatusBadge status={record.status}/></div>
    <dl className="divide-y rounded-xl border border-gray-100">{fields.map(([label,value])=><div key={label} className="grid grid-cols-[100px_1fr] gap-3 px-3 py-3 text-xs sm:grid-cols-[140px_1fr]"><dt className="text-gray-500">{label}</dt><dd className="break-words font-semibold text-[#15354e]">{value}</dd></div>)}</dl>

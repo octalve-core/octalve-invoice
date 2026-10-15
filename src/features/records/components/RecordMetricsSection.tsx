@@ -14,7 +14,7 @@ export function RecordMetricsSection({kind}:{kind:"receipt"|"creditNote"}){
    {label:"Open customer credits",value:records.filter(r=>r.status==="open"||r.status==="partial").length,subtext:"Unresolved/partially allocated",tone:"text-amber-600"},
    {label:"Settled credit samples",value:records.filter(r=>r.status==="settled").length,subtext:"No real refund or settlement",tone:"text-green-600"}];
  return <section aria-label={kind==="receipt"?"Receipt preview metrics":"Credit note preview metrics"} className="hidden lg:block">
-  <p className="mb-2 text-xs text-gray-500">Sample list counts — preview only</p>
+
   <div className="grid grid-cols-3 gap-4">{stats.map(s=><article key={s.label} className="min-w-0 rounded-xl border border-gray-100 bg-white p-5 shadow-sm">
    <p className="text-sm text-[#46556b]">{s.label}</p>
    <strong className={"mt-3 block text-3xl font-bold "+s.tone}>{s.value}</strong>

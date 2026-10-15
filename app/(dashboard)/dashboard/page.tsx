@@ -96,7 +96,7 @@ export default function DashboardPage() {
         </div>
       </div>
 
-      <p className="text-xs text-gray-500">Sample financial figures — UI Preview only</p>
+      <p className="text-xs text-gray-500">Illustrative financial figures</p>
       {/* Small-screen financial card grouping from the approved Flutter reference. */}
       <section aria-label="Mobile receivables" className="md:hidden grid grid-cols-2 gap-2">
         {[["Current invoice","₦506,000.00"],["Total inflow","₦506,000.00"],["Overdue invoice","₦0.00"],["Total outflow","₦240,000.00"]].map(([label,value])=>(

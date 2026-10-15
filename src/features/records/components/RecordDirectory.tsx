@@ -94,7 +94,7 @@ export function RecordDirectory({kind,onCreate,onView,onEdit,showDesktopHeader=t
       {value==="all"?"All":statusLabels[value]}</button>)}
    </div>
    <div className="hidden items-center gap-4 border-b border-gray-100 px-5 py-4 lg:flex">
-    <span className="shrink-0 text-sm font-semibold text-gray-600">{filtered.length} {def.plural} <span className="text-[10px] font-normal text-gray-400">(preview)</span></span>
+    <span className="shrink-0 text-sm font-semibold text-gray-600">{filtered.length} {def.plural}</span>
     <label className="relative min-w-0 max-w-xs flex-1"><Search size={16} className="absolute left-3 top-3 text-gray-400"/>
      <input aria-label={"Search "+def.plural} value={search} onChange={e=>query(e.target.value)} placeholder="Search" className="h-10 w-full rounded-lg border border-gray-200 bg-white pl-9 pr-3 text-sm outline-none focus:border-[#0064E0]"/></label>
     <div className="ml-auto flex items-center gap-2">
@@ -134,7 +134,7 @@ export function RecordDirectory({kind,onCreate,onView,onEdit,showDesktopHeader=t
     <button type="button" disabled={page>=total} onClick={()=>setPage(p=>p+1)} className="rounded-lg border px-3 py-2 disabled:opacity-30">Next →</button>
    </div>
   </div>
-  <p className="text-xs text-gray-400">Sample information only — no records, payments, refunds or notifications are being processed.</p>
+
   {filtersOpen?<RecordFilterDialog statuses={def.statuses} initial={filters} onClose={()=>setFiltersOpen(false)} onApply={v=>{setFilters(v);setPage(1);}}/>:null}
   {selected?<RecordActionDialog record={selected} onClose={()=>setSelected(null)} onAction={action}/>:null}
   {viewing?<RecordDetailDialog record={viewing} onClose={()=>setViewing(null)}/>:null}
