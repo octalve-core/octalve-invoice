@@ -84,6 +84,19 @@ const origin = process.env.OCTALVE_BASE_URL || "http://127.0.0.1:3000";
             await page.waitForURL(/\/dashboard\/invoice\/\d+$/);
             record.rowNavigate="PASS";
           }
+          if(route==="/dashboard/settings"&&view==="desktop"){
+            await page.getByRole("button",{name:"Log out",exact:true}).first().click();
+            await page.getByRole("dialog",{name:"Leave preview"}).waitFor();
+            await page.getByRole("button",{name:"Log out of Preview"}).click();
+            await page.waitForURL(/\/login\?preview=exited/);
+            record.previewLogout="PASS";
+          }
+          if(route==="/dashboard/settings/profile"&&view==="desktop"){
+            const name=page.locator(".largeScreen").getByLabel("Full Name");
+            await name.fill("Aisha Bello");
+            await page.getByRole("button",{name:"Account menu"}).getByText("Aisha Bello").waitFor();
+            record.inSessionUserName="PASS";
+          }
           record.status = "PASS";
         } catch (error) {
           record.status = "FAIL";
