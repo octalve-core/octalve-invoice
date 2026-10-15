@@ -196,8 +196,8 @@ const origin = process.env.OCTALVE_BASE_URL || "http://127.0.0.1:3000";
           if(route==="/dashboard/customer"&&view==="desktop"){
             const actions=page.getByRole("button",{name:/Actions for OL-/}).first();
             await actions.click();
-            await page.getByRole("dialog",{name:/Actions for OL-/}).getByRole("button",{name:/Delete Customers/}).click();
-            const confirm=page.getByRole("alertdialog",{name:"Delete Customers"});
+            await page.getByRole("dialog",{name:/Actions for OL-/}).getByRole("button",{name:/Delete Customer/}).click();
+            const confirm=page.getByRole("alertdialog",{name:"Delete Customer"});
             await confirm.waitFor();
             if(await confirm.getByRole("button",{name:"Move to Deleted Records"}).isEnabled())throw Error("Delete action did not require a reason");
             await confirm.getByPlaceholder("Explain why this record is being removed").fill("Duplicate preview customer");
