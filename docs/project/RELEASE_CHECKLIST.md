@@ -19,7 +19,7 @@
 - Reject conflicting refund event replays and financial minor-unit total overflow.
 - Correct active shared record filters to Octalve blue.
 - Correct desktop invoice prefix to merchant-derived initials consistent with mobile.
-- Wire existing Safari/Chromium-compatible inherited PNG export adapter into Modern and Classic Ledger preview alongside their native PDF buttons, with missing merchant-details warnings. Update generated export file naming to Octalve.
+- Wire existing inherited browser PNG export adapter into Modern and Classic Ledger preview alongside their native PDF buttons, with missing merchant-details warnings. Update generated export file naming to Octalve.
 - See `PAYMENT_AND_RECEIPT_PHASE0H.md` for item-by-item audit of the 12 user corrections.
 
 ## NOT formally qualified / prohibited
