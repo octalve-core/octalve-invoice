@@ -13,8 +13,8 @@
     "lint": "PASS b7496224",
     "sourceUnitTests": "PASS b7496224 including 8 provisional codes",
     "nextProductionBuild": "PASS b7496224",
-    "githubCodeQL": "PASS b2af8898; b7496224 in progress at state update",
-    "browserResponsiveRoutes": "PASS 75/75 (25 routes x desktop/tablet/mobile), code 45f64182 run 38771020502; b7496224 expanded run in progress",
+    "githubCodeQL": "PASS b7496224 (CodeQL Actions 38771317088 and 38771309223)",
+    "browserResponsiveRoutes": "PASS 75/75 (25 routes x desktop/tablet/mobile) at b7496224, GitHub Actions run 38771308968; checks include linked/manual receipt semantics",
     "officialBrandAssets": "PASS original icon and wordmark PNG HTTP 200 on Vercel",
     "vercelPreview": "READY b7496224 https://octalve-invoice-njcepwivv-octalve-vault.vercel.app",
     "browserPixelPerfect": "PENDING owner visual review of newly uploaded references",
@@ -22,18 +22,17 @@
     "merchantProfileLinkage": "PREVIEW IN-MEMORY ONLY, user profile likewise; no server account/session",
     "mainMerge": "BLOCKED: PR #1 remains draft",
     "database": "NOT PROVISIONED. Phase 1 remains blocked",
-    "browserScreenshotArtifacts": "75/75 verified at run 38771020502; expanded current-branch run awaits final result",
+    "browserScreenshotArtifacts": "CAPTURED at GitHub Actions run 38771308968; owner visual approval pending",
     "phase0fFeatures": "PASS in Preview; user/account changes and document IDs remain in-session sample data",
     "phase0gFeatures": "Implemented on branch b7496224: shared 8-module table/card architecture, mobile record action sheet, desktop modal, receipt independently recorded vs invoice-linked samples, quotation status distinction, four approved overview filters, refund/delete safety"
   },
   "blockers": [
     "Owner has not signed off screenshot-to-reference comparison of 8-module shared responsive lists and four-chip Overview.",
     "Native invoice/receipt/ledger PDF browser/image/golden parity still NOT RUN; no production document issuance.",
-    "Merchant authentication, verified payments, optional receipt issuance, manual payment evidence and refunds need Phase 1 database/server controls; frontend previews do not perform any action.",
-    "Latest branch-specific CodeQL and browser run in progress at state update. Previously tested implementation checkpoint PASSED."
+    "Merchant authentication, verified payments, optional receipt issuance, manual payment evidence and refunds need Phase 1 database/server controls; frontend previews do not perform any action."
   ],
   "nextPhase": "Phase 0G owner visual review and PDF golden regression. Begin backend/Neon only after explicit UI approval.",
   "currentCodeCheckpoint": "b7496224e9373d3ea5b5aff83458c77a0870b857",
-  "lastVerifiedApplicationCommit": "45f641827305501715e5d554ac59a9111fd356a1",
+  "lastVerifiedApplicationCommit": "b7496224e9373d3ea5b5aff83458c77a0870b857",
   "exactNextPhase": "Phase 0G owner visual review and PDF golden regression. Begin backend/Neon only after explicit UI approval."
 }
