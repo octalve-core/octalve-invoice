@@ -474,9 +474,9 @@ function PdfNotes({ presentation }: { presentation: InvoicePresentation }) {
       <Text style={[styles.closingHeading, { fontSize: ui.closingHeadingSize, letterSpacing: ui.closingHeadingLetterSpacing }]}>Notes</Text>
       <Text style={[styles.thankYou, { fontSize: ui.thankYouSize, marginTop: ui.thankYouMarginTop }]}>Thank you for choosing us.</Text>
 
-      {presentation.extraDetailsVisible ? (
+      {(presentation.extraDetailsVisible || Boolean(presentation.notes)) ? (
         <View style={{ marginTop: ui.extraDetailsMarginTop, rowGap: ui.extraDetailsGap }}>
-          {(presentation.payment.bankName || presentation.payment.accountName || presentation.payment.accountNumber) ? (
+          {presentation.extraDetailsVisible && (presentation.payment.bankName || presentation.payment.accountName || presentation.payment.accountNumber) ? (
             <View>
               <Text style={[styles.miniHeading, { fontSize: ui.miniHeadingSize, marginBottom: ui.miniHeadingMarginBottom }]}>Payment Details</Text>
               {presentation.payment.bankName ? (

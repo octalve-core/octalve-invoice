@@ -543,8 +543,7 @@ function Summary({ presentation, profile, accentDark }: { presentation: InvoiceP
 }
 
 function ExtraDetails({ presentation, profile, accentDark }: { presentation: InvoicePresentation; profile: ClassicLedgerPdfProfile; accentDark: string }) {
-  if (!presentation.extraDetailsVisible) return null;
-  const hasPayment = Boolean(presentation.payment.bankName || presentation.payment.accountName || presentation.payment.accountNumber);
+  const hasPayment = presentation.extraDetailsVisible && Boolean(presentation.payment.bankName || presentation.payment.accountName || presentation.payment.accountNumber);
   if (!hasPayment && !presentation.notes) return null;
 
   return (
@@ -559,7 +558,7 @@ function ExtraDetails({ presentation, profile, accentDark }: { presentation: Inv
         },
       ]}
     >
-      <View style={styles.extraColumn}>
+      {hasPayment ? <View style={styles.extraColumn}>
         <Text style={[styles.extraHeading, { color: accentDark, fontSize: profile.extraDetailsHeadingSize, marginBottom: profile.code === "A5" ? 4 : 6 }]}>PAYMENT DETAILS</Text>
         {[
           ["Bank", presentation.payment.bankName],
@@ -571,11 +570,11 @@ function ExtraDetails({ presentation, profile, accentDark }: { presentation: Inv
             <Text style={[styles.paymentValue, { fontSize: profile.extraDetailsTextSize, paddingBottom: 1.5 }]}>{value}</Text>
           </View>
         ))}
-      </View>
-      <View style={styles.extraColumn}>
+      </View> : null}
+      {presentation.notes ? <View style={styles.extraColumn}>
         <Text style={[styles.extraHeading, { color: accentDark, fontSize: profile.extraDetailsHeadingSize, marginBottom: profile.code === "A5" ? 4 : 6 }]}>TERMS &amp; NOTES</Text>
-        <Text style={[styles.notes, { fontSize: profile.extraDetailsTextSize }]}>{presentation.notes || " "}</Text>
-      </View>
+        <Text style={[styles.notes, { fontSize: profile.extraDetailsTextSize }]}>{presentation.notes}</Text>
+      </View> : null}
     </View>
   );
 }
