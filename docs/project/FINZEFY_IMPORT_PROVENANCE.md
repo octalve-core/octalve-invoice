@@ -5,3 +5,10 @@ Copied root configs: .gitignore, components.json, next.config.ts, postcss.config
 Excluded: donor .git history, README, npm package-lock, repomix-output.xml.
 Bootstrap adjustments: app package renamed; pnpm lockfile created; lint/typecheck/test scripts added with ESLint 9+Next 16 config.
 IMPORTANT: this is *unrefactored* Finzefy donor UI. Octalve branding, approved logos/icons and native Sapphire documents are NOT YET integrated; do not claim visually qualified.
+
+## Sapphire renderer source
+Imported exact subtree src/features/invoice from commit dfd2657fc22f56c4b82808ca4072ad0300cb753c.
+Vendor source is isolated; the merchant platform must never call donor localStorage persistence for issued records.
+The reusable presentation/PDF/rendering modules are here; historical tests not yet requalified.
+Document geometry/CSS is preserved. Product-level reset removed from donor CSS to prevent site-wide conflicts.
+Placeholder demo company constants removed; signed-off snapshots and official merchant profile wiring remain future work.
