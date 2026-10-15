@@ -2,7 +2,7 @@
 import type { Dispatch, SetStateAction } from "react";
 import { useState } from "react";
 import Link from "next/link";
-import type { PaymentMode } from "@/src/features/merchant-preview/MerchantPreviewProvider";
+import {useMerchantPreview,type PaymentMode} from "@/src/features/merchant-preview/MerchantPreviewProvider";
 import { SapphireInvoiceRenderer } from "@/src/features/invoice/renderers/sapphire-invoice-renderer";
 import { ClassicLedgerRenderer } from "@/src/features/invoice/templates/classic-ledger/classic-ledger-renderer";
 import { calculateInvoiceTotals } from "@/src/features/invoice/lib/calculations";
@@ -14,6 +14,7 @@ type Props={
  template:"modern"|"ledger"; merchantLogo?:string|null;paymentMode?:PaymentMode;
 };
 export function InvoiceDocumentPreviewSection({draft,setDraft,profile,setProfile,payment,setPayment,template,merchantLogo=null,paymentMode="manual"}:Props){
+ const {invoiceAppearance}=useMerchantPreview();
  const [downloadError,setDownloadError]=useState("");
  const [showDownloadPrompt,setShowDownloadPrompt]=useState(false);
  const [downloadFormat,setDownloadFormat]=useState<"pdf"|"png">("pdf");
@@ -57,7 +58,7 @@ export function InvoiceDocumentPreviewSection({draft,setDraft,profile,setProfile
        await exportNativeInvoicePdf(presentation,"octalve-modern-preview.pdf",merchantLogo);
      }else{
        const {exportClassicLedgerPdf}=await import("@/src/features/invoice/templates/classic-ledger/pdf/classic-ledger-pdf-export");
-       await exportClassicLedgerPdf(presentation,"octalve-classic-ledger-preview.pdf",undefined,merchantLogo);
+       await exportClassicLedgerPdf(presentation,"octalve-classic-ledger-preview.pdf",invoiceAppearance.accent,merchantLogo);
      }
    }catch(err){setDownloadError(err instanceof Error?err.message:"PDF preview unavailable.");}
  };
@@ -77,8 +78,8 @@ export function InvoiceDocumentPreviewSection({draft,setDraft,profile,setProfile
    {downloadError&&<p role="alert" className="text-sm text-red-600">{downloadError}</p>}
    <div className="invoice-preview-viewport min-w-0 overflow-hidden rounded-xl border border-gray-200 bg-[#edf2f8] p-2 py-6">
      <div className="invoice-preview-paper" style={{pointerEvents:"none"}}>{template==="modern" ?
-       <SapphireInvoiceRenderer {...shared} companyProfile={profile} companyLogo={merchantLogo}/> :
-       <ClassicLedgerRenderer {...shared} businessProfile={profile} companyLogo={merchantLogo} onBusinessProfileChange={onProfileChange}/>}
+       <SapphireInvoiceRenderer {...shared} companyProfile={profile} companyLogo={merchantLogo} accentColor={invoiceAppearance.accent} font={invoiceAppearance.font} density={invoiceAppearance.density} header={invoiceAppearance.header} logoPosition={invoiceAppearance.logoPosition} showFooter={invoiceAppearance.showFooter}/> :
+       <ClassicLedgerRenderer {...shared} businessProfile={profile} companyLogo={merchantLogo} accentColor={invoiceAppearance.accent} onBusinessProfileChange={onProfileChange}/>}
      </div>
    </div>
    {showDownloadPrompt?<div role="presentation" className="fixed inset-0 z-[100] flex items-end justify-center bg-black/40 p-0 sm:items-center sm:p-4" onClick={()=>setShowDownloadPrompt(false)}><section role="dialog" aria-modal="true" aria-label="Complete invoice details" className="w-full max-w-md space-y-3 rounded-t-2xl bg-white p-5 shadow-xl sm:rounded-2xl" onClick={e=>e.stopPropagation()}><h3 className="text-lg font-semibold">Review missing business details</h3><p className="text-sm text-gray-600">{!merchantLogo?"No merchant logo is uploaded. ":""}{!paymentReady?"Payment instructions are incomplete or not connected. ":""}You can download a preview without these details.</p><div className="grid gap-2 sm:grid-cols-2"><Link href="/dashboard/settings/business" className="rounded-full bg-[#0064E0] px-4 py-3 text-center text-sm font-medium text-white">Go to Business Settings</Link><button type="button" onClick={()=>void performDownload(downloadFormat)} className="rounded-full border border-[#0064E0] px-4 py-3 text-sm font-medium text-[#0064E0]">Continue without details</button></div><button type="button" onClick={()=>setShowDownloadPrompt(false)} className="w-full p-2 text-sm text-gray-500">Cancel</button></section></div>:null}
