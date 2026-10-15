@@ -2,7 +2,9 @@
 
 import { useState } from "react";
 import React from "react";
-import { useRouter } from "next/navigation";
+import Link from "next/link";
+import { toast } from "sonner";
+
 import { Loader2, ChevronDown } from "lucide-react";
 
 const currencies = [
@@ -19,18 +21,10 @@ export default function SetCurrencyPage() {
   const [selectedCurrency, setSelectedCurrency] = useState(currencies[0]);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const router = useRouter();
+
 
   const handleSubmit = async () => {
-    setIsLoading(true);
-    // Preview only: selection is not persisted without the merchant backend.
-
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 2000));
-
-    setIsLoading(false);
-    // Navigate to dashboard or home
-    router.push("/dashboard");
+    toast.info("UI Preview only — currency selection is not saved yet. Merchant profile persistence is scheduled for the backend phase.");
   };
 
   return (
@@ -103,6 +97,8 @@ export default function SetCurrencyPage() {
           <p className="text-xs text-amber-600 bg-amber-50 p-3 rounded-lg mb-6">
             The primary currency may be changed later; issued invoices will keep their original currencies.
           </p>
+
+          <Link href="/dashboard/getting-started" className="mb-3 block text-right text-sm font-semibold text-[#0064E0]">Skip for now</Link>
 
           {/* Submit Button */}
           <button
