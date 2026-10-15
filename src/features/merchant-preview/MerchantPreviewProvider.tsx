@@ -13,6 +13,16 @@ export const defaultPreviewUser:PreviewUser={
 };
 export type PaymentMode="manual"|"monnify"|"flutterwave"|"paystack";
 export type ReceiptAutoMode="off"|"generate"|"generate_and_email";
+export type InvoiceAppearance = {
+ template:"modern"|"ledger"; accent:string; font:"system"|"serif"|"rounded";
+ density:"comfortable"|"compact"; header:"standard"|"minimal";
+ logoPosition:"left"|"center"|"right"; showFooter:boolean; showWatermark:boolean;
+};
+export const defaultInvoiceAppearance:InvoiceAppearance={template:"modern",accent:"#0064E0",font:"system",density:"comfortable",header:"standard",logoPosition:"left",showFooter:true,showWatermark:false};
+export type ArchivedPreviewRecord = {
+ kind:"invoice"|"receipt"|"quotation"|"expense"|"creditNote"|"customer"|"staff"|"item";
+ id:string; reference:string; title:string; status:string; archivedAt:string; reason:string; originalAmount?:string;
+};
 export interface CatalogCustomer {id:string;name:string;email:string;phone:string;address:string;company:string;}
 export interface CatalogItem {id:string;name:string;description:string;rate:string;taxPercent:string;discountPercent:string;category:string;type:"goods"|"service";}
 export interface CatalogStaff {id:string;name:string;email:string;role:string;phone:string;}
@@ -39,6 +49,8 @@ type ContextValue={
  items:CatalogItem[];setItems:Dispatch<SetStateAction<CatalogItem[]>>;
  staff:CatalogStaff[];setStaff:Dispatch<SetStateAction<CatalogStaff[]>>;
  receiptAutoMode:ReceiptAutoMode;setReceiptAutoMode:Dispatch<SetStateAction<ReceiptAutoMode>>;
+ invoiceAppearance:InvoiceAppearance;setInvoiceAppearance:Dispatch<SetStateAction<InvoiceAppearance>>;
+ archivedRecords:ArchivedPreviewRecord[];setArchivedRecords:Dispatch<SetStateAction<ArchivedPreviewRecord[]>>;
  readNotificationIds:string[];setReadNotificationIds:Dispatch<SetStateAction<string[]>>;
  user:PreviewUser;setUser:Dispatch<SetStateAction<PreviewUser>>;
  userImage:string|null;setUserImage:Dispatch<SetStateAction<string|null>>;
@@ -59,10 +71,12 @@ export function MerchantPreviewProvider({children}:{children:ReactNode}){
  const [items,setItems]=useState<CatalogItem[]>(starterItems);
  const [staff,setStaff]=useState<CatalogStaff[]>(starterStaff);
  const [receiptAutoMode,setReceiptAutoMode]=useState<ReceiptAutoMode>("off");
+ const [invoiceAppearance,setInvoiceAppearance]=useState<InvoiceAppearance>(defaultInvoiceAppearance);
+ const [archivedRecords,setArchivedRecords]=useState<ArchivedPreviewRecord[]>([]);
  const [readNotificationIds,setReadNotificationIds]=useState<string[]>([]);
  const [userImage,setUserImage]=useState<string|null>(null);
- const resetPreview=()=>{setSettings(defaults);setLogoPreview(null);setPaymentMode("manual");setUser(defaultPreviewUser);setUserImage(null);setCustomers(starterCustomers);setItems(starterItems);setStaff(starterStaff);setReceiptAutoMode("off");setReadNotificationIds([]);};
- const value=useMemo(()=>({settings,setSettings,logoPreview,setLogoPreview,paymentMode,setPaymentMode,customers,setCustomers,items,setItems,staff,setStaff,receiptAutoMode,setReceiptAutoMode,readNotificationIds,setReadNotificationIds,user,setUser,userImage,setUserImage,resetPreview}),[settings,logoPreview,paymentMode,customers,items,staff,receiptAutoMode,readNotificationIds,user,userImage]);
+ const resetPreview=()=>{setSettings(defaults);setLogoPreview(null);setPaymentMode("manual");setUser(defaultPreviewUser);setUserImage(null);setCustomers(starterCustomers);setItems(starterItems);setStaff(starterStaff);setReceiptAutoMode("off");setInvoiceAppearance(defaultInvoiceAppearance);setArchivedRecords([]);setReadNotificationIds([]);};
+ const value=useMemo(()=>({settings,setSettings,logoPreview,setLogoPreview,paymentMode,setPaymentMode,customers,setCustomers,items,setItems,staff,setStaff,receiptAutoMode,setReceiptAutoMode,invoiceAppearance,setInvoiceAppearance,archivedRecords,setArchivedRecords,readNotificationIds,setReadNotificationIds,user,setUser,userImage,setUserImage,resetPreview}),[settings,logoPreview,paymentMode,customers,items,staff,receiptAutoMode,invoiceAppearance,archivedRecords,readNotificationIds,user,userImage]);
  return <C.Provider value={value}>{children}</C.Provider>;
 }
 export function useMerchantPreview(){const ctx=useContext(C);if(!ctx)throw new Error("Merchant preview provider missing");return ctx;}
