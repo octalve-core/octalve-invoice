@@ -86,8 +86,8 @@ export default function ReceivableChart({
               tickFormatter={(value) => `${value / 1000}K`}
             />
             <Tooltip
-              formatter={(value?: number) => [
-                `₦${(value ?? 0).toLocaleString()}`,
+              formatter={(value) => [
+                `₦${Number(value ?? 0).toLocaleString()}`,
                 "",
               ]}
               contentStyle={{
