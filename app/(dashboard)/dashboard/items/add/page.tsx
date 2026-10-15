@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { ArrowLeft, Plus, ChevronDown, Check, X } from "lucide-react";
 import Link from "next/link";
@@ -15,7 +15,7 @@ const categories = [
   "Other",
 ];
 
-export default function AddItemPage() {
+function AddItemPageContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const editId = searchParams.get("edit");
@@ -362,5 +362,15 @@ export default function AddItemPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+
+/** Query-dependent editor must render under a Suspense boundary in Next.js. */
+export default function AddItemPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-gray-50" aria-busy="true" />}>
+      <AddItemPageContent />
+    </Suspense>
   );
 }
