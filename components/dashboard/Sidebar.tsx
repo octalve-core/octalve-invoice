@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import Image from "next/image";
+import { BrandWordmark } from "@/src/shared/ui/BrandWordmark";
 import { usePathname } from "next/navigation";
 import {
   LayoutDashboard,
@@ -63,24 +63,17 @@ export default function Sidebar() {
   const [isGettingStartedOpen, setIsGettingStartedOpen] = useState(true);
 
   return (
-    <aside className="hidden lg:flex flex-col w-64 min-h-screen bg-[#2D7A2A] text-white">
+    <aside className="hidden lg:flex flex-col w-64 min-h-screen bg-[#0052B8] text-white">
       {/* Logo */}
       <div className="flex items-center gap-2 px-6 py-5 border-b border-white/10">
-        <Image
-          src="/logo.svg"
-          alt="Finzefy"
-          width={32}
-          height={32}
-          className="rounded-lg"
-        />
-        <span className="text-xl font-semibold">Finzefy</span>
+        <BrandWordmark className="text-xl" />
       </div>
 
       {/* Getting Started Section */}
       <div className="px-3 py-4">
         <button
           onClick={() => setIsGettingStartedOpen(!isGettingStartedOpen)}
-          className="flex items-center justify-between w-full px-3 py-2.5 rounded-lg bg-[#246B22] hover:bg-[#1E5B1B] transition-colors"
+          className="flex items-center justify-between w-full px-3 py-2.5 rounded-lg bg-[#00489F] hover:bg-[#003D85] transition-colors"
         >
           <span className="text-sm font-medium">Getting started</span>
           {isGettingStartedOpen ? (
@@ -104,8 +97,8 @@ export default function Sidebar() {
                   href={item.href}
                   className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
                     isActive
-                      ? "bg-[#246B22] text-white"
-                      : "text-white/80 hover:bg-[#358832] hover:text-white"
+                      ? "bg-[#00489F] text-white"
+                      : "text-white/80 hover:bg-[#126BCF] hover:text-white"
                   }`}
                 >
                   <Icon className="w-5 h-5" />

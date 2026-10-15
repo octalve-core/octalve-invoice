@@ -54,12 +54,12 @@ export default function SignUpPage() {
 
   const onSubmit = async (values: FormValues) => {
     setIsLoading(true);
-    console.log(values);
+    // Do not log credentials or personal registration data.
 
     // Simulate API call
     await new Promise((resolve) => setTimeout(resolve, 2000));
 
-    toast.success("Account created successfully!");
+    toast.info("UI Preview only — account access will be enabled after the secure backend is connected.");
     setIsLoading(false);
   };
 
@@ -257,7 +257,7 @@ export default function SignUpPage() {
           {/* Bottom Link */}
           <p className="text-center mt-6 text-[14px] text-[#727475]">
             Have an account?{" "}
-            <Link href="/login" className="text-[#41B63E] font-semibold">
+            <Link href="/login" className="text-[#0064E0] font-semibold">
               Sign in
             </Link>
           </p>
@@ -274,7 +274,7 @@ export default function SignUpPage() {
 
               {/* Logo and Title */}
               <div className="mb-8">
-                <img src="/logo.svg" alt="Finzefy Logo" className="h-12 mb-4" />
+                <span className="mb-4 block text-2xl font-semibold text-[#0064E0]">Octalve Invoice</span>
                 <h2 className="text-2xl font-semibold text-[#1D2838]">
                   Create an account
                 </h2>
@@ -390,7 +390,7 @@ export default function SignUpPage() {
                   <button
                     type="submit"
                     disabled={isLoading}
-                    className="w-full bg-[#41B63E] hover:bg-[#36a137] text-white font-semibold py-3 rounded-lg transition-colors flex items-center justify-center gap-2"
+                    className="w-full bg-[#0064E0] hover:bg-[#0052B8] text-white font-semibold py-3 rounded-lg transition-colors flex items-center justify-center gap-2"
                   >
                     {isLoading ? (
                       <>
@@ -407,7 +407,7 @@ export default function SignUpPage() {
                     Already have an account?{" "}
                     <Link
                       href="/login"
-                      className="text-[#41B63E] hover:underline font-medium"
+                      className="text-[#0064E0] hover:underline font-medium"
                     >
                       Log in
                     </Link>
@@ -445,13 +445,13 @@ export default function SignUpPage() {
             <div className="absolute top-[6%] right-[8%] bg-purple-100 text-purple-600 shadow-lg px-4 py-2 rounded-xl text-sm font-medium animate-float-delayed">
               Expenses
             </div>
-            <div className="absolute top-[30%] right-[12%] bg-[#41B63E] text-white shadow-lg px-4 py-2 rounded-xl text-sm font-medium animate-float">
+            <div className="absolute top-[30%] right-[12%] bg-[#0064E0] text-white shadow-lg px-4 py-2 rounded-xl text-sm font-medium animate-float">
               Receipt
             </div>
             <div className="absolute bottom-[40%] left-[10%] bg-yellow-400 text-gray-800 shadow-lg px-4 py-2 rounded-xl text-sm font-medium animate-float-slow">
               Invoice
             </div>
-            <div className="absolute bottom-[15%] right-[6%] bg-white text-[#41B63E] shadow-lg px-4 py-2 rounded-xl text-sm font-medium flex items-center gap-2 animate-float-delayed">
+            <div className="absolute bottom-[15%] right-[6%] bg-white text-[#0064E0] shadow-lg px-4 py-2 rounded-xl text-sm font-medium flex items-center gap-2 animate-float-delayed">
               <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
                 <path d="M4 4a2 2 0 00-2 2v1h16V6a2 2 0 00-2-2H4z" />
                 <path

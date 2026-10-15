@@ -148,33 +148,33 @@ body {
 
 :root {
   /* Brand Colors */
-  --finzefy-green: #41b63e;
-  --finzefy-green-hover: #36a137;
-  --finzefy-green-light: #e8f5e8;
-  --finzefy-text-dark: #1d2838;
-  --finzefy-text-gray: #667084;
-  --finzefy-text-light: #7f7f7f;
-  --finzefy-input-border: #2563eb;
-  --finzefy-input-border-gray: #cfd4dc;
-  --finzefy-error: #d92c20;
-  --finzefy-purple: #7c3aed;
-  --finzefy-yellow: #facc15;
+  --octalve-green: #0064E0;
+  --octalve-green-hover: #0052B8;
+  --octalve-green-light: #EAF2FF;
+  --octalve-text-dark: #1d2838;
+  --octalve-text-gray: #667084;
+  --octalve-text-light: #7f7f7f;
+  --octalve-input-border: #2563eb;
+  --octalve-input-border-gray: #cfd4dc;
+  --octalve-error: #d92c20;
+  --octalve-purple: #7c3aed;
+  --octalve-yellow: #facc15;
 
   /* Dashboard Colors */
-  --finzefy-sidebar-bg: #2d7a2a;
-  --finzefy-sidebar-active: #246b22;
-  --finzefy-sidebar-hover: #358832;
-  --finzefy-sidebar-text: #ffffff;
-  --finzefy-chart-blue: #3b82f6;
-  --finzefy-chart-green: #41b63e;
-  --finzefy-chart-red: #ef4444;
-  --finzefy-badge-paid: #dcfce7;
-  --finzefy-badge-paid-text: #166534;
-  --finzefy-badge-pending: #fef3c7;
-  --finzefy-badge-pending-text: #92400e;
-  --finzefy-badge-refunded: #fee2e2;
-  --finzefy-badge-refunded-text: #991b1b;
-  --finzefy-bg-light: #f9fafb;
+  --octalve-sidebar-bg: #0052B8;
+  --octalve-sidebar-active: #00489F;
+  --octalve-sidebar-hover: #126BCF;
+  --octalve-sidebar-text: #ffffff;
+  --octalve-chart-blue: #3b82f6;
+  --octalve-chart-green: #0064E0;
+  --octalve-chart-red: #ef4444;
+  --octalve-badge-paid: #dcfce7;
+  --octalve-badge-paid-text: #166534;
+  --octalve-badge-pending: #fef3c7;
+  --octalve-badge-pending-text: #92400e;
+  --octalve-badge-refunded: #fee2e2;
+  --octalve-badge-refunded-text: #991b1b;
+  --octalve-bg-light: #f9fafb;
 }
 
 /* ========================================
@@ -288,13 +288,13 @@ body {
 .auth-input {
   @apply w-full h-[52px] px-6 text-black rounded-[30px] border-2 border-[#2563EB] 
          bg-white transition-all duration-200
-         focus:border-[#41B63E] focus:ring-2 focus:ring-[#41B63E]/20 focus:outline-none;
+         focus:border-[#0064E0] focus:ring-2 focus:ring-[#0064E0]/20 focus:outline-none;
 }
 
 .auth-input-gray {
   @apply w-full h-[44px] px-4 text-gray-900 rounded-lg border border-[#CFD4DC] 
          bg-white transition-all duration-200 shadow-sm
-         focus:border-[#41B63E] focus:ring-2 focus:ring-[#41B63E]/20 focus:outline-none;
+         focus:border-[#0064E0] focus:ring-2 focus:ring-[#0064E0]/20 focus:outline-none;
 }
 
 .auth-input::placeholder,
@@ -307,7 +307,7 @@ body {
 }
 
 .auth-input.filled {
-  @apply border-[#41B63E] bg-green-50/30;
+  @apply border-[#0064E0] bg-green-50/30;
 }
 
 /* ========================================
@@ -315,10 +315,10 @@ body {
    ======================================== */
 
 .auth-btn {
-  @apply w-full h-14 px-8 bg-[#41B63E] text-white font-semibold rounded-[30px]
+  @apply w-full h-14 px-8 bg-[#0064E0] text-white font-semibold rounded-[30px]
          transition-all duration-200 cursor-pointer
-         hover:bg-[#36a137] 
-         focus:outline-none focus:ring-2 focus:ring-[#41B63E]/50 focus:ring-offset-2
+         hover:bg-[#0052B8] 
+         focus:outline-none focus:ring-2 focus:ring-[#0064E0]/50 focus:ring-offset-2
          disabled:opacity-70 disabled:cursor-not-allowed;
 }
 
@@ -340,11 +340,11 @@ body {
 .otp-box {
   @apply w-12 h-12 text-center text-xl font-semibold rounded-lg border-2 
          border-gray-300 bg-white transition-all duration-200
-         focus:outline-none focus:border-[#41B63E] focus:ring-2 focus:ring-[#41B63E]/20;
+         focus:outline-none focus:border-[#0064E0] focus:ring-2 focus:ring-[#0064E0]/20;
 }
 
 .otp-box.filled {
-  @apply border-[#41B63E] bg-green-50;
+  @apply border-[#0064E0] bg-green-50;
 }
 
 .otp-box.error {
@@ -359,7 +359,7 @@ body {
   @apply h-14 rounded-lg text-2xl font-medium bg-gray-50 
          text-gray-900 transition-all duration-150
          hover:bg-gray-100 active:bg-gray-200
-         focus:outline-none focus:ring-2 focus:ring-[#41B63E]/50;
+         focus:outline-none focus:ring-2 focus:ring-[#0064E0]/50;
 }
 
 .keypad-key.backspace {
@@ -379,7 +379,7 @@ body {
 }
 
 .auth-link {
-  @apply text-[#41B63E] font-semibold hover:underline transition-colors cursor-pointer;
+  @apply text-[#0064E0] font-semibold hover:underline transition-colors cursor-pointer;
 }
 
 .auth-link-forgot {
@@ -409,9 +409,9 @@ body {
    ======================================== */
 
 .success-icon-circle {
-  @apply w-16 h-16 rounded-full bg-[#41B63E] flex items-center justify-center;
+  @apply w-16 h-16 rounded-full bg-[#0064E0] flex items-center justify-center;
 }
 
 .success-icon-ring {
-  @apply w-16 h-16 rounded-full border-4 border-[#41B63E] flex items-center justify-center;
+  @apply w-16 h-16 rounded-full border-4 border-[#0064E0] flex items-center justify-center;
 }

@@ -43,12 +43,12 @@ export default function LoginPage() {
 
   const onSubmit = async (values: FormValues) => {
     setIsLoading(true);
-    console.log(values);
+    // Do not log credentials or personal registration data.
 
     // Simulate API call
     await new Promise((resolve) => setTimeout(resolve, 2000));
 
-    toast.success("Login successful!");
+    toast.info("UI Preview only — account access will be enabled after the secure backend is connected.");
     setIsLoading(false);
   };
 
@@ -130,7 +130,7 @@ export default function LoginPage() {
               <div className="text-right">
                 <Link
                   href="/forgot-password"
-                  className="text-[#41B63E] text-sm font-medium hover:underline"
+                  className="text-[#0064E0] text-sm font-medium hover:underline"
                 >
                   Forgot Password?
                 </Link>
@@ -168,7 +168,7 @@ export default function LoginPage() {
           {/* Bottom Link */}
           <p className="text-center mt-8 text-[14px] text-[#727475]">
             Have an account?{" "}
-            <Link href="/signup" className="text-[#41B63E] font-semibold">
+            <Link href="/signup" className="text-[#0064E0] font-semibold">
               Sign in
             </Link>
           </p>
@@ -185,9 +185,9 @@ export default function LoginPage() {
 
               {/* Logo and Title */}
               <div className="mb-10">
-                <img src="/logo.svg" alt="Finzefy Logo" className="h-12 mb-4" />
+                <span className="mb-4 block text-2xl font-semibold text-[#0064E0]">Octalve Invoice</span>
                 <h2 className="text-2xl font-semibold text-[#1D2838]">
-                  Welcome to Finzefy
+                  Welcome to Octalve Invoice
                 </h2>
               </div>
 
@@ -266,7 +266,7 @@ export default function LoginPage() {
                   <button
                     type="submit"
                     disabled={isLoading}
-                    className="w-full bg-[#41B63E] hover:bg-[#36a137] text-white font-semibold py-3 rounded-lg transition-colors flex items-center justify-center gap-2"
+                    className="w-full bg-[#0064E0] hover:bg-[#0052B8] text-white font-semibold py-3 rounded-lg transition-colors flex items-center justify-center gap-2"
                   >
                     {isLoading ? (
                       <>
@@ -283,7 +283,7 @@ export default function LoginPage() {
                     Don&apos;t have an account?{" "}
                     <Link
                       href="/signup"
-                      className="text-[#41B63E] hover:underline font-medium"
+                      className="text-[#0064E0] hover:underline font-medium"
                     >
                       Sign up
                     </Link>
@@ -309,13 +309,13 @@ export default function LoginPage() {
             <div className="absolute top-[8%] right-[10%] bg-purple-100 text-purple-600 shadow-lg px-4 py-2 rounded-xl text-sm font-medium animate-float-delayed">
               Expenses
             </div>
-            <div className="absolute top-[40%] right-[5%] bg-[#41B63E] text-white shadow-lg px-4 py-2 rounded-xl text-sm font-medium animate-float">
+            <div className="absolute top-[40%] right-[5%] bg-[#0064E0] text-white shadow-lg px-4 py-2 rounded-xl text-sm font-medium animate-float">
               Receipt
             </div>
             <div className="absolute bottom-[35%] left-[15%] bg-yellow-400 text-gray-800 shadow-lg px-4 py-2 rounded-xl text-sm font-medium animate-float-slow">
               Invoice
             </div>
-            <div className="absolute bottom-[12%] right-[8%] bg-white text-[#41B63E] shadow-lg px-4 py-2 rounded-xl text-sm font-medium flex items-center gap-2 animate-float-delayed">
+            <div className="absolute bottom-[12%] right-[8%] bg-white text-[#0064E0] shadow-lg px-4 py-2 rounded-xl text-sm font-medium flex items-center gap-2 animate-float-delayed">
               <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
                 <path d="M4 4a2 2 0 00-2 2v1h16V6a2 2 0 00-2-2H4z" />
                 <path
