@@ -14,7 +14,7 @@ import type { CurrencyCode } from "../../types";
 
 interface SapphirePdfDocumentProps {
   presentation: InvoicePresentation;
-  logoSrc: string;
+  logoSrc?: string | null;
 }
 
 type PdfIconKind = "mail" | "phone" | "location" | "role" | "package";
@@ -528,7 +528,7 @@ export function SapphirePdfDocument({ presentation, logoSrc }: SapphirePdfDocume
 
   return (
     <Document
-      title={`Sapphire Quest Invoice ${presentation.invoiceNo}`}
+      title={`${presentation.company.name} Invoice ${presentation.invoiceNo}`}
       author={presentation.company.name}
       subject="Invoice"
     >
@@ -548,7 +548,7 @@ export function SapphirePdfDocument({ presentation, logoSrc }: SapphirePdfDocume
         <View style={styles.continuationHeader} fixed render={({ pageNumber }) => (
           pageNumber > 1 ? (
             <>
-              <Text style={styles.continuationBrand}>SAPPHIRE QUEST</Text>
+              <Text style={styles.continuationBrand}>{presentation.company.name}</Text>
               <Text>{presentation.invoiceNo} · Continued</Text>
             </>
           ) : <Text />
@@ -579,7 +579,7 @@ export function SapphirePdfDocument({ presentation, logoSrc }: SapphirePdfDocume
                 },
               ]}
             >
-              <Image src={logoSrc} style={{ width: ui.logoSize, height: ui.logoSize }} />
+              {logoSrc?<Image src={logoSrc} style={{ width: ui.logoSize, height: ui.logoSize }} />:null}
             </View>
 
             <View style={styles.brandCopy}>
@@ -597,7 +597,7 @@ export function SapphirePdfDocument({ presentation, logoSrc }: SapphirePdfDocume
                 ]}
                 hyphenationPenalty={Infinity}
               >
-                {presentation.company.name.replace("Sapphire Quest Travel & Tours Ltd", "Sapphire Quest\nTravel & Tours Ltd")}
+                {presentation.company.name}
               </Text>
               <Text style={[styles.companyWebsite, { fontSize: ui.websiteSize, marginTop: ui.websiteMarginTop }]}>
                 {presentation.company.website}

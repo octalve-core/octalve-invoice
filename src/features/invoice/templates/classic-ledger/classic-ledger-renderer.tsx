@@ -11,6 +11,7 @@ import styles from "./classic-ledger.module.css";
 
 interface ClassicLedgerRendererProps {
   containerRef?: Ref<HTMLDivElement>;
+  companyLogo?: string | null;
   accentColor?: string;
   draft: InvoiceDraft;
   businessProfile: BusinessIdentityProfile;
@@ -31,6 +32,7 @@ interface ClassicLedgerRendererProps {
 
 export function ClassicLedgerRenderer({
   containerRef,
+  companyLogo,
   accentColor,
   draft,
   businessProfile,
@@ -68,6 +70,7 @@ export function ClassicLedgerRenderer({
       <ClassicLedgerHeader
         draft={draft}
         businessProfile={businessProfile}
+        companyLogo={companyLogo}
         onBusinessProfileChange={onBusinessProfileChange}
         onDraftChange={onDraftChange}
         onDateChange={onDateChange}

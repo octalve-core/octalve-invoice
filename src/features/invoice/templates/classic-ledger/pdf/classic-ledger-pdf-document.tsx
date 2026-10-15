@@ -20,7 +20,7 @@ import {
 
 interface ClassicLedgerPdfDocumentProps {
   presentation: InvoicePresentation;
-  logoSrc: string;
+  logoSrc?: string | null;
   headerImageSrc?: string | null;
   accentColor?: string;
 }
@@ -694,7 +694,7 @@ export function ClassicLedgerPdfDocument({ presentation, logoSrc, headerImageSrc
             ]}
             wrap={false}
           >
-            <Image src={logoSrc} style={[styles.logo, { width: profile.logoSize, height: profile.logoSize, marginBottom: profile.logoMarginBottom }]} />
+            {logoSrc?<Image src={logoSrc} style={[styles.logo, { width: profile.logoSize, height: profile.logoSize, marginBottom: profile.logoMarginBottom }]} />:null}
             <Text style={[styles.businessName, { color: accentDark, fontSize: profile.businessNameSize }]}>{presentation.company.name}</Text>
             <ContactLine presentation={presentation} profile={profile} accent={accent} />
             <RegistrationLine presentation={presentation} profile={profile} />

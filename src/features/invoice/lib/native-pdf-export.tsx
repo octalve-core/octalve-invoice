@@ -1,36 +1,6 @@
 "use client";
 
-import { COMPANY_IDENTITY } from "../constants";
 import type { InvoicePresentation } from "../presentation/invoice-presentation";
-
-let logoDataUrlPromise: Promise<string> | null = null;
-
-function blobToDataUrl(blob: Blob): Promise<string> {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onload = () => resolve(String(reader.result ?? ""));
-    reader.onerror = () => reject(reader.error ?? new Error("Unable to read logo asset."));
-    reader.readAsDataURL(blob);
-  });
-}
-
-async function loadLogoDataUrl(): Promise<string> {
-  if (!logoDataUrlPromise) {
-    logoDataUrlPromise = fetch(COMPANY_IDENTITY.iconPath, { cache: "force-cache" })
-      .then((response) => {
-        if (!response.ok) throw new Error(`Unable to load Octalve Invoice icon (${response.status}).`);
-        if (!response.headers.get("content-type")?.startsWith("image/")) throw new Error("Invoice brand asset is not an image");
-        return response.blob();
-      })
-      .then(blobToDataUrl)
-      .catch((error) => {
-        logoDataUrlPromise = null;
-        throw error;
-      });
-  }
-
-  return logoDataUrlPromise;
-}
 
 function downloadBlob(blob: Blob, filename: string): void {
   const url = URL.createObjectURL(blob);
@@ -49,13 +19,14 @@ function downloadBlob(blob: Blob, filename: string): void {
 export async function exportNativeInvoicePdf(
   presentation: InvoicePresentation,
   filename: string,
+  merchantLogo?: string | null,
 ): Promise<void> {
   const [{ pdf }, { SapphirePdfDocument }] = await Promise.all([
     import("@react-pdf/renderer"),
     import("../renderers/pdf/sapphire-pdf-document"),
   ]);
 
-  const logoSrc = await loadLogoDataUrl();
+  const logoSrc = merchantLogo ?? null;
   const instance = pdf(
     <SapphirePdfDocument
       presentation={presentation}

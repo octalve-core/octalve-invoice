@@ -3,7 +3,7 @@
 import type { Ref } from "react";
 import { CURRENCIES } from "../constants";
 import { getDefaultDocumentDensity } from "../lib/paper";
-import type { BusinessPaymentSettings, InvoiceDraft, InvoiceLine, InvoiceTotals } from "../types";
+import type { BusinessPaymentSettings, BusinessIdentityProfile, InvoiceDraft, InvoiceLine, InvoiceTotals } from "../types";
 import { InvoiceClosing } from "./html/invoice-closing";
 import { InvoiceFooter } from "./html/invoice-footer";
 import { InvoiceHeader } from "./html/invoice-header";
@@ -12,6 +12,8 @@ import { InvoiceParties } from "./html/invoice-parties";
 
 interface SapphireInvoiceRendererProps {
   containerRef?: Ref<HTMLDivElement>;
+  companyProfile: BusinessIdentityProfile;
+  companyLogo?: string | null;
   draft: InvoiceDraft;
   paymentSettings: BusinessPaymentSettings;
   totals: InvoiceTotals;
@@ -32,6 +34,8 @@ interface SapphireInvoiceRendererProps {
 
 export function SapphireInvoiceRenderer({
   containerRef,
+  companyProfile,
+  companyLogo,
   draft,
   paymentSettings,
   totals,
@@ -58,14 +62,7 @@ export function SapphireInvoiceRenderer({
       data-document-density={density}
       className="sq-invoice-wrapper sq-v4-document shadow-2xl"
     >
-      <InvoiceHeader
-        draft={draft}
-        totals={totals}
-        onDateChange={onDateChange}
-        onDueDateChange={onDueDateChange}
-        onInvoiceSequenceChange={onInvoiceSequenceChange}
-        onDraftChange={onDraftChange}
-      />
+      <InvoiceHeader draft={draft} totals={totals} companyProfile={companyProfile} logoSrc={companyLogo} />
 
       <InvoiceParties draft={draft} onDraftChange={onDraftChange} />
 
