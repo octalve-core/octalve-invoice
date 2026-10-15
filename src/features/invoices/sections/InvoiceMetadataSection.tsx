@@ -44,7 +44,7 @@ export function InvoiceMetadataSection({draft,setDraft}:Props){
  }
  function addStaff(){
   if(!person.name.trim())return;
-  const next:CatalogStaff={...person,id:String(Date.now())};
+  const next:CatalogStaff={...person,id:String(staff.length+1)};
   setStaff(p=>[...p,next]);chooseStaff(next);setPerson({name:"",email:"",phone:"",role:"Salesperson"});
  }
  const filtered=useMemo(()=>picker==="customer"?customers.filter(c=>[c.name,c.company,c.email].some(v=>v.toLowerCase().includes(query.toLowerCase()))):staff.filter(s=>[s.name,s.role,s.email].some(v=>v.toLowerCase().includes(query.toLowerCase()))),[picker,customers,staff,query]);
