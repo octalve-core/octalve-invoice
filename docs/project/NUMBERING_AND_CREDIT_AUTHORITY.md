@@ -17,3 +17,6 @@ Draft, issued, partially paid, paid, refunded/cancelled are distinct; client can
 | Staff | SF | OL-00001SF |
 
 SF and EXP have their own administrative ledgers distinct from invoice/receipt series; the suffix indicates record type, not permission or issuance. The employer/merchant's initials use the company registered name as the preview input. In future allocate counters transactionally per organization AND document type; staff numbers should not mix into financial document issuance.
+
+## Additional directory-only preview identifiers (Phase 0G)
+CUS = Customer and ITM = Item are **provisional** (owner to confirm before backend). Use merchant initials, padded sequence and suffix in UI fixtures. They are not issued fiscal identifiers. The six previously approved codes INV/RP/QUO/CR/EXP/SF are unchanged.

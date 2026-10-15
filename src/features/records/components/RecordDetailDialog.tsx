@@ -1,12 +1,16 @@
 "use client";
 import {X,ExternalLink} from "lucide-react";
 import Link from "next/link";
+import {useMerchantPreview} from "@/src/features/merchant-preview/MerchantPreviewProvider";
+import {formatDocumentNumber} from "@/src/features/invoices/lib/document-number";
 import type {PreviewRecord} from "../preview-records";
 import {definitions,getRelatedPreviewInvoice} from "../preview-records";
 import {RecordStatusBadge,RecordTypeIcon} from "./RecordVisual";
 /** View never changes financial state. Receipts may be standalone or explicitly linked to an invoice. */
 export function RecordDetailDialog({record,onClose}:{record:PreviewRecord;onClose:()=>void}){
  const invoice=getRelatedPreviewInvoice(record);
+ const {settings}=useMerchantPreview();
+ const invoiceReference=invoice?formatDocumentNumber(settings.businessName||"Octalve Limited",Number(invoice.id),"invoice"):null;
  const fields=[
   ["Reference",record.reference],["Name",record.title],["Amount",record.amount],["Date",record.date],
   ["Due date",record.dueDate],["Email",record.email],["Payment method",record.paymentMethod],["Category",record.category]
@@ -19,7 +23,7 @@ export function RecordDetailDialog({record,onClose}:{record:PreviewRecord;onClos
    <div className="my-4"><RecordStatusBadge status={record.status}/></div>
    <dl className="divide-y rounded-xl border border-gray-100">{fields.map(([label,value])=><div key={label} className="grid grid-cols-[100px_1fr] gap-3 px-3 py-3 text-xs sm:grid-cols-[140px_1fr]"><dt className="text-gray-500">{label}</dt><dd className="break-words font-semibold text-[#15354e]">{value}</dd></div>)}</dl>
    {record.kind==="receipt"?<section className="mt-4 rounded-lg bg-blue-50 p-3 text-xs text-blue-900">
-     {invoice?<><p>Receipt sample linked to Invoice {invoice.reference}.</p><Link href={"/dashboard/invoice/"+invoice.id} className="mt-2 inline-flex items-center gap-1 font-semibold underline">View related invoice <ExternalLink size={13}/></Link></>:
+     {invoice?<><p>Receipt sample linked to Invoice {invoiceReference}.</p><Link href={"/dashboard/invoice/"+invoice.id} className="mt-2 inline-flex items-center gap-1 font-semibold underline">View related invoice <ExternalLink size={13}/></Link></>:
       <p>This receipt sample was recorded independently of an invoice. A live manual receipt will require a verified payment entry and explicit merchant decision to issue a receipt.</p>}
     </section>:null}
    {record.kind==="quotation"?<p className="mt-4 rounded-lg bg-amber-50 p-3 text-xs text-amber-900">Quotation status concerns the estimate only. Acceptance or sending a quotation does not establish payment or issue a receipt.</p>:null}

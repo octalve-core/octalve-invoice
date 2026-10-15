@@ -36,3 +36,10 @@ Golden visual screenshots at 1440x900 desktop and 390x844 mobile (also 768 table
 - Desktop Invoice Settings & Business Settings: keep approved fields, center the form and header in a constrained main column, no right-heavy empty width.
 - User profile identity: no default named test person or Octalve app icon as avatar; user initials unless photo uploaded. Merchant invoice mark similarly defaults to company initials until logo is supplied.
 - Log out at top-account/settings locations, preview-only confirmation.
+
+## Owner visual correction: 16:20 UTC, Phase 0G
+- Desktop Invoice and Receipt screens show pill status filters, count+Search, Export/Filters/Create, gray table header with labeled columns, inset light-gray individual rows, circular status-sensitive document icons, amount emphasis, badges, ellipsis and footer pagination.
+- Mobile Invoice, Receipt and Quotation screens show own back/title bar, Search+filter+Export row, full-width Create button, adaptive chips and stacked tinted cards; no desktop table header on mobile. Tapping card **or ellipsis** opens bottom action sheet; explicit View/Edit actions inside sheet. Delete option red, cancel footer visible.
+- All other document/contact lists follow same structure with their own fields; do not duplicate unrelated page implementations or show irrelevant statuses.
+- Overview Recent Transactions is another composition of the exact same cards and action sheet components, not a separate visual design.
+- Account payment is distinct from optional receipt issuance; see INVOICE_RECEIPT_PAYMENT_AUTHORITY.md.

@@ -84,6 +84,8 @@ const origin = process.env.OCTALVE_BASE_URL || "http://127.0.0.1:3000";
             await page.locator('article[role="link"]').first().click();
             await page.getByRole("dialog",{name:/Actions for OL-00001RP/}).waitFor();
             record.overviewActionSheet="PASS";
+            await page.getByRole("button",{name:"Close record actions"}).click();
+            await page.getByRole("button",{name:"All",exact:true}).last().click();
           }
           if (route === "/dashboard/invoice/create") {
             await page.getByRole("heading", { name: "Create invoice" }).waitFor();
