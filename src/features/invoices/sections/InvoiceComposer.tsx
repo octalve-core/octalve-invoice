@@ -2,18 +2,19 @@
 import Link from "next/link";
 import {getPreviewInvoice} from "@/src/features/invoices/lib/preview-records";
 import { useState } from "react";
+import {formatDocumentNumber} from "@/src/features/invoices/lib/document-number";
 import {useMerchantPreview} from "@/src/features/merchant-preview/MerchantPreviewProvider";
 import {merchantCompany,merchantPayment} from "@/src/features/merchant-preview/merchant-presentation";
 import { InvoiceEditorSection } from "@/src/features/invoices/sections/InvoiceEditorSection";
 import { InvoiceDocumentPreviewSection } from "@/src/features/invoices/sections/InvoiceDocumentPreviewSection";
 import { createPreviewInvoice } from "@/src/features/invoices/lib/preview-fixture";
 export function InvoiceComposer({mode="create",invoiceId}:{mode?:"create"|"edit";invoiceId?:string}){
+ const {settings,setSettings,logoPreview,paymentMode}=useMerchantPreview();
  const [draft,setDraft]=useState(()=>{
   const initial=createPreviewInvoice();
   const matching=invoiceId?getPreviewInvoice(invoiceId):undefined;
-  return matching?{...initial,invoiceNo:matching.reference,clientName:matching.customer,clientEmail:matching.email}:initial;
+  return matching?{...initial,invoiceNo:matching.reference,clientName:matching.customer,clientEmail:matching.email}:{...initial,invoiceNo:formatDocumentNumber(settings.businessName||"Octalve Limited",1,"invoice")};
  });
- const {settings,setSettings,logoPreview,paymentMode}=useMerchantPreview();
  const profile=merchantCompany(settings);
  const payment=merchantPayment(settings);
  const setProfile:React.Dispatch<React.SetStateAction<typeof profile>>=(value)=>setSettings(old=>{

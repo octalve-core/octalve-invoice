@@ -5,5 +5,5 @@ export function merchantCompany(s:MerchantPreviewSettings):BusinessIdentityProfi
  address:s.businessAddress,tinNo:s.taxId,rcNo:s.rcNumber};
 }
 export function merchantPayment(s:MerchantPreviewSettings):BusinessPaymentSettings{
- return {bankName:s.bankName,accountName:s.businessName,accountNumber:s.accountNumber};
+ return {bankName:({"gtb":"Guaranty Trust Bank","firstbank":"First Bank","zenith":"Zenith Bank","access":"Access Bank","uba":"United Bank for Africa","sterling":"Sterling Bank"} as Record<string,string>)[s.bankName]||s.bankName,accountName:s.accountNumber?s.businessName:"",accountNumber:s.accountNumber};
 }

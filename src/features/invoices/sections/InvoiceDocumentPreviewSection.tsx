@@ -67,7 +67,7 @@ export function InvoiceDocumentPreviewSection({draft,setDraft,profile,setProfile
    {!paymentReady&&!dismissedPayment?<div className="flex flex-wrap items-center justify-between gap-2 rounded-lg border border-amber-100 bg-white p-3 text-xs"><span>{paymentMode==="manual"?"Bank/account details have not been configured.":"The chosen online payment provider is not connected yet."} Payment instructions will be omitted.</span><span className="flex gap-3"><Link href="/dashboard/settings/business" className="font-semibold text-[#0064E0]">Payment Settings</Link><button type="button" className="text-gray-500" onClick={()=>setDismissedPayment(true)}>Continue without payment details</button></span></div>:null}
    {downloadError&&<p role="alert" className="text-sm text-red-600">{downloadError}</p>}
    <div className="invoice-preview-viewport min-w-0 overflow-hidden rounded-xl border border-gray-200 bg-[#edf2f8] p-2 py-6">
-     <div className="invoice-preview-paper">{template==="modern" ?
+     <div className="invoice-preview-paper" style={{pointerEvents:"none"}}>{template==="modern" ?
        <SapphireInvoiceRenderer {...shared} companyProfile={profile} companyLogo={merchantLogo}/> :
        <ClassicLedgerRenderer {...shared} businessProfile={profile} companyLogo={merchantLogo} onBusinessProfileChange={onProfileChange}/>}
      </div>
