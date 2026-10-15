@@ -39,6 +39,7 @@ type ContextValue={
  items:CatalogItem[];setItems:Dispatch<SetStateAction<CatalogItem[]>>;
  staff:CatalogStaff[];setStaff:Dispatch<SetStateAction<CatalogStaff[]>>;
  receiptAutoMode:ReceiptAutoMode;setReceiptAutoMode:Dispatch<SetStateAction<ReceiptAutoMode>>;
+ readNotificationIds:string[];setReadNotificationIds:Dispatch<SetStateAction<string[]>>;
  user:PreviewUser;setUser:Dispatch<SetStateAction<PreviewUser>>;
  userImage:string|null;setUserImage:Dispatch<SetStateAction<string|null>>;
  resetPreview:()=>void;
@@ -58,9 +59,10 @@ export function MerchantPreviewProvider({children}:{children:ReactNode}){
  const [items,setItems]=useState<CatalogItem[]>(starterItems);
  const [staff,setStaff]=useState<CatalogStaff[]>(starterStaff);
  const [receiptAutoMode,setReceiptAutoMode]=useState<ReceiptAutoMode>("off");
+ const [readNotificationIds,setReadNotificationIds]=useState<string[]>([]);
  const [userImage,setUserImage]=useState<string|null>(null);
- const resetPreview=()=>{setSettings(defaults);setLogoPreview(null);setPaymentMode("manual");setUser(defaultPreviewUser);setUserImage(null);setCustomers(starterCustomers);setItems(starterItems);setStaff(starterStaff);setReceiptAutoMode("off");};
- const value=useMemo(()=>({settings,setSettings,logoPreview,setLogoPreview,paymentMode,setPaymentMode,customers,setCustomers,items,setItems,staff,setStaff,receiptAutoMode,setReceiptAutoMode,user,setUser,userImage,setUserImage,resetPreview}),[settings,logoPreview,paymentMode,customers,items,staff,receiptAutoMode,user,userImage]);
+ const resetPreview=()=>{setSettings(defaults);setLogoPreview(null);setPaymentMode("manual");setUser(defaultPreviewUser);setUserImage(null);setCustomers(starterCustomers);setItems(starterItems);setStaff(starterStaff);setReceiptAutoMode("off");setReadNotificationIds([]);};
+ const value=useMemo(()=>({settings,setSettings,logoPreview,setLogoPreview,paymentMode,setPaymentMode,customers,setCustomers,items,setItems,staff,setStaff,receiptAutoMode,setReceiptAutoMode,readNotificationIds,setReadNotificationIds,user,setUser,userImage,setUserImage,resetPreview}),[settings,logoPreview,paymentMode,customers,items,staff,receiptAutoMode,readNotificationIds,user,userImage]);
  return <C.Provider value={value}>{children}</C.Provider>;
 }
 export function useMerchantPreview(){const ctx=useContext(C);if(!ctx)throw new Error("Merchant preview provider missing");return ctx;}

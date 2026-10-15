@@ -1,7 +1,8 @@
 "use client";
 import {useMemo,useState} from "react";
 import Link from "next/link";
-import {ArrowLeft,Bell,CheckCheck,ChevronRight,FileText,Settings2,ShieldCheck,Info,Inbox} from "lucide-react";
+import {ArrowLeft,CheckCheck,ChevronRight,FileText,Settings2,ShieldCheck,Inbox} from "lucide-react";
+import {useMerchantPreview} from "@/src/features/merchant-preview/MerchantPreviewProvider";
 type Category="updates"|"settings"|"security";
 type Note={id:string;title:string;description:string;time:string;category:Category;href:string};
 const notifications:Note[]=[
@@ -13,7 +14,8 @@ const notifications:Note[]=[
 const ico={updates:FileText,settings:Settings2,security:ShieldCheck};
 const tones={updates:"bg-blue-50 text-[#0064E0]",settings:"bg-green-50 text-green-600",security:"bg-amber-50 text-amber-600"};
 export function NotificationCenter(){
- const [seen,setSeen]=useState<string[]>([]),[tab,setTab]=useState<"all"|"unread"|"updates"|"settings">("all");
+ const {readNotificationIds:seen,setReadNotificationIds:setSeen}=useMerchantPreview();
+ const [tab,setTab]=useState<"all"|"unread"|"updates"|"settings">("all");
  const visible=useMemo(()=>notifications.filter(n=>(tab==="all"||tab==="unread"&&!seen.includes(n.id)||n.category===tab)),[tab,seen]);
  const unread=notifications.filter(n=>!seen.includes(n.id)).length;
  return <div className="mx-auto max-w-3xl space-y-5 pb-12">
