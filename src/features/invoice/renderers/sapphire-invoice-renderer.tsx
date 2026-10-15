@@ -58,7 +58,7 @@ export function SapphireInvoiceRenderer({
   onPaymentSettingChange,
 }: SapphireInvoiceRendererProps) {
   const currency = CURRENCIES[draft.currency];
-  const density = getDefaultDocumentDensity(draft.paperSize);
+  const documentDensity = getDefaultDocumentDensity(draft.paperSize);
 
   return (
     <div
@@ -66,7 +66,7 @@ export function SapphireInvoiceRenderer({
       id="invoice-document"
       data-invoice-renderer="sapphire-v6"
       data-paper-size={draft.paperSize}
-      data-document-density={density}
+      data-document-density={documentDensity}
       className="sq-invoice-wrapper sq-v4-document shadow-2xl"
       data-logo-position={logoPosition}
       data-header-style={header}
