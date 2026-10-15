@@ -1,0 +1,40 @@
+name: Phase qualification
+on:
+  push:
+    branches: [main, 'phase/**']
+  pull_request:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  qualification:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup pnpm
+        if: hashFiles('pnpm-lock.yaml') != ''
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.18.3
+          run_install: false
+      - name: Setup Node 24
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+          cache-dependency-path: pnpm-lock.yaml
+      - name: Enforce application presence
+        run: |
+          test -f package.json
+          test -f pnpm-lock.yaml
+          test -f docs/project/SECURITY_BASELINE.md
+      - name: Frozen install
+        run: pnpm install --frozen-lockfile
+      - name: Strict typecheck
+        run: pnpm typecheck
+      - name: ESLint
+        run: pnpm lint
+      - name: Tests
+        run: pnpm test
+      - name: Production build
+        run: pnpm build

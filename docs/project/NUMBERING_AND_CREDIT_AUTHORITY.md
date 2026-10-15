@@ -1,0 +1,22 @@
+# DOCUMENT NUMBERING AND CUSTOMER CREDIT CONTRACT — 2026-10-15
+## Display number
+`[MERCHANT_INITIALS]-[SEQUENCE][TYPE]` e.g. `OL-00001INV`, `OL-00001RP`, `OL-00001QUO`, `OL-00001CR`. The merchant name `Octalve Limited` generates OL; `Weyport Energy Ltd` generates WE. Do not assume a fixed first two letters for all merchants: configurable organization prefix with server validation/freeze at first issuance is needed to avoid collisions and prefix changes. Initial client preview uses `merchantInitials` and `formatDocumentNumber`. Sequence at least five digits; grows without truncation. Each merchant/type series must be allocated transactionally in the database; **browser-generated numbers are placeholders only**. No changing issued numbers, no reuse, unique (merchant, type, number). External NRS fiscal number and IRN are distinct authorities. Avoid embedding sensitive merchant data in references.
+## Credit notes
+Issued credit notes reduce merchant receivables only under verified business rules; model gross credit, available customer credit, allocated-to-invoice amount, refunded amount, accounting adjustment, and remaining balance using exact money. Credit application to later invoices is transactional, unique/idempotent and traceable. Partial allocation and partial refund permitted where appropriate; never silently delete settled or fully allocated credit notes. Credit notes reference original issued invoice(s), reason, tax treatment and NRS adjustment/cancellation as officially supported. Separate reversible refund movement from customer credit consumption. V1 UI remains non-operational until safe backend workflow is approved.
+## Status
+Draft, issued, partially paid, paid, refunded/cancelled are distinct; client cannot mark paid/refunded from UI without verified payment authority and correct permissions.
+
+## Phase 0F added codes — exact authority
+| Type | Code | Preview example |
+| --- | --- | --- |
+| Invoice | INV | OL-00001INV |
+| Receipt | RP | OL-00001RP |
+| Quotation | QUO | OL-00001QUO |
+| Credit note | CR | OL-00001CR |
+| Expense | EXP | OL-00001EXP |
+| Staff | SF | OL-00001SF |
+
+SF and EXP have their own administrative ledgers distinct from invoice/receipt series; the suffix indicates record type, not permission or issuance. The employer/merchant's initials use the company registered name as the preview input. In future allocate counters transactionally per organization AND document type; staff numbers should not mix into financial document issuance.
+
+## Additional directory-only preview identifiers (Phase 0G)
+CUS = Customer and ITM = Item are **provisional** (owner to confirm before backend). Use merchant initials, padded sequence and suffix in UI fixtures. They are not issued fiscal identifiers. The six previously approved codes INV/RP/QUO/CR/EXP/SF are unchanged.

@@ -1,0 +1,55 @@
+name: Phase 0C browser evidence
+on:
+  push:
+    branches: [phase/00-finzefy-authority-ui-bootstrap]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  visual:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10.18.3
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: Install isolated Playwright test runner
+        run: |
+          mkdir -p /tmp/octalve-playwright
+          npm install --prefix /tmp/octalve-playwright --no-audit --no-fund playwright@1.56.1
+          /tmp/octalve-playwright/node_modules/.bin/playwright install --with-deps chromium
+      - name: Start production-mode Preview
+        run: |
+          pnpm build
+          pnpm start --port 3000 > /tmp/octalve-next.log 2>&1 &
+          for i in $(seq 1 90); do
+            curl -fsS http://127.0.0.1:3000/login >/dev/null && exit 0
+            sleep 2
+          done
+          cat /tmp/octalve-next.log
+          exit 1
+      - name: Ensure native PDF text, page and PNG tools
+        run: |
+          if ! command -v pdftotext >/dev/null || ! command -v pdfinfo >/dev/null || ! command -v pdftoppm >/dev/null; then
+            sudo apt-get update
+            sudo apt-get install -y poppler-utils
+          fi
+      - name: Browser/screenshots regression
+        env:
+          NODE_PATH: /tmp/octalve-playwright/node_modules
+          OCTALVE_BASE_URL: http://127.0.0.1:3000
+        run: node scripts/phase-0c-browser-evidence.cjs
+      - name: Upload browser evidence regardless of result
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: phase-0c-browser-evidence
+          path: artifacts/phase-0c/
+          if-no-files-found: warn
+          retention-days: 14

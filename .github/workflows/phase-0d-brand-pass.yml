@@ -1,0 +1,50 @@
+name: Phase 0D legacy brand-color migration
+on:
+  push:
+    branches: [phase/00-finzefy-authority-ui-bootstrap]
+    paths: [.github/workflows/phase-0d-brand-pass.yml]
+permissions: {contents: write}
+concurrency: {group: octalve-brand-pass, cancel-in-progress: false}
+jobs:
+  migrate:
+    if: github.repository == 'octalve-core/octalve-invoice'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: {ref: phase/00-finzefy-authority-ui-bootstrap, persist-credentials: true}
+      - name: Convert obsolete Finzefy primary hex values only
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          changes={'#41B63E':'#0064E0','#41b63e':'#0064E0','#36a137':'#0052B8','#2D7A2A':'#0052B8','#2d7a2a':'#0052B8','#246B22':'#00489F','#358832':'#0064E0'}
+          count=[]
+          for root in ('app','components'):
+            for p in Path(root).rglob('*'):
+              if p.suffix not in ('.ts','.tsx','.css'): continue
+              if p.name in ('StatusBadge.tsx',): continue # green paid badges retain meaning
+              old=p.read_text()
+              new=old
+              for a,b in changes.items(): new=new.replace(a,b)
+              if new!=old:
+                p.write_text(new)
+                count.append(str(p))
+          Path('docs/project/PHASE_0D_BRAND_COLOR_PASS.md').write_text('# Phase 0D brand-color inventory\nLegacy brand green hexadecimal tokens changed to Octalve blue. Never globally replace semantic `bg-green-*` status/success tokens. Sapphire document engine and approved asset art left intact.\n\n'+''.join('- `'+name+'`\n' for name in count))
+          print('Brand-colour replacements applied in',len(count),'files')
+          PY
+      - uses: pnpm/action-setup@v4
+        with: {version: 10.18.3}
+      - uses: actions/setup-node@v4
+        with: {node-version: 24}
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm typecheck
+      - run: pnpm build
+      - name: Commit qualified color migration
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add app components docs/project/PHASE_0D_BRAND_COLOR_PASS.md
+          if ! git diff --cached --quiet; then
+            git commit -m "style(phase-0d): replace remaining Finzefy brand hex colors with Octalve blue"
+            git pull --rebase origin phase/00-finzefy-authority-ui-bootstrap
+            git push origin HEAD:phase/00-finzefy-authority-ui-bootstrap
+          fi

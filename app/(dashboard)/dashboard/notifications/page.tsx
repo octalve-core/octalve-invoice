@@ -1,0 +1,1 @@
+import {NotificationCenter} from "@/src/features/notifications/NotificationCenter";export default function NotificationPage(){return <NotificationCenter/>;}

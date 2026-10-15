@@ -1,0 +1,128 @@
+name: Import pinned Finzefy frontend
+# One-time migration workflow: deliberately runs only when this workflow file is committed.
+on:
+  push:
+    branches:
+      - phase/00-finzefy-authority-ui-bootstrap
+    paths:
+      - .github/workflows/import-finzefy-ui.yml
+
+permissions:
+  contents: write
+
+concurrency:
+  group: finzefy-source-import
+  cancel-in-progress: false
+
+jobs:
+  import-ui:
+    if: github.repository == 'octalve-core/octalve-invoice'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout independent Octalve Invoice phase branch
+        uses: actions/checkout@v4
+        with:
+          ref: phase/00-finzefy-authority-ui-bootstrap
+          persist-credentials: true
+      - name: Fetch immutable Finzefy donor revision
+        shell: bash
+        run: |
+          set -euo pipefail
+          git clone --quiet https://github.com/octalve-core/finzefy-nextjs-frontend.git /tmp/finzefy-donor
+          git -C /tmp/finzefy-donor checkout --quiet --detach 4660eda71248266f5b97b52638f6d26429370621
+          test "$(git -C /tmp/finzefy-donor rev-parse HEAD)" = "4660eda71248266f5b97b52638f6d26429370621"
+          for folder in app components lib public; do
+            test -d "/tmp/finzefy-donor/$folder"
+            cp -a "/tmp/finzefy-donor/$folder" "./$folder"
+          done
+          for file in .gitignore components.json next.config.ts postcss.config.mjs tailwind.config.ts tsconfig.json package.json; do
+            test -f "/tmp/finzefy-donor/$file"
+            cp "/tmp/finzefy-donor/$file" "./$file"
+          done
+          # No donor Git history, lockfile, giant repomix export or donor documentation is copied.
+          # Rename the app package; keep UI appearance untouched for fidelity validation.
+          node - <<'NODE'
+          const fs = require('fs');
+          const path = 'package.json';
+          const pkg = JSON.parse(fs.readFileSync(path,'utf8'));
+          pkg.name = 'octalve-invoice';
+          pkg.private = true;
+          pkg.packageManager = 'pnpm@10.18.3';
+          pkg.scripts = {
+            ...pkg.scripts,
+            lint: 'eslint .',
+            typecheck: 'tsc --noEmit',
+            test: 'node --test tests/*.test.mjs'
+          };
+          pkg.devDependencies = {
+            ...pkg.devDependencies,
+            eslint: '^9.35.0',
+            'eslint-config-next': '16.1.1'
+          };
+          fs.writeFileSync(path,JSON.stringify(pkg,null,2)+'\n');
+          NODE
+          cat > eslint.config.mjs <<'EOF'
+          import { defineConfig, globalIgnores } from "eslint/config";
+          import nextVitals from "eslint-config-next/core-web-vitals";
+          import nextTs from "eslint-config-next/typescript";
+          export default defineConfig([
+            ...nextVitals,
+            ...nextTs,
+            globalIgnores([".next/**", "out/**", "build/**", "next-env.d.ts"])
+          ]);
+          EOF
+          mkdir -p tests
+          cat > tests/source-import.test.mjs <<'EOF'
+          import test from "node:test";
+          import assert from "node:assert/strict";
+          import fs from "node:fs";
+          test("source shell and primary invoice screens are present", () => {
+            for (const file of [
+              "app/(dashboard)/dashboard/page.tsx",
+              "app/(dashboard)/dashboard/invoice/page.tsx",
+              "app/(auth)/login/page.tsx",
+              "components/dashboard/Sidebar.tsx",
+              "components/dashboard/modals/CreateInvoiceModal.tsx",
+              "public/loginBg.jpg",
+              "public/signupBg.jpg"
+            ]) assert.ok(fs.existsSync(file), file);
+          });
+          EOF
+          cat > docs/project/FINZEFY_IMPORT_PROVENANCE.md <<'EOF'
+          # Finzefy Source Import Provenance
+          Source: octalve-core/finzefy-nextjs-frontend commit 4660eda71248266f5b97b52638f6d26429370621
+          Source folders: app/, components/, lib/, public/; copied exact original JPEG and SVG assets as a frozen initial visual baseline.
+          Copied root configs: .gitignore, components.json, next.config.ts, postcss.config.mjs, tailwind.config.ts, tsconfig.json, package.json.
+          Excluded: donor .git history, README, npm package-lock, repomix-output.xml.
+          Bootstrap adjustments: app package renamed; pnpm lockfile created; lint/typecheck/test scripts added with ESLint 9+Next 16 config.
+          IMPORTANT: this is *unrefactored* Finzefy donor UI. Octalve branding, approved logos/icons and native Sapphire documents are NOT YET integrated; do not claim visually qualified.
+          EOF
+      - name: Set up pnpm 10
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.18.3
+          run_install: false
+      - name: Set up Node.js 24
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - name: Generate pnpm lockfile and install
+        run: pnpm install --no-frozen-lockfile
+      - name: Commit donor source to independent phase branch
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add app components lib public .gitignore components.json next.config.ts postcss.config.mjs tailwind.config.ts tsconfig.json package.json eslint.config.mjs pnpm-lock.yaml tests/source-import.test.mjs docs/project/FINZEFY_IMPORT_PROVENANCE.md
+          git commit -m "feat: port pinned Finzefy web source and visual assets into Octalve Invoice"
+          git push origin HEAD:phase/00-finzefy-authority-ui-bootstrap
+      - name: Smoke test imported project
+        run: pnpm test
+      - name: TypeScript check
+        continue-on-error: true
+        run: pnpm typecheck
+      - name: Next.js production build
+        continue-on-error: true
+        run: pnpm build

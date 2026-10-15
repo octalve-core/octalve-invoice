@@ -1,0 +1,102 @@
+"use client";
+
+import type { Ref,CSSProperties } from "react";
+import { CURRENCIES } from "../constants";
+import { getDefaultDocumentDensity } from "../lib/paper";
+import type { BusinessPaymentSettings, BusinessIdentityProfile, InvoiceDraft, InvoiceLine, InvoiceTotals } from "../types";
+import { InvoiceClosing } from "./html/invoice-closing";
+import { InvoiceFooter } from "./html/invoice-footer";
+import { InvoiceHeader } from "./html/invoice-header";
+import { InvoiceItemsTable } from "./html/invoice-items-table";
+import { InvoiceParties } from "./html/invoice-parties";
+
+interface SapphireInvoiceRendererProps {
+ accentColor?:string;
+ font?:"system"|"serif"|"rounded";
+ density?:"comfortable"|"compact";
+ header?:"standard"|"minimal";
+ logoPosition?:"left"|"center"|"right";
+ showFooter?:boolean;
+  containerRef?: Ref<HTMLDivElement>;
+  companyProfile: BusinessIdentityProfile;
+  companyLogo?: string | null;
+  draft: InvoiceDraft;
+  paymentSettings: BusinessPaymentSettings;
+  totals: InvoiceTotals;
+  onDraftChange: <K extends keyof InvoiceDraft>(key: K, value: InvoiceDraft[K]) => void;
+  onDateChange: (key: "day" | "month" | "year", value: string) => void;
+  onDueDateChange: (key: "dueDay" | "dueMonth" | "dueYear", value: string) => void;
+  onInvoiceSequenceChange: (value: string | number) => void;
+  onLineChange: (id: string, patch: Partial<Omit<InvoiceLine, "id">>) => void;
+  onLineUnitPriceBlur: (id: string) => void;
+  onLineQuantityBlur: (id: string) => void;
+  onLineDiscountBlur: (id: string) => void;
+  onPercentageBlur: (key: "discount" | "tax") => void;
+  onPaymentSettingChange: <K extends keyof BusinessPaymentSettings>(
+    key: K,
+    value: BusinessPaymentSettings[K],
+  ) => void;
+}
+
+export function SapphireInvoiceRenderer({
+  containerRef,
+  accentColor="#0064E0",font="system",density="comfortable",header="standard",logoPosition="left",showFooter=true,
+  companyProfile,
+  companyLogo,
+  draft,
+  paymentSettings,
+  totals,
+  onDraftChange,
+  onDateChange,
+  onDueDateChange,
+  onInvoiceSequenceChange,
+  onLineChange,
+  onLineUnitPriceBlur,
+  onLineQuantityBlur,
+  onLineDiscountBlur,
+  onPercentageBlur,
+  onPaymentSettingChange,
+}: SapphireInvoiceRendererProps) {
+  const currency = CURRENCIES[draft.currency];
+  const documentDensity = getDefaultDocumentDensity(draft.paperSize);
+
+  return (
+    <div
+      ref={containerRef}
+      id="invoice-document"
+      data-invoice-renderer="sapphire-v6"
+      data-paper-size={draft.paperSize}
+      data-document-density={documentDensity}
+      className="sq-invoice-wrapper sq-v4-document shadow-2xl"
+      data-logo-position={logoPosition}
+      data-header-style={header}
+      data-style-density={density}
+      style={{"--sq-blue":/^#[0-9a-fA-F]{6}$/.test(accentColor)?accentColor:"#0064E0","--sq-blue-dark":/^#[0-9a-fA-F]{6}$/.test(accentColor)?accentColor:"#043996",fontFamily:font==="serif"?"Georgia, serif":font==="rounded"?"Trebuchet MS, sans-serif":"Arial, sans-serif"} as CSSProperties}
+    >
+      <InvoiceHeader draft={draft} totals={totals} companyProfile={companyProfile} logoSrc={companyLogo} />
+
+      <InvoiceParties draft={draft} onDraftChange={onDraftChange} />
+
+      <InvoiceItemsTable
+        rows={draft.rows}
+        currency={draft.currency}
+        currencySymbol={currency.symbol}
+        onLineChange={onLineChange}
+        onLineUnitPriceBlur={onLineUnitPriceBlur}
+        onLineQuantityBlur={onLineQuantityBlur}
+        onLineDiscountBlur={onLineDiscountBlur}
+      />
+
+      <InvoiceClosing
+        draft={draft}
+        totals={totals}
+        paymentSettings={paymentSettings}
+        onDraftChange={onDraftChange}
+        onPercentageBlur={onPercentageBlur}
+        onPaymentSettingChange={onPaymentSettingChange}
+      />
+
+      {showFooter?<InvoiceFooter />:null}
+    </div>
+  );
+}
