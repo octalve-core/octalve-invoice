@@ -189,7 +189,7 @@ const origin = process.env.OCTALVE_BASE_URL || "http://127.0.0.1:3000";
             record.deletedRecordsRoute="PASS";
           }
           if(route==="/dashboard/settings"&&view==="mobile"){
-            await page.getByRole("navigation",{name:"Primary mobile navigation"}).getByRole("link",{name:"Me"}).waitFor();
+            await page.getByRole("navigation",{name:"Primary mobile navigation"}).getByRole("link",{name:"Me",exact:true}).waitFor();
             await page.getByRole("link",{name:/Deleted Records/}).waitFor();
             record.premiumMeNavigation="PASS";
           }
