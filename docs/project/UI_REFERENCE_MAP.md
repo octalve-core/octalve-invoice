@@ -43,3 +43,8 @@ Golden visual screenshots at 1440x900 desktop and 390x844 mobile (also 768 table
 - All other document/contact lists follow same structure with their own fields; do not duplicate unrelated page implementations or show irrelevant statuses.
 - Overview Recent Transactions is another composition of the exact same cards and action sheet components, not a separate visual design.
 - Account payment is distinct from optional receipt issuance; see INVOICE_RECEIPT_PAYMENT_AUTHORITY.md.
+
+## Phase 0G implementation summary
+- Canonical shared display components: `src/features/records/components/RecordDirectory.tsx`, `RecordMobileCard`/`RecordTypeIcon`/`RecordStatusBadge`, `RecordActionDialog`, `RecordFilterDialog`, `RecordDetailDialog`, `RecordMetricsSection`; record-specific view contracts/fixtures in `src/features/records/preview-records.ts`.
+- Eight active list pages use same structure. Four tabs in Overview (All, Invoices, Expenses, Quotation), while All includes linked/manual receipt examples and credit-note examples.
+- Browser screenshots and regression evidence: 25 routes at 1440, 768 and 390; owner pixel-level approval still required.

@@ -1,25 +1,23 @@
-# OCTALVE INVOICE — PHASE 0F FINAL VISUAL AND REGRESSION REVIEW
-
+# OCTALVE INVOICE — PHASE 0G VISUAL SIGN-OFF & DOCUMENT GOLDEN QUALIFICATION
 Repository: https://github.com/octalve-core/octalve-invoice
-Branch: `phase/00-finzefy-authority-ui-bootstrap`
-Draft PR: #1, do not merge.
-Last verified UI/source commit: `8208f03c3707c0a0a317dbc6372f5feb56f5b6a9` (69/69 browser checks PASS).
-Authority: OCTALVE_INVOICE_MASTER_IMPLEMENTATION.md, DECISIONS.md, UI_REFERENCE_MAP.md, NUMBERING_AND_CREDIT_AUTHORITY.md, state.json.
+Working branch: phase/00-finzefy-authority-ui-bootstrap
+Draft PR: https://github.com/octalve-core/octalve-invoice/pull/1 (do not merge)
+Current code checkpoint at documentation update: b7496224e9373d3ea5b5aff83458c77a0870b857
+Architecture authorities: docs/project/OCTALVE_INVOICE_MASTER_IMPLEMENTATION.md, UI_REFERENCE_MAP.md, DECISIONS.md, INVOICE_RECEIPT_PAYMENT_AUTHORITY.md, NUMBERING_AND_CREDIT_AUTHORITY.md, state.json
 
-First fetch current HEAD, CI and Vercel Preview URL. Do not infer passing tests or Preview deployment state from an earlier SHA.
+FIRST retrieve latest GitHub HEAD, CI, Vercel preview and screenshot artifacts. Never assume stored SHA is HEAD.
 
-Owner's Phase 0F acceptance references:
-1. Receipt/Quotation/Expenses/Staff/Credit Note list references follow [MERCHANT_INITIALS]-[SEQUENCE][INV|RP|QUO|CR|EXP|SF]. Test Octalve Limited → OL; ensure independent type series in future DB.
-2. Other Services: four columns on desktop, 3 on mobile, with four differently coloured Quick Create icons; unfinished services have Coming Soon page and Back to Overview, never 404.
-3. Responsive Recent Transactions: reference mobile cards with status-specific icon circles, labels, amount, dates and menu; keep desktop clean and feature architecture shared.
-4. Constrain/center Business Settings and Invoice Settings main form/header. Prefix derived from Business Settings, not arbitrary editable INV prefix.
-5. User name must come from authenticated identity in backend eventually; Preview uses an editable in-session user profile and "Preview User" fallback, never "Abdulsamad" or "Unachukwu Charles". User avatar circular initials without photo; merchant invoice logo uses company initials if absent.
-6. Provide logout via desktop account menu and Settings; until backend auth exists, state plainly that it exits/clears the temporary Preview only, not a server session.
-7. Verify native Modern/Classic PDF merchant-initial fallback and browser/PDF parity, and all old Phase 0E acceptance requirements. No production invoice creation, email delivery, payments or refunds.
-8. Run frozen pnpm install, TS strict, lint, tests including number codes, 69 expanded Playwright route checks across mobile/tablet/desktop, CodeQL, Vercel Preview. Investigate failures before declaring PASS. Download screenshots from GitHub artifacts for owner comparison.
-9. Update decisions/state/test report exact verified SHA, preview URL and PASS/BLOCKED/NOT RUN. Obtain explicit user visual approval before merging or starting Phase 1 Prisma/Neon/merchant authentication.
+Task: Verify the shared Phase 0G Invoice, Receipt, Quotation, Expenses, Credit Note, Customer, Staff and Items tables against the owner-supplied October 15 mobile/desktop image references, including:
+1. Desktop table header, inset gray rows, document-specific ID columns, consistent search/status filters/export/create, icon/status colors, pagination and desktop action modal.
+2. Mobile page title/back, search/filter/export row, full-width create CTA, wrap-safe chips, card alignment and tappable full card opening bottom action sheet (not navigating). Explicit View/Edit choices; Delete shown red; cancellation and overlays compact with accessible keyboard controls.
+3. Overview Recent Transactions uses same card component and shows FOUR approved filter chips: All, Invoices, Expenses, Quotation. Receipts and Credit Notes can still appear in All.
+4. Record numbering is [MERCHANT_INITIALS]-[SEQUENCE][CODE]; approved INV, RP, QUO, CR, EXP, SF; CUS and ITM are only provisional until confirmed.
+5. Receipt ≠ invoice ≠ payment. No automatic receipt on invoice paid, no receipt on quotation acceptance; explicit optional receipt issuance from a verified payment, or from independently recorded/manual payment evidence once backend exists. Existing UI only shows honest linked/manual samples. No double counting or automatic refund.
+6. Retain previously approved invoice Modern/Classic Ledger rendering, 50/50 editor/preview, merchant business identity, logo initials, responsive dashboard charts, owner branding and other Phase 0E/F behavior. Qualify actual native browser/PNG/PDF goldens separately; never claim untested output parity.
+7. Run Node 24 frozen pnpm install, strict TypeScript, ESLint, tests, 25-route × 3-viewport Playwright snapshots (75 assertions, plus receipt link/independence checks), CodeQL and Vercel preview, recording exact results.
+8. Fix real regressions in small feature-specific components; push coherent commits ONLY to phase branch; update DECISIONS, UI_REFERENCE_MAP and state.json with SHA, Preview URL, artifacts and PASS/BLOCKED/NOT RUN.
 
-Prompt for user after visual sign-off: "Proceed with Phase 0F visual and native PDF golden qualification only. Retrieve the latest repository/CI/Preview first. Fix documented visual discrepancies, do not merge main or begin Phase 1 until I approve screenshots and PDF output."
+Constraints: no live auth, Neon, Prisma migrations, webhooks, payment operations, receipt issuance, fake ledger successes or production deployments. No force-push or merge to main. Request owner visual/PDF approval before Phase 1.
 
-## Verified UI qualification as of October 15, 2026
-Source `8208f03c3707c0a0a317dbc6372f5feb56f5b6a9` — pnpm frozen install, strict TypeScript, ESLint, unit tests, Next production build and CodeQL PASS; browser evidence run 38763572060 PASS 69/69, artifact 11987111645; Vercel READY at https://octalve-invoice-eefw5covn-octalve-vault.vercel.app. Still NOT owner-approved pixel goldens or native document PDF goldens.
+Exact next continuation request:
+"Continue Phase 0G visual qualification from the latest GitHub state. Inspect and compare desktop/mobile Invoice, Receipt, Quotation, Expense, Credit Note, Customer, Staff, Items and Overview against the supplied references. Fix any genuine differences, verify browser/PNG/native PDF golden evidence, run all CI and security checks, update project-control documents and return the review-ready Vercel Preview. Do not merge main or start Phase 1 until I approve."
