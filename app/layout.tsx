@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import "@/src/features/invoice/sapphire-document.css";
 
 export const metadata: Metadata = {
   title: "Octalve Invoice",

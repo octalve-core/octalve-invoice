@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { InvoiceMetricsSection } from "@/src/features/invoices/sections/InvoiceMetricsSection";
 import InvoiceTable from "@/components/dashboard/tables/InvoiceTable";
 import CreateInvoiceModal from "@/components/dashboard/modals/CreateInvoiceModal";
@@ -15,6 +16,7 @@ interface SelectedInvoice {
 }
 
 export default function InvoicePage() {
+  const router = useRouter();
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [isPreviewModalOpen, setIsPreviewModalOpen] = useState(false);
   const [selectedInvoice, setSelectedInvoice] =
@@ -43,7 +45,7 @@ export default function InvoicePage() {
 
       {/* Invoice Table */}
       <InvoiceTable
-        onCreateClick={() => setIsCreateModalOpen(true)}
+        onCreateClick={() => router.push("/dashboard/invoice/create")}
         onViewClick={handleViewInvoice}
       />
 
