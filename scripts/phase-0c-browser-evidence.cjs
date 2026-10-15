@@ -89,14 +89,11 @@ const origin = process.env.OCTALVE_BASE_URL || "http://127.0.0.1:3000";
             }
           }
           if (route==="/dashboard"&&view==="mobile"){
-            const receipts=page.getByRole("button",{name:"Receipts",exact:true});
-            await receipts.click();
             await page.getByText("OL-00001RP").first().waitFor();
-            await page.locator('article[role="link"]').first().click();
+            await page.locator('article[role="link"]').nth(3).click();
             await page.getByRole("dialog",{name:/Actions for OL-00001RP/}).waitFor();
             record.overviewActionSheet="PASS";
             await page.getByRole("button",{name:"Close record actions"}).click();
-            await page.getByRole("button",{name:"All",exact:true}).last().click();
           }
           if(route==="/dashboard/quotation"){
             await page.getByRole("button",{name:"Accepted",exact:true}).waitFor();

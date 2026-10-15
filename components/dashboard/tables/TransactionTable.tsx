@@ -12,9 +12,7 @@ const categories=[
  {label:"All",kind:null,href:"/dashboard/invoice"},
  {label:"Invoices",kind:"invoice",href:"/dashboard/invoice"},
  {label:"Expenses",kind:"expense",href:"/dashboard/expenses"},
- {label:"Quotation",kind:"quotation",href:"/dashboard/quotation"},
- {label:"Receipts",kind:"receipt",href:"/dashboard/receipt"},
- {label:"Credit Notes",kind:"creditNote",href:"/dashboard/credit-note"}
+ {label:"Quotation",kind:"quotation",href:"/dashboard/quotation"}
 ] as const;
 type Tab=(typeof categories)[number]["label"];
 export default function TransactionTable(){
