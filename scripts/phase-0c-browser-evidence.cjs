@@ -2,7 +2,7 @@
 const fs = require("node:fs");
 const path = require("node:path");
 const { chromium } = require("playwright");
-const routes = ["/onboarding", "/login", "/signup", "/verify-email", "/business-info", "/set-currency", "/dashboard", "/dashboard/getting-started", "/dashboard/invoice", "/dashboard/invoice/create", "/dashboard/invoice/1", "/dashboard/invoice/1/edit", "/dashboard/receipt", "/dashboard/quotation", "/dashboard/expenses", "/dashboard/staff", "/dashboard/credit-note", "/dashboard/other-services", "/dashboard/other-services/pay-tax", "/dashboard/settings", "/dashboard/settings/profile", "/dashboard/settings/invoice", "/dashboard/settings/business"];
+const routes = ["/onboarding", "/login", "/signup", "/verify-email", "/business-info", "/set-currency", "/dashboard", "/dashboard/getting-started", "/dashboard/invoice", "/dashboard/invoice/create", "/dashboard/invoice/1", "/dashboard/invoice/1/edit", "/dashboard/receipt", "/dashboard/quotation", "/dashboard/expenses", "/dashboard/customer", "/dashboard/items", "/dashboard/staff", "/dashboard/credit-note", "/dashboard/other-services", "/dashboard/other-services/pay-tax", "/dashboard/settings", "/dashboard/settings/profile", "/dashboard/settings/invoice", "/dashboard/settings/business"];
 const viewports = {
   desktop: { width: 1440, height: 900 },
   tablet: { width: 768, height: 1024 },
@@ -56,6 +56,35 @@ const origin = process.env.OCTALVE_BASE_URL || "http://127.0.0.1:3000";
           if(route==="/dashboard"&&view==="mobile"){
             await page.getByRole("link",{name:"Open profile settings"}).getByText("Preview User").waitFor();
           }
+          if(["/dashboard/receipt","/dashboard/quotation","/dashboard/expenses","/dashboard/customer","/dashboard/items","/dashboard/staff","/dashboard/credit-note"].includes(route)){
+            if(view==="mobile"){
+              const card=page.locator('article[role="link"]').first();
+              await card.waitFor({state:"visible"});
+              await card.click({position:{x:Math.min(90,viewport.width/4),y:25}});
+              await page.getByRole("dialog",{name:/Actions for OL-/}).waitFor();
+              const sheet=page.getByRole("dialog",{name:/Actions for OL-/});
+              const dangerous=sheet.getByRole("button",{name:/Delete /});
+              await dangerous.waitFor({state:"visible"});
+              if(!(await dangerous.getAttribute("class")).includes("text-red"))throw new Error("Delete action has no danger color");
+              await sheet.getByRole("button",{name:/View /}).first().click();
+              await page.getByRole("dialog",{name:/ details/i}).waitFor();
+              record.sheetAndDetail="PASS";
+              await page.getByRole("button",{name:"Close details"}).click();
+            }
+            if(view==="desktop"){
+              await page.locator("table").first().waitFor({state:"visible"});
+              if(await page.locator("table thead th").count()<4)throw new Error("Desktop table columns missing");
+              record.desktopTable="PASS";
+            }
+          }
+          if (route==="/dashboard"&&view==="mobile"){
+            const receipts=page.getByRole("button",{name:"Receipts",exact:true});
+            await receipts.click();
+            await page.getByText("OL-00001RP").first().waitFor();
+            await page.locator('article[role="link"]').first().click();
+            await page.getByRole("dialog",{name:/Actions for OL-00001RP/}).waitFor();
+            record.overviewActionSheet="PASS";
+          }
           if (route === "/dashboard/invoice/create") {
             await page.getByRole("heading", { name: "Create invoice" }).waitFor();
             await page.getByRole("heading", { name: "Live Modern Invoice preview" }).waitFor();
@@ -81,8 +110,11 @@ const origin = process.env.OCTALVE_BASE_URL || "http://127.0.0.1:3000";
           await page.screenshot({ path: path.join(output, record.screenshot), fullPage: true, animations: "disabled" });
           if(route==="/dashboard/invoice" && view==="mobile"){
             await page.locator('article[role="link"]').first().click({position:{x:150,y:25}});
+            await page.getByRole("dialog",{name:/Actions for OL-00001INV/}).waitFor();
+            record.rowBottomSheet="PASS";
+            await page.getByRole("button",{name:"View Invoice"}).click();
             await page.waitForURL(/\/dashboard\/invoice\/\d+$/);
-            record.rowNavigate="PASS";
+            record.viewAfterSelection="PASS";
           }
           if(route==="/dashboard/settings"&&view==="desktop"){
             await page.getByRole("button",{name:"Log out",exact:true}).first().click();
