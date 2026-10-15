@@ -4,7 +4,7 @@ import type { BusinessIdentityProfile, BusinessPaymentSettings, InvoiceDraft } f
 
 /** A fixed, public UI test fixture. No merchant account or bank details. */
 export const previewMerchant: BusinessIdentityProfile = {
-  name: "Preview Merchant",
+  name: "Octalve Limited",
   email: "preview@example.invalid",
   phone: "",
   website: "",
