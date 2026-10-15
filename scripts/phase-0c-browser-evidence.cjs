@@ -3,6 +3,24 @@ const fs = require("node:fs");
 const path = require("node:path");
 const { chromium } = require("playwright");
 const { execFileSync } = require("node:child_process");
+async function qualifyBrowserPng(page, output, view, template) {
+  await page.getByRole("button", { name: "Download preview PNG" }).click();
+  const prompt = page.getByRole("dialog", { name: "Complete invoice details" });
+  await prompt.waitFor();
+  const [download] = await Promise.all([
+    page.waitForEvent("download", { timeout: 90000 }),
+    prompt.getByRole("button", { name: "Continue without details" }).click()
+  ]);
+  const pngPath = path.join(output, view + "-" + template + "-browser-export.png");
+  await download.saveAs(pngPath);
+  const bytes = fs.readFileSync(pngPath);
+  const magic = Buffer.from([137, 80, 78, 71, 13, 10, 26, 10]);
+  if (!bytes.subarray(0, 8).equals(magic)) throw Error("Downloaded browser PNG has invalid signature");
+  if (bytes.length < 24) throw Error("PNG too short");
+  const width = bytes.readUInt32BE(16), height = bytes.readUInt32BE(20);
+  if (width < 500 || height < 500) throw Error(template + " browser PNG geometry too small: " + width + "x" + height);
+  return { png: path.basename(pngPath), width, height, signature: "PASS" };
+}
 async function qualifyNativePdf(page, output, view, template) {
   await page.getByRole("button", { name: "Download preview PDF" }).click();
   const prompt = page.getByRole("dialog", { name: "Complete invoice details" });
@@ -182,12 +200,12 @@ const origin = process.env.OCTALVE_BASE_URL || "http://127.0.0.1:3000";
               if(!left||!right||Math.abs(left.width-right.width)>12)throw new Error("Desktop invoice columns are not approximately 50/50");
             }
             await page.screenshot({ path: path.join(output, view+"-invoice-modern.png"), fullPage: true, animations: "disabled" });
-            if (view === "desktop") record.nativeModernPdf = await qualifyNativePdf(page, output, view, "modern");
+            if (view === "desktop") { record.browserModernPng = await qualifyBrowserPng(page, output, view, "modern"); record.nativeModernPdf = await qualifyNativePdf(page, output, view, "modern"); }
             await page.getByLabel("Template").selectOption("ledger");
             await page.locator('[data-invoice-renderer="classic-ledger-v1"]').waitFor();
             record.templateSwitch = "PASS";
             await page.screenshot({ path: path.join(output, view+"-invoice-classic-ledger.png"), fullPage: true, animations: "disabled" });
-            if (view === "desktop") record.nativeClassicPdf = await qualifyNativePdf(page, output, view, "ledger");
+            if (view === "desktop") { record.browserClassicPng = await qualifyBrowserPng(page, output, view, "ledger"); record.nativeClassicPdf = await qualifyNativePdf(page, output, view, "ledger"); }
           }
           await page.screenshot({ path: path.join(output, record.screenshot), fullPage: true, animations: "disabled" });
           if(route==="/dashboard/invoice" && view==="mobile"){
