@@ -1,6 +1,6 @@
 {
   "updatedAt": "2026-10-15",
-  "phase": "Phase 0H UI finalization — open, not approved, GitHub branch updated and Vercel quota-limited",
+  "phase": "Phase 0 frontend merged to main by explicit owner authorization; Vercel Production deployment blocked by daily API quota; backend Phase 1 not authorized",
   "branch": "phase/00-finzefy-authority-ui-bootstrap",
   "mainBootstrapSha": "87ad423dba3ced2445e109baa85114aea3d30037",
   "latestMigration": null,
@@ -14,7 +14,7 @@
     "sourceUnitTests": "PASS Node24/frozen pnpm/TypeScript/ESLint/tests/build, GitHub Actions run 38810258073 and 38810264100 at 5cd021a; tracked donor lint warnings still remain",
     "nextProductionBuild": "PASS GitHub Actions run 38796782591 at code 666d61c",
     "githubCodeQL": "PASS GitHub Actions run 38810258071 and 38810264360 at exact application SHA 5cd021a",
-    "browserResponsiveRoutes": "PASS 123/123 41 routes × desktop/tablet/mobile, GH Actions run 38810258105 at exact code 5cd021a, evidence artifact 12007717740; includes last subscription states, deleted-record confirmation and selected-theme behavior",
+    "browserResponsiveRoutes": "PASS 123/123 at branch SHA 4e4647d6, browser Actions run 38811889455, artifact 12008299625; main merge passed source build and CodeQL.",
     "officialBrandAssets": "PASS original icon and wordmark PNG HTTP 200 on Vercel",
     "vercelPreview": "READY automatic Vercel Preview at older application/docs commit c237f28e9035c0750a3f48f10cfbc5f3a529b0a4, https://octalve-invoice-pggm3r402-octalve-vault.vercel.app; six core UI changes present and six routes HTTP 200; final subscription states/provider radio from 5cd021a not deployed at this URL.",
     "browserPixelPerfect": "PENDING reference image availability and owner approval",
@@ -30,7 +30,7 @@
     "latestCode": "666d61cf232b3cfa2457698e8904716cfa37d4a4 (last tested application; subsequent docs-only checkpoint commits)",
     "nativePdfVisualGoldens": "NOT OWNER APPROVED for custom colours/font density/header styles or Classic Receipt; no claim of matching unsupported custom PDF design",
     "realFinancialOperations": "DISABLED",
-    "userUIApproval": "NOT GIVEN; user says Phase 0 is not completed",
+    "userUIApproval": "EXPLICIT permission to merge Phase 0 frontend and deploy production; final visual satisfaction and backend authorization still PENDING",
     "routeProbe": "PASS HTTP 200 on 14 key Preview routes including invoice editor/detail/manual payment, receipt, staff/item edit, reports, profile, notifications, announcements and updates",
     "phase0hOwnerCorrectionAudit": "See docs/project/PAYMENT_AND_RECEIPT_PHASE0H.md; all 12 audited with real-only and visual-golden blockers detailed",
     "newChatHandoff": "docs/project/OCTALVE_INVOICE_NEW_CHAT_HANDOFF_2026-10-15.md",
@@ -45,7 +45,11 @@
     "latestUiScreenshots": "Nine owner screenshots available in Octalve Invoice project conversation (the earlier Library UI References folder remains empty); mobile navigation, profile/settings, subscription examples, delete confirmation, template customizer, financial report layout. Do not claim pixel-perfect matching without direct side-by-side.",
     "uiFinalCorrectionAudit": "docs/project/PHASE_0H_FINAL_UI_CORRECTIONS_2026-10-15.md",
     "visualReferenceApproval": "PENDING side-by-side with 9 October 15 owner screenshots and independent custom theme native PDF goldens; original 123 screenshot regression passed before latest small UI changes.",
-    "lastUiSourceQualification": "All final Phase 0H UI source files and acceptance scripts passed at 5cd021a, 123/123. This is technical regression, NOT owner pixel-perfect design approval or custom native PDF parity."
+    "lastUiSourceQualification": "All final Phase 0H UI source files and acceptance scripts passed at 5cd021a, 123/123. This is technical regression, NOT owner pixel-perfect design approval or custom native PDF parity.",
+    "releaseMerge": "PR #1 MERGED to main at 7c8b0c6a131418a0fe7a29db01ce3397fa248ea3; subsequent docs-only release checkpoint fed0cf5.",
+    "productionRelease": "NOT LIVE: Vercel POST production deployment returned HTTP 402 api-deployments-free-per-day; promotion of tested Preview to production returned HTTP 422. Last listed Production deployment is older ERROR SHA 87ad423d; production domain lookup returned 404.",
+    "latestReleasePreview": "https://octalve-invoice-n00uadeac-octalve-vault.vercel.app READY at c0737dd44a648b0de453d0da0cda76e87865fba1; compared to branch 4e4647d6 later commits only docs and browser test script (same application code). This is NOT Production.",
+    "backendApproved": false
   },
   "blockers": [
     "Owner explicitly states Phase 0 is NOT finished; remaining UI corrections and exact pixel-level visual approval are pending.",
@@ -55,14 +59,20 @@
     "UI is preview in-memory: no real auth, persistence, receipt sending, payment processing, email, refunds or NRS fiscal submissions.",
     "ESLint passes with 105 warnings (0 errors), not warning-free; reduce relevant warnings carefully.",
     "Central /Octalve/Octalve Invoice/ Library root was verified accessible; 00 Project Control has historical master handoff, 02 UI References is empty, so exact uploaded owner PNG pixel comparison is not possible from available source assets.",
-    "Owner has not approved closing Phase 0. Nine final-reference screenshots require visual side-by-side review.",
     "Custom theme fonts/header/layout are not certified against native PDF exports; Classic Receipt golden and customer-supplied font storage need qualification.",
-    "A READY Vercel Preview now contains the core six UI changes at c237, but later subscription lifecycle and wording refinements remain ahead in GitHub. Manual deployment API quota HTTP 402 may block an exact-latest redeploy."
+    "Owner has authorized merge and production front-end release; final owner satisfaction and backend Phase 1 approval pending.",
+    "Production launch blocked by Vercel HTTP 402 API daily limit (>100 deployments in 24h); preview promotion alternative rejected HTTP 422. No production READY deployment for merged source."
   ],
-  "nextPhase": "Phase 0H owner UI review, exact current Preview, custom PDF golden qualification — NOT Phase 1",
+  "nextPhase": "Resolve Vercel production deployment quota, deploy & verify current main frontend, obtain owner satisfaction/explicit backend approval; do NOT begin Phase 1 now",
   "currentCodeCheckpoint": "5cd021a39988987231587b143647fdb85f7ffc83",
-  "lastVerifiedApplicationCommit": "5cd021a39988987231587b143647fdb85f7ffc83",
-  "exactNextPhase": "Phase 0H owner UI review, exact current Preview, custom PDF golden qualification — NOT Phase 1",
+  "lastVerifiedApplicationCommit": "4e4647d6c3385bc947b3d1bb19911d26c6e55b7f",
+  "exactNextPhase": "Resolve Vercel production deployment quota, deploy & verify current main frontend, obtain owner satisfaction/explicit backend approval; do NOT begin Phase 1 now",
   "previewCommitSha": "c237f28e9035c0750a3f48f10cfbc5f3a529b0a4",
-  "previewDeploymentStatus": "READY_SOURCE_C237; CORE_SIX_UI_CHANGES_LIVE; SUBSCRIPTION_LIFECYCLE_AND_SINGULAR_DELETE_LABEL_LATER"
+  "previewDeploymentStatus": "READY_SOURCE_C237; CORE_SIX_UI_CHANGES_LIVE; SUBSCRIPTION_LIFECYCLE_AND_SINGULAR_DELETE_LABEL_LATER",
+  "phase0Merged": true,
+  "productionDeployed": false,
+  "productionApprovedByOwner": true,
+  "productionDeploymentStatus": "BLOCKED_VERCEL_402_API_DEPLOYMENTS_FREE_PER_DAY",
+  "lastApprovedBranchHead": "4e4647d6c3385bc947b3d1bb19911d26c6e55b7f",
+  "lastVerifiedMergeCommit": "7c8b0c6a131418a0fe7a29db01ce3397fa248ea3"
 }
