@@ -1,0 +1,81 @@
+name: Import pinned Sapphire document renderer
+on:
+  push:
+    branches: [phase/00-finzefy-authority-ui-bootstrap]
+    paths: ['.github/workflows/import-sapphire-document.yml']
+permissions:
+  contents: write
+concurrency:
+  group: sapphire-document-import
+  cancel-in-progress: false
+jobs:
+  import:
+    if: github.repository == 'octalve-core/octalve-invoice'
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: phase/00-finzefy-authority-ui-bootstrap
+          persist-credentials: true
+      - name: Copy pinned Sapphire document modules
+        shell: bash
+        run: |
+          set -euo pipefail
+          test ! -d src/features/invoice
+          git clone --quiet https://github.com/Octalve/sapphirequest-invoice.git /tmp/sapphire
+          git -C /tmp/sapphire checkout --detach --quiet dfd2657fc22f56c4b82808ca4072ad0300cb753c
+          test "$(git -C /tmp/sapphire rev-parse HEAD)" = "dfd2657fc22f56c4b82808ca4072ad0300cb753c"
+          mkdir -p src/features/invoice
+          cp -a /tmp/sapphire/src/features/invoice/. src/features/invoice/
+          python3 - <<'PY'
+          from pathlib import Path
+          css=Path('/tmp/sapphire/src/app/globals.css').read_text()
+          start=css.index('.sq-brand-blue {')
+          variables=css[css.index(':root {'):css.index('\n\n* {')]
+          Path('src/features/invoice/sapphire-document.css').write_text('/* Isolated donor document styles. Product-level reset omitted. */\n'+variables+'\n'+css[start:])
+          # Override Sapphire demo company constants without changing document geometry.
+          p=Path('src/features/invoice/constants.ts')
+          s=p.read_text().replace('Sapphire Quest Travel & Tours Ltd','Preview Merchant').replace('09162974349','').replace('info@sapphirequesttravel.com','').replace('sapphirequesttravel.com','').replace('@sapphirequesttravel','').replace('/SapphireQuestIcon.png','/branding/octalve-invoice-icon.png')
+          p.write_text(s)
+          # Imported legacy persistence logic remains unreferenced by merchant UI.
+          PY
+          cat >> docs/project/FINZEFY_IMPORT_PROVENANCE.md <<'EOF'
+
+          ## Sapphire renderer source
+          Imported exact subtree src/features/invoice from commit dfd2657fc22f56c4b82808ca4072ad0300cb753c.
+          Vendor source is isolated; the merchant platform must never call donor localStorage persistence for issued records.
+          The reusable presentation/PDF/rendering modules are here; historical tests not yet requalified.
+          Document geometry/CSS is preserved. Product-level reset removed from donor CSS to prevent site-wide conflicts.
+          Placeholder demo company constants removed; signed-off snapshots and official merchant profile wiring remain future work.
+          EOF
+          node - <<'NODE'
+          const fs = require('fs');
+          const p = 'package.json';
+          const pkg = JSON.parse(fs.readFileSync(p,'utf8'));
+          pkg.dependencies['@react-pdf/renderer'] = '4.9.0';
+          pkg.dependencies['html2canvas-pro'] = '2.5.2';
+          fs.writeFileSync(p,JSON.stringify(pkg,null,2)+'\n');
+          NODE
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10.18.3
+          run_install: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - name: Install and lock reproducibly
+        run: pnpm install --no-frozen-lockfile
+      - name: Commit imported source to phase branch
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add src/features/invoice package.json pnpm-lock.yaml docs/project/FINZEFY_IMPORT_PROVENANCE.md
+          git commit -m "feat(documents): port pinned Sapphire modern and Classic Ledger renderers"
+          git push origin HEAD:phase/00-finzefy-authority-ui-bootstrap
+      - name: Typecheck and build imported source
+        run: |
+          pnpm typecheck
+          pnpm build
