@@ -46,7 +46,7 @@ async function qualifyNativePdf(page, output, view, template) {
   return { pdf: path.basename(pdfPath), raster: path.basename(rasterPrefix + ".png"), pdfPages: (info.match(/^Pages:\s*(\d+)/m) || [])[1], selectableText: "PASS", paperA4: "PASS" };
 }
 
-const routes = ["/onboarding", "/login", "/signup", "/verify-email", "/business-info", "/set-currency", "/dashboard", "/dashboard/getting-started", "/dashboard/invoice", "/dashboard/invoice/create", "/dashboard/invoice/1", "/dashboard/invoice/1/edit", "/dashboard/receipt", "/dashboard/receipt/1", "/dashboard/receipt/create", "/dashboard/quotation", "/dashboard/expenses", "/dashboard/customer", "/dashboard/items", "/dashboard/items/add", "/dashboard/items/1/edit", "/dashboard/staff", "/dashboard/staff/create", "/dashboard/staff/1/edit", "/dashboard/credit-note", "/dashboard/other-services", "/dashboard/other-services/pay-tax", "/dashboard/report", "/dashboard/notifications", "/dashboard/payment-received", "/dashboard/announcement", "/dashboard/updates", "/dashboard/invoice/3/record-payment", "/dashboard/settings", "/dashboard/settings/profile", "/dashboard/settings/invoice", "/dashboard/settings/business"];
+const routes = ["/onboarding", "/login", "/signup", "/verify-email", "/business-info", "/set-currency", "/dashboard", "/dashboard/getting-started", "/dashboard/invoice", "/dashboard/invoice/create", "/dashboard/invoice/1", "/dashboard/invoice/1/edit", "/dashboard/receipt", "/dashboard/receipt/1", "/dashboard/receipt/create", "/dashboard/quotation", "/dashboard/expenses", "/dashboard/customer", "/dashboard/items", "/dashboard/items/add", "/dashboard/items/1/edit", "/dashboard/staff", "/dashboard/staff/create", "/dashboard/staff/1/edit", "/dashboard/credit-note", "/dashboard/other-services", "/dashboard/other-services/pay-tax", "/dashboard/report", "/dashboard/notifications", "/dashboard/payment-received", "/dashboard/announcement", "/dashboard/updates", "/dashboard/invoice/3/record-payment", "/dashboard/settings", "/dashboard/settings/profile", "/dashboard/settings/invoice", "/dashboard/settings/business", "/dashboard/settings/subscription", "/dashboard/settings/theme", "/dashboard/settings/faqs", "/dashboard/settings/deleted"];
 const viewports = {
   desktop: { width: 1440, height: 900 },
   tablet: { width: 768, height: 1024 },
@@ -159,6 +159,51 @@ const origin = process.env.OCTALVE_BASE_URL || "http://127.0.0.1:3000";
             await page.getByRole("heading",{name:"Notifications"}).waitFor();
             await page.getByRole("button",{name:/Mark all read/}).click();
             record.notifications="PASS";
+          }
+
+          if(route==="/dashboard/settings/subscription"){
+            await page.getByRole("heading",{name:"Manage Subscription"}).waitFor();
+            await page.getByRole("button",{name:"Yearly -15%"}).click();
+            await page.getByRole("button",{name:/Growth/}).first().click();
+            await page.getByRole("button",{name:/Review Growth plan/}).click();
+            await page.getByText("No subscription was created",{exact:false}).waitFor();
+            record.subscriptionNoFakePurchase="PASS";
+          }
+          if(route==="/dashboard/settings/theme"){
+            await page.getByRole("heading",{name:"Customize your invoices"}).waitFor();
+            await page.getByRole("button",{name:"Choose #0B8063"}).click();
+            await page.getByRole("button",{name:"Apply to current Preview"}).click();
+            await page.getByText("Appearance preferences are available",{exact:false}).waitFor();
+            record.liveThemePreference="PASS";
+          }
+          if(route==="/dashboard/settings/faqs"){
+            await page.getByRole("heading",{name:"How can we help?"}).waitFor();
+            await page.getByLabel("Search FAQs").fill("receipt");
+            await page.getByRole("button",{name:/difference between an invoice and a receipt/}).click();
+            await page.getByText("An invoice requests or records money owed.",{exact:false}).waitFor();
+            record.faqSearchAndExpand="PASS";
+          }
+          if(route==="/dashboard/settings/deleted"){
+            await page.getByRole("heading",{name:"Deleted Records"}).waitFor();
+            await page.getByText("The 14-day rule never",{exact:false}).count(); 
+            record.deletedRecordsRoute="PASS";
+          }
+          if(route==="/dashboard/settings"&&view==="mobile"){
+            await page.getByRole("navigation",{name:"Primary mobile navigation"}).getByRole("link",{name:"Me"}).waitFor();
+            await page.getByRole("link",{name:/Deleted Records/}).waitFor();
+            record.premiumMeNavigation="PASS";
+          }
+          if(route==="/dashboard/customer"&&view==="desktop"){
+            const actions=page.getByRole("button",{name:/Actions for OL-/}).first();
+            await actions.click();
+            await page.getByRole("dialog",{name:/Actions for OL-/}).getByRole("button",{name:/Delete Customers/}).click();
+            const confirm=page.getByRole("alertdialog",{name:"Delete Customers"});
+            await confirm.waitFor();
+            if(await confirm.getByRole("button",{name:"Move to Deleted Records"}).isEnabled())throw Error("Delete action did not require a reason");
+            await confirm.getByPlaceholder("Explain why this record is being removed").fill("Duplicate preview customer");
+            await confirm.getByRole("button",{name:"Move to Deleted Records"}).click();
+            await page.getByText("moved to Deleted Records",{exact:false}).waitFor();
+            record.deleteConfirmReasonAndArchive="PASS";
           }
           if(route==="/dashboard/report"){
             await page.getByRole("heading",{name:"Reports"}).waitFor();
