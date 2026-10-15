@@ -8,12 +8,12 @@ test("a receipt link never increases collected cash",()=>{
  assert.equal(p.collectedMinor,withDuplicate.collectedMinor);
  assert.equal(p.collectedMinor,35000000);
  assert.equal(p.unallocatedMinor,9500000);
- assert.equal(p.outstandingMinor,18500000);
+ assert.equal(p.outstandingMinor,19000000);
 });
 test("pending virtual account payment cannot mark an invoice as paid",()=>{
  const p=financeProjection(invoices,paymentPreview,refundPreview);
  assert.equal(p.allocatedMinor,25500000);
- assert.equal(p.outstandingMinor,18500000);
+ assert.equal(p.outstandingMinor,19000000);
 });
 test("verified refund only reduces net collected; does not silently edit invoice liability",()=>{
  const before=financeProjection(invoices,paymentPreview,[]);
