@@ -1,6 +1,6 @@
 {
   "updatedAt": "2026-10-15",
-  "phase": "Phase 0H final UI corrections — implemented in branch, awaiting owner approval and latest Preview",
+  "phase": "Phase 0H UI finalization — open, not approved, GitHub branch updated and Vercel quota-limited",
   "branch": "phase/00-finzefy-authority-ui-bootstrap",
   "mainBootstrapSha": "87ad423dba3ced2445e109baa85114aea3d30037",
   "latestMigration": null,
@@ -16,7 +16,7 @@
     "githubCodeQL": "PASS GitHub Actions 38809249901 at c064ef53; later branch CI checked separately",
     "browserResponsiveRoutes": "PASS 123/123, 41 routes x 3 viewports, GitHub Actions run 38809249855 at c064ef53; includes subscription, theme, FAQs, Deleted Records and guarded customer removal",
     "officialBrandAssets": "PASS original icon and wordmark PNG HTTP 200 on Vercel",
-    "vercelPreview": "Latest confirmed READY GitHub Preview at source 324047c01eac8032a77b8723f1073214be2ed62d (subscription UI commit) https://octalve-invoice-8y11e5wyk-octalve-vault.vercel.app; changes to later theme/report/deletion may not be deployed due daily quota; do not call this final preview.",
+    "vercelPreview": "LAST VERIFIED READY at UI SHA 324047c01eac8032a77b8723f1073214be2ed62d (subscription pricing checkpoint), https://octalve-invoice-8y11e5wyk-octalve-vault.vercel.app; final UI changes are NOT deployed. Manual exact SHA deployment attempted and Vercel returned 402 daily deployment quota.",
     "browserPixelPerfect": "PENDING reference image availability and owner approval",
     "pdfNativeGoldenParity": "Original Modern/Classic A4 native PDFs technically verified; custom theme/typography/layout PDF golden parity and Classic Receipt A5 still open",
     "merchantProfileLinkage": "PREVIEW IN-MEMORY ONLY, user profile likewise; no server account/session",
@@ -39,11 +39,12 @@
     "phase0hNewFixes": "Invoice draft row ID collision corrected; refund replay and integer overflow guards; Octalve blue filters; consistent desktop invoice prefix; built-in Modern/Classic browser PNG export with Octalve filename; native Modern/Classic PDF technical qualification",
     "vercelDeploymentLimit": "Historical: manual deploy API returned HTTP 402 over 100 per day, then automatic GitHub-connected Preview deployment READY at 37b476ff. No continuing live Preview blocker at recorded version.",
     "finalCorrections": "Premium Me and five-tab mobile navigation; all original mobile tools linked under More workspace tools; researched Free/Starter/Growth/Business plans and illustrative first-time/active/expired lifecycle; confirm-delete with mandatory reason, restore and financial retention guard; FAQs; theme appearance and original browser/PNG support; full-width accurate fixture-derived reports.",
-    "latestBranchApplicationCode": "f6ee67e2a86af1ee5ab3a32d0494f7737065b95f; last qualified at c064ef53; newest subscription lifecycle state preview and singular delete confirmation regression pending final CI.",
-    "subscription": "PROPOSED ONLY; Free 25 invoices/mo, Starter ₦3,600, Growth ₦7,700, Business ₦11,800; checkout and billing not enabled",
+    "latestBranchApplicationCode": "5cd021a39988987231587b143647fdb85f7ffc83; 123/123 Playwright pass c064ef53; latest lifecycle/payment-method mock changes build and visual CI in progress at time of checkpoint",
+    "subscription": "PROPOSED ONLY; Free 25 invoices/mo, Starter ₦3,600, Growth ₦7,700, Business ₦11,800; optional monthly/quarterly/yearly; first-time/active/expired example states and Paystack/Flutterwave illustrative selectors; all real checkout, billing and entitlements disabled",
     "previewSafety": "Deletion archive and 14-day recovery semantics are in-memory Preview demonstration; no permanent deletion or financial authority event.",
     "latestUiScreenshots": "Nine owner screenshots available in Octalve Invoice project conversation (the earlier Library UI References folder remains empty); mobile navigation, profile/settings, subscription examples, delete confirmation, template customizer, financial report layout. Do not claim pixel-perfect matching without direct side-by-side.",
-    "uiFinalCorrectionAudit": "docs/project/PHASE_0H_FINAL_UI_CORRECTIONS_2026-10-15.md"
+    "uiFinalCorrectionAudit": "docs/project/PHASE_0H_FINAL_UI_CORRECTIONS_2026-10-15.md",
+    "visualReferenceApproval": "PENDING side-by-side with 9 October 15 owner screenshots and independent custom theme native PDF goldens; original 123 screenshot regression passed before latest small UI changes."
   },
   "blockers": [
     "Owner explicitly states Phase 0 is NOT finished; remaining UI corrections and exact pixel-level visual approval are pending.",
@@ -58,9 +59,9 @@
     "Vercel manual redeploy at final code encountered HTTP 402: api-deployments-free-per-day, more than 100 in 24 hours; Preview remains older than latest UI branch pending automatic build or quota reset."
   ],
   "nextPhase": "Phase 0H owner UI review, exact current Preview, custom PDF golden qualification — NOT Phase 1",
-  "currentCodeCheckpoint": "f6ee67e2a86af1ee5ab3a32d0494f7737065b95f",
+  "currentCodeCheckpoint": "5cd021a39988987231587b143647fdb85f7ffc83",
   "lastVerifiedApplicationCommit": "c064ef53cf0a9b2553cc301cb1e9c9f527e482c2",
   "exactNextPhase": "Phase 0H owner UI review, exact current Preview, custom PDF golden qualification — NOT Phase 1",
   "previewCommitSha": "324047c01eac8032a77b8723f1073214be2ed62d",
-  "previewDeploymentStatus": "STALE_READY_FOR_LATEST_UI; CURRENT_BRANCH_PREVIEW_NOT_YET_VERIFIED"
+  "previewDeploymentStatus": "STALE_BUT_READY; FINAL_PHASE0H_UI_WAITING_FOR_QUOTA"
 }
