@@ -1,13 +1,14 @@
 "use client";
 import Link from "next/link";
-import {BadgeCheck,BarChart3,Building2,ChevronRight,FileText,HelpCircle,Palette,ShieldCheck,Trash2,UserRound,WalletCards} from "lucide-react";
+import {BadgeCheck,BarChart3,Building2,ChevronRight,FileText,FileSpreadsheet,FileMinus,HelpCircle,MoreHorizontal,Package,Palette,ShieldCheck,Trash2,UserRound,UsersRound,WalletCards} from "lucide-react";
 import {UserAvatar} from "@/src/features/merchant-preview/UserAvatar";
 import {PreviewLogoutButton} from "@/src/features/merchant-preview/PreviewLogoutButton";
 import {useMerchantPreview} from "@/src/features/merchant-preview/MerchantPreviewProvider";
 const sections=[
  {title:"Account & billing",rows:[["Manage Subscription","/dashboard/settings/subscription",WalletCards],["Sales Reports","/dashboard/report",BarChart3]]},
  {title:"General settings",rows:[["Profile Settings","/dashboard/settings/profile",UserRound],["Invoice Settings","/dashboard/settings/invoice",FileText],["Business Settings","/dashboard/settings/business",Building2]]},
- {title:"Preferences & support",rows:[["Theme Settings","/dashboard/settings/theme",Palette],["FAQs & Help","/dashboard/settings/faqs",HelpCircle],["Deleted Records","/dashboard/settings/deleted",Trash2]]}
+ {title:"Preferences & support",rows:[["Theme Settings","/dashboard/settings/theme",Palette],["FAQs & Help","/dashboard/settings/faqs",HelpCircle],["Deleted Records","/dashboard/settings/deleted",Trash2]]},
+ {title:"More workspace tools",rows:[["Quotations","/dashboard/quotation",FileSpreadsheet],["Expenses","/dashboard/expenses",WalletCards],["Items & Services","/dashboard/items",Package],["Staff","/dashboard/staff",UsersRound],["Credit Notes","/dashboard/credit-note",FileMinus],["Other Services","/dashboard/other-services",MoreHorizontal]]}
 ] as const;
 export default function SettingsPage(){
  const {user,settings}=useMerchantPreview();
