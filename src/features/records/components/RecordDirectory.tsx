@@ -1,7 +1,7 @@
 "use client";
 import {useMemo,useState} from "react";
 import {useRouter} from "next/navigation";
-import {ArrowLeft,Search,Download,SlidersHorizontal,Plus,MoreVertical,X} from "lucide-react";
+import {ArrowLeft,Search,Download,SlidersHorizontal,Plus,MoreVertical,X,Trash2} from "lucide-react";
 import {useMerchantPreview} from "@/src/features/merchant-preview/MerchantPreviewProvider";
 import {definitions,getPreviewRecords,type PreviewRecord,type RecordField,type RecordKind,type RecordStatus} from "../preview-records";
 import {RecordStatusBadge,RecordTypeIcon,RecordMobileCard,statusLabels} from "./RecordVisual";
@@ -17,7 +17,7 @@ function tableValue(record:PreviewRecord,field:RecordField):string{
 function dateISO(day:string){const [d,m,y]=day.split("/");return [y,m?.padStart(2,"0"),d?.padStart(2,"0")].join("-");}
 export function RecordDirectory({kind,onCreate,onView,onEdit,showDesktopHeader=true}:{kind:RecordKind;onCreate?:()=>void;onView?:(record:PreviewRecord)=>void;onEdit?:(record:PreviewRecord)=>void;showDesktopHeader?:boolean}){
  const def=definitions[kind],router=useRouter();
- const {settings,customers,staff,items,paymentMode}=useMerchantPreview(),merchant=settings.businessName||"Octalve Limited";
+ const {settings,customers,staff,items,archivedRecords,setArchivedRecords}=useMerchantPreview(),merchant=settings.businessName||"Octalve Limited";
  const records=useMemo(()=>{
   if(kind==="customer")return customers.map((c,i):PreviewRecord=>({id:c.id,kind,reference:formatDocumentNumber(merchant,i+1,"customer"),title:c.name,email:c.email,category:c.company,date:"12/6/2024",status:"active"}));
   if(kind==="staff")return staff.map((c,i):PreviewRecord=>({id:c.id,kind,reference:formatDocumentNumber(merchant,i+1,"staff"),title:c.name,email:c.email,category:c.role,date:"12/6/2024",status:"active"}));
@@ -30,8 +30,11 @@ export function RecordDirectory({kind,onCreate,onView,onEdit,showDesktopHeader=t
  const [filtersOpen,setFiltersOpen]=useState(false);
  const [selected,setSelected]=useState<PreviewRecord|null>(null);
  const [viewing,setViewing]=useState<PreviewRecord|null>(null);
+ const [deleteTarget,setDeleteTarget]=useState<PreviewRecord|null>(null);
+ const [deleteReason,setDeleteReason]=useState("");
  const [page,setPage]=useState(1),[notice,setNotice]=useState("");
  const filtered=useMemo(()=>records.filter(r=>{
+  if(archivedRecords.some(a=>a.kind===r.kind&&a.id===r.id))return false;
   if(status!=="all"&&r.status!==status)return false;
   if(filters.status!=="all"&&r.status!==filters.status)return false;
   const date=dateISO(r.date);
@@ -39,7 +42,7 @@ export function RecordDirectory({kind,onCreate,onView,onEdit,showDesktopHeader=t
   if(filters.to&&date>filters.to)return false;
   const q=search.trim().toLowerCase();
   return !q||[r.reference,r.title,r.email||"",r.paymentMethod||"",r.category||""].some(x=>x.toLowerCase().includes(q));
- }),[records,status,filters,search]);
+ }),[records,status,filters,search,archivedRecords]);
  const total=Math.max(1,Math.ceil(filtered.length/10)),visible=filtered.slice((page-1)*10,page*10);
  function openView(record:PreviewRecord){
   if(kind==="invoice"){router.push("/dashboard/invoice/"+record.id);return;}
@@ -49,6 +52,7 @@ export function RecordDirectory({kind,onCreate,onView,onEdit,showDesktopHeader=t
  }
  function action(key:RecordAction,record:PreviewRecord){
   if(key==="view"){openView(record);return;}
+  if(key==="delete"){setDeleteReason("");setDeleteTarget(record);return;}
   if(key==="edit"&&kind==="invoice"){router.push("/dashboard/invoice/"+record.id+"/edit");return;}
   if(key==="edit"&&kind==="item"){router.push("/dashboard/items/"+record.id+"/edit");return;}
   if(key==="edit"&&kind==="staff"){router.push("/dashboard/staff/"+record.id+"/edit");return;}
@@ -57,7 +61,7 @@ export function RecordDirectory({kind,onCreate,onView,onEdit,showDesktopHeader=t
    edit:"Editing is not live for this module yet.",
    send:"No message has been sent.",
    duplicate:"No record has been duplicated.",
-   delete:"No record was deleted; server permissions and audit history are required.",
+   delete:"No record was permanently deleted.",
    refund:"No refund was made or confirmed; verified payment reversal is required.",
    deactivate:"No person was deactivated; staff or customer permissions are not live."
   };
@@ -137,6 +141,21 @@ export function RecordDirectory({kind,onCreate,onView,onEdit,showDesktopHeader=t
 
   {filtersOpen?<RecordFilterDialog statuses={def.statuses} initial={filters} onClose={()=>setFiltersOpen(false)} onApply={v=>{setFilters(v);setPage(1);}}/>:null}
   {selected?<RecordActionDialog record={selected} onClose={()=>setSelected(null)} onAction={action}/>:null}
+  {deleteTarget?<div role="presentation" className="fixed inset-0 z-[120] flex items-end justify-center bg-[#06192A]/60 lg:items-center lg:p-4" onClick={()=>setDeleteTarget(null)}>
+   <section role="alertdialog" aria-modal="true" aria-label={"Delete "+definitions[deleteTarget.kind].title} onClick={e=>e.stopPropagation()} className="w-full max-w-md space-y-4 rounded-t-[28px] bg-white p-6 pb-[max(1.5rem,env(safe-area-inset-bottom))] shadow-2xl lg:rounded-2xl">
+    <div className="mx-auto h-1 w-12 rounded-full bg-slate-100 lg:hidden"/>
+    <span className="mx-auto grid h-12 w-12 place-items-center rounded-2xl bg-red-50 text-red-600"><Trash2 size={23}/></span>
+    <div className="text-center"><h2 className="text-lg font-bold text-[#16334F]">Move to Deleted Records?</h2><p className="mt-2 text-sm leading-6 text-slate-600">Remove <strong>{deleteTarget.reference}</strong> ({deleteTarget.title}) from the active list? It can be restored within 14 days in the proposed retention workflow.</p></div>
+    <label className="block text-xs font-semibold text-[#193A57]">Reason for removal <span className="text-red-500">*</span><textarea value={deleteReason} onChange={e=>setDeleteReason(e.target.value)} placeholder="Explain why this record is being removed" rows={2} maxLength={500} className="mt-2 w-full rounded-xl border border-slate-200 p-3 text-sm font-normal outline-none focus:border-[#0064E0]"/></label>
+    <p className="rounded-lg bg-amber-50 p-3 text-xs leading-5 text-amber-900">Issued documents, payment evidence and audit trails must remain preserved and reviewable. The 14-day rule never authorizes erasing financial history. This Preview keeps only temporary session state.</p>
+    <button type="button" disabled={deleteReason.trim().length<5} onClick={()=>{
+      const current=deleteTarget;
+      setArchivedRecords(old=>old.some(x=>x.kind===current.kind&&x.id===current.id)?old:[...old,{kind:current.kind,id:current.id,reference:current.reference,title:current.title,status:current.status,archivedAt:new Date().toISOString(),reason:deleteReason.trim(),originalAmount:current.amount}]);
+      setDeleteTarget(null);setPage(1);setNotice(current.reference+" moved to Deleted Records for this preview session.");
+     }} className="w-full rounded-full bg-red-500 px-4 py-3 text-sm font-semibold text-white disabled:cursor-not-allowed disabled:opacity-40">Move to Deleted Records</button>
+    <button type="button" className="w-full rounded-full border border-[#0064E0] px-4 py-3 text-sm font-semibold text-[#0064E0]" onClick={()=>setDeleteTarget(null)}>Cancel</button>
+   </section>
+  </div>:null}
   {viewing?<RecordDetailDialog record={viewing} onClose={()=>setViewing(null)}/>:null}
  </section>;
 }
