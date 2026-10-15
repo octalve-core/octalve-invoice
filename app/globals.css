@@ -428,3 +428,8 @@ body {
   body, #__next { max-width:100%; overflow-x:clip; }
   .recharts-wrapper, .recharts-surface { max-width:100%; }
 }
+
+/* Phase 0E: keep A4 paper centered in its 50/50 panel. The renderer itself retains source geometry. */
+.invoice-preview-viewport { container-type: inline-size; width:100%; }
+.invoice-preview-paper { margin-inline:auto; transform-origin:top center; }
+@container (max-width:793px) { .invoice-preview-paper { zoom:calc(100cqw / 794px); } }

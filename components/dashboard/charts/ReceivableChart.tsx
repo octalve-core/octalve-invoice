@@ -6,10 +6,8 @@ import {
   Bar,
   XAxis,
   YAxis,
-  CartesianGrid,
   ResponsiveContainer,
   Tooltip,
-  Legend,
 } from "recharts";
 
 const chartData = [
@@ -44,7 +42,7 @@ export default function ReceivableChart({
           <div className="flex items-center gap-2 text-sm text-gray-500 mb-1">
             <span>Receivable Summary</span>
             <span className="text-xs text-gray-400">
-              AMOUNT RECEIVABLE: MONTHLY
+              Your current sales summary and activity
             </span>
           </div>
           <div className="flex flex-wrap items-baseline gap-2 sm:gap-3">
@@ -55,24 +53,20 @@ export default function ReceivableChart({
               <ArrowUp className="w-4 h-4" />
               {percentChange}%
             </span>
-            <span className="text-sm text-gray-400">+ Last month ₦925,000</span>
+
           </div>
+          <p className="mt-1 text-xs text-gray-500">Last month ₦925,000 · sample figures</p>
         </div>
-        <select className="px-3 py-2 text-sm border border-gray-200 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-[#0064E0]/20">
+        <select aria-label="Chart period" className="px-3 py-2 text-sm border border-gray-200 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-[#0064E0]/20">
           <option>Monthly (2024)</option>
           <option>Monthly (2023)</option>
         </select>
       </div>
 
       {/* Chart */}
-      <div className="h-[220px] sm:h-[300px] min-w-0">
+      <div className="hidden h-[300px] min-w-0 sm:block">
         <ResponsiveContainer width="100%" height="100%">
-          <BarChart data={chartData} barGap={2} barCategoryGap="20%">
-            <CartesianGrid
-              strokeDasharray="3 3"
-              vertical={false}
-              stroke="#E5E7EB"
-            />
+          <BarChart data={chartData} barGap={2} barCategoryGap="32%">
             <XAxis
               dataKey="month"
               axisLine={false}
@@ -97,14 +91,6 @@ export default function ReceivableChart({
                 boxShadow: "0 4px 6px -1px rgb(0 0 0 / 0.1)",
               }}
             />
-            <Legend
-              wrapperStyle={{ paddingTop: "20px" }}
-              formatter={(value) => (
-                <span className="text-sm text-gray-600 capitalize">
-                  {value}
-                </span>
-              )}
-            />
             <Bar
               dataKey="current"
               fill="#0064E0"
@@ -113,8 +99,8 @@ export default function ReceivableChart({
             />
             <Bar
               dataKey="overdue"
-              fill="#3B82F6"
-              radius={[4, 4, 0, 0]}
+              fill="#22C55E"
+              radius={[2, 2, 0, 0]}
               name="Overdue"
             />
             <Bar
@@ -125,6 +111,22 @@ export default function ReceivableChart({
             />
           </BarChart>
         </ResponsiveContainer>
+      </div>
+      <div className="relative -mx-1 mt-4 h-[220px] min-w-0 sm:hidden" role="img"
+        aria-label="Monthly receivables comparison chart for January through December, with blue current, green overdue and red outstanding bars">
+        <div className="absolute inset-x-6 top-0 bottom-7 flex flex-col justify-between text-[9px] text-gray-400" aria-hidden="true">
+          <span>1M</span><span>750k</span><span>500k</span><span>250k</span><span>0</span>
+        </div>
+        <div className="absolute inset-y-0 left-8 right-1 grid grid-cols-12 gap-0.5">
+          {chartData.map(row=><div key={row.month} className="flex min-w-0 flex-col justify-end">
+            <div className="flex h-[184px] items-end justify-center gap-[1px]">
+             {([["current",row.current,"bg-[#0064E0]"],["overdue",row.overdue,"bg-green-500"],["outstanding",row.outstanding,"bg-red-500"]] as const).map(([key,amount,color])=>
+              <span key={key} title={`${row.month} ${key}: ₦${amount.toLocaleString()}`}
+               style={{height:`${Math.max(2,amount/1000000*100)}%`}} className={`w-[3px] min-w-[2px] max-w-[6px] rounded-t-sm ${color}`}/>)}
+            </div>
+            <span className="mt-2 truncate text-center text-[9px] text-gray-500">{row.month}</span>
+          </div>)}
+        </div>
       </div>
     </div>
   );

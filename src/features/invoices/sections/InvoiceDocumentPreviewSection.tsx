@@ -45,7 +45,7 @@ export function InvoiceDocumentPreviewSection({draft,setDraft,profile,setProfile
      }
    } catch(e) {setDownloadError(e instanceof Error?e.message:"PDF preview unavailable.");}
  };
- return <section aria-label="Live document preview" className="space-y-3">
+ return <section aria-label="Live document preview" className="min-w-0 space-y-3">
    <div className="flex flex-wrap items-center justify-between gap-3">
      <div><h2 className="font-semibold text-[#1D2838]">Live {template==="modern"?"Modern Invoice":"Classic Ledger"} preview</h2>
        <p className="text-xs text-gray-500">Browser and PDF use the same presentation data; preview only, not issued.</p></div>

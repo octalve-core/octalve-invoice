@@ -27,7 +27,7 @@ export function InvoiceComposer({mode="create",invoiceId}:{mode?:"create"|"edit"
    <div className="rounded-lg border border-blue-100 bg-blue-50 px-4 py-3 text-xs text-[#00489F]">
      UI Preview only. Editing changes the visible document in this browser; nothing is saved, sent, issued, or marked paid.
    </div>
-   <div className="grid grid-cols-1 items-start gap-5 2xl:grid-cols-[minmax(0,420px)_minmax(0,1fr)]">
+   <div className="grid grid-cols-1 items-start gap-5 xl:grid-cols-2">
      <InvoiceEditorSection draft={draft} setDraft={setDraft}/>
      <InvoiceDocumentPreviewSection draft={draft} setDraft={setDraft} profile={profile} setProfile={setProfile}
        payment={payment} setPayment={setPayment} template={template}/>

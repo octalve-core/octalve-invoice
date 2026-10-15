@@ -1,27 +1,24 @@
-import { LucideIcon } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
 
 interface QuickActionProps {
   icon: LucideIcon;
   label: string;
+  tone?: "blue" | "green" | "red" | "orange";
   onClick?: () => void;
 }
-
-export default function QuickAction({
-  icon: Icon,
-  label,
-  onClick,
-}: QuickActionProps) {
-  return (
-    <button
-      onClick={onClick}
-      className="flex flex-col items-center gap-2 p-4 rounded-xl hover:bg-gray-50 transition-colors min-w-[80px]"
-    >
-      <div className="w-12 h-12 rounded-xl bg-[#E8F5E8] flex items-center justify-center">
-        <Icon className="w-6 h-6 text-[#0064E0]" />
-      </div>
-      <span className="text-xs text-gray-600 font-medium text-center whitespace-nowrap">
-        {label}
-      </span>
-    </button>
-  );
+const tones = {
+ blue: {surface:"bg-blue-100",foreground:"text-[#0064E0]"},
+ green:{surface:"bg-green-100",foreground:"text-green-600"},
+ red:{surface:"bg-red-100",foreground:"text-red-600"},
+ orange:{surface:"bg-orange-100",foreground:"text-orange-600"}
+} as const;
+export default function QuickAction({icon:Icon,label,tone="blue",onClick}:QuickActionProps){
+ const palette=tones[tone];
+ return <button type="button" onClick={onClick}
+   className="flex min-w-0 flex-col items-center gap-2 rounded-xl px-1 py-3 transition-colors hover:bg-gray-50 sm:p-4">
+   <span className={`flex h-12 w-12 items-center justify-center rounded-full sm:h-14 sm:w-14 ${palette.surface}`}>
+     <Icon className={`h-6 w-6 ${palette.foreground}`}/>
+   </span>
+   <span className="max-w-full text-center text-[11px] font-medium leading-tight text-gray-700 sm:text-sm">{label}</span>
+ </button>;
 }
