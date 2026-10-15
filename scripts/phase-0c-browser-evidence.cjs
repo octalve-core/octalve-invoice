@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-require-imports -- isolated CommonJS Playwright runner */
 const fs = require("node:fs");
 const path = require("node:path");
 const { chromium } = require("playwright");
