@@ -66,7 +66,7 @@ export default function Sidebar() {
     <aside className="hidden lg:flex flex-col w-64 min-h-screen bg-[#0052B8] text-white">
       {/* Logo */}
       <div className="flex items-center gap-2 px-6 py-5 border-b border-white/10">
-        <BrandWordmark className="text-xl" />
+        <BrandWordmark width={166} className="text-white" />
       </div>
 
       {/* Getting Started Section */}
@@ -84,6 +84,7 @@ export default function Sidebar() {
         </button>
       </div>
 
+      {isGettingStartedOpen && <div className="px-3 pb-3"><Link href="/dashboard/getting-started" className="block rounded-lg bg-white/10 px-3 py-2 text-sm text-white hover:bg-white/20">Open setup checklist →</Link></div>}
       {/* Navigation */}
       <nav className="flex-1 px-3 overflow-y-auto">
         <ul className="space-y-1">

@@ -1,13 +1,17 @@
-import type { HTMLAttributes } from "react";
-export interface BrandWordmarkProps extends HTMLAttributes<HTMLSpanElement> {
-  compact?: boolean;
-}
-// The verified Octalve Invoice image asset will replace this accessible
-// text-only fallback when supplied. Do not use the unrelated Finzefy artwork.
-export function BrandWordmark({ compact = false, className = "", ...props }: BrandWordmarkProps) {
-  return (
-    <span className={`inline-flex items-center font-semibold tracking-tight text-current ${className}`} {...props}>
-      {compact ? "Octalve" : "Octalve Invoice"}
-    </span>
-  );
+"use client";
+import { useState } from "react";
+type Props = { className?: string; compact?: boolean; width?: number };
+/**
+ * Exact official user-supplied PNG assets, not a fabricated Octalve logo.
+ * Until the uploaded binaries are committed, the textual placeholder remains.
+ */
+export function BrandWordmark({ className = "", compact = false, width = 166 }: Props) {
+  const [missing, setMissing] = useState(false);
+  if (compact) return <span className={className}>Octalve Invoice</span>;
+  return <span className={`inline-flex items-center ${className}`}>
+    {missing ? <span className="font-semibold tracking-tight">Octalve Invoice</span> :
+      <img src="/branding/octalve-wordmark.png" width={width} height={Math.round(width * 641 / 2048)}
+        alt="Octalve" onError={() => setMissing(true)} style={{ objectFit: "contain" }} />}
+    <span className="sr-only">Invoice application</span>
+  </span>;
 }

@@ -80,7 +80,7 @@ export default function BusinessInfoPage() {
 
   const onSubmit = async (values: FormValues) => {
     setIsLoading(true);
-    console.log(values);
+    // Do not log business profile data.
 
     // Simulate API call
     await new Promise((resolve) => setTimeout(resolve, 2000));

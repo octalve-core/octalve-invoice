@@ -2,7 +2,8 @@
 
 import { useState } from "react";
 import React from "react";
-import { useRouter } from "next/navigation";
+import { toast } from "sonner";
+import { BrandWordmark } from "@/src/shared/ui/BrandWordmark";
 import { Loader2 } from "lucide-react";
 import { OtpInput } from "../components/OtpInput";
 import { NumericKeypad } from "../components/NumericKeypad";
@@ -12,7 +13,7 @@ export default function VerifyEmailPage() {
   const [otp, setOtp] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
-  const router = useRouter();
+
 
   const handleOtpChange = (value: string) => {
     setOtp(value);
@@ -28,22 +29,13 @@ export default function VerifyEmailPage() {
   };
 
   const handleSubmit = async () => {
-    if (otp.length < 4) {
-      setError(true);
-      return;
-    }
-
-    setIsLoading(true);
-
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 2000));
-
+    if (otp.length !== 6) { setError(true); return; }
     setIsLoading(false);
-    router.push("/email-verified");
+    toast.info("UI preview only — email verification is not connected yet.");
   };
 
   const handleResend = async () => {
-    console.log("Resending verification code...");
+    toast.info("UI preview only — no verification email was sent.");
   };
 
   return (
@@ -75,7 +67,7 @@ export default function VerifyEmailPage() {
           {/* Submit Button */}
           <button
             onClick={handleSubmit}
-            disabled={isLoading || otp.length < 4}
+            disabled={isLoading || otp.length !== 6}
             className="auth-btn flex items-center justify-center gap-2 mb-4"
           >
             {isLoading ? (
@@ -91,7 +83,7 @@ export default function VerifyEmailPage() {
           {/* Resend Link */}
           <button
             onClick={handleResend}
-            className="text-[#41B63E] font-medium text-center hover:underline"
+            className="text-[#0064E0] font-medium text-center hover:underline"
           >
             Resend Code
           </button>
@@ -120,7 +112,7 @@ export default function VerifyEmailPage() {
           <div className="relative z-10 bg-white rounded-2xl shadow-2xl p-8 w-full max-w-md mx-4 animate-fade-in-up text-center">
             {/* Logo */}
             <div className="flex justify-center mb-4">
-              <img src="/logo.svg" alt="Finzefy" className="h-10" />
+              <BrandWordmark width={160} />
             </div>
 
             {/* Success Icon */}
@@ -139,9 +131,9 @@ export default function VerifyEmailPage() {
             {/* OTP Input */}
             <div className="mb-6">
               <OtpInput
-                length={4}
-                value={otp.slice(0, 4)}
-                onChange={(val) => setOtp(val)}
+                length={6}
+                value={otp}
+                onChange={handleOtpChange}
                 onComplete={() => handleSubmit()}
                 error={error}
               />
@@ -151,7 +143,7 @@ export default function VerifyEmailPage() {
             <button
               onClick={handleSubmit}
               disabled={isLoading}
-              className="w-full bg-[#41B63E] hover:bg-[#36a137] text-white font-semibold py-3 rounded-lg transition-colors flex items-center justify-center gap-2"
+              className="w-full bg-[#0064E0] hover:bg-[#0052B8] text-white font-semibold py-3 rounded-lg transition-colors flex items-center justify-center gap-2"
             >
               {isLoading ? (
                 <>
@@ -168,7 +160,7 @@ export default function VerifyEmailPage() {
               Didn&apos;t receive code?{" "}
               <button
                 onClick={handleResend}
-                className="text-[#41B63E] hover:underline font-medium"
+                className="text-[#0064E0] hover:underline font-medium"
               >
                 Resend
               </button>

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
+import { BrandIcon } from "@/src/shared/ui/BrandIcon";
 import Link from "next/link";
 import { Menu, X } from "lucide-react";
 
@@ -24,13 +24,7 @@ export default function MobileHeader({
       <div className="flex items-center justify-between px-4 py-3">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center overflow-hidden">
-            <Image
-              src="/logo.svg"
-              alt="User"
-              width={40}
-              height={40}
-              className="w-full h-full object-cover"
-            />
+            <BrandIcon size={34} />
           </div>
           <span className="font-medium">{userName}</span>
         </div>
@@ -63,7 +57,7 @@ export default function MobileHeader({
               : "bg-white/20 text-white hover:bg-white/30"
           }`}
         >
-          <span className="w-5 h-5 rounded-full bg-[#41B63E] flex items-center justify-center text-xs text-white">
+          <span className="w-5 h-5 rounded-full bg-[#0064E0] flex items-center justify-center text-xs text-white">
             ✓
           </span>
           Getting Started

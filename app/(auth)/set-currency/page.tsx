@@ -23,14 +23,14 @@ export default function SetCurrencyPage() {
 
   const handleSubmit = async () => {
     setIsLoading(true);
-    console.log("Selected currency:", selectedCurrency);
+    // Preview only: selection is not persisted without the merchant backend.
 
     // Simulate API call
     await new Promise((resolve) => setTimeout(resolve, 2000));
 
     setIsLoading(false);
     // Navigate to dashboard or home
-    router.push("/");
+    router.push("/dashboard");
   };
 
   return (

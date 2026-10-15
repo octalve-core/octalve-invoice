@@ -6,6 +6,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Form } from "@/components/ui/form";
 import { toast } from "sonner";
+import { BrandWordmark } from "@/src/shared/ui/BrandWordmark";
 import React from "react";
 import Link from "next/link";
 import { EyeIcon, EyeOffIcon, Loader2 } from "lucide-react";
@@ -41,15 +42,10 @@ export default function LoginPage() {
     },
   });
 
-  const onSubmit = async (values: FormValues) => {
-    setIsLoading(true);
-    // Do not log credentials or personal registration data.
-
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 2000));
-
-    toast.info("UI Preview only — account access will be enabled after the secure backend is connected.");
+  const onSubmit = async (_values: FormValues) => {
+    // UI Preview only. Never transmit or log submitted credentials to fake handlers.
     setIsLoading(false);
+    toast.info("UI preview only — account authentication opens after secure backend integration.");
   };
 
   return (
@@ -185,7 +181,7 @@ export default function LoginPage() {
 
               {/* Logo and Title */}
               <div className="mb-10">
-                <span className="mb-4 block text-2xl font-semibold text-[#0064E0]">Octalve Invoice</span>
+                <BrandWordmark className="mb-4" width={190} />
                 <h2 className="text-2xl font-semibold text-[#1D2838]">
                   Welcome to Octalve Invoice
                 </h2>
