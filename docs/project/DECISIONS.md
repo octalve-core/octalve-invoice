@@ -9,3 +9,6 @@
 2026-10-15 D008: UI approval through separate real Vercel Preview before production features; temporary visual demo has zero financial operations.
 2026-10-15 D009: Target source control root independent of donors; no force pushes or shared Git history; phase branches.
 2026-10-15 D010: Repo main bootstrap initialized solely for independent root commit; Phase 0 on phase/00-finzefy-authority-ui-bootstrap.
+2026-10-15 D011: Use established Octalve blue #0064E0 (hover #0052B8); preserve semantic success green. The text-only wordmark is temporary until official icon/wordmark asset bytes are present; visual approval cannot be claimed.
+2026-10-15 D012: Vercel Preview stays connected to phase branch, main deployment blocked/untouched until full build and user visual acceptance.
+2026-10-15 D013: Imported legacy ESLint rule debt remains warnings in app/components, but new src/ features keep default strict rules. Reductions must be logged and each extracted section typed.
