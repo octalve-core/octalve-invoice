@@ -18,6 +18,7 @@ export default function InvoiceDetailsPage(){
  });
  const {settings,setSettings,logoPreview,paymentMode}=useMerchantPreview();
  const company=merchantCompany(settings),payment=merchantPayment(settings);
+ const displayDraft={...draft,invoiceNo:formatDocumentNumber(settings.businessName||"Octalve Limited",Number(id)||1,"invoice")};
  const setCompany:React.Dispatch<React.SetStateAction<typeof company>>=(action)=>setSettings(p=>{
    const next=typeof action==="function"?action(merchantCompany(p)):action;
    return {...p,businessName:next.name,businessPhone:next.phone,email:next.email,website:next.website,
