@@ -41,10 +41,16 @@ export function financeProjection(invoices:InvoiceClaim[],payments:PaymentEntry[
  for(const [id,allocated] of invoiceAllocations){
   if(allocated>(claims.get(id)||0))throw new Error("Invoice allocations exceed invoice balance");
  }
- const seenRefunds=new Set<string>();const refundedByPayment=new Map<string,number>();let refundedMinor=0;
+ const seenRefunds=new Map<string,RefundEntry>();const refundedByPayment=new Map<string,number>();let refundedMinor=0;
  for(const refund of refunds){
-  if(seenRefunds.has(refund.id))continue;seenRefunds.add(refund.id);
   amount(refund.amountMinor);
+  const original=seenRefunds.get(refund.id);
+  if(original){
+   if(original.paymentId!==refund.paymentId||original.amountMinor!==refund.amountMinor||original.status!==refund.status)
+    throw new Error("Conflicting refund replay");
+   continue;
+  }
+  seenRefunds.set(refund.id,refund);
   if(refund.status!=="verified")continue;
   if(!unique.get(refund.paymentId)||unique.get(refund.paymentId)?.status!=="verified")throw new Error("Refund has no verified source payment");
   const prior=refundedByPayment.get(refund.paymentId)||0;
@@ -57,7 +63,11 @@ export function financeProjection(invoices:InvoiceClaim[],payments:PaymentEntry[
  for(const value of [collectedMinor,unallocatedMinor,refundedMinor])if(!Number.isSafeInteger(value))throw new Error("Financial sum exceeds safe integer limit");
  const invoicedMinor=[...claims.values()].reduce((a,b)=>a+b,0);
  const allocatedMinor=[...invoiceAllocations.values()].reduce((a,b)=>a+b,0);
- return {invoicedMinor,allocatedMinor,outstandingMinor:invoicedMinor-allocatedMinor,collectedMinor,unallocatedMinor,refundedMinor,netCollectedMinor:collectedMinor-refundedMinor};
+ const outstandingMinor=invoicedMinor-allocatedMinor;
+ const netCollectedMinor=collectedMinor-refundedMinor;
+ for(const value of [invoicedMinor,allocatedMinor,outstandingMinor,netCollectedMinor])
+  if(!Number.isSafeInteger(value)||value<0)throw new Error("Financial sum exceeds safe integer limit");
+ return {invoicedMinor,allocatedMinor,outstandingMinor,collectedMinor,unallocatedMinor,refundedMinor,netCollectedMinor};
 }
 export const paymentPreview:PaymentEntry[]=[
  {id:"PAY-00001",customer:"Olumide Ismail",reference:"BANK-2024-001",source:"manual-bank",status:"verified",amountMinor:8500000,date:"12/06/2024",allocations:[{invoiceId:"4",amountMinor:8500000}],receiptId:"1"},
