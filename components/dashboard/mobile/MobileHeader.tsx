@@ -17,7 +17,7 @@ export default function MobileHeader(){
      <span className="min-w-0"><span className="block text-xs text-white/80">Welcome,</span>
        <span className="block truncate text-lg font-semibold leading-tight">{user.fullName||"Preview User"}</span></span>
    </Link>
-   <button type="button" aria-label="Notifications (coming later)" title="Notifications (coming later)" className="rounded-full p-2 hover:bg-white/15"><Bell size={23}/></button>
+   <Link href="/dashboard/notifications" aria-label="Notifications" title="Notifications" className="relative rounded-full p-2 hover:bg-white/15"><Bell size={23}/><span className="absolute right-1.5 top-1.5 h-2 w-2 rounded-full bg-red-400"/></Link>
   </div>
   <nav aria-label="Dashboard sections" className="px-4 pb-4"><div className="grid grid-cols-2 gap-1 rounded-full border border-white/85 bg-white p-1">
     <Link href="/dashboard" aria-current={!gettingStarted?"page":undefined} className={`rounded-full px-2 py-2 text-center text-xs font-semibold sm:text-sm ${!gettingStarted?"bg-[#0064E0] text-white":"text-[#18253b]"}`}>Dashboard</Link>

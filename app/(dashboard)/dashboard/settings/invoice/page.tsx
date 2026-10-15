@@ -33,7 +33,7 @@ const dueDates = [
 
 export default function InvoiceSettingsPage() {
   const router = useRouter();
-  const {settings:merchantSettings}=useMerchantPreview();
+  const {settings:merchantSettings,receiptAutoMode,setReceiptAutoMode}=useMerchantPreview();
   const [isLoading] = useState(false);
   const [settings, setSettings] = useState<InvoiceSettings>({
     currency: "NGN",
@@ -49,7 +49,16 @@ export default function InvoiceSettingsPage() {
 
   return (
     <>
-      <p className="mx-auto mb-5 max-w-2xl rounded-lg bg-blue-50 p-3 text-xs text-[#0052B8]">Preview-only invoice settings. Organization initials are derived from Business Settings; preferences and automated reminders are not yet persisted or activated.</p>
+      <section aria-label="Payment receipt preferences" className="mx-auto mb-5 max-w-2xl space-y-3 rounded-2xl border border-gray-100 bg-white p-4 shadow-sm sm:p-5">
+       <div><h2 className="font-semibold text-[#1d344b]">Payment receipts</h2><p className="mt-1 text-xs text-gray-500">Choose what happens after a verified online payment.</p></div>
+       <label className="flex flex-col gap-1.5 text-xs font-medium text-[#1d344b]">Automatic receipt handling
+       <select value={receiptAutoMode} onChange={e=>setReceiptAutoMode(e.target.value as typeof receiptAutoMode)} className="h-11 rounded-xl border border-gray-200 bg-gray-50 px-3 text-sm">
+        <option value="off">Manual — issue a receipt when needed</option>
+        <option value="generate">Automatically generate a receipt</option>
+        <option value="generate_and_email">Generate and email a receipt to the customer</option>
+       </select></label>
+       <p className="text-xs text-gray-500">These are preferences only. Automatic receipt processing and emailing remain inactive until secure payment verification and merchant authentication are available. Merchants can also issue a receipt later for a previously verified payment.</p>
+      </section>
       {/* ==================== MOBILE VIEW ==================== */}
       <div className="smallScreen mx-auto max-w-xl min-h-screen">
         {/* Header */}
