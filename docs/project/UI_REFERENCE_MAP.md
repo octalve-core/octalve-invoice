@@ -26,3 +26,13 @@ AuthDesktop-01 side-by-side login/signup with white form area and photographic i
 Desktop inherits the SAME form steps and validation as mobile even where designer supplied a mobile-only image: put flows into desktop white-space/panel area without deleting any controls. Business information and primary currency steps skippable; Getting Started must show incomplete and allow saving/editing. Persist saved profile and currency; rehydrate after reload. Live invoice form uses SAME presentation model as modern Sapphire output; second Classic Ledger. Receipt distinct. Mobile displays invoice cards, not cramped desktop tables. Recreate UI assets only from verified supplied brand and licensed sources; do not guess absent wordmark.
 ## Validation
 Golden visual screenshots at 1440x900 desktop and 390x844 mobile (also 768 tablet). Compare reference-matches and documented approved deviations; Playwright snapshots must be attached to CI; user reviews Preview before merge.
+
+## Owner October 15 Phase 0F correction references
+- Desktop Receipt table screenshot: header/3 KPI cards, status chips, search/actions row, 7-column receipt table, and merchant-type RP references.
+- Desktop Quotation screenshot: filter pills, search, export/filter/create controls, clean tabular hierarchy and type QUO references.
+- Desktop Expenses screenshot: supplier/category, amount/date/payment channel/status columns and EXP reference.
+- Mobile "More": compact toolbar/back, 4-across Quick Create icon circles with four distinct tones, 3-across Other Services; for desktop render larger icons in 4-across grid.
+- Mobile Recent transactions: inset light-gray rounded cards, leading status-colour icons, clear name/amount, rounded reference/status pills, date/due metadata and secondary action ellipsis. Apply shared architectural pattern across desktop/mobile, with per-kind behavior rather than unrelated styling.
+- Desktop Invoice Settings & Business Settings: keep approved fields, center the form and header in a constrained main column, no right-heavy empty width.
+- User profile identity: no default named test person or Octalve app icon as avatar; user initials unless photo uploaded. Merchant invoice mark similarly defaults to company initials until logo is supplied.
+- Log out at top-account/settings locations, preview-only confirmation.

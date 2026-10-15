@@ -1,13 +1,22 @@
-# OCTALVE INVOICE — PHASE 0E VISUAL APPROVAL AND DOCUMENT OUTPUT REVIEW
+# OCTALVE INVOICE — PHASE 0F FINAL VISUAL AND REGRESSION REVIEW
 
-Continue from branch `phase/00-finzefy-authority-ui-bootstrap` in https://github.com/octalve-core/octalve-invoice (draft PR #1). Last application implementation SHA before documentation: `134b7cbf85b1d1821dde7c381d02e1bd363cfc8b`. Read MASTER_IMPLEMENTATION.md, DECISIONS.md, state.json, NUMBERING_AND_CREDIT_AUTHORITY.md, and this file. Always fetch current HEAD, CI and Vercel deployment first.
+Repository: https://github.com/octalve-core/octalve-invoice
+Branch: `phase/00-finzefy-authority-ui-bootstrap`
+Draft PR: #1, do not merge.
+Last reviewed source before this project-control update: `2ead10693604417f9c00a72fb8b011c211fa3ee6`.
+Authority: OCTALVE_INVOICE_MASTER_IMPLEMENTATION.md, DECISIONS.md, UI_REFERENCE_MAP.md, NUMBERING_AND_CREDIT_AUTHORITY.md, state.json.
 
-The owner-approved baseline is Finzefy desktop/mobile UI, not a new design. Phase 0E includes 50/50 composer layout, per-action coloured icon circles, mobile 12-month chart and Dashboard/Getting Started header, direct invoice row navigation, complete official Octalve software assets, in-session merchant business profile and optional per-merchant document logo, payment setup prompts, compact date/status filter modals. User must review latest Vercel Preview and screenshots before merging.
+First fetch current HEAD, CI and Vercel Preview URL. Do not infer passing tests or Preview deployment state from an earlier SHA.
 
-NEXT WORK:
-1. Verify latest Preview is READY, inspect login/dashboard/getting started/invoice list/view/edit/create/business settings at 390, 768, 1440px, collect screenshot artifacts and compare against user refs.
-2. Test merchant profile edits in Business Settings propagate to modern/ledger invoice header, bank instructions and native PDF without ever displaying Sapphire source branding. Test no merchant logo: choose Business Settings or Continue without logo. No online payment account should be simulated as connected.
-3. Qualify actual native Modern/Classic Ledger PDF downloads and browser/PNG/PDF golden comparison with pinned Sapphire source (visual geometries retained, merchant identity intentionally changed).
-4. Verify no unexpected page-level horizontal overflow, mobile visible 12-month chart, clickable invoice rows, action-menu isolation and compact date filters. Fix failures in coherent phase commits.
-5. Run frozen pnpm install, TypeScript strict, ESLint, unit tests, Playwright browser/screenshots, CodeQL, Vercel Preview build. Update project docs with PASS/BLOCKED/NOT RUN and SHA evidence.
-6. Keep Draft PR #1 unmerged and money movement/sign-up/database/NRS off. Await explicit owner visual approval; only then provide Phase 1 Next.js/Prisma/Neon secure merchant-backend prompt.
+Owner's Phase 0F acceptance references:
+1. Receipt/Quotation/Expenses/Staff/Credit Note list references follow [MERCHANT_INITIALS]-[SEQUENCE][INV|RP|QUO|CR|EXP|SF]. Test Octalve Limited → OL; ensure independent type series in future DB.
+2. Other Services: four columns on desktop, 3 on mobile, with four differently coloured Quick Create icons; unfinished services have Coming Soon page and Back to Overview, never 404.
+3. Responsive Recent Transactions: reference mobile cards with status-specific icon circles, labels, amount, dates and menu; keep desktop clean and feature architecture shared.
+4. Constrain/center Business Settings and Invoice Settings main form/header. Prefix derived from Business Settings, not arbitrary editable INV prefix.
+5. User name must come from authenticated identity in backend eventually; Preview uses an editable in-session user profile and "Preview User" fallback, never "Abdulsamad" or "Unachukwu Charles". User avatar circular initials without photo; merchant invoice logo uses company initials if absent.
+6. Provide logout via desktop account menu and Settings; until backend auth exists, state plainly that it exits/clears the temporary Preview only, not a server session.
+7. Verify native Modern/Classic PDF merchant-initial fallback and browser/PDF parity, and all old Phase 0E acceptance requirements. No production invoice creation, email delivery, payments or refunds.
+8. Run frozen pnpm install, TS strict, lint, tests including number codes, 66 expanded Playwright route checks across mobile/tablet/desktop, CodeQL, Vercel Preview. Investigate failures before declaring PASS. Download screenshots from GitHub artifacts for owner comparison.
+9. Update decisions/state/test report exact verified SHA, preview URL and PASS/BLOCKED/NOT RUN. Obtain explicit user visual approval before merging or starting Phase 1 Prisma/Neon/merchant authentication.
+
+Prompt for user after visual sign-off: "Proceed with Phase 0F visual and native PDF golden qualification only. Retrieve the latest repository/CI/Preview first. Fix documented visual discrepancies, do not merge main or begin Phase 1 until I approve screenshots and PDF output."
