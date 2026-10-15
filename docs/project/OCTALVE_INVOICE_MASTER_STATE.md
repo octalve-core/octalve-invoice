@@ -1,21 +1,22 @@
-# OCTALVE INVOICE — PHASE 0D CURRENT STATE
-Last qualified application source: `a5a4ead60834b370e06f27e828e4b2939d8dc145`; branch: `phase/00-finzefy-authority-ui-bootstrap`. Draft PR #1 remains open, not merged.
-## Verified
-- Finzefy Next.js migration and pinned Sapphire Modern + Classic Ledger renderers remain isolated.
-- Responsive invoice list uses a shared typed fixture source; desktop constrained table and mobile cards, filtering, search, appropriate status labels and actions.
-- Invoice View: `/dashboard/invoice/1`; Invoice Edit: `/dashboard/invoice/1/edit`; Create: `/dashboard/invoice/create`. Pages remain preview-only, with sample data.
-- Eight brand hex variants remapped from obsolete Finzefy primary green to Octalve blue across remaining UI screens. Paid/success state green preserved.
-- Mobile dashboard cards, finance chart size and recent transactions adapted for narrow view; normal route-level horizontal overflow checks included in browser CI.
-- Invoice editor extracted to feature-specific sections; form supports customer, invoice meta/dates, subject, line items, taxes, notes, preview-only payment and disabled Save/Send.
-- Document number references: OL-00001INV and suffixes RP, QUO, CR; Node 24 unit tests passing.
-- Credit notes: settle through verified refund/application balance, not record deletion.
-- Node 24 pnpm frozen install, TS strict, lint, tests, production build and CodeQL all PASS on `a5a4ead60834b370e06f27e828e4b2939d8dc145`.
-- GitHub Actions browser check **36/36 passed**: https://github.com/octalve-core/octalve-invoice/actions/runs/38744966614 (43+ desktop/tablet/mobile screenshots and both document template views).
-- Vercel READY deployment: https://octalve-invoice-p24arn6l9-octalve-vault.vercel.app (source `a5a4ead60834b370e06f27e828e4b2939d8dc145`).
-## Blocked / not yet qualified
-- Exact official PNGs remain attached in conversation but not in source folder. Required original files: `public/branding/octalve-invoice-icon.png`, `octalve-wordmark.png`. Do not pretend fallback is official icon.
-- Screenshots collected by automation, but not visually approved against user's supplied references.
-- Sapphire browser/PNG/native-PDF golden parity and actual PDF download test remain NOT RUN, awaiting official asset integration and full visual comparison.
-- No production auth, Prisma/Neon, provider payments, NRS, credit transaction engine, backend OpenAPI.
-## Policy
-Do not merge Draft PR #1 into main. Do not start backend Phase 1 until branding/screenshot/doc fidelity is signed off by user.
+# OCTALVE INVOICE — PHASE 0E IMPLEMENTATION CHECKPOINT (2026-10-15)
+
+Branch: `phase/00-finzefy-authority-ui-bootstrap` | Last implementation SHA: `134b7cbf85b1d1821dde7c381d02e1bd363cfc8b` | Draft PR #1 unchanged.
+
+## Delivered
+- Verified official original icon/wordmark PNGs are committed under public/branding and served by Vercel. Sidebar logo gains legible white backing.
+- Editor and live Sapphire Modern/Classic Ledger document Preview equal-width on large desktop, with paper centered and mobile paper scaled.
+- Quick Create circle tones blue invoice, green customer, red expenses, orange quotation.
+- Mobile dashboard header notification control (no hamburger), genuine nav links for Dashboard/Getting Started, fixed series bar chart with all Jan-Dec bars and compact amount cards.
+- Invoice list: whole desktop row and mobile card keyboard/click routes to preview view; action button kept independent. Date/status filters are compact mobile/desktop dialog.
+- Customer date filter modal stacked, bounded to safe viewport.
+- Merchant Preview context carries Business Settings fields/logo/payment mode across Next.js client route navigation in-session only; no cookies/network or database. Merchant-specific logo never replaced with Octalve software mark.
+- Modern Invoice HTML/PDF and Classic Ledger browser/PDF headers no longer use Sapphire as merchant. Native PDF exporter accepts optional merchant logo; continue without logo/payment instructions is supported.
+- Missing logo/payment guidance and download confirmation offer settings navigation or continue without details.
+- Code structured into isolated provider, presentation mapper, filter dialog and existing feature sections.
+
+## Qualification
+At code SHA e86af23f: frozen install, typecheck, lint, tests, production build, CodeQL and 36 responsive Playwright checks passed. Latest code SHA `134b7cbf85b1d1821dde7c381d02e1bd363cfc8b` is awaiting its final CI/Vercel rerun while documentation is updated. Screenshots are not owner-approved. Real PDF golden parity NOT RUN.
+No live authentication, business persistence, payments, refunds, reconciliation, taxation, NRS or money movement.
+
+## Approval gate
+No merge to main and no Phase 1 before original design pixel-level review and actual PDF goldens, followed by explicit user authorization.

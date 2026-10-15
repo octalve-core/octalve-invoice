@@ -1,13 +1,13 @@
-# OCTALVE INVOICE — PHASE 0D FINAL ACCEPTANCE CONTINUATION
+# OCTALVE INVOICE — PHASE 0E VISUAL APPROVAL AND DOCUMENT OUTPUT REVIEW
 
-Resume from https://github.com/octalve-core/octalve-invoice branch `phase/00-finzefy-authority-ui-bootstrap`, Draft PR https://github.com/octalve-core/octalve-invoice/pull/1.
-Known qualified application source: `a5a4ead60834b370e06f27e828e4b2939d8dc145`; fetch latest HEAD and CI before proceeding.
+Continue from branch `phase/00-finzefy-authority-ui-bootstrap` in https://github.com/octalve-core/octalve-invoice (draft PR #1). Last application implementation SHA before documentation: `134b7cbf85b1d1821dde7c381d02e1bd363cfc8b`. Read MASTER_IMPLEMENTATION.md, DECISIONS.md, state.json, NUMBERING_AND_CREDIT_AUTHORITY.md, and this file. Always fetch current HEAD, CI and Vercel deployment first.
 
-1. Verify exact official source PNGs at `public/branding/octalve-invoice-icon.png` and `octalve-wordmark.png`. If missing, ask owner to upload files supplied in chat; do not redraw, recolour, invent or accept temporary fallbacks as final.
-2. Confirm favicon and all logo placements visually across signup/login/onboarding/splash/mobile header/desktop shell.
-3. Inspect Vercel Preview `https://octalve-invoice-p24arn6l9-octalve-vault.vercel.app` and screenshot artifact https://github.com/octalve-core/octalve-invoice/actions/runs/38744966614. Check invoice list, View `/dashboard/invoice/1`, Edit `/dashboard/invoice/1/edit`, Create `/dashboard/invoice/create`; match desktop/mobile reference images supplied by owner.
-4. Run deterministic Modern and Classic Ledger browser/PNG/native PDF golden comparison using pinned Sapphire commit dfd2657fc22f56c4b82808ca4072ad0300cb753c. Never claim PDF parity based on a successful Next.js build alone.
-5. Correct any layout/reflow defects and keep all money movement, signup/session and provider operations unimplemented. Document numbering and credit-note authority already recorded in `NUMBERING_AND_CREDIT_AUTHORITY.md`; server must use atomic allocation later.
-6. Record source SHA, Vercel deployment, golden screenshot approvals and PASS/BLOCKED/NOT RUN results; use coherent phase commits, protect main and obtain explicit owner visual sign-off.
+The owner-approved baseline is Finzefy desktop/mobile UI, not a new design. Phase 0E includes 50/50 composer layout, per-action coloured icon circles, mobile 12-month chart and Dashboard/Getting Started header, direct invoice row navigation, complete official Octalve software assets, in-session merchant business profile and optional per-merchant document logo, payment setup prompts, compact date/status filter modals. User must review latest Vercel Preview and screenshots before merging.
 
-Only after those acceptance gates PASS, prepare Phase 1 merchant platform: strict Prisma/Neon PostgreSQL, authenticated signup and recovery, organization isolation/RBAC, OpenAPI and secure session architecture. Request Neon Preview/DIRECT URLs via Vercel encrypted environment variables then, not before. Server-authoritative invoice issuance and payment reconciliation in later phases.
+NEXT WORK:
+1. Verify latest Preview is READY, inspect login/dashboard/getting started/invoice list/view/edit/create/business settings at 390, 768, 1440px, collect screenshot artifacts and compare against user refs.
+2. Test merchant profile edits in Business Settings propagate to modern/ledger invoice header, bank instructions and native PDF without ever displaying Sapphire source branding. Test no merchant logo: choose Business Settings or Continue without logo. No online payment account should be simulated as connected.
+3. Qualify actual native Modern/Classic Ledger PDF downloads and browser/PNG/PDF golden comparison with pinned Sapphire source (visual geometries retained, merchant identity intentionally changed).
+4. Verify no unexpected page-level horizontal overflow, mobile visible 12-month chart, clickable invoice rows, action-menu isolation and compact date filters. Fix failures in coherent phase commits.
+5. Run frozen pnpm install, TypeScript strict, ESLint, unit tests, Playwright browser/screenshots, CodeQL, Vercel Preview build. Update project docs with PASS/BLOCKED/NOT RUN and SHA evidence.
+6. Keep Draft PR #1 unmerged and money movement/sign-up/database/NRS off. Await explicit owner visual approval; only then provide Phase 1 Next.js/Prisma/Neon secure merchant-backend prompt.
