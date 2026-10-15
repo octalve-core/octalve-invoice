@@ -1,34 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import StatCard from "@/components/dashboard/cards/StatCard";
+import { InvoiceMetricsSection } from "@/src/features/invoices/sections/InvoiceMetricsSection";
 import InvoiceTable from "@/components/dashboard/tables/InvoiceTable";
 import CreateInvoiceModal from "@/components/dashboard/modals/CreateInvoiceModal";
 import InvoicePreviewModal from "@/components/dashboard/modals/InvoicePreviewModal";
-
-const statsData = [
-  {
-    title: "Total sales generated",
-    value: "2,420",
-    change: 40,
-    chartData: [30, 40, 25, 50, 49, 60, 70, 91, 85, 95],
-    chartColor: "#41B63E",
-  },
-  {
-    title: "Total Invoice",
-    value: "1,210",
-    change: -8,
-    chartData: [50, 45, 60, 55, 40, 35, 45, 40, 35, 30],
-    chartColor: "#EF4444",
-  },
-  {
-    title: "Total Orders",
-    value: "316",
-    change: 23,
-    chartData: [20, 35, 40, 50, 55, 60, 65, 70, 80, 85],
-    chartColor: "#41B63E",
-  },
-];
 
 interface SelectedInvoice {
   reference: string;
@@ -62,19 +38,8 @@ export default function InvoicePage() {
         <p className="text-gray-500 mt-1">Create and manage your invoices</p>
       </div>
 
-      {/* Stats Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        {statsData.map((stat) => (
-          <StatCard
-            key={stat.title}
-            title={stat.title}
-            value={stat.value}
-            change={stat.change}
-            chartData={stat.chartData}
-            chartColor={stat.chartColor}
-          />
-        ))}
-      </div>
+      {/* Source-faithful UI; sample metrics until server financial queries exist. */}
+      <InvoiceMetricsSection />
 
       {/* Invoice Table */}
       <InvoiceTable
