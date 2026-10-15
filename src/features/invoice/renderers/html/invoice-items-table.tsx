@@ -53,13 +53,13 @@ export function InvoiceItemsTable({
                     rows={1}
                     placeholder="Item or service"
                   />
-                  <AutoResizeTextarea
+                  {row.description.trim() ? <AutoResizeTextarea
                     value={row.description}
                     onChange={(event) => onLineChange(row.id, { description: event.target.value })}
                     className="sq-v4-item-description"
                     rows={1}
-                    placeholder="Description"
-                  />
+                    placeholder=""
+                  /> : null}
                 </div>
               </div>
 

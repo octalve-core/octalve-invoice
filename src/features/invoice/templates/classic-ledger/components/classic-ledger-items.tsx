@@ -60,13 +60,13 @@ export function ClassicLedgerItems({
                   placeholder="Item or service"
                   onChange={(event) => onLineChange(row.id, { serviceName: event.target.value })}
                 />
-                <ClassicAutoTextarea
+                {row.description.trim() ? <ClassicAutoTextarea
                   value={row.description}
                   rows={1}
                   className={styles.itemDescription}
-                  placeholder="Description"
+                  placeholder=""
                   onChange={(event) => onLineChange(row.id, { description: event.target.value })}
-                />
+                /> : null}
               </div>
 
               <label className={styles.moneyEditor}>
