@@ -67,18 +67,19 @@ const origin = process.env.OCTALVE_BASE_URL || "http://127.0.0.1:3000";
               await dangerous.waitFor({state:"visible"});
               if(!(await dangerous.getAttribute("class")).includes("text-red"))throw new Error("Delete action has no danger color");
               await sheet.getByRole("button",{name:/View /}).first().click();
-              await page.getByRole("dialog",{name:/ details/i}).waitFor();
-              record.sheetAndDetail="PASS";
               if(route==="/dashboard/receipt"){
-                await page.getByText("Receipt sample linked to Invoice",{exact:false}).waitFor();
+                await page.waitForURL(/\/dashboard\/receipt\/\d+$/);
+                await page.getByText("Linked invoice:",{exact:false}).waitFor();
+                record.receiptDetailRoute="PASS";
                 record.optionalReceiptLink="PASS";
-              }
-              await page.getByRole("button",{name:"Close details"}).click();
-              if(route==="/dashboard/receipt"){
+                await page.goto(origin+"/dashboard/receipt",{waitUntil:"domcontentloaded"});
                 await page.locator('article[role="link"]').nth(1).click();
                 await page.getByRole("button",{name:"View Receipt"}).click();
-                await page.getByText("recorded independently of an invoice",{exact:false}).waitFor();
+                await page.getByText("Independent payment record",{exact:false}).waitFor();
                 record.manualIndependentReceipt="PASS";
+              }else{
+                await page.getByRole("dialog",{name:/ details/i}).waitFor();
+                record.sheetAndDetail="PASS";
                 await page.getByRole("button",{name:"Close details"}).click();
               }
             }
@@ -103,8 +104,11 @@ const origin = process.env.OCTALVE_BASE_URL || "http://127.0.0.1:3000";
           if (route === "/dashboard/invoice/create") {
             await page.getByRole("heading", { name: "Create invoice" }).waitFor();
             await page.getByRole("heading", { name: "Live Modern Invoice preview" }).waitFor();
-            const customer = page.locator('section[aria-label="Invoice input"]').getByLabel("Customer name");
-            await customer.fill("Golden Preview Customer");
+            await page.locator('section[aria-label="Invoice details"]').getByRole("button",{name:"Sample Customer"}).click();
+            await page.getByRole("dialog",{name:"Select customer"}).getByRole("button",{name:/Add new customer/}).click();
+            await page.getByRole("dialog",{name:"Select customer"}).getByLabel("Customer name *").fill("Golden Preview Customer");
+            await page.getByRole("button",{name:"Add and select customer"}).click();
+            await page.locator('#invoice-document').getByText("Golden Preview Customer").waitFor();
             await page.locator('#invoice-document').waitFor();
             await page.locator('#invoice-document').getByText("Octalve Limited").waitFor();
             if(await page.locator('#invoice-document').getByText("Sapphire Quest").count()) throw new Error("Legacy merchant branding remains");
