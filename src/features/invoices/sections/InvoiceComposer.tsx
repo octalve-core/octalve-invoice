@@ -9,7 +9,7 @@ import { InvoiceEditorSection } from "@/src/features/invoices/sections/InvoiceEd
 import { InvoiceDocumentPreviewSection } from "@/src/features/invoices/sections/InvoiceDocumentPreviewSection";
 import { createPreviewInvoice } from "@/src/features/invoices/lib/preview-fixture";
 export function InvoiceComposer({mode="create",invoiceId}:{mode?:"create"|"edit";invoiceId?:string}){
- const {settings,setSettings,logoPreview,paymentMode}=useMerchantPreview();
+ const {settings,setSettings,logoPreview,paymentMode,invoiceAppearance}=useMerchantPreview();
  const [draft,setDraft]=useState(()=>{
   const initial=createPreviewInvoice();
   const matching=invoiceId?getPreviewInvoice(invoiceId):undefined;
@@ -28,7 +28,7 @@ export function InvoiceComposer({mode="create",invoiceId}:{mode?:"create"|"edit"
    const changed=typeof value==="function"?value(now):value;
    return {...old,bankName:changed.bankName,accountNumber:changed.accountNumber};
  });
- const [template,setTemplate]=useState<"modern"|"ledger">("modern");
+ const [template,setTemplate]=useState<"modern"|"ledger">(invoiceAppearance.template);
  return <div className="space-y-5">
    <header className="flex flex-wrap items-center justify-between gap-3">
      <div><Link href="/dashboard/invoice" className="text-sm text-[#0064E0] hover:underline">← All invoices</Link>
