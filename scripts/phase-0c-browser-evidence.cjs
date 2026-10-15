@@ -2,6 +2,32 @@
 const fs = require("node:fs");
 const path = require("node:path");
 const { chromium } = require("playwright");
+const { execFileSync } = require("node:child_process");
+async function qualifyNativePdf(page, output, view, template) {
+  await page.getByRole("button", { name: "Download preview PDF" }).click();
+  const prompt = page.getByRole("dialog", { name: "Complete invoice details" });
+  await prompt.waitFor();
+  const [download] = await Promise.all([
+    page.waitForEvent("download", { timeout: 90000 }),
+    prompt.getByRole("button", { name: "Continue without details" }).click()
+  ]);
+  const pdfPath = path.join(output, view + "-" + template + "-native.pdf");
+  await download.saveAs(pdfPath);
+  const bytes = fs.readFileSync(pdfPath);
+  if (bytes.subarray(0, 5).toString("ascii") !== "%PDF-") throw Error("Native PDF magic bytes missing: " + template);
+  const info = execFileSync("pdfinfo", [pdfPath], { encoding: "utf8", timeout: 20000 });
+  if (!/Page size:\s*595(?:\.|\s)/.test(info)) throw Error(template + " PDF is not A4 at the default paper setting");
+  const extracted = execFileSync("pdftotext", ["-layout", pdfPath, "-"], { encoding: "utf8", timeout: 20000 }).replace(/\s+/g, " ");
+  for (const expected of ["Golden Preview Customer", "Golden Item One", "Golden Item Two", "PHASE ZERO NOTE WITHOUT BANK DETAILS"]) {
+    if (!extracted.includes(expected)) throw Error(template + " PDF selectable text missing: " + expected);
+  }
+  if (extracted.includes("Editable sample line item")) throw Error(template + " PDF retained removed/blank item description");
+  const rasterPrefix = path.join(output, view + "-" + template + "-pdf-first-page");
+  execFileSync("pdftoppm", ["-f", "1", "-l", "1", "-singlefile", "-png", "-r", "115", pdfPath, rasterPrefix], { timeout: 60000 });
+  if (!fs.existsSync(rasterPrefix + ".png")) throw Error(template + " PDF raster PNG was not generated");
+  return { pdf: path.basename(pdfPath), raster: path.basename(rasterPrefix + ".png"), pdfPages: (info.match(/^Pages:\s*(\d+)/m) || [])[1], selectableText: "PASS", paperA4: "PASS" };
+}
+
 const routes = ["/onboarding", "/login", "/signup", "/verify-email", "/business-info", "/set-currency", "/dashboard", "/dashboard/getting-started", "/dashboard/invoice", "/dashboard/invoice/create", "/dashboard/invoice/1", "/dashboard/invoice/1/edit", "/dashboard/receipt", "/dashboard/receipt/1", "/dashboard/receipt/create", "/dashboard/quotation", "/dashboard/expenses", "/dashboard/customer", "/dashboard/items", "/dashboard/items/add", "/dashboard/items/1/edit", "/dashboard/staff", "/dashboard/staff/create", "/dashboard/staff/1/edit", "/dashboard/credit-note", "/dashboard/other-services", "/dashboard/other-services/pay-tax", "/dashboard/report", "/dashboard/notifications", "/dashboard/payment-received", "/dashboard/announcement", "/dashboard/updates", "/dashboard/invoice/3/record-payment", "/dashboard/settings", "/dashboard/settings/profile", "/dashboard/settings/invoice", "/dashboard/settings/business"];
 const viewports = {
   desktop: { width: 1440, height: 900 },
@@ -135,6 +161,20 @@ const origin = process.env.OCTALVE_BASE_URL || "http://127.0.0.1:3000";
             if(await page.locator('#invoice-document').getByText("Sapphire Quest").count()) throw new Error("Legacy merchant branding remains");
             const logoNotice=page.getByText("Your business logo is missing.");
             await logoNotice.waitFor();
+            // Regression: a deleted row must not cause later rows to share identifiers.
+            // This also exercises invoice-item input -> both live template presentations.
+            const itemEditor = page.locator('section[aria-label="Invoice products and services"]');
+            await itemEditor.getByRole("button", { name: "+ Add row" }).click();
+            await itemEditor.getByRole("button", { name: "Remove row" }).first().click();
+            await itemEditor.getByRole("button", { name: "+ Add row" }).click();
+            await itemEditor.getByLabel("Product or service 1").fill("Golden Item One");
+            await itemEditor.getByLabel("Product or service 2").fill("Golden Item Two");
+            if (await itemEditor.getByLabel("Product or service 1").inputValue() !== "Golden Item One") throw Error("Invoice draft row identifiers collided after remove/add");
+            await itemEditor.getByLabel("Rate for item 1").fill("1500");
+            await itemEditor.getByLabel("Rate for item 2").fill("2750");
+            await page.getByLabel("Mail for customer / Notes").fill("PHASE ZERO NOTE WITHOUT BANK DETAILS");
+            if (await page.locator('#invoice-document').getByText("Editable sample line item").count()) throw Error("Removed description still visible on modern document");
+            record.itemRowIdentityAndNotes = "PASS";
             record.merchantIdentity="PASS";
             if(view==="desktop"){
               const left=await page.locator('section[aria-label="Invoice input"]').boundingBox();
@@ -142,10 +182,12 @@ const origin = process.env.OCTALVE_BASE_URL || "http://127.0.0.1:3000";
               if(!left||!right||Math.abs(left.width-right.width)>12)throw new Error("Desktop invoice columns are not approximately 50/50");
             }
             await page.screenshot({ path: path.join(output, view+"-invoice-modern.png"), fullPage: true, animations: "disabled" });
+            if (view === "desktop") record.nativeModernPdf = await qualifyNativePdf(page, output, view, "modern");
             await page.getByLabel("Template").selectOption("ledger");
             await page.locator('[data-invoice-renderer="classic-ledger-v1"]').waitFor();
             record.templateSwitch = "PASS";
             await page.screenshot({ path: path.join(output, view+"-invoice-classic-ledger.png"), fullPage: true, animations: "disabled" });
+            if (view === "desktop") record.nativeClassicPdf = await qualifyNativePdf(page, output, view, "ledger");
           }
           await page.screenshot({ path: path.join(output, record.screenshot), fullPage: true, animations: "disabled" });
           if(route==="/dashboard/invoice" && view==="mobile"){
