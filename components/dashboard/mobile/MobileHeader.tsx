@@ -6,8 +6,10 @@ import {UserAvatar} from "@/src/features/merchant-preview/UserAvatar";
 import {useMerchantPreview} from "@/src/features/merchant-preview/MerchantPreviewProvider";
 export default function MobileHeader(){
  const pathname=usePathname();
+ const showDashboardHeader=pathname==="/dashboard"||pathname.startsWith("/dashboard/getting-started");
  const gettingStarted=pathname.startsWith("/dashboard/getting-started");
  const {user}=useMerchantPreview();
+ if(!showDashboardHeader)return null;
  return <header className="sticky top-0 z-40 bg-[#0052B8] text-white lg:hidden">
   <div className="flex items-center justify-between gap-3 px-4 pb-3 pt-4">
    <Link href="/dashboard/settings/profile" className="flex min-w-0 items-center gap-3" aria-label="Open profile settings">
