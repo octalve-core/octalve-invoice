@@ -11,7 +11,7 @@ export function RecordActionDialog({record,onClose,onAction}:{record:PreviewReco
  useEffect(()=>{function key(e:KeyboardEvent){if(e.key==="Escape")onClose();}document.addEventListener("keydown",key);return ()=>document.removeEventListener("keydown",key);},[onClose]);
  const invoice=record.kind==="invoice"?getPreviewInvoice(record.id):undefined;
  const paymentMode=invoice?.paymentMode;
- const title=definitions[record.kind].title;
+ const title=record.kind==="customer"?"Customer":record.kind==="expense"?"Expense":definitions[record.kind].title;
  const actions:{key:RecordAction;label:string;icon:typeof Eye;danger?:boolean}[]=[
  {key:"view",label:"View "+title,icon:Eye},
  {key:"edit",label:"Edit "+title,icon:Pencil},
