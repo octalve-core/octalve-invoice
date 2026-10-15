@@ -19,7 +19,7 @@ export default function MobileHeader({
   );
 
   return (
-    <header className="lg:hidden sticky top-0 z-50 bg-[#2D7A2A] text-white">
+    <header className="lg:hidden sticky top-0 z-50 bg-[#0052B8] text-white">
       {/* Top row */}
       <div className="flex items-center justify-between px-4 py-3">
         <div className="flex items-center gap-3">
@@ -42,7 +42,7 @@ export default function MobileHeader({
           onClick={() => setActiveTab("dashboard")}
           className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
             activeTab === "dashboard"
-              ? "bg-white text-[#2D7A2A]"
+              ? "bg-white text-[#0052B8]"
               : "bg-white/20 text-white hover:bg-white/30"
           }`}
         >
@@ -53,7 +53,7 @@ export default function MobileHeader({
           onClick={() => setActiveTab("getting-started")}
           className={`px-4 py-2 rounded-full text-sm font-medium transition-colors flex items-center gap-2 ${
             activeTab === "getting-started"
-              ? "bg-white text-[#2D7A2A]"
+              ? "bg-white text-[#0052B8]"
               : "bg-white/20 text-white hover:bg-white/30"
           }`}
         >

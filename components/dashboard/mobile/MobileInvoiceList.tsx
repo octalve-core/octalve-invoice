@@ -83,7 +83,7 @@ export default function MobileInvoiceList({
         <h2 className="text-lg font-semibold text-gray-900">Invoices</h2>
         <button
           onClick={onCreateClick}
-          className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-[#41B63E] rounded-lg hover:bg-[#36a137]"
+          className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-[#0064E0] rounded-lg hover:bg-[#0052B8]"
         >
           <Plus className="w-4 h-4" />
           Create Invoice
@@ -98,7 +98,7 @@ export default function MobileInvoiceList({
             onClick={() => setFilter(f)}
             className={`px-4 py-1.5 text-sm font-medium rounded-full whitespace-nowrap transition-colors ${
               filter === f || (filter === "all" && f === "All")
-                ? "bg-[#41B63E] text-white"
+                ? "bg-[#0064E0] text-white"
                 : "bg-gray-100 text-gray-600 hover:bg-gray-200"
             }`}
           >
@@ -118,7 +118,7 @@ export default function MobileInvoiceList({
             <div className="flex items-start justify-between mb-2">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center">
-                  <FileText className="w-5 h-5 text-[#41B63E]" />
+                  <FileText className="w-5 h-5 text-[#0064E0]" />
                 </div>
                 <div>
                   <p className="font-medium text-gray-900">
@@ -157,7 +157,7 @@ export default function MobileInvoiceList({
           <p className="text-gray-500">No invoices found</p>
           <button
             onClick={onCreateClick}
-            className="mt-4 px-6 py-2 text-sm font-medium text-white bg-[#41B63E] rounded-lg hover:bg-[#36a137]"
+            className="mt-4 px-6 py-2 text-sm font-medium text-white bg-[#0064E0] rounded-lg hover:bg-[#0052B8]"
           >
             Create your first invoice
           </button>

@@ -70,7 +70,7 @@ export default function GettingStartedModal({
           <div>
             <div className="flex items-center gap-2 mb-1">
               <span className="w-8 h-8 rounded-full bg-[#E8F5E8] flex items-center justify-center">
-                <span className="text-[#41B63E] text-sm font-bold">👋</span>
+                <span className="text-[#0064E0] text-sm font-bold">👋</span>
               </span>
               <h2 className="font-semibold text-gray-900">Hello Abdulsamad!</h2>
             </div>
@@ -92,11 +92,11 @@ export default function GettingStartedModal({
             <span className="text-gray-600">
               {progressPercent}% Task Completed
             </span>
-            <button className="text-[#41B63E] font-medium">View Tasks</button>
+            <button className="text-[#0064E0] font-medium">View Tasks</button>
           </div>
           <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
             <div
-              className="h-full bg-[#41B63E] rounded-full transition-all duration-300"
+              className="h-full bg-[#0064E0] rounded-full transition-all duration-300"
               style={{ width: `${progressPercent}%` }}
             />
           </div>
@@ -113,12 +113,12 @@ export default function GettingStartedModal({
                 <li key={task.id}>
                   <button
                     onClick={() => toggleTask(task.id)}
-                    className="w-full flex items-center gap-3 p-3 rounded-xl border border-gray-200 hover:border-[#41B63E] transition-colors"
+                    className="w-full flex items-center gap-3 p-3 rounded-xl border border-gray-200 hover:border-[#0064E0] transition-colors"
                   >
                     <div
                       className={`w-6 h-6 rounded-full border-2 flex items-center justify-center transition-colors ${
                         isCompleted
-                          ? "bg-[#41B63E] border-[#41B63E]"
+                          ? "bg-[#0064E0] border-[#0064E0]"
                           : "border-gray-300"
                       }`}
                     >
