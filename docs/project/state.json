@@ -4,7 +4,7 @@
   "branch": "phase/00-finzefy-authority-ui-bootstrap",
   "mainBootstrapSha": "87ad423dba3ced2445e109baa85114aea3d30037",
   "latestMigration": null,
-  "previewUrl": "https://octalve-invoice-8y11e5wyk-octalve-vault.vercel.app",
+  "previewUrl": "https://octalve-invoice-pggm3r402-octalve-vault.vercel.app",
   "productionUrl": null,
   "databaseState": "DEFERRED_UNTIL_APPROVED_PHASE_1_BACKEND",
   "qualification": {
@@ -16,7 +16,7 @@
     "githubCodeQL": "PASS GitHub Actions 38809249901 at c064ef53; later branch CI checked separately",
     "browserResponsiveRoutes": "PASS 123/123, 41 routes x 3 viewports, GitHub Actions run 38809249855 at c064ef53; includes subscription, theme, FAQs, Deleted Records and guarded customer removal",
     "officialBrandAssets": "PASS original icon and wordmark PNG HTTP 200 on Vercel",
-    "vercelPreview": "LAST VERIFIED READY at UI SHA 324047c01eac8032a77b8723f1073214be2ed62d (subscription pricing checkpoint), https://octalve-invoice-8y11e5wyk-octalve-vault.vercel.app; final UI changes are NOT deployed. Manual exact SHA deployment attempted and Vercel returned 402 daily deployment quota.",
+    "vercelPreview": "READY automatic Vercel Preview at source c237f28e9035c0750a3f48f10cfbc5f3a529b0a4: https://octalve-invoice-pggm3r402-octalve-vault.vercel.app. Verified HTTP 200 on settings, subscription, theme, FAQs, Deleted Records and report. Does not include later singular delete label and subscription example lifecycle/provider choice edits; owner latest-screenshot parity is still pending.",
     "browserPixelPerfect": "PENDING reference image availability and owner approval",
     "pdfNativeGoldenParity": "Original Modern/Classic A4 native PDFs technically verified; custom theme/typography/layout PDF golden parity and Classic Receipt A5 still open",
     "merchantProfileLinkage": "PREVIEW IN-MEMORY ONLY, user profile likewise; no server account/session",
@@ -56,12 +56,12 @@
     "Central /Octalve/Octalve Invoice/ Library root was verified accessible; 00 Project Control has historical master handoff, 02 UI References is empty, so exact uploaded owner PNG pixel comparison is not possible from available source assets.",
     "Owner has not approved closing Phase 0. Nine final-reference screenshots require visual side-by-side review.",
     "Custom theme fonts/header/layout are not certified against native PDF exports; Classic Receipt golden and customer-supplied font storage need qualification.",
-    "Vercel manual redeploy at final code encountered HTTP 402: api-deployments-free-per-day, more than 100 in 24 hours; Preview remains older than latest UI branch pending automatic build or quota reset."
+    "A READY Vercel Preview now contains the core six UI changes at c237, but later subscription lifecycle and wording refinements remain ahead in GitHub. Manual deployment API quota HTTP 402 may block an exact-latest redeploy."
   ],
   "nextPhase": "Phase 0H owner UI review, exact current Preview, custom PDF golden qualification — NOT Phase 1",
   "currentCodeCheckpoint": "5cd021a39988987231587b143647fdb85f7ffc83",
   "lastVerifiedApplicationCommit": "c064ef53cf0a9b2553cc301cb1e9c9f527e482c2",
   "exactNextPhase": "Phase 0H owner UI review, exact current Preview, custom PDF golden qualification — NOT Phase 1",
-  "previewCommitSha": "324047c01eac8032a77b8723f1073214be2ed62d",
-  "previewDeploymentStatus": "STALE_BUT_READY; FINAL_PHASE0H_UI_WAITING_FOR_QUOTA"
+  "previewCommitSha": "c237f28e9035c0750a3f48f10cfbc5f3a529b0a4",
+  "previewDeploymentStatus": "READY_SOURCE_C237; CORE_SIX_UI_CHANGES_LIVE; SUBSCRIPTION_LIFECYCLE_AND_SINGULAR_DELETE_LABEL_LATER"
 }
