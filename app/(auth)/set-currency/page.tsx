@@ -44,8 +44,7 @@ export default function SetCurrencyPage() {
               Set Primary Currency
             </h1>
             <p className="text-[14px] text-[#7F7F7F] leading-relaxed">
-              Choose the primary currency for your account. This can not be
-              changed.
+              Choose the primary currency for your account. This can be edited later in Settings.
             </p>
           </div>
 
@@ -83,7 +82,7 @@ export default function SetCurrencyPage() {
                     }}
                     className={`w-full px-4 py-3 flex items-center gap-3 hover:bg-gray-50 transition-colors ${
                       selectedCurrency.code === currency.code
-                        ? "bg-green-50"
+                        ? "bg-blue-50"
                         : ""
                     }`}
                   >
@@ -102,7 +101,7 @@ export default function SetCurrencyPage() {
 
           {/* Warning */}
           <p className="text-xs text-amber-600 bg-amber-50 p-3 rounded-lg mb-6">
-            ⚠️ This selection is permanent and cannot be changed later.
+            The primary currency may be changed later; issued invoices will keep their original currencies.
           </p>
 
           {/* Submit Button */}
@@ -131,8 +130,7 @@ export default function SetCurrencyPage() {
             Set Primary Currency
           </h1>
           <p className="text-gray-500 text-sm mb-8">
-            Choose the primary currency for your account. This can not be
-            changed.
+            Choose the primary currency for your account. This can be edited later in Settings.
           </p>
 
           {/* Currency Selector */}
@@ -169,7 +167,7 @@ export default function SetCurrencyPage() {
                     }}
                     className={`w-full px-4 py-3 flex items-center gap-3 hover:bg-gray-50 transition-colors ${
                       selectedCurrency.code === currency.code
-                        ? "bg-green-50"
+                        ? "bg-blue-50"
                         : ""
                     }`}
                   >
@@ -190,7 +188,7 @@ export default function SetCurrencyPage() {
           <button
             onClick={handleSubmit}
             disabled={isLoading}
-            className="w-full bg-[#41B63E] hover:bg-[#36a137] text-white font-semibold py-3 rounded-lg transition-colors flex items-center justify-center gap-2"
+            className="w-full bg-[#0064E0] hover:bg-[#0052B8] text-white font-semibold py-3 rounded-lg transition-colors flex items-center justify-center gap-2"
           >
             {isLoading ? (
               <>

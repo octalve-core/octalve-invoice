@@ -18,7 +18,8 @@ async function loadLogoDataUrl(): Promise<string> {
   if (!logoDataUrlPromise) {
     logoDataUrlPromise = fetch(COMPANY_IDENTITY.iconPath, { cache: "force-cache" })
       .then((response) => {
-        if (!response.ok) throw new Error(`Unable to load Sapphire Quest icon (${response.status}).`);
+        if (!response.ok) throw new Error(`Unable to load Octalve Invoice icon (${response.status}).`);
+        if (!response.headers.get("content-type")?.startsWith("image/")) throw new Error("Invoice brand asset is not an image");
         return response.blob();
       })
       .then(blobToDataUrl)

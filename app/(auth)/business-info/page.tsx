@@ -100,12 +100,12 @@ export default function BusinessInfoPage() {
         <div className="max-w-md mx-auto w-full">
           {/* Tabs */}
           <div className="flex border-b border-gray-200 mb-6">
-            <div className="flex-1 py-3 text-center text-[#41B63E] border-b-2 border-[#41B63E] font-medium text-sm">
+            <div className="flex-1 py-3 text-center text-[#0064E0] border-b-2 border-[#0064E0] font-medium text-sm">
               Business Information
             </div>
             <button
               onClick={handleSkip}
-              className="px-4 py-3 text-[#41B63E] font-medium text-sm"
+              className="px-4 py-3 text-[#0064E0] font-medium text-sm"
             >
               Skip
             </button>
@@ -379,7 +379,7 @@ export default function BusinessInfoPage() {
                     ) : (
                       <>
                         <Upload className="w-8 h-8 text-gray-400 mx-auto mb-2" />
-                        <p className="text-sm text-[#41B63E] font-medium">
+                        <p className="text-sm text-[#0064E0] font-medium">
                           Upload signature
                         </p>
                         <p className="text-xs text-gray-400 mt-1">
@@ -401,7 +401,7 @@ export default function BusinessInfoPage() {
               <button
                 type="submit"
                 disabled={isLoading}
-                className="w-full bg-[#41B63E] hover:bg-[#36a137] text-white font-semibold py-3 rounded-lg transition-colors flex items-center justify-center gap-2 mt-6"
+                className="w-full bg-[#0064E0] hover:bg-[#0052B8] text-white font-semibold py-3 rounded-lg transition-colors flex items-center justify-center gap-2 mt-6"
               >
                 {isLoading ? (
                   <>
@@ -427,7 +427,7 @@ export default function BusinessInfoPage() {
             </h1>
             <button
               onClick={handleSkip}
-              className="text-[#41B63E] font-medium hover:underline"
+              className="text-[#0064E0] font-medium hover:underline"
             >
               Skip
             </button>
@@ -641,7 +641,7 @@ export default function BusinessInfoPage() {
                     ) : (
                       <>
                         <Upload className="w-10 h-10 text-gray-400 mx-auto mb-2" />
-                        <p className="text-sm text-[#41B63E] font-medium">
+                        <p className="text-sm text-[#0064E0] font-medium">
                           Upload signature
                         </p>
                         <p className="text-xs text-gray-400 mt-1">
@@ -664,7 +664,7 @@ export default function BusinessInfoPage() {
                 <button
                   type="submit"
                   disabled={isLoading}
-                  className="w-full bg-[#41B63E] hover:bg-[#36a137] text-white font-semibold py-3 rounded-lg transition-colors flex items-center justify-center gap-2"
+                  className="w-full bg-[#0064E0] hover:bg-[#0052B8] text-white font-semibold py-3 rounded-lg transition-colors flex items-center justify-center gap-2"
                 >
                   {isLoading ? (
                     <>

@@ -33,19 +33,22 @@ export function InvoiceDocumentPreviewSection({draft,setDraft,profile,setProfile
  const download=async()=>{
    setDownloadError("");
    try {
-     if(!window.document.querySelector('img[src="/branding/octalve-invoice-icon.png"]')?.getAttribute("complete")){
-       // PDF loader performs its own authoritative logo fetch and will report missing assets.
-     }
      const { buildInvoicePresentation }=await import("@/src/features/invoice/presentation/invoice-presentation");
-     const { exportNativeInvoicePdf }=await import("@/src/features/invoice/lib/native-pdf-export");
+
      const presentation=buildInvoicePresentation({draft,paymentSettings:payment,totals,companyProfile:profile});
-     await exportNativeInvoicePdf(presentation,"octalve-invoice-preview.pdf");
+     if (template === "modern") {
+       const { exportNativeInvoicePdf } = await import("@/src/features/invoice/lib/native-pdf-export");
+       await exportNativeInvoicePdf(presentation,"octalve-modern-preview.pdf");
+     } else {
+       const { exportClassicLedgerPdf } = await import("@/src/features/invoice/templates/classic-ledger/pdf/classic-ledger-pdf-export");
+       await exportClassicLedgerPdf(presentation,"octalve-classic-ledger-preview.pdf");
+     }
    } catch(e) {setDownloadError(e instanceof Error?e.message:"PDF preview unavailable.");}
  };
  return <section aria-label="Live document preview" className="space-y-3">
    <div className="flex flex-wrap items-center justify-between gap-3">
      <div><h2 className="font-semibold text-[#1D2838]">Live {template==="modern"?"Modern Invoice":"Classic Ledger"} preview</h2>
-       <p className="text-xs text-gray-500">Same source renderer as native PDF; preview only, not issued.</p></div>
+       <p className="text-xs text-gray-500">Browser and PDF use the same presentation data; preview only, not issued.</p></div>
      <button onClick={download} type="button" className="rounded-lg bg-[#0064E0] px-4 py-2 text-xs font-semibold text-white hover:bg-[#0052B8]">Download preview PDF</button>
    </div>
    {downloadError&&<p role="alert" className="text-sm text-red-600">{downloadError}</p>}

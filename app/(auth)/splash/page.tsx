@@ -2,6 +2,7 @@
 
 import { useEffect } from "react";
 import React from "react";
+import { BrandWordmark } from "@/src/shared/ui/BrandWordmark";
 import { useRouter } from "next/navigation";
 
 export default function SplashPage() {
@@ -19,14 +20,10 @@ export default function SplashPage() {
   return (
     <>
       {/* ==================== MOBILE VIEW ==================== */}
-      <div className="smallScreen min-h-screen bg-[#41B63E] flex flex-col items-center justify-center">
+      <div className="smallScreen min-h-screen bg-[#0064E0] flex flex-col items-center justify-center">
         {/* Logo */}
         <div className="animate-scale-in">
-          <img
-            src="/logo.svg"
-            alt="Finzefy"
-            className="h-16 mb-4 brightness-0 invert"
-          />
+          <BrandWordmark className="brightness-0 invert" width={180} />
         </div>
 
         {/* Tagline */}
@@ -55,14 +52,10 @@ export default function SplashPage() {
       </div>
 
       {/* ==================== DESKTOP VIEW ==================== */}
-      <div className="largeScreen min-h-screen bg-[#41B63E] flex flex-col items-center justify-center">
+      <div className="largeScreen min-h-screen bg-[#0064E0] flex flex-col items-center justify-center">
         {/* Logo */}
         <div className="animate-scale-in">
-          <img
-            src="/logo.svg"
-            alt="Finzefy"
-            className="h-20 mb-4 brightness-0 invert"
-          />
+          <BrandWordmark className="brightness-0 invert" width={180} />
         </div>
 
         {/* Tagline */}
