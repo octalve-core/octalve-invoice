@@ -314,9 +314,9 @@ export default function InvoiceSettingsPage() {
               </label>
               <input
                 type="text"
-                value={settings.invoicePrefix}
+                value={merchantInitials(merchantSettings.businessName||"Octalve Limited")}
                 readOnly
-                placeholder="e.g. INV-"
+                placeholder="Auto-generated from company name"
                 className="auth-input-gray"
               />
             </div>
