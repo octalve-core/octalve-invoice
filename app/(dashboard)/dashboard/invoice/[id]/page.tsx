@@ -18,7 +18,7 @@ export default function InvoiceDetailsPage(){
   const d=createPreviewInvoice();
   return invoice?{...d,invoiceNo:invoice.reference,clientName:invoice.customer,clientEmail:invoice.email}:d;
  });
- const {settings,setSettings,logoPreview,paymentMode}=useMerchantPreview();
+ const {settings,setSettings,logoPreview}=useMerchantPreview();
  const company=merchantCompany(settings),payment=merchantPayment(settings);
  const displayDraft={...draft,invoiceNo:formatDocumentNumber(settings.businessName||"Octalve Limited",Number(id)||1,"invoice")};
  const setCompany:React.Dispatch<React.SetStateAction<typeof company>>=(action)=>setSettings(p=>{
@@ -38,7 +38,7 @@ export default function InvoiceDetailsPage(){
     </div>
     <div className="flex flex-wrap gap-2">
     {invoice.status==="paid"?<Link href={`/dashboard/receipt/create?invoice=${id}`} className="rounded-full border border-[#0064E0] px-4 py-2 text-sm font-medium text-[#0064E0]">Generate receipt</Link>:null}
-    {["pending","partial","overdue"].includes(invoice.status)? paymentMode==="manual"?<Link href={`/dashboard/invoice/${id}/record-payment`} className="rounded-full border border-[#0064E0] px-4 py-2 text-sm font-medium text-[#0064E0]">Record payment</Link>:<span className="rounded-full bg-amber-50 px-3 py-2 text-xs text-amber-800">Awaiting provider verification</span>:null}
+    {["pending","partial","overdue"].includes(invoice.status)? invoice.paymentMode==="manual"?<Link href={`/dashboard/invoice/${id}/record-payment`} className="rounded-full border border-[#0064E0] px-4 py-2 text-sm font-medium text-[#0064E0]">Record payment</Link>:<span className="rounded-full bg-amber-50 px-3 py-2 text-xs text-amber-800">Awaiting provider verification</span>:null}
     <Link href={`/dashboard/invoice/${id}/edit`} className="rounded-full bg-[#0064E0] px-4 py-2 text-sm font-medium text-white">Edit Invoice</Link></div>
   </div>
   <div className="grid min-w-0 items-start gap-4 lg:grid-cols-[minmax(260px,340px)_minmax(0,1fr)]">
@@ -54,7 +54,7 @@ export default function InvoiceDetailsPage(){
      </Link>)}</div>
    </aside>
    <div className="min-w-0"><InvoiceDocumentPreviewSection draft={displayDraft} setDraft={setDraft}
-    profile={company} setProfile={setCompany} payment={payment} setPayment={setPayment} template="modern" merchantLogo={logoPreview} paymentMode={paymentMode}/></div>
+    profile={company} setProfile={setCompany} payment={payment} setPayment={setPayment} template="modern" merchantLogo={logoPreview} paymentMode={invoice.paymentMode}/></div>
   </div>
  </div>;
 }

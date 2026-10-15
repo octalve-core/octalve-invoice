@@ -14,7 +14,7 @@ export default function PaymentReceivedPage(){
  return <main className="min-w-0 space-y-5">
   <header><h1 className="text-2xl font-bold text-[#1e3148]">Payment received</h1><p className="text-sm text-gray-500">Payment records, verification status and invoice allocations</p></header>
   <div className="grid grid-cols-2 gap-3 lg:grid-cols-3">
-   {[{label:"Recorded collections",value:money(projection.collectedMinor),icon:Wallet},{label:"Allocated to invoices",value:money(projection.allocatedMinor),icon:ShieldCheck},{label:"Unallocated receipts",value:money(projection.unallocatedMinor),icon:Clock3}].map(c=>
+   {[{label:"Recorded collections",value:money(projection.collectedMinor),icon:Wallet},{label:"Allocated to invoices",value:money(projection.allocatedMinor),icon:ShieldCheck},{label:"Unallocated payments",value:money(projection.unallocatedMinor),icon:Clock3}].map(c=>
     <section key={c.label} className="rounded-xl border border-gray-100 bg-white p-4"><c.icon size={19} className="text-[#0064E0]"/><p className="mt-3 text-xs text-gray-500">{c.label}</p><p className="mt-1 break-all text-lg font-semibold text-[#183650]">{c.value}</p></section>)}
   </div>
   <div className="overflow-hidden rounded-2xl bg-white shadow-sm">
