@@ -30,9 +30,9 @@ export function InvoiceClosing({
         <span className="sq-new-closing-heading">Notes</span>
         <p className="sq-new-thank-you">Thank you for choosing us.</p>
 
-        {draft.extraDetailsVisible ? (
+        {(draft.extraDetailsVisible || Boolean(draft.notes.trim())) ? (
           <div className="sq-new-extra-details">
-            <div className="sq-new-payment-grid">
+            {draft.extraDetailsVisible ? <div className="sq-new-payment-grid">
               <span className="sq-new-mini-heading">Payment Details</span>
               <label>
                 <span>Bank</span>
@@ -59,9 +59,9 @@ export function InvoiceClosing({
                   inputMode="numeric"
                 />
               </label>
-            </div>
+            </div> : null}
 
-            <div className="sq-new-terms">
+            {draft.notes.trim() ? <div className="sq-new-terms">
               <span className="sq-new-mini-heading">Terms &amp; Conditions</span>
               <AutoResizeTextarea
                 value={draft.notes}
@@ -69,7 +69,7 @@ export function InvoiceClosing({
                 rows={2}
                 placeholder="Payment terms, validity or other invoice notes..."
               />
-            </div>
+            </div> : null}
           </div>
         ) : null}
       </div>

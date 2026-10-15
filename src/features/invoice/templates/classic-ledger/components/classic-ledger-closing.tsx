@@ -64,18 +64,18 @@ export function ClassicLedgerClosing({
         </div>
       </section>
 
-      {draft.extraDetailsVisible ? (
+      {(draft.extraDetailsVisible || Boolean(draft.notes.trim())) ? (
         <section className={styles.extraDetails}>
-          <div>
+          {draft.extraDetailsVisible ? <div>
             <h2>Payment Details</h2>
             <label><span>Bank</span><input value={paymentSettings.bankName} onChange={(event) => onPaymentSettingChange("bankName", event.target.value)} placeholder="Bank name" /></label>
             <label><span>Account Name</span><input value={paymentSettings.accountName} onChange={(event) => onPaymentSettingChange("accountName", event.target.value)} placeholder="Account name" /></label>
             <label><span>Account No.</span><input value={paymentSettings.accountNumber} onChange={(event) => onPaymentSettingChange("accountNumber", event.target.value)} placeholder="Account number" /></label>
-          </div>
-          <div>
+          </div> : null}
+          {draft.notes.trim() ? <div>
             <h2>Terms &amp; Notes</h2>
             <textarea value={draft.notes} rows={4} onChange={(event) => onDraftChange("notes", event.target.value)} placeholder="Payment terms or additional notes" />
-          </div>
+          </div> : null}
         </section>
       ) : null}
 
