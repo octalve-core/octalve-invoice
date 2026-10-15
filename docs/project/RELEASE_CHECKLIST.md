@@ -12,6 +12,7 @@
 - Native PDF: BOTH Modern Invoice and Classic Ledger downloaded as real PDFs, validated `%PDF-`, A4 page profile via `pdfinfo`, selectable text via `pdftotext`, then first page rasterized as separate PNG with `pdftoppm`. Classic Ledger deliberately uses uppercase customer names; text smoke test normalizes case. Same browser run evidence `38796782601`.
 - On-screen browser screenshots remain artifacts for all three viewports. Note that rasterized PDF page PNGs and actual exported browser PNGs are different tests.
 - Latest passing CI run: https://github.com/octalve-core/octalve-invoice/actions/runs/38796782601
+- **Latest Vercel deployment blocker:** Attempted a new Git-connected Preview from source commit `ea88c2e10920f18ba1b59ea79904491af692921c`. Vercel returned HTTP **402** `api-deployments-free-per-day`, saying the team has exceeded **100 API deployments in 24 hours**, retry after **86400 seconds**. No commit-matched READY Preview has been produced for the revised PNG-capable branch. Do not represent the old 14b Preview as the latest build. No production deployment, plan change, or main merge was attempted.
 - Last previously verified READY Preview at handoff: https://octalve-invoice-h2kg61ik3-octalve-vault.vercel.app (SHA `14b65b8`); **this URL alone does not certify the new PNG exporter. Revalidate latest Vercel Preview at the current branch code SHA before reporting deployment READY.**
 
 ## UI corrections applied
