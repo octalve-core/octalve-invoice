@@ -66,6 +66,18 @@ export default function BusinessSettingsPage() {
             <option value="manual">Bank transfer (manual)</option><option value="monnify">Monnify (coming later)</option><option value="flutterwave">Flutterwave (coming later)</option><option value="paystack">Paystack (coming later)</option>
           </select>
         </label>
+        <div className="mt-3 grid min-w-0 gap-3 sm:grid-cols-2">
+          <label className="min-w-0 text-xs font-medium">Business contact email
+            <input type="email" aria-label="Business contact email" value={settings.email}
+              onChange={e=>setSettings({...settings,email:e.target.value})} placeholder="e.g. accounts@company.com"
+              className="mt-1 block h-10 w-full min-w-0 rounded-lg border border-blue-200 bg-white px-3 text-sm"/>
+          </label>
+          <label className="min-w-0 text-xs font-medium">Business website
+            <input type="url" aria-label="Business website" value={settings.website}
+              onChange={e=>setSettings({...settings,website:e.target.value})} placeholder="https://company.com"
+              className="mt-1 block h-10 w-full min-w-0 rounded-lg border border-blue-200 bg-white px-3 text-sm"/>
+          </label>
+        </div>
       </section>
       {/* ==================== MOBILE VIEW ==================== */}
       <div className="smallScreen min-h-screen pb-8">
@@ -260,7 +272,7 @@ export default function BusinessSettingsPage() {
                   }
                   className="w-full h-[44px] px-4 pr-10 text-gray-900 rounded-lg border border-[#CFD4DC] bg-white shadow-sm focus:border-[#0064E0] focus:ring-2 focus:ring-[#0064E0]/20 focus:outline-none appearance-none"
                 >
-                  {banks.map((b) => (
+                  {[ {value:"",label:"Choose a bank"},...banks].map((b) => (
                     <option key={b.value} value={b.value}>
                       {b.label}
                     </option>
