@@ -12,9 +12,9 @@ export function RecordActionDialog({record,onClose,onAction}:{record:PreviewReco
  {key:"view",label:"View "+title,icon:Eye},
  {key:"edit",label:"Edit "+title,icon:Pencil},
  ...(record.kind==="invoice"||record.kind==="receipt"||record.kind==="quotation"?[{key:"send" as const,label:"Send "+title,icon:Send}]:[]),
- {key:"duplicate",label:"Duplicate "+title,icon:Copy},
+ ...(record.kind==="invoice"||record.kind==="receipt"||record.kind==="quotation"||record.kind==="expense"||record.kind==="item"?[{key:"duplicate" as const,label:"Duplicate "+title,icon:Copy}]:[]),
  {key:"delete",label:"Delete "+title,icon:Trash2,danger:true},
- ...(record.kind==="receipt"?[{key:"refund" as const,label:"Mark as refunded",icon:RotateCcw}]:[]),
+ ...((record.kind==="receipt"||record.kind==="invoice")&&(record.status==="paid"||record.status==="partial")?[{key:"refund" as const,label:"Mark as refunded",icon:RotateCcw}]:[]),
  ...(record.kind==="staff"||record.kind==="customer"?[{key:"deactivate" as const,label:"Deactivate "+title,icon:UserRoundCheck}]:[])
  ];
  return <div className="fixed inset-0 z-[100] flex items-end justify-center bg-black/45 p-0 lg:items-center lg:p-4" onClick={onClose}>
