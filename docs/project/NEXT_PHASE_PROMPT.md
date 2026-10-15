@@ -16,7 +16,7 @@ Owner's Phase 0F acceptance references:
 5. User name must come from authenticated identity in backend eventually; Preview uses an editable in-session user profile and "Preview User" fallback, never "Abdulsamad" or "Unachukwu Charles". User avatar circular initials without photo; merchant invoice logo uses company initials if absent.
 6. Provide logout via desktop account menu and Settings; until backend auth exists, state plainly that it exits/clears the temporary Preview only, not a server session.
 7. Verify native Modern/Classic PDF merchant-initial fallback and browser/PDF parity, and all old Phase 0E acceptance requirements. No production invoice creation, email delivery, payments or refunds.
-8. Run frozen pnpm install, TS strict, lint, tests including number codes, 66 expanded Playwright route checks across mobile/tablet/desktop, CodeQL, Vercel Preview. Investigate failures before declaring PASS. Download screenshots from GitHub artifacts for owner comparison.
+8. Run frozen pnpm install, TS strict, lint, tests including number codes, 69 expanded Playwright route checks across mobile/tablet/desktop, CodeQL, Vercel Preview. Investigate failures before declaring PASS. Download screenshots from GitHub artifacts for owner comparison.
 9. Update decisions/state/test report exact verified SHA, preview URL and PASS/BLOCKED/NOT RUN. Obtain explicit user visual approval before merging or starting Phase 1 Prisma/Neon/merchant authentication.
 
 Prompt for user after visual sign-off: "Proceed with Phase 0F visual and native PDF golden qualification only. Retrieve the latest repository/CI/Preview first. Fix documented visual discrepancies, do not merge main or begin Phase 1 until I approve screenshots and PDF output."
