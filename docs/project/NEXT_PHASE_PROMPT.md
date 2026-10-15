@@ -7,3 +7,5 @@ Establish modern and Classic Ledger deterministic browser/PNG/native PDF goldens
 Refactor long auth, invoice and settings components into feature sections; keep source-style visual appearance.
 Run pnpm --frozen-lockfile, typecheck, lint, tests, build, CodeQL; update docs/DECISIONS.md, state.json, qualified SHA, Preview URL and blocks; push clean commits only to phase branch. Do not merge to main without visual approval.
 Provide exact backend continuation prompt only after Golden UI/Preview approval.
+
+Latest continuation note: Vercel Preview verified URL https://octalve-invoice-178ughgam-octalve-vault.vercel.app; modern/classic PDF dispatch corrected. Browser qualification GitHub Actions workflow `Phase 0C browser evidence` runs route screenshots on local production-mode Next.js. Obtain run artifacts and perform real visual review before approving merge. Exact official uploaded brand PNGs still need to be committed.
