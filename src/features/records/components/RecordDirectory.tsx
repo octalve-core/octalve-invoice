@@ -90,7 +90,7 @@ export function RecordDirectory({kind,onCreate,onView,onEdit,showDesktopHeader=t
   <div className="min-w-0 overflow-hidden rounded-xl bg-white lg:border lg:border-gray-100 lg:shadow-sm">
    <div className="flex flex-wrap gap-1.5 px-2 py-3 lg:gap-2 lg:border-b lg:px-5 lg:py-5" aria-label={def.title+" status filters"}>
     {(["all",...def.statuses] as const).map(value=><button type="button" key={value} aria-pressed={status===value} onClick={()=>tab(value)}
-      className={"rounded-full px-3 py-2 text-[11px] font-medium lg:px-4 lg:text-xs "+(status===value?"bg-green-50 text-green-600":"bg-[#f2f2f2] text-gray-500 hover:bg-gray-100")}>
+      className={"rounded-full px-3 py-2 text-[11px] font-medium lg:px-4 lg:text-xs "+(status===value?"bg-blue-50 text-[#0064E0]":"bg-[#f2f2f2] text-gray-500 hover:bg-gray-100")}>
       {value==="all"?"All":statusLabels[value]}</button>)}
    </div>
    <div className="hidden items-center gap-4 border-b border-gray-100 px-5 py-4 lg:flex">
