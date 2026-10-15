@@ -2,7 +2,7 @@
 const fs = require("node:fs");
 const path = require("node:path");
 const { chromium } = require("playwright");
-const routes = ["/onboarding", "/login", "/signup", "/verify-email", "/business-info", "/set-currency", "/dashboard", "/dashboard/getting-started", "/dashboard/invoice", "/dashboard/invoice/create", "/dashboard/invoice/1", "/dashboard/invoice/1/edit"];
+const routes = ["/onboarding", "/login", "/signup", "/verify-email", "/business-info", "/set-currency", "/dashboard", "/dashboard/getting-started", "/dashboard/invoice", "/dashboard/invoice/create", "/dashboard/invoice/1", "/dashboard/invoice/1/edit", "/dashboard/receipt", "/dashboard/quotation", "/dashboard/expenses", "/dashboard/staff", "/dashboard/credit-note", "/dashboard/other-services", "/dashboard/other-services/pay-tax", "/dashboard/settings", "/dashboard/settings/profile", "/dashboard/settings/invoice", "/dashboard/settings/business"];
 const viewports = {
   desktop: { width: 1440, height: 900 },
   tablet: { width: 768, height: 1024 },
@@ -38,6 +38,23 @@ const origin = process.env.OCTALVE_BASE_URL || "http://127.0.0.1:3000";
             const width=await page.locator('article[role="link"]').first().evaluate(el=>el.getBoundingClientRect().width);
             if(width > viewport.width+1)throw new Error("Invoice mobile card exceeds viewport");
             record.mobileCard="PASS";
+          }
+          if(route==="/dashboard/receipt") { await page.getByText("OL-00001RP").first().waitFor();record.typeRef="RP"; }
+          if(route==="/dashboard/quotation") { await page.getByText("OL-00001QUO").first().waitFor();record.typeRef="QUO"; }
+          if(route==="/dashboard/expenses") { await page.getByText("OL-00001EXP").first().waitFor();record.typeRef="EXP"; }
+          if(route==="/dashboard/staff") { await page.getByText("OL-00001SF").first().waitFor();record.typeRef="SF"; }
+          if(route==="/dashboard/credit-note") { await page.getByText("OL-00001CR").first().waitFor();record.typeRef="CR"; }
+          if(route==="/dashboard/other-services"){
+             await page.getByRole("heading",{name:"More"}).waitFor();
+             if(await page.locator('a[href="/dashboard/other-services/pay-tax"]').count()!==1)throw Error("Pay Tax coming soon missing");
+             if(view==="desktop"){
+               const cols=await page.locator('section[aria-label="Other services"] > div').evaluate(el=>getComputedStyle(el).gridTemplateColumns.split(" ").length);
+               if(cols!==4)throw Error("Other Services desktop must be 4 columns; got "+cols);
+             }
+          }
+          if(route==="/dashboard/other-services/pay-tax"){await page.getByText("Coming soon to Octalve Invoice.").waitFor();await page.getByRole("link",{name:/Back to Overview/}).waitFor();}
+          if(route==="/dashboard"&&view==="mobile"){
+            await page.getByRole("link",{name:"Open profile settings"}).getByText("Preview User").waitFor();
           }
           if (route === "/dashboard/invoice/create") {
             await page.getByRole("heading", { name: "Create invoice" }).waitFor();
