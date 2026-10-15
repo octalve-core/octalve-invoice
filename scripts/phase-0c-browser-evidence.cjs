@@ -32,7 +32,7 @@ const origin = process.env.OCTALVE_BASE_URL || "http://127.0.0.1:3000";
             await page.getByRole("heading", { name: "Live Modern Invoice preview" }).waitFor();
             const customer = page.getByLabel("Customer name");
             await customer.fill("Golden Preview Customer");
-            await page.getByText("Golden Preview Customer").first().waitFor();
+            await page.locator('#invoice-document').waitFor();
             await page.getByLabel("Template").selectOption("ledger");
             await page.locator('[data-invoice-renderer="classic-ledger-v1"]').waitFor();
             record.templateSwitch = "PASS";
@@ -50,6 +50,7 @@ const origin = process.env.OCTALVE_BASE_URL || "http://127.0.0.1:3000";
     }
   } finally { await browser.close(); }
   fs.writeFileSync(path.join(output, "report.json"), JSON.stringify({ commit: process.env.GITHUB_SHA || "local", testedAt: new Date().toISOString(), records }, null, 2));
-  console.log("Phase 0C browser checks:", records.length - failures, "/", records.length, "passed; screenshots in", output);
+  console.log("Phase 0D browser checks:", records.length - failures, "/", records.length, "passed; screenshots in", output);
+  for (const entry of records.filter(x=>x.status==="FAIL")) console.error("SCREENSHOT FAIL",entry.viewport,entry.route,entry.error);
   if (failures) process.exitCode = 1;
 })().catch(e => { console.error(e); process.exitCode = 1; });
