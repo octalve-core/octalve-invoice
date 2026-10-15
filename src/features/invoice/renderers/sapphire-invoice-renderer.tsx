@@ -1,6 +1,6 @@
 "use client";
 
-import type { Ref } from "react";
+import type { Ref,CSSProperties } from "react";
 import { CURRENCIES } from "../constants";
 import { getDefaultDocumentDensity } from "../lib/paper";
 import type { BusinessPaymentSettings, BusinessIdentityProfile, InvoiceDraft, InvoiceLine, InvoiceTotals } from "../types";
@@ -11,6 +11,12 @@ import { InvoiceItemsTable } from "./html/invoice-items-table";
 import { InvoiceParties } from "./html/invoice-parties";
 
 interface SapphireInvoiceRendererProps {
+ accentColor?:string;
+ font?:"system"|"serif"|"rounded";
+ density?:"comfortable"|"compact";
+ header?:"standard"|"minimal";
+ logoPosition?:"left"|"center"|"right";
+ showFooter?:boolean;
   containerRef?: Ref<HTMLDivElement>;
   companyProfile: BusinessIdentityProfile;
   companyLogo?: string | null;
@@ -34,6 +40,7 @@ interface SapphireInvoiceRendererProps {
 
 export function SapphireInvoiceRenderer({
   containerRef,
+  accentColor="#0064E0",font="system",density="comfortable",header="standard",logoPosition="left",showFooter=true,
   companyProfile,
   companyLogo,
   draft,
@@ -61,6 +68,10 @@ export function SapphireInvoiceRenderer({
       data-paper-size={draft.paperSize}
       data-document-density={density}
       className="sq-invoice-wrapper sq-v4-document shadow-2xl"
+      data-logo-position={logoPosition}
+      data-header-style={header}
+      data-style-density={density}
+      style={{"--sq-blue":/^#[0-9a-fA-F]{6}$/.test(accentColor)?accentColor:"#0064E0","--sq-blue-dark":/^#[0-9a-fA-F]{6}$/.test(accentColor)?accentColor:"#043996",fontFamily:font==="serif"?"Georgia, serif":font==="rounded"?"Trebuchet MS, sans-serif":"Arial, sans-serif"} as CSSProperties}
     >
       <InvoiceHeader draft={draft} totals={totals} companyProfile={companyProfile} logoSrc={companyLogo} />
 
@@ -85,7 +96,7 @@ export function SapphireInvoiceRenderer({
         onPaymentSettingChange={onPaymentSettingChange}
       />
 
-      <InvoiceFooter />
+      {showFooter?<InvoiceFooter />:null}
     </div>
   );
 }
