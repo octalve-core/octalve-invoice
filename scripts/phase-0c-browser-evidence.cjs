@@ -2,7 +2,7 @@
 const fs = require("node:fs");
 const path = require("node:path");
 const { chromium } = require("playwright");
-const routes = ["/onboarding", "/login", "/signup", "/verify-email", "/business-info", "/set-currency", "/dashboard", "/dashboard/getting-started", "/dashboard/invoice", "/dashboard/invoice/create", "/dashboard/invoice/1", "/dashboard/invoice/1/edit", "/dashboard/receipt", "/dashboard/quotation", "/dashboard/expenses", "/dashboard/customer", "/dashboard/items", "/dashboard/staff", "/dashboard/credit-note", "/dashboard/other-services", "/dashboard/other-services/pay-tax", "/dashboard/settings", "/dashboard/settings/profile", "/dashboard/settings/invoice", "/dashboard/settings/business"];
+const routes = ["/onboarding", "/login", "/signup", "/verify-email", "/business-info", "/set-currency", "/dashboard", "/dashboard/getting-started", "/dashboard/invoice", "/dashboard/invoice/create", "/dashboard/invoice/1", "/dashboard/invoice/1/edit", "/dashboard/receipt", "/dashboard/receipt/1", "/dashboard/receipt/create", "/dashboard/quotation", "/dashboard/expenses", "/dashboard/customer", "/dashboard/items", "/dashboard/items/add", "/dashboard/items/1/edit", "/dashboard/staff", "/dashboard/staff/create", "/dashboard/staff/1/edit", "/dashboard/credit-note", "/dashboard/other-services", "/dashboard/other-services/pay-tax", "/dashboard/report", "/dashboard/notifications", "/dashboard/payment-received", "/dashboard/announcement", "/dashboard/updates", "/dashboard/invoice/4/record-payment", "/dashboard/settings", "/dashboard/settings/profile", "/dashboard/settings/invoice", "/dashboard/settings/business"];
 const viewports = {
   desktop: { width: 1440, height: 900 },
   tablet: { width: 768, height: 1024 },
@@ -101,7 +101,27 @@ const origin = process.env.OCTALVE_BASE_URL || "http://127.0.0.1:3000";
             if(await page.getByRole("button",{name:"Paid",exact:true}).count())throw new Error("Quotation incorrectly implies payment");
             record.quotationIsNotPayment="PASS";
           }
-          if (route === "/dashboard/invoice/create") {
+          if(route==="/dashboard/receipt/create"){
+            await page.getByRole("heading",{name:"Create receipt"}).waitFor();
+            await page.getByRole("button",{name:/Preview receipt/}).waitFor();
+            record.receiptFromPaidInvoice="PASS";
+          }
+          if(route==="/dashboard/invoice/4/record-payment"){
+            await page.getByRole("heading",{name:"Record bank-transfer payment"}).waitFor();
+            await page.getByRole("button",{name:"Review payment"}).waitFor();
+            record.manualBankGuard="PASS";
+          }
+          if(route==="/dashboard/notifications"){
+            await page.getByRole("heading",{name:"Notifications"}).waitFor();
+            await page.getByRole("button",{name:/Mark all read/}).click();
+            record.notifications="PASS";
+          }
+          if(route==="/dashboard/report"){
+            await page.getByRole("heading",{name:"Reports"}).waitFor();
+            await page.getByText("Recorded collections").first().waitFor();
+            record.report="PASS";
+          }
+                    if (route === "/dashboard/invoice/create") {
             await page.getByRole("heading", { name: "Create invoice" }).waitFor();
             await page.getByRole("heading", { name: "Live Modern Invoice preview" }).waitFor();
             await page.locator('section[aria-label="Invoice details"]').getByRole("button",{name:"Sample Customer"}).click();
