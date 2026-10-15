@@ -899,3 +899,26 @@ body.sq-exporting .sq-invoice-wrapper * {
     margin-inline: 0;
   }
 }
+
+
+/* Phase 0H customisations are opt-in and isolated to the browser/PNG preview.
+   Base Sapphire page geometry remains unchanged with default settings. */
+.sq-invoice-wrapper[data-header-style="minimal"] .sq-v4-header {
+  border-bottom: 0;
+}
+.sq-invoice-wrapper[data-logo-position="center"] .sq-v4-brand-side {
+  flex-direction: column;
+  text-align: center;
+}
+.sq-invoice-wrapper[data-logo-position="right"] .sq-v4-brand-side {
+  flex-direction: row-reverse;
+  text-align: right;
+}
+.sq-invoice-wrapper[data-style-density="compact"] {
+  --sq-section-gap: 12px;
+}
+.sq-invoice-wrapper[data-style-density="compact"] .sq-v4-item-row {
+  min-height: 44px;
+  padding-top: 6px;
+  padding-bottom: 6px;
+}
