@@ -1,13 +1,13 @@
 "use client";
 import Link from "next/link";
 import {usePathname} from "next/navigation";
-import {House,FileText,ReceiptText,UsersRound,UserRound} from "lucide-react";
+import {House,FileText,ReceiptText,MoreHorizontal,UserRound} from "lucide-react";
 import {useMerchantPreview} from "@/src/features/merchant-preview/MerchantPreviewProvider";
 const navigation=[
  {label:"Home",href:"/dashboard",icon:House},
  {label:"Invoices",href:"/dashboard/invoice",icon:FileText},
  {label:"Receipts",href:"/dashboard/receipt",icon:ReceiptText},
- {label:"Clients",href:"/dashboard/customer",icon:UsersRound},
+ {label:"More",href:"/dashboard/other-services",icon:MoreHorizontal},
  {label:"Me",href:"/dashboard/settings",icon:UserRound}
 ];
 export default function BottomNavbar(){
