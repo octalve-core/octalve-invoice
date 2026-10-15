@@ -7,6 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Form } from "@/components/ui/form";
 import React from "react";
 import Link from "next/link";
+import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { Loader2, Camera, Upload } from "lucide-react";
 import {
@@ -78,15 +79,9 @@ export default function BusinessInfoPage() {
     }
   };
 
-  const onSubmit = async (values: FormValues) => {
-    setIsLoading(true);
-    // Do not log business profile data.
-
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 2000));
-
-    setIsLoading(false);
-    router.push("/set-currency");
+  const onSubmit = async (_values: FormValues) => {
+    // Preview-only: no persistence, no pretend success.
+    toast.info("UI Preview only — business information has not been saved. Secure profile storage will be added in the merchant backend phase.");
   };
 
   const handleSkip = () => {
