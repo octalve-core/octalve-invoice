@@ -1,21 +1,14 @@
 "use client";
-
-import { useRouter } from "next/navigation";
+import {useRouter} from "next/navigation";
 import AddCustomerForm from "@/components/dashboard/forms/AddCustomerForm";
-
-export default function AddCustomerPage() {
-  const router = useRouter();
-
-  const handleSubmit = (data: any) => {
-    console.log("Creating customer:", data);
-    // Here you would typically call an API to create the customer
-    router.push("/dashboard/customer");
-  };
-
-  return (
-    <AddCustomerForm
-      onSubmit={handleSubmit}
-      onCancel={() => router.push("/dashboard/customer")}
-    />
-  );
+import {useMerchantPreview} from "@/src/features/merchant-preview/MerchantPreviewProvider";
+export default function AddCustomerPage(){
+ const router=useRouter(),{setCustomers}=useMerchantPreview();
+ const handleSubmit=(data:{displayName:string;firstName:string;lastName:string;email:string;phone:string;billingAddress:string;companyName:string})=>{
+  const name=data.displayName.trim()||[data.firstName,data.lastName].join(" ").trim();
+  if(!name)return;
+  setCustomers(p=>[...p,{id:String(Date.now()),name,email:data.email,phone:data.phone,address:data.billingAddress,company:data.companyName}]);
+  router.push("/dashboard/customer");
+ };
+ return <AddCustomerForm onSubmit={handleSubmit} onCancel={()=>router.push("/dashboard/customer")}/>;
 }
