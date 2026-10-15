@@ -1,33 +1,33 @@
 {
   "updatedAt": "2026-10-15",
-  "phase": "0B-ui-refinement-and-preview",
+  "phase": "0C-sapphire-live-preview-integration",
   "branch": "phase/00-finzefy-authority-ui-bootstrap",
   "mainBootstrapSha": "87ad423dba3ced2445e109baa85114aea3d30037",
   "latestMigration": null,
   "previewUrl": null,
   "productionUrl": null,
-  "databaseState": "NOT_REQUIRED_UNTIL_BACKEND_PHASE",
+  "databaseState": "DEFERRED_UNTIL_MERCHANT_BACKEND",
   "qualification": {
-    "frozenInstall": "PASS (b6faeb7)",
-    "typecheck": "PASS (b6faeb7)",
-    "lint": "PASS_WITH_LEGACY_WARNINGS (b6faeb7)",
-    "tests": "PASS (b6faeb7)",
-    "build": "PASS (b6faeb7)",
-    "githubCodeQL": "IN_PROGRESS",
-    "vercelPreview": "PENDING_VERIFICATION",
+    "frozenInstall": "PASS",
+    "typecheck": "PASS",
+    "lint": "PASS_WITH_LEGACY_WARNINGS",
+    "tests": "PASS_SOURCE_SMOKE_ONLY",
+    "build": "PASS",
+    "githubCodeQL": "PASS",
+    "vercelPreview": "DEPLOYMENT_CHECK_SUCCESS; PUBLIC_URL_NOT_VERIFIED",
     "goldenPdf": "NOT_RUN",
-    "branding": "PARTIAL_TEXT_FALLBACK",
+    "branding": "COMPONENTS_READY; EXACT PNG FILES NOT COMMITTED",
     "mobileScreenshot": "NOT_RUN",
-    "tenantAuth": "NOT_RUN"
+    "merchantAuth": "NOT_IMPLEMENTED",
+    "documentEngine": "IMPORTED_MODERN_AND_CLASSIC_LEDGER; LIVE_UI_PREVIEW_BUILD_PASS; VISUAL_REGRESSION_PENDING"
   },
   "blockers": [
-    "Final official Octalve logo/icon source file not available in verified repository assets",
-    "No verified live Vercel Preview URL yet; GitHub Vercel status pending",
-    "Original Finzefy authentication and finance demo operations not production connected",
-    "Sapphire Modern/Classic Ledger native PDF renderers not yet ported",
-    "Neon deferred until merchant database phase"
+    "Octalve original icon and wordmark supplied in chat, but binary assets are not yet committed to public/branding; download and upload original PNGs from branding package",
+    "Vercel shows no Production deployment because main only contains bootstrap; phase Preview check succeeds, but Preview hostname/route visual inspection not confirmed",
+    "Sapphire invoice golden browser/PNG/PDF regression tests not executed in Octalve source",
+    "No real merchant database/auth/payment; Preview figures and issuer identity are deliberately samples"
   ],
-  "nextPhase": "Phase 0C UI visual review, remaining branding and auth/onboarding section extraction, then Sapphire live document renderer",
-  "currentCodeCheckpoint": "0a0a412958385a4356e6ca38ef1a0b0baa213135",
-  "lastVerifiedApplicationCommit": "b6faeb74872347cb535e27c70d09b42e23312716"
+  "nextPhase": "Complete official branding asset upload, verify Vercel Preview route /dashboard/invoice/create, capture golden document/browser/mobile evidence, then section refactor and merchant backend",
+  "currentCodeCheckpoint": "1948b0f6f486dfe7e65ce625883fec6c1f0b15c0",
+  "lastVerifiedApplicationCommit": "1948b0f6f486dfe7e65ce625883fec6c1f0b15c0"
 }

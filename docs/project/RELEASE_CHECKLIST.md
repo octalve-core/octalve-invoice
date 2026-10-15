@@ -1,6 +1,6 @@
-# PHASE 0B RELEASE QUALIFICATION
-PASS: pinned Finzefy source import; pnpm frozen install; Node 24; TypeScript strict; ESLint executes with documented legacy warnings; tests; Next build at `b6faeb74872347cb535e27c70d09b42e23312716`.
-IN PROGRESS: first CodeQL security workflow and Vercel Preview validation.
-NOT RUN: Playwright desktop/mobile snapshots, official logo check, Sapphire browser/PNG/PDF goldens, dynamic-account testing, cross-merchant authorization, NRS and database verification.
-BLOCKERS: no exact original brand logo/icon bytes; no confirmed Preview URL.
-No production user data, payment credentials or money movement. No merge to main until user sees Preview and signs off.
+# RELEASE CHECKLIST — PHASE 0C (2026-10-15)
+PASS: independent pinned donor import, pnpm frozen install Node 24, strict TypeScript, ESLint (legacy warnings), source smoke tests, Next production build, CodeQL; phase branch Vercel check succeeded on `1948b0f6f486dfe7e65ce625883fec6c1f0b15c0`.
+PASS: Sapphire modern/Classic Ledger modules imported and live form-to-renderer Preview route introduced.
+NOT RUN: actual public Preview route inspection, desktop/mobile screenshots, pixel regression, document browser/PNG/PDF golden parity, authenticated merchant workflows, database validation, provider test payments, NRS fiscal tests.
+BLOCKED: Original official logo/icon not yet checked into repository; exact font/visual acceptance needs user review.
+PRODUCTION: Not eligible; do not merge main. No money movement or verified login.

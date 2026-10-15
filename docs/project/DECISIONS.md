@@ -12,3 +12,7 @@
 2026-10-15 D011: Use established Octalve blue #0064E0 (hover #0052B8); preserve semantic success green. The text-only wordmark is temporary until official icon/wordmark asset bytes are present; visual approval cannot be claimed.
 2026-10-15 D012: Vercel Preview stays connected to phase branch, main deployment blocked/untouched until full build and user visual acceptance.
 2026-10-15 D013: Imported legacy ESLint rule debt remains warnings in app/components, but new src/ features keep default strict rules. Reductions must be logged and each extracted section typed.
+2026-10-15 D014: Official icon and wordmark PNGs were explicitly supplied. Production UI must use exact assets at public/branding/octalve-invoice-icon.png and octalve-wordmark.png. Any generated/reduced variants are not source-of-truth.
+2026-10-15 D015: Pin Sapphire document renderer to dfd2657fc22f56c4b82808ca4072ad0300cb753c; migrate rendering/presentation/PDF source but exclude donor UI shell/hooks/localStorage as production architecture. Modern and Classic Ledger now accessible in isolated Preview route.
+2026-10-15 D016: Preview /dashboard/invoice/create is a functional form-to-renderer demonstration only: sample data, no persisted issuance, no payments, no false verification; exact-money server calculations will replace legacy floating-point preview maths before real invoices.
+2026-10-15 D017: Failed Vercel Production build from main bootstrap is expected. Keep main protected until visual acceptance; review deployments for phase branch under Vercel Preview.
