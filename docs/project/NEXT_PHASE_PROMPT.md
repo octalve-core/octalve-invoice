@@ -1,9 +1,11 @@
-# OCTALVE INVOICE — PHASE 0H FINAL OWNER UI/PDF QUALIFICATION
-Read master project authority, Phase 0H implementation review, PAYMENT_AND_RECEIPT_PHASE0H.md, DECISIONS.md, UI_REFERENCE_MAP.md, state.json and the current GitHub HEAD, Actions and deployed Vercel Preview before editing.
-Continue on `phase/00-finzefy-authority-ui-bootstrap` ONLY. Preserve donor Finzefy desktop/mobile UI and Sapphire Modern/Classic document engine without redesign.
-1. Compare the full desktop/mobile interactive screens for invoice creation/view, customer/item/salesperson/payment selection, receipts, quotations, item editing, staff editing, reports, profile, More, announcements/updates, notifications against owner's images.
-2. Verify payment channel is locked by issued invoice record; manual bank payment may be recorded only after merchant actual bank credit verification and secure backend; gateway/virtual account use provider verification only. Do not infer verification from browser.
-3. Support merchant choice to issue receipt later on paid invoices or configure opt-in automatic receipt generation/email after verified ONLINE payments. OFF remains default. UI controls only until backend.
-4. Test that descriptions/notes omit empty values and Modern/Classic browser output matches actual generated native PDF and PNG golden references. No production tax calculation until official NRS per-line mapping and exact money.
-5. Run frozen pnpm install, TypeScript, ESLint, unit tests, 37 routes x 3 viewports browser screenshot evidence, CodeQL and Vercel Preview. Resolve actual errors, record exact SHAs, PASS/BLOCKED/NOT RUN.
-6. Append decisions and update state.json; retain PR #1 draft, no main merge, no Neon, no money movement, no live user accounts or email sends. Owner must visually approve before Phase 1 backend.
+# OCTALVE INVOICE — NEXT CHAT / PHASE 0H ONLY
+
+**Start with [OCTALVE_INVOICE_NEW_CHAT_HANDOFF_2026-10-15.md](./OCTALVE_INVOICE_NEW_CHAT_HANDOFF_2026-10-15.md).** It contains the complete source hierarchy, pinned donor commits, architecture, implemented UI, owner's October 15 corrections, finance/receipts rules, current verified URLs/CI and exact continuation prompt.
+
+**Do not begin Phase 1, ask for Neon, merge main, or execute financial/auth actions. Phase 0 is still open.**
+
+Last verified source before handoff: `4997858e74ba2bcff657d739167347ff7d35b5c1`. Branch: `phase/00-finzefy-authority-ui-bootstrap`. Latest READY preview at that SHA: https://octalve-invoice-nl1yl0g1c-octalve-vault.vercel.app. Current code SHA must be rechecked after documentation updates.
+
+Current verified CI: frozen pnpm, TS, lint (105 warnings, 0 errors), tests, build, CodeQL PASS; 111/111 responsive browser checks. Native PDF/PNG layout parity and owner approval are STILL PENDING. Read `PAYMENT_AND_RECEIPT_PHASE0H.md` for 12-point implementation status.
+
+Copy-paste the FULL `J` prompt from the new-chat handoff for the next message.
