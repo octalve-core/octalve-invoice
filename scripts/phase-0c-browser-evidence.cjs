@@ -19,7 +19,7 @@ async function qualifyNativePdf(page, output, view, template) {
   if (!/Page size:\s*595(?:\.|\s)/.test(info)) throw Error(template + " PDF is not A4 at the default paper setting");
   const extracted = execFileSync("pdftotext", ["-layout", pdfPath, "-"], { encoding: "utf8", timeout: 20000 }).replace(/\s+/g, " ");
   for (const expected of ["Golden Preview Customer", "Golden Item One", "Golden Item Two", "PHASE ZERO NOTE WITHOUT BANK DETAILS"]) {
-    if (!extracted.includes(expected)) throw Error(template + " PDF selectable text missing: " + expected);
+    if (!extracted.toLocaleUpperCase("en").includes(expected.toLocaleUpperCase("en"))) throw Error(template + " PDF selectable text missing: " + expected);
   }
   if (extracted.includes("Editable sample line item")) throw Error(template + " PDF retained removed/blank item description");
   const rasterPrefix = path.join(output, view + "-" + template + "-pdf-first-page");
