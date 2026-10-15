@@ -4,24 +4,25 @@
   "branch": "phase/00-finzefy-authority-ui-bootstrap",
   "mainBootstrapSha": "87ad423dba3ced2445e109baa85114aea3d30037",
   "latestMigration": null,
-  "previewUrl": "https://octalve-invoice-pncd0n80o-octalve-vault.vercel.app",
+  "previewUrl": "https://octalve-invoice-ccq1hiaic-octalve-vault.vercel.app",
   "productionUrl": null,
   "databaseState": "DEFERRED_UNTIL_PHASE_1_BACKEND",
   "qualification": {
-    "frozenInstall": "PASS e86af23f",
-    "typecheck": "PASS e86af23f",
-    "lint": "PASS with tracked donor warnings e86af23f",
-    "sourceUnitTests": "PASS e86af23f",
-    "nextProductionBuild": "PASS e86af23f",
-    "githubCodeQL": "PASS e86af23f",
-    "browserResponsiveRoutes": "PASS 36/36 with additional layout/mobile-chart/merchant identity/row tests e86af23f",
-    "officialBrandAssets": "PASS: exact icon/wordmark PNG committed and deployed; HTTP 200",
-    "vercelPreview": "LATEST SOURCE 134b7cbf build pending at state authoring; predecessor e86af23f READY",
+    "frozenInstall": "PASS e0c89935",
+    "typecheck": "PASS e0c89935",
+    "lint": "PASS with tracked imported warnings e0c89935",
+    "sourceUnitTests": "PASS e0c89935",
+    "nextProductionBuild": "PASS e0c89935",
+    "githubCodeQL": "PASS e0c89935",
+    "browserResponsiveRoutes": "PASS 36/36 including mobile chart, merchant display, 50/50 layout and row navigation e0c89935",
+    "officialBrandAssets": "PASS original icon and wordmark PNG HTTP 200 on Vercel",
+    "vercelPreview": "READY e0c89935 https://octalve-invoice-ccq1hiaic-octalve-vault.vercel.app",
     "browserPixelPerfect": "NOT APPROVED by owner",
     "pdfNativeGoldenParity": "NOT RUN",
     "merchantProfileLinkage": "IN-SESSION PREVIEW ONLY; no persistence",
     "mainMerge": "BLOCKED awaiting owner visual approval",
-    "database": "NOT RUN / not requested"
+    "database": "NOT RUN / not requested",
+    "browserScreenshotArtifacts": "CAPTURED run 38755409212; owner pixel-level approval pending"
   },
   "blockers": [
     "Official app branding PNG is present, but merchant-specific invoice logo is not configured by default (per-merchant upload prompt implemented).",
@@ -30,7 +31,7 @@
     "Profile edits are session-only (no DB), and provider payment connections remain unavailable."
   ],
   "nextPhase": "Owner Phase 0E visual review and document golden evidence; do not begin Phase 1 backend until expressly authorized.",
-  "currentCodeCheckpoint": "134b7cbf85b1d1821dde7c381d02e1bd363cfc8b",
-  "lastVerifiedApplicationCommit": "134b7cbf85b1d1821dde7c381d02e1bd363cfc8b",
+  "currentCodeCheckpoint": "e0c8993532f5cf05a2fcadeb9b1dcb225426be31",
+  "lastVerifiedApplicationCommit": "e0c8993532f5cf05a2fcadeb9b1dcb225426be31",
   "exactNextPhase": "Owner Phase 0E visual review and document golden evidence; do not begin Phase 1 backend until expressly authorized."
 }
