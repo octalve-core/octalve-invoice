@@ -242,7 +242,7 @@ function safeFilename(value: string): string {
 
 export function buildExportBaseName(invoiceNo: string, clientName: string, currency: CurrencyCode): string {
   return [
-    "Sapphire_Quest_Invoice",
+    "Octalve_Invoice",
     safeFilename(invoiceNo),
     safeFilename(clientName),
     currency,
@@ -253,7 +253,7 @@ export function buildExportBaseName(invoiceNo: string, clientName: string, curre
 
 export function buildReceiptExportBaseName(receiptNo: string, receivedFrom: string, currency: CurrencyCode): string {
   return [
-    "Sapphire_Quest_Receipt",
+    "Octalve_Receipt",
     safeFilename(receiptNo),
     safeFilename(receivedFrom),
     currency,
