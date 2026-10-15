@@ -3,6 +3,7 @@
 import { FileText, Users, Wallet, FileSpreadsheet } from "lucide-react";
 import { useState } from "react";
 import {useRouter} from "next/navigation";
+import {useMerchantPreview} from "@/src/features/merchant-preview/MerchantPreviewProvider";
 import Tabs from "@/components/dashboard/ui/Tabs";
 import StatCard from "@/components/dashboard/cards/StatCard";
 import QuickAction from "@/components/dashboard/cards/QuickAction";
@@ -52,6 +53,7 @@ const statsData = [
 
 export default function DashboardPage() {
   const router=useRouter();
+  const {user}=useMerchantPreview();
   const [activeModal, setActiveModal] = useState<string | null>(null);
 
   const closeModals = () => setActiveModal(null);
@@ -69,7 +71,7 @@ export default function DashboardPage() {
       {/* Welcome Section */}
       <div>
         <h1 className="text-2xl font-bold text-gray-900">
-          Welcome back, Abdulsamad
+          Welcome{user.fullName ? ` back, ${user.fullName}` : " to your dashboard"}
         </h1>
         <p className="text-gray-500 mt-1">
           Here’s your business overview.

@@ -1,6 +1,9 @@
 "use client";
 
 import { useState } from "react";
+import {UserAvatar} from "@/src/features/merchant-preview/UserAvatar";
+import {PreviewLogoutButton} from "@/src/features/merchant-preview/PreviewLogoutButton";
+import {useMerchantPreview} from "@/src/features/merchant-preview/MerchantPreviewProvider";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import {
@@ -47,9 +50,11 @@ const otherSettings: SettingsItem[] = [
 
 export default function SettingsPage() {
   const router = useRouter();
+  const {user}=useMerchantPreview();
 
   return (
     <>
+      <div className="mb-4 flex justify-end"><PreviewLogoutButton className="rounded-lg border border-red-200 bg-white px-4 py-2 text-sm font-medium text-red-600 hover:bg-red-50"/></div>
       {/* ==================== MOBILE VIEW ==================== */}
       <div className="smallScreen min-h-screen">
         {/* Header */}
@@ -62,19 +67,19 @@ export default function SettingsPage() {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="w-12 h-12 rounded-full bg-green-100 flex items-center justify-center">
-                <User className="w-6 h-6 text-[#0064E0]" />
+                <UserAvatar size="md"/>
               </div>
               <div>
                 <div className="flex items-center gap-2">
                   <p className="font-semibold text-gray-900">
-                    Unachukwu Charles
+                    {user.fullName||"Preview User"}
                   </p>
                   <span className="px-2 py-0.5 text-xs font-medium bg-green-100 text-green-700 rounded-full flex items-center gap-1">
                     <Check className="w-3 h-3" />
-                    Verified
+                    Preview only
                   </span>
                 </div>
-                <p className="text-sm text-gray-500">giantstech@gmail.com</p>
+                <p className="text-sm text-gray-500">{user.email||"No preview email configured"}</p>
               </div>
             </div>
           </div>
@@ -182,14 +187,14 @@ export default function SettingsPage() {
                 <div>
                   <div className="flex items-center gap-3">
                     <h2 className="text-xl font-semibold text-gray-900">
-                      Unachukwu Charles
+                      {user.fullName||"Preview User"}
                     </h2>
                     <span className="px-2.5 py-1 text-xs font-medium bg-green-100 text-green-700 rounded-full flex items-center gap-1">
                       <Check className="w-3 h-3" />
-                      Verified
+                      Preview only
                     </span>
                   </div>
-                  <p className="text-gray-500 mt-1">giantstech@gmail.com</p>
+                  <p className="text-gray-500 mt-1">{user.email||"No preview email configured"}</p>
                 </div>
               </div>
               <button className="px-4 py-2 text-sm font-medium text-[#0064E0] border border-[#0064E0] rounded-lg hover:bg-green-50 transition-colors">

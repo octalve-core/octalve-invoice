@@ -1,6 +1,8 @@
 "use client";
 
 import { useState } from "react";
+import {useMerchantPreview} from "@/src/features/merchant-preview/MerchantPreviewProvider";
+import {toast} from "sonner";
 import { useRouter } from "next/navigation";
 import {
   ChevronLeft,
@@ -62,21 +64,13 @@ const states: Record<string, { value: string; label: string }[]> = {
 
 export default function ProfileSettingsPage() {
   const router = useRouter();
-  const [isLoading, setIsLoading] = useState(false);
-  const [profileImage, setProfileImage] = useState<string | null>(null);
-  const [settings, setSettings] = useState<ProfileSettings>({
-    fullName: "Unachukwu Charles",
-    email: "giantstech@gmail.com",
-    phone: "+234 9012345678",
-    address: "2 Abayomi Street, Chemist Rd, Akoka,Yaba, Lagos.",
-    country: "nigeria",
-    state: "lagos",
-    postalCode: "10021",
-  });
+  const [isLoading] = useState(false);
+  const {user:settings,setUser:setSettings,userImage:profileImage,setUserImage:setProfileImage}=useMerchantPreview();
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
+      if(!["image/png","image/jpeg","image/webp"].includes(file.type)||file.size>2*1024*1024){toast.error("Choose PNG, JPG or WEBP under 2 MB");return;}
       const reader = new FileReader();
       reader.onloadend = () => {
         setProfileImage(reader.result as string);
@@ -85,17 +79,13 @@ export default function ProfileSettingsPage() {
     }
   };
 
-  const handleSave = async () => {
-    setIsLoading(true);
-    await new Promise((resolve) => setTimeout(resolve, 1500));
-    setIsLoading(false);
-    router.push("/dashboard/settings");
-  };
+  const handleSave=()=>{toast.info("Profile updated for this Preview session only; account authentication is not active.");router.push("/dashboard/settings");};
 
   const currentStates = states[settings.country] || [];
 
   return (
     <>
+      <p className="mx-auto mb-4 max-w-3xl rounded-lg bg-blue-50 p-3 text-xs text-[#0052B8]">Preview profile · type your own name. Changes are temporary and will not be associated with a real account until secure sign-in exists.</p>
       {/* ==================== MOBILE VIEW ==================== */}
       <div className="smallScreen min-h-screen pb-8">
         {/* Header */}
@@ -311,7 +301,7 @@ export default function ProfileSettingsPage() {
         </div>
 
         {/* Form Card */}
-        <div className="max-w-3xl bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+        <div className="mx-auto max-w-3xl bg-white rounded-xl shadow-sm border border-gray-100 p-6">
           {/* Profile Image Upload */}
           <div className="flex justify-center mb-8">
             <label className="cursor-pointer relative">
