@@ -16,3 +16,7 @@
 2026-10-15 D015: Pin Sapphire document renderer to dfd2657fc22f56c4b82808ca4072ad0300cb753c; migrate rendering/presentation/PDF source but exclude donor UI shell/hooks/localStorage as production architecture. Modern and Classic Ledger now accessible in isolated Preview route.
 2026-10-15 D016: Preview /dashboard/invoice/create is a functional form-to-renderer demonstration only: sample data, no persisted issuance, no payments, no false verification; exact-money server calculations will replace legacy floating-point preview maths before real invoices.
 2026-10-15 D017: Failed Vercel Production build from main bootstrap is expected. Keep main protected until visual acceptance; review deployments for phase branch under Vercel Preview.
+
+2026-10-15 D018: Vercel Preview identified as https://octalve-invoice-178ughgam-octalve-vault.vercel.app. Nine routes verified HTTP 200 through authenticated Vercel fetch; screenshots still require browser qualification.
+2026-10-15 D019: Native PDF dispatch fixed to use Modern export for Template 1, Classic Ledger exporter for Template 2; prior UI incorrectly always generated modern PDFs. Original official logo PNGs remain unavailable in GitHub until the user uploads the exact binaries.
+2026-10-15 D020: Playwright CI is isolated from product dependencies and records 1440x900, 768x1024 and 390x844 screenshots; screenshot evidence is not a user-approved golden until reviewed, and no PDF tests may claim a pass until official logo present.
