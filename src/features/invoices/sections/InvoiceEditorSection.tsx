@@ -13,7 +13,7 @@ export function InvoiceEditorSection({draft,setDraft}:Props){
     <input aria-label="Overall discount percentage" value={draft.discount} onChange={e=>update("discount",e.target.value)}
       className="mt-1 h-10 w-full rounded-xl bg-gray-50 px-3 text-sm"/>
    </label>
-   <label className="text-xs">Tax % (UI preview only)
+   <label className="text-xs">Tax %
     <input aria-label="Tax percentage" value={draft.tax} onChange={e=>update("tax",e.target.value)}
       className="mt-1 h-10 w-full rounded-xl bg-gray-50 px-3 text-sm"/>
    </label>
@@ -28,6 +28,6 @@ export function InvoiceEditorSection({draft,setDraft}:Props){
    <button disabled className="rounded-full bg-[#0064E0] px-5 py-2.5 text-xs font-medium text-white opacity-55">Save draft</button>
    <button disabled className="rounded-full border border-[#0064E0] px-5 py-2.5 text-xs font-medium text-[#0064E0] opacity-55">Save and send</button>
   </div>
-  <p className="text-xs text-gray-500">This is an editable visual preview. No records are saved, emailed, issued, paid or fiscally submitted.</p>
+
  </section>;
 }

@@ -26,7 +26,7 @@ export function createPreviewInvoice(): InvoiceDraft {
       description: "Editable sample line item", quantity: "1",
       unitPrice: "250000", discount: "0",
     }],
-    notes: "UI Preview — this is not an issued invoice.",
+    notes: "",
     extraDetailsVisible: true,
   };
 }
