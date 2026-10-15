@@ -38,11 +38,11 @@
     "nativePdfTechnical": "PASS Modern and Classic Ledger native A4 PDF magic, extracted selectable text after edits, first-page PNG raster; GitHub Actions 38796782601",
     "phase0hNewFixes": "Invoice draft row ID collision corrected; refund replay and integer overflow guards; Octalve blue filters; consistent desktop invoice prefix; built-in Modern/Classic browser PNG export with Octalve filename; native Modern/Classic PDF technical qualification",
     "vercelDeploymentLimit": "Historical: manual deploy API returned HTTP 402 over 100 per day, then automatic GitHub-connected Preview deployment READY at 37b476ff. No continuing live Preview blocker at recorded version.",
-    "finalCorrections": "Five-tab Home/Invoices/Receipts/Clients/Me with premium Settings and full mobile module access; proposed pricing plans; confirm-delete reason + session restore page; searchable FAQ; invoice theme controls; full-width reports.",
-    "latestBranchApplicationCode": "3cdf98065730a51dc19700a08c4d4c68c93d5106; later source changes since last passing 123-case browser run c064 are settings navigation polish only",
+    "finalCorrections": "Premium Me and five-tab mobile navigation; all original mobile tools linked under More workspace tools; researched Free/Starter/Growth/Business plans and illustrative first-time/active/expired lifecycle; confirm-delete with mandatory reason, restore and financial retention guard; FAQs; theme appearance and original browser/PNG support; full-width accurate fixture-derived reports.",
+    "latestBranchApplicationCode": "f6ee67e2a86af1ee5ab3a32d0494f7737065b95f; last qualified at c064ef53; newest subscription lifecycle state preview and singular delete confirmation regression pending final CI.",
     "subscription": "PROPOSED ONLY; Free 25 invoices/mo, Starter ₦3,600, Growth ₦7,700, Business ₦11,800; checkout and billing not enabled",
     "previewSafety": "Deletion archive and 14-day recovery semantics are in-memory Preview demonstration; no permanent deletion or financial authority event.",
-    "latestUiScreenshots": "Owner supplied nine mobile nav/settings, subscription, confirmation, template and analytics references; preserved as design authority in project conversation. New tests provide 123 screenshots and PNG/PDF artifacts.",
+    "latestUiScreenshots": "Nine owner screenshots available in Octalve Invoice project conversation (the earlier Library UI References folder remains empty); mobile navigation, profile/settings, subscription examples, delete confirmation, template customizer, financial report layout. Do not claim pixel-perfect matching without direct side-by-side.",
     "uiFinalCorrectionAudit": "docs/project/PHASE_0H_FINAL_UI_CORRECTIONS_2026-10-15.md"
   },
   "blockers": [
@@ -54,11 +54,11 @@
     "ESLint passes with 105 warnings (0 errors), not warning-free; reduce relevant warnings carefully.",
     "Central /Octalve/Octalve Invoice/ Library root was verified accessible; 00 Project Control has historical master handoff, 02 UI References is empty, so exact uploaded owner PNG pixel comparison is not possible from available source assets.",
     "Owner has not approved closing Phase 0. Nine final-reference screenshots require visual side-by-side review.",
-    "Current GitHub branch UI build is ahead of last verified READY Vercel Preview; publish only as Preview and verify SHA when Vercel daily deployment quota allows.",
-    "Custom theme fonts/header/layout are not certified against native PDF exports; Classic Receipt golden and customer-supplied font storage need qualification."
+    "Custom theme fonts/header/layout are not certified against native PDF exports; Classic Receipt golden and customer-supplied font storage need qualification.",
+    "Vercel manual redeploy at final code encountered HTTP 402: api-deployments-free-per-day, more than 100 in 24 hours; Preview remains older than latest UI branch pending automatic build or quota reset."
   ],
   "nextPhase": "Phase 0H owner UI review, exact current Preview, custom PDF golden qualification — NOT Phase 1",
-  "currentCodeCheckpoint": "3cdf98065730a51dc19700a08c4d4c68c93d5106",
+  "currentCodeCheckpoint": "f6ee67e2a86af1ee5ab3a32d0494f7737065b95f",
   "lastVerifiedApplicationCommit": "c064ef53cf0a9b2553cc301cb1e9c9f527e482c2",
   "exactNextPhase": "Phase 0H owner UI review, exact current Preview, custom PDF golden qualification — NOT Phase 1",
   "previewCommitSha": "324047c01eac8032a77b8723f1073214be2ed62d",
