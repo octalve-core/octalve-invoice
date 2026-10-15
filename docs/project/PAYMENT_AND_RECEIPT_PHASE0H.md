@@ -68,3 +68,12 @@ Branch: `phase/00-finzefy-authority-ui-bootstrap`. No merge to main. No Neon env
 - Browser regression now invokes the actual `html2canvas-pro` PNG exporter and checks the downloaded PNG signature and pixel dimensions separately for Modern and Classic Ledger, retaining exports in the GitHub Actions evidence artifact.
 - Renamed imported donor-specific PNG filename bases to `Octalve_Invoice`/`Octalve_Receipt`. No Sapphire repository changes.
 - This PNG integrity smoke test is **not** equivalent to approved final-output image comparison, complete page-by-page pagination, receipt PNG equivalence or a fully golden-matched PDF.
+
+## Additional Phase 0H owner corrections — mobile Me, subscriptions, delete safety, FAQ, appearance and reports
+Implemented on the same development branch (2026-10-15):
+- Mobile five-tab bar Home/Invoices/Receipts/Clients/Me, with Me as premium settings hub and secondary routes retained for all prior mobile modules.
+- Replaced old fictional subscription purchase flow and history with clearly proposed competitor-researched NGN plans: Free 25 invoices/month, Starter ₦3,600, Growth ₦7,700, Business ₦11,800. Quarterly/yearly discount simulations and plan reviews are **non-operational**. Payment-provider fees not invented.
+- All shared record-list kinds now require confirm + reason before moving from active display to in-session Deleted Records. Separate 14-day conceptual recovery queue with Restore; **financial records never automatically hard-deleted**. No server transaction, actor attribution or immutable audit yet.
+- FAQ accordion/search module with explicit verification/accounting answers; sample-only business report charts and dates without fictional trends; responsive theme preferences and approved independent document engines retained.
+- Technical qualification at `c064ef53`: browser 123/123 (41 routes × 3 viewports) PASS, native Modern/Classic A4 PDF checks, export PNG signature checks, source build and CodeQL. Owner golden signoff still open. Later source changes require current CI verification.
+- No Phase 1 authorization and no user approval of Phase 0 has been inferred.
