@@ -11,6 +11,7 @@ import { formatAmountInWords } from "../../../lib/amount-in-words";
 import { darkenHex, normalizeAccentColor } from "../../../lib/template-theme";
 import { formatPdfNumber, type InvoicePresentation, type InvoicePresentationItem } from "../../../presentation/invoice-presentation";
 import type { CurrencyCode } from "../../../types";
+import {merchantInitials} from "@/src/features/invoices/lib/document-number";
 import {
   CLASSIC_LEDGER_PDF_PROFILES,
   classicLedgerPdfContentWidth,
@@ -694,7 +695,7 @@ export function ClassicLedgerPdfDocument({ presentation, logoSrc, headerImageSrc
             ]}
             wrap={false}
           >
-            {logoSrc?<Image src={logoSrc} style={[styles.logo, { width: profile.logoSize, height: profile.logoSize, marginBottom: profile.logoMarginBottom }]} />:null}
+            {logoSrc?<Image src={logoSrc} style={[styles.logo, { width: profile.logoSize, height: profile.logoSize, marginBottom: profile.logoMarginBottom }]} />:<Text style={{fontFamily:"Helvetica-Bold",fontSize:16,color:COLORS.accent,marginBottom:profile.logoMarginBottom}}>{merchantInitials(presentation.company.name||"Business")}</Text>}
             <Text style={[styles.businessName, { color: accentDark, fontSize: profile.businessNameSize }]}>{presentation.company.name}</Text>
             <ContactLine presentation={presentation} profile={profile} accent={accent} />
             <RegistrationLine presentation={presentation} profile={profile} />

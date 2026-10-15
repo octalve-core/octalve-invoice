@@ -11,6 +11,7 @@ import {
 import { formatPdfNumber, type InvoicePresentation } from "../../presentation/invoice-presentation";
 import { OCTALVE_THEME, PDF_PAPER_PROFILES, SAPPHIRE_THEME } from "../../presentation/document-profile";
 import type { CurrencyCode } from "../../types";
+import {merchantInitials} from "@/src/features/invoices/lib/document-number";
 
 interface SapphirePdfDocumentProps {
   presentation: InvoicePresentation;
@@ -579,7 +580,7 @@ export function SapphirePdfDocument({ presentation, logoSrc }: SapphirePdfDocume
                 },
               ]}
             >
-              {logoSrc?<Image src={logoSrc} style={{ width: ui.logoSize, height: ui.logoSize }} />:null}
+              {logoSrc?<Image src={logoSrc} style={{ width: ui.logoSize, height: ui.logoSize }} />:<Text style={{fontSize:Math.min(ui.logoSize*0.31,19),fontFamily:"Helvetica-Bold",color:"#0064E0"}}>{merchantInitials(presentation.company.name||"Business")}</Text>}
             </View>
 
             <View style={styles.brandCopy}>

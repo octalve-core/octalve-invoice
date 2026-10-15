@@ -1,6 +1,7 @@
 "use client";
 
 import type { BusinessIdentityProfile, InvoiceDraft } from "../../../types";
+import {merchantInitials} from "@/src/features/invoices/lib/document-number";
 import { ClassicAutoTextarea } from "./classic-auto-textarea";
 import styles from "../classic-ledger.module.css";
 
@@ -56,7 +57,7 @@ export function ClassicLedgerHeader({
   return (
     <>
       <header className={styles.brandHeader}>
-        {companyLogo?<img className={styles.logo} src={companyLogo} alt={`${businessProfile.name} logo`} width={72} height={72}/>:null}
+        {companyLogo?<img className={styles.logo} src={companyLogo} alt={`${businessProfile.name} logo`} width={72} height={72}/>:<span className="grid h-[72px] w-[72px] shrink-0 place-items-center rounded-full bg-blue-50 text-xl font-bold text-[#0064E0]">{merchantInitials(businessProfile.name||"Business")}</span>}
         <div className={styles.brandCopy}>
           <div className={styles.businessNameInput}>{businessProfile.name||"Your business name"}</div>
           <div className={styles.contactLine}>{[businessProfile.phone,businessProfile.email,businessProfile.website].filter(Boolean).join(" · ")}</div>

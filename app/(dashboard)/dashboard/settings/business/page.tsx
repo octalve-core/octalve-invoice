@@ -58,7 +58,7 @@ export default function BusinessSettingsPage() {
 
   return (
     <>
-      <section className="mb-4 rounded-xl border border-blue-100 bg-blue-50 p-3 text-sm text-[#00489F]">
+      <section className="mx-auto mb-5 max-w-3xl rounded-xl border border-blue-100 bg-blue-50 p-3 text-sm text-[#00489F]">
         <p className="font-medium">Preview-only business settings</p>
         <p className="mt-1 text-xs">Company identity and payment information are shared with your invoice previews until you refresh this application. No server account is created or saved.</p>
         <label className="mt-3 block text-xs font-medium">Payment method for invoice preview
@@ -80,7 +80,7 @@ export default function BusinessSettingsPage() {
         </div>
       </section>
       {/* ==================== MOBILE VIEW ==================== */}
-      <div className="smallScreen min-h-screen pb-8">
+      <div className="smallScreen mx-auto max-w-xl min-h-screen pb-8">
         {/* Header */}
         <div className="flex items-center gap-4 mb-6">
           <button
@@ -319,7 +319,7 @@ export default function BusinessSettingsPage() {
       </div>
 
       {/* ==================== DESKTOP VIEW ==================== */}
-      <div className="largeScreen">
+      <div className="largeScreen mx-auto max-w-3xl">
         {/* Page Header */}
         <div className="flex items-center gap-4 mb-8">
           <button
@@ -339,7 +339,7 @@ export default function BusinessSettingsPage() {
         </div>
 
         {/* Form Card */}
-        <div className="max-w-3xl bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+        <div className="w-full bg-white rounded-xl shadow-sm border border-gray-100 p-6">
           {/* Logo Upload */}
           <div className="flex justify-center mb-8">
             <label className="cursor-pointer">

@@ -1,6 +1,9 @@
 "use client";
 
 import { useState } from "react";
+import {useMerchantPreview} from "@/src/features/merchant-preview/MerchantPreviewProvider";
+import {merchantInitials} from "@/src/features/invoices/lib/document-number";
+import {toast} from "sonner";
 import { useRouter } from "next/navigation";
 import { ChevronLeft, ChevronDown, Loader2 } from "lucide-react";
 
@@ -30,7 +33,8 @@ const dueDates = [
 
 export default function InvoiceSettingsPage() {
   const router = useRouter();
-  const [isLoading, setIsLoading] = useState(false);
+  const {settings:merchantSettings}=useMerchantPreview();
+  const [isLoading] = useState(false);
   const [settings, setSettings] = useState<InvoiceSettings>({
     currency: "NGN",
     invoicePrefix: "",
@@ -41,18 +45,13 @@ export default function InvoiceSettingsPage() {
     autoEnableTax: true,
   });
 
-  const handleSave = async () => {
-    setIsLoading(true);
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1500));
-    setIsLoading(false);
-    router.push("/dashboard/settings");
-  };
+  const handleSave=()=>{toast.info("Invoice preferences are preview-only and not saved to any merchant account.");router.push("/dashboard/settings");};
 
   return (
     <>
+      <p className="mx-auto mb-5 max-w-2xl rounded-lg bg-blue-50 p-3 text-xs text-[#0052B8]">Preview-only invoice settings. Organization initials are derived from Business Settings; preferences and automated reminders are not yet persisted or activated.</p>
       {/* ==================== MOBILE VIEW ==================== */}
-      <div className="smallScreen min-h-screen">
+      <div className="smallScreen mx-auto max-w-xl min-h-screen">
         {/* Header */}
         <div className="flex items-center gap-4 mb-6">
           <button
@@ -98,11 +97,9 @@ export default function InvoiceSettingsPage() {
             </label>
             <input
               type="text"
-              value={settings.invoicePrefix}
-              onChange={(e) =>
-                setSettings({ ...settings, invoicePrefix: e.target.value })
-              }
-              placeholder="e.g. INV-"
+              value={merchantInitials(merchantSettings.businessName||"Octalve Limited")}
+              readOnly
+              placeholder="Auto-generated from company name"
               className="auth-input-gray"
             />
           </div>
@@ -256,7 +253,7 @@ export default function InvoiceSettingsPage() {
       </div>
 
       {/* ==================== DESKTOP VIEW ==================== */}
-      <div className="largeScreen">
+      <div className="largeScreen mx-auto max-w-2xl">
         {/* Page Header */}
         <div className="flex items-center gap-4 mb-8">
           <button
@@ -276,7 +273,7 @@ export default function InvoiceSettingsPage() {
         </div>
 
         {/* Form Card */}
-        <div className="max-w-2xl bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+        <div className="w-full bg-white rounded-xl shadow-sm border border-gray-100 p-6">
           <div className="grid grid-cols-2 gap-6">
             {/* Currency */}
             <div>
@@ -309,9 +306,7 @@ export default function InvoiceSettingsPage() {
               <input
                 type="text"
                 value={settings.invoicePrefix}
-                onChange={(e) =>
-                  setSettings({ ...settings, invoicePrefix: e.target.value })
-                }
+                readOnly
                 placeholder="e.g. INV-"
                 className="auth-input-gray"
               />

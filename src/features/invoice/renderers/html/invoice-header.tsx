@@ -1,14 +1,16 @@
 "use client";
 import type {BusinessIdentityProfile,InvoiceDraft,InvoiceTotals} from "../../types";
 import {formatMoney} from "../../lib/currency";
+import {merchantInitials} from "@/src/features/invoices/lib/document-number";
 interface Props {draft:InvoiceDraft;totals:InvoiceTotals;companyProfile:BusinessIdentityProfile;logoSrc?:string|null;}
 /** Merchant source of truth is Business Settings, not Sapphire's demo identity. */
 export function InvoiceHeader({draft,totals,companyProfile,logoSrc}:Props){
  return <header className="sq-v4-header">
   <div className="sq-v4-brand-side">
-   {logoSrc?<div className="sq-v4-logo-disc" aria-label={`${companyProfile.name} logo`}>
-      <img src={logoSrc} alt={`${companyProfile.name} logo`} className="sq-v4-brand-icon" />
-    </div>:null}
+   <div className="sq-v4-logo-disc" aria-label={logoSrc?`${companyProfile.name} logo`:`${companyProfile.name} initials`}>
+      {logoSrc?<img src={logoSrc} alt={`${companyProfile.name} logo`} className="sq-v4-brand-icon" />:
+      <span className="flex h-full w-full items-center justify-center rounded-full bg-[#EAF2FF] text-2xl font-extrabold tracking-wide text-[#0064E0]">{merchantInitials(companyProfile.name||"Business")}</span>}
+    </div>
    <div className="sq-v4-brand-copy">
     <div className="sq-v4-invoice-number" aria-label="Invoice number">{draft.invoiceNo}</div>
     <h1>{companyProfile.name || "Your business name"}</h1>

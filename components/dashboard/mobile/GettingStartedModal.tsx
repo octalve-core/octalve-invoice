@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import {useMerchantPreview} from "@/src/features/merchant-preview/MerchantPreviewProvider";
 import {
   X,
   Check,
@@ -38,6 +39,7 @@ export default function GettingStartedModal({
   onClose,
 }: GettingStartedModalProps) {
   const [completedTasks, setCompletedTasks] = useState<number[]>([]);
+  const {user}=useMerchantPreview();
 
   const completedCount = completedTasks.length;
   const totalCount = tasks.length;
@@ -72,7 +74,7 @@ export default function GettingStartedModal({
               <span className="w-8 h-8 rounded-full bg-[#E8F5E8] flex items-center justify-center">
                 <span className="text-[#0064E0] text-sm font-bold">👋</span>
               </span>
-              <h2 className="font-semibold text-gray-900">Hello Abdulsamad!</h2>
+              <h2 className="font-semibold text-gray-900">Hello {user.fullName||"Preview User"}!</h2>
             </div>
             <p className="text-sm text-gray-500">
               Simplify Your Invoicing Process with This Personalized Checklist

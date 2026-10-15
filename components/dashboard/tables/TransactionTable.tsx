@@ -49,7 +49,7 @@ export default function TransactionTable(){
   {id:"sample-receipt-1",customer:"Sample customer",reference:formatDocumentNumber(merchant,1,"receipt"),amount:"₦120,000.00",date:"12/6/2024",dueDate:"21/6/2024",status:"paid",category:"Receipts",href:"/dashboard/receipt"},
   {id:"sample-credit-1",customer:"Sample customer",reference:formatDocumentNumber(merchant,1,"creditNote"),amount:"₦120,000.00",date:"12/6/2024",dueDate:"21/6/2024",status:"draft",category:"Credit Notes",href:"/dashboard/credit-note"}
  ];
- const all:Row[]=[invoices[0],extras[0],extras[1],extras[2],extras[3],...invoices.slice(1)];
+ const all:Row[]=[...invoices.slice(0,1),...extras,...invoices.slice(1)];
  const visible=filter==="All"?all.slice(0,5):all.filter(row=>row.category===filter);
  const viewAll=filter==="All"?"/dashboard/invoice":types[filter].list;
  return <section aria-label="Recent transactions" className="min-w-0 rounded-2xl bg-white p-3 shadow-sm sm:p-6">
