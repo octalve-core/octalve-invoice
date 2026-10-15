@@ -34,3 +34,16 @@ test("refunds cannot cumulatively exceed their source payment",()=>{
  {id:"R1",paymentId:"PAY-00001",amountMinor:6000000,status:"verified"},
  {id:"R2",paymentId:"PAY-00001",amountMinor:3000000,status:"verified"}]),/Refunds exceed source payment/);
 });
+
+test("identical refund event retries count once, but conflicting retries are rejected",()=>{
+ const refund={id:"R1",paymentId:"PAY-00001",amountMinor:1000000,status:"verified"};
+ const once=financeProjection(invoices,paymentPreview,[refund]);
+ const twice=financeProjection(invoices,paymentPreview,[refund,{...refund}]);
+ assert.equal(twice.refundedMinor,once.refundedMinor);
+ assert.throws(()=>financeProjection(invoices,paymentPreview,[refund,{...refund,amountMinor:2000000}]),/Conflicting refund replay/);
+ assert.throws(()=>financeProjection(invoices,paymentPreview,[refund,{...refund,status:"pending"}]),/Conflicting refund replay/);
+});
+test("aggregate financial projections reject minor unit sums beyond safe integers",()=>{
+ const huge=[{id:"big-1",amountMinor:Number.MAX_SAFE_INTEGER,issued:true},{id:"big-2",amountMinor:1,issued:true}];
+ assert.throws(()=>financeProjection(huge,[],[]),/Financial sum exceeds safe integer limit/);
+});
