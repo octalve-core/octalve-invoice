@@ -29,3 +29,6 @@ The nine screenshots supplied on 15 October 2026 cover the prior More page, Palm
 - Browser PNG and native PDF golden checks for custom accents/fonts/header/layout; preserve baseline Sapphire geometry. Classic Receipt A5 landscape/PNG/PDF/signature regression from earlier gate remains independently outstanding unless expressly deferred by owner.
 - Inspect screenshots against the supplied latest nine UI references, including precise mobile safe area, confirmation sheet, and report use of full dashboard width.
 - Owner explicitly reviews and accepts Phase 0 before any Phase 1 provisioning, payments, auth or database work.
+
+### Subscription state and payment-method design addition
+The responsive subscription page also includes **first-time**, **illustrative active** and **illustrative expired** states, and a non-operational Paystack/Flutterwave payment-method selector for future checkout designs. All example states and payment methods are explicitly marked as unconnected and do not produce actual subscription, payment or invoicing events. This is not billing integration.
