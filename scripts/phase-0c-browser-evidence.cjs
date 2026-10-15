@@ -39,11 +39,11 @@ const origin = process.env.OCTALVE_BASE_URL || "http://127.0.0.1:3000";
             if(width > viewport.width+1)throw new Error("Invoice mobile card exceeds viewport");
             record.mobileCard="PASS";
           }
-          if(route==="/dashboard/receipt") { await page.getByText("OL-00001RP").first().waitFor();record.typeRef="RP"; }
-          if(route==="/dashboard/quotation") { await page.getByText("OL-00001QUO").first().waitFor();record.typeRef="QUO"; }
-          if(route==="/dashboard/expenses") { await page.getByText("OL-00001EXP").first().waitFor();record.typeRef="EXP"; }
-          if(route==="/dashboard/staff") { await page.getByText("OL-00001SF").first().waitFor();record.typeRef="SF"; }
-          if(route==="/dashboard/credit-note") { await page.getByText("OL-00001CR").first().waitFor();record.typeRef="CR"; }
+          if(route==="/dashboard/receipt") { await page.getByText("OL-00001RP").first().waitFor({state:"attached"});record.typeRef="RP"; }
+          if(route==="/dashboard/quotation") { await page.getByText("OL-00001QUO").first().waitFor({state:"attached"});record.typeRef="QUO"; }
+          if(route==="/dashboard/expenses") { await page.getByText("OL-00001EXP").first().waitFor({state:"attached"});record.typeRef="EXP"; }
+          if(route==="/dashboard/staff") { await page.getByText("OL-00001SF").first().waitFor({state:"attached"});record.typeRef="SF"; }
+          if(route==="/dashboard/credit-note") { await page.getByText("OL-00001CR").first().waitFor({state:"attached"});record.typeRef="CR"; }
           if(route==="/dashboard/other-services"){
              await page.getByRole("heading",{name:"More"}).waitFor();
              if(await page.locator('a[href="/dashboard/other-services/pay-tax"]').count()!==1)throw Error("Pay Tax coming soon missing");
