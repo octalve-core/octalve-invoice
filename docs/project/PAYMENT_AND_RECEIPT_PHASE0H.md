@@ -62,3 +62,9 @@ Branch: `phase/00-finzefy-authority-ui-bootstrap`. No merge to main. No Neon env
 - No approved side-by-side visual source: older user images are referenced by `UI_REFERENCE_MAP.md` but not retrievable as pixel files in this new chat's central `02 UI References` folder (currently empty). GitHub screenshots document the current output only, not reference-perfect geometry.
 - The source importer/provenance and approved templates stay intact; no Phase 1 auth/Neon/provider/NRS/money/email work is authorized.
 - Keep PR #1 DRAFT; the owner has more Phase 0H corrections and has **not** approved Phase 0.
+
+### Additional PNG exporter continuation
+- The pre-existing `src/features/invoice/lib/export-adapter.ts` performs image capture using a static copy of the *real* selected invoice renderer, replacing editable inputs with visible text at export time. Reused it from the existing invoice document preview with an explicit **Download preview PNG** choice, without changing the Modern/Classic HTML or native PDF templates. The same missing-merchant-details confirmation applies to both image and PDF downloads.
+- Browser regression now invokes the actual `html2canvas-pro` PNG exporter and checks the downloaded PNG signature and pixel dimensions separately for Modern and Classic Ledger, retaining exports in the GitHub Actions evidence artifact.
+- Renamed imported donor-specific PNG filename bases to `Octalve_Invoice`/`Octalve_Receipt`. No Sapphire repository changes.
+- This PNG integrity smoke test is **not** equivalent to approved final-output image comparison, complete page-by-page pagination, receipt PNG equivalence or a fully golden-matched PDF.
