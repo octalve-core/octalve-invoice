@@ -7,13 +7,14 @@ import {definitions,getPreviewRecords,type PreviewRecord,type RecordField,type R
 import {RecordStatusBadge,RecordTypeIcon,RecordMobileCard,statusLabels} from "./RecordVisual";
 import {RecordActionDialog,type RecordAction} from "./RecordActionDialog";
 import {RecordFilterDialog,type FilterCriteria} from "./RecordFilterDialog";
+import {RecordDetailDialog} from "./RecordDetailDialog";
 
 function tableValue(record:PreviewRecord,field:RecordField):string{
  switch(field){case "title":return record.title;case "date":return record.date;case "status":return statusLabels[record.status];
  case "reference":return record.reference;default:return record[field]||"—";}
 }
 function dateISO(day:string){const [d,m,y]=day.split("/");return [y,m?.padStart(2,"0"),d?.padStart(2,"0")].join("-");}
-export function RecordDirectory({kind,onCreate,onView,onEdit}:{kind:RecordKind;onCreate?:()=>void;onView?:(record:PreviewRecord)=>void;onEdit?:(record:PreviewRecord)=>void}){
+export function RecordDirectory({kind,onCreate,onView,onEdit,showDesktopHeader=true}:{kind:RecordKind;onCreate?:()=>void;onView?:(record:PreviewRecord)=>void;onEdit?:(record:PreviewRecord)=>void;showDesktopHeader?:boolean}){
  const def=definitions[kind],router=useRouter();
  const {settings}=useMerchantPreview(),merchant=settings.businessName||"Octalve Limited";
  const records=useMemo(()=>getPreviewRecords(kind,merchant),[kind,merchant]);
@@ -22,6 +23,7 @@ export function RecordDirectory({kind,onCreate,onView,onEdit}:{kind:RecordKind;o
  const [filters,setFilters]=useState<FilterCriteria>({status:"all",from:"",to:""});
  const [filtersOpen,setFiltersOpen]=useState(false);
  const [selected,setSelected]=useState<PreviewRecord|null>(null);
+ const [viewing,setViewing]=useState<PreviewRecord|null>(null);
  const [page,setPage]=useState(1),[notice,setNotice]=useState("");
  const filtered=useMemo(()=>records.filter(r=>{
   if(status!=="all"&&r.status!==status)return false;
@@ -36,7 +38,7 @@ export function RecordDirectory({kind,onCreate,onView,onEdit}:{kind:RecordKind;o
  function openView(record:PreviewRecord){
   if(kind==="invoice"){router.push("/dashboard/invoice/"+record.id);return;}
   if(onView){onView(record);return;}
-  setNotice(record.reference+" — sample "+def.title.toLowerCase()+" details are preview-only. "+(record.kind==="receipt"?(record.relatedInvoiceId?"Linked invoice sample #"+record.relatedInvoiceId:"Manually recorded sample payment; no linked invoice."):"No live merchant record exists."));
+  setViewing(record);
  }
  function action(key:RecordAction,record:PreviewRecord){
   if(key==="view"){openView(record);return;}
@@ -62,7 +64,7 @@ export function RecordDirectory({kind,onCreate,onView,onEdit}:{kind:RecordKind;o
  function tab(next:RecordStatus|"all"){setStatus(next);setPage(1);}
  function query(next:string){setSearch(next);setPage(1);}
  return <section aria-label={def.title+" history"} className="min-w-0 space-y-3">
-  <div className="hidden lg:block"><h1 className="text-2xl font-bold text-[#1d2838]">{def.title}</h1><p className="mt-1 text-sm text-gray-500">{def.description}</p></div>
+  {showDesktopHeader?<div className="hidden lg:block"><h1 className="text-2xl font-bold text-[#1d2838]">{def.title}</h1><p className="mt-1 text-sm text-gray-500">{def.description}</p></div>:null}
   <div className="lg:hidden">
    <div className="relative mb-4 flex items-center justify-center border-b border-gray-200 py-3">
      <button aria-label="Back" onClick={()=>router.push("/dashboard")} className="absolute left-0 rounded-md p-1 text-gray-700"><ArrowLeft size={21}/></button>
@@ -125,5 +127,6 @@ export function RecordDirectory({kind,onCreate,onView,onEdit}:{kind:RecordKind;o
   <p className="text-xs text-gray-400">Sample information only — no records, payments, refunds or notifications are being processed.</p>
   {filtersOpen?<RecordFilterDialog statuses={def.statuses} initial={filters} onClose={()=>setFiltersOpen(false)} onApply={v=>{setFilters(v);setPage(1);}}/>:null}
   {selected?<RecordActionDialog record={selected} onClose={()=>setSelected(null)} onAction={action}/>:null}
+  {viewing?<RecordDetailDialog record={viewing} onClose={()=>setViewing(null)}/>:null}
  </section>;
 }
