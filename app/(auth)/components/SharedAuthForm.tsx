@@ -17,7 +17,7 @@ const loginSchema=fieldsSchema;
 const signupSchema=fieldsSchema.superRefine((v,ctx)=>{
  if(!v.firstName.trim())ctx.addIssue({code:"custom",path:["firstName"],message:"First name is required"});
  if(!v.lastName.trim())ctx.addIssue({code:"custom",path:["lastName"],message:"Last name is required"});
- if(!/^(?:\+234|0)[789]\d{9}$/.test(v.phoneNumber.replace(/[\s()-]/g,"")))ctx.addIssue({code:"custom",path:["phoneNumber"],message:"Enter a valid Nigerian mobile number (e.g. 08012345678)"});
+ if(!/^\+?\d{10,15}$/.test(v.phoneNumber.replace(/[\s()-]/g,"")))ctx.addIssue({code:"custom",path:["phoneNumber"],message:"Enter a valid phone number (10–15 digits, optional country code)"});
  if(v.password.length<8)ctx.addIssue({code:"custom",path:["password"],message:"Password must be at least 8 characters"});
 });
 export function SharedAuthForm({mode}:{mode:"login"|"signup"}){
