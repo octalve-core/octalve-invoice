@@ -18,9 +18,8 @@ interface SendInvoiceModalProps {
 export default function SendInvoiceModal({
   isOpen,
   onClose,
-  onSend,
   invoiceRef,
-  customerEmail = "customer@email.com",
+  customerEmail = "No verified recipient configured",
 }: SendInvoiceModalProps) {
   const [step, setStep] = useState<"options" | "success">("options");
   const [sendEmail, setSendEmail] = useState(true);
@@ -28,7 +27,7 @@ export default function SendInvoiceModal({
   const [sendWhatsapp, setSendWhatsapp] = useState(false);
 
   const handleSend = () => {
-    onSend({ email: sendEmail, sms: sendSms, whatsapp: sendWhatsapp });
+    // Preview-only workflow. Do not invoke delivery callbacks until an authenticated outbox exists.
     setStep("success");
   };
 
@@ -122,7 +121,7 @@ export default function SendInvoiceModal({
                   disabled={!sendEmail && !sendSms && !sendWhatsapp}
                   className="flex-1 px-4 py-3 text-sm font-medium text-white bg-[#0064E0] rounded-lg hover:bg-[#0052B8] disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  Send Invoice
+                  Review Delivery
                 </button>
               </div>
             </div>
@@ -133,10 +132,10 @@ export default function SendInvoiceModal({
               <Check className="w-8 h-8 text-green-600" />
             </div>
             <h3 className="text-lg font-semibold text-gray-900 mb-2">
-              Invoice Sent!
+              Delivery Preview Only
             </h3>
             <p className="text-sm text-gray-500 mb-6">
-              Invoice {invoiceRef} has been sent to the customer.
+              No invoice {invoiceRef} was sent. Your selected channels are only a design preview; verified mail, SMS and WhatsApp providers remain disabled.
             </p>
             <button
               onClick={handleClose}
