@@ -23,7 +23,7 @@ export const financeDefinitions:Record<FinanceMode,FinanceDefinition>={
  currencies:{title:"Multi-currency",description:"See source amounts separately from functional-currency conversions and rate history.",metric:"Configured base currency",note:"The existing sample invoices are NGN. No external FX quotes or cross-currency collections have been imported.",statuses:["NGN","USD","GBP","EUR"],columns:["Reference","Customer","Currency","Amount","FX source"],primaryAction:"Review currencies"}
 };
 const money=(s:string)=>Math.round(Number(s.replace(/[^0-9.]/g,""))*100);
-const parsed=(s:string)=>{const parts=s.split("/");return parts.length===3?new Date(Date.UTC(Number(parts[2]),Number(parts[1])-1,Number(parts[0])):new Date(NaN);};
+const parsed=(s:string)=>{const parts=s.split("/");return parts.length===3?new Date(Date.UTC(Number(parts[2]),Number(parts[1])-1,Number(parts[0]))):new Date(NaN);};
 const safeAmount=(n:number)=>{if(!Number.isSafeInteger(n)||n<0)throw new Error("Invalid finance preview amount");return n;};
 const issued=previewInvoices.filter(i=>i.status!=="draft").map(i=>({...i,amountMinor:safeAmount(money(i.amount))}));
 const allocations=paymentPreview.filter(p=>p.status==="verified").flatMap(p=>p.allocations.map(a=>({...a,paymentId:p.id,date:p.date,source:p.source,customer:p.customer})));
