@@ -8,7 +8,7 @@ const iso=(value:string)=>{const [d,m,y]=value.split("/");return d&&m&&y?y+"-"+m
 function rowCells(mode:FinanceMode,r:FinanceRow,balance:number|null):string[]{
  const amount=r.amountMinor==null?"—":formatMinor(Math.abs(r.amountMinor));
  switch(mode){
-  case "statement":return [r.reference,r.title,r.status==="invoice"?"Invoice / Debit":"Payment / Credit",(r.amountMinor||0)<0?"− "+amount:"+ "+amount,balance==null?"Select customer":formatMinor(Math.max(0,balance))];
+  case "statement":return [r.reference,r.title,r.status==="invoice"?"Invoice / Debit":"Payment / Credit",(r.amountMinor||0)<0?"− "+amount:"+ "+amount,balance==null?"Select customer":balance<0?"Allocation exception":formatMinor(balance)];
   case "receivables":return [r.reference,r.title,r.due||"—",amount,r.status];
   case "adjustments":return [r.reference,r.title,r.type,amount,r.type.replace(/^.*· /,"")];
   case "reconciliation":return [r.reference,r.title,r.type,amount,r.details.includes("linked invoice")?"Sample allocated":"Not allocated"];
