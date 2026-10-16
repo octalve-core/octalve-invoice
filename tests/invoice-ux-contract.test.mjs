@@ -47,7 +47,7 @@ test("merchant logo remains connected to both unissued invoice renderers",()=>{
  const settings=read("src/features/merchant-setup/MerchantSetupJourney.tsx");
  const composer=read("src/features/invoices/sections/InvoiceComposer.tsx");
  const preview=read("src/features/invoices/sections/InvoiceDocumentPreviewSection.tsx");
- assert.match(settings,/setLogoPreview\(reader\.result as string\)/);
+ assert.match(settings,/reader\.readAsDataURL\(file\)/);
  assert.match(composer,/merchantLogo=\{logoPreview\}/);
  assert.match(preview,/companyLogo=\{merchantLogo\}/);
  assert.match(preview,/<SapphireInvoiceRenderer/);
@@ -105,7 +105,7 @@ test("business settings and getting started use one canonical setup UI",()=>{
  assert.match(journey,/How do you want to receive payments/);
  assert.match(journey,/Online payment connections/);
  assert.match(journey,/Account not verified/);
- assert.match(journey,/setLogoPreview\(reader\.result as string\)/);
+ assert.match(journey,/reader\.readAsDataURL\(file\)/);
  assert.match(provider,/businessDescription:string/);
  assert.match(provider,/bankVerification\?/);
 });
