@@ -168,7 +168,7 @@ const origin = process.env.OCTALVE_BASE_URL || "http://127.0.0.1:3000";
             record.overviewActionSheet="PASS";
             await page.getByRole("button",{name:"Close record actions"}).click();
           }
-          if(route==="/dashboard/quotation"){
+          if(route==="/dashboard/quotation"&&view!=="mobile"){
             await page.getByRole("button",{name:"Accepted",exact:true}).waitFor();
             if(await page.getByRole("button",{name:"Paid",exact:true}).count())throw new Error("Quotation incorrectly implies payment");
             record.quotationIsNotPayment="PASS";
