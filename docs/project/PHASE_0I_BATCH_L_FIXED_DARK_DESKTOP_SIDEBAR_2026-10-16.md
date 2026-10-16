@@ -24,3 +24,5 @@ Production: main unchanged e01c9158616f65b4e08d5b36318b8d27aef3189b; PR #2 draft
 
 ## Restrictions
 No mobile UX redesign, financial logic, API, payment, live subscriptions, Neon, NRS fiscalization, issuance, account validation or main/Production merge. Subscription pricing remains unapproved. Owner must inspect desktop 1024/1440, different vertical heights, internal nav scrolling and pinned bottom controls before UI signoff.
+
+- **Postmerge exact Review CI PASSED:** `bccbf572ed59f53122377682922ca767fee0e742` build/tests https://github.com/octalve-core/octalve-invoice/actions/runs/38977638147 , CodeQL https://github.com/octalve-core/octalve-invoice/actions/runs/38977638140 , browser **189/189 +64/64** https://github.com/octalve-core/octalve-invoice/actions/runs/38977638151 , screenshot artifact https://github.com/octalve-core/octalve-invoice/actions/runs/38977638151/artifacts/12079512768 . Vercel READY same SHA.
