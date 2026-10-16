@@ -40,7 +40,7 @@ export function InvoiceComposer({mode="create",invoiceId}:{mode?:"create"|"edit"
        </select></label>
    </header>
    <div className="rounded-lg border border-blue-100 bg-blue-50 px-4 py-3 text-xs text-[#00489F]">
-     Draft editor · Changes are not saved or sent.
+     Edit details in the sections below. You can review and download a draft; saving and sending are not available yet.
    </div>
    <div className="grid grid-cols-1 items-start gap-5 xl:grid-cols-2">
      <InvoiceEditorSection draft={draft} setDraft={setDraft}/>
