@@ -46,7 +46,7 @@ async function qualifyNativePdf(page, output, view, template) {
   return { pdf: path.basename(pdfPath), raster: path.basename(rasterPrefix + ".png"), pdfPages: (info.match(/^Pages:\s*(\d+)/m) || [])[1], selectableText: "PASS", paperA4: "PASS" };
 }
 
-const routes = ["/portal", "/onboarding", "/login", "/signup", "/verify-email", "/business-info", "/set-currency", "/dashboard", "/dashboard/getting-started", "/dashboard/invoice", "/dashboard/invoice/create", "/dashboard/invoice/1", "/dashboard/invoice/1/edit", "/dashboard/receipt", "/dashboard/receipt/1", "/dashboard/receipt/create", "/dashboard/quotation", "/dashboard/quotation/1", "/dashboard/expenses", "/dashboard/customer", "/dashboard/items", "/dashboard/items/add", "/dashboard/items/1/edit", "/dashboard/staff", "/dashboard/staff/create", "/dashboard/staff/1/edit", "/dashboard/credit-note", "/dashboard/other-services", "/dashboard/finance/statement", "/dashboard/finance/approvals", "/dashboard/finance/receivables", "/dashboard/finance/adjustments", "/dashboard/finance/communications", "/dashboard/finance/reconciliation", "/dashboard/finance/audit", "/dashboard/finance/currencies", "/dashboard/recurring", "/dashboard/recurring-expense", "/dashboard/tax-centre", "/dashboard/insights-support", "/dashboard/other-services/pay-tax", "/dashboard/report", "/dashboard/notifications", "/dashboard/payment-received", "/dashboard/announcement", "/dashboard/updates", "/dashboard/invoice/3/record-payment", "/dashboard/settings", "/dashboard/settings/profile", "/dashboard/settings/invoice", "/dashboard/settings/business", "/dashboard/settings/subscription", "/dashboard/settings/theme", "/dashboard/settings/faqs", "/dashboard/settings/deleted"];
+const routes = ["/portal", "/onboarding", "/login", "/signup", "/verify-email", "/business-info", "/set-currency", "/dashboard", "/dashboard/getting-started", "/dashboard/invoice", "/dashboard/invoice/create", "/dashboard/invoice/1", "/dashboard/invoice/1/edit", "/dashboard/receipt", "/dashboard/receipt/1", "/dashboard/receipt/create", "/dashboard/quotation", "/dashboard/quotation/1", "/dashboard/expenses", "/dashboard/customer", "/dashboard/items", "/dashboard/items/add", "/dashboard/items/1/edit", "/dashboard/staff", "/dashboard/staff/create", "/dashboard/staff/1/edit", "/dashboard/credit-note", "/dashboard/other-services", "/dashboard/finance/statement", "/dashboard/finance/approvals", "/dashboard/finance/receivables", "/dashboard/finance/adjustments", "/dashboard/finance/communications", "/dashboard/finance/reconciliation", "/dashboard/finance/audit", "/dashboard/finance/currencies", "/dashboard/recurring", "/dashboard/recurring-expense", "/dashboard/tax-centre", "/dashboard/insights-support", "/dashboard/other-services/pay-tax", "/dashboard/finance-calculator", "/dashboard/report", "/dashboard/notifications", "/dashboard/payment-received", "/dashboard/announcement", "/dashboard/updates", "/dashboard/invoice/3/record-payment", "/dashboard/settings", "/dashboard/settings/profile", "/dashboard/settings/invoice", "/dashboard/settings/business", "/dashboard/settings/subscription", "/dashboard/settings/theme", "/dashboard/settings/faqs", "/dashboard/settings/deleted"];
 const viewports = {
   desktop: { width: 1440, height: 900 },
   tablet: { width: 768, height: 1024 },
@@ -111,14 +111,16 @@ const origin = process.env.OCTALVE_BASE_URL || "http://127.0.0.1:3000";
           if(route==="/dashboard/staff") { await page.getByText("OL-00001SF").first().waitFor({state:"attached"});record.typeRef="SF"; }
           if(route==="/dashboard/credit-note") { await page.getByText("OL-00001CR").first().waitFor({state:"attached"});record.typeRef="CR"; }
           if(route==="/dashboard/other-services"){
-             await page.getByRole("heading",{name:"More"}).waitFor();
-             if(await page.locator('a[href="/dashboard/other-services/pay-tax"]').count()!==1)throw Error("Pay Tax coming soon missing");
-             if(view==="desktop"){
-               const cols=await page.locator('section[aria-label="Other services"] > div').evaluate(el=>getComputedStyle(el).gridTemplateColumns.split(" ").length);
-               if(cols!==4)throw Error("Other Services desktop must be 4 columns; got "+cols);
-             }
+            await page.getByRole("heading",{name:"More"}).waitFor();
+            await page.getByRole("heading",{name:"Finance & compliance"}).waitFor();
+            await page.getByRole("link",{name:/Finance Calculator/}).waitFor();
+            await page.getByRole("link",{name:/Tax Centre/}).waitFor();
           }
-          if(route==="/dashboard/other-services/pay-tax"){await page.getByText("Coming soon to Octalve Invoice.").waitFor();await page.getByRole("link",{name:/Back to Overview/}).waitFor();}
+          if(route==="/dashboard/other-services/pay-tax"){
+            await page.waitForURL(/\/dashboard\/tax-centre\/?$/);
+            await page.getByRole("heading",{name:"Tax Centre"}).waitFor();
+            record.legacyTaxRedirect="PASS";
+          }
           if(route==="/dashboard"&&view==="mobile"){
             await page.getByRole("link",{name:"Open profile settings"}).getByText("Preview User").waitFor();
           }
@@ -143,6 +145,10 @@ const origin = process.env.OCTALVE_BASE_URL || "http://127.0.0.1:3000";
                 await page.getByRole("button",{name:"View Receipt"}).click();
                 await page.getByText("Independent payment record",{exact:false}).waitFor();
                 record.manualIndependentReceipt="PASS";
+              }else if(route==="/dashboard/quotation"){
+                await page.waitForURL(/\/dashboard\/quotation\/\d+$/);
+                await page.getByRole("heading",{name:/Quotation /}).first().waitFor();
+                record.quotationDetailRoute="PASS";
               }else{
                 await page.getByRole("dialog",{name:/ details/i}).waitFor();
                 record.sheetAndDetail="PASS";
@@ -292,13 +298,25 @@ const origin = process.env.OCTALVE_BASE_URL || "http://127.0.0.1:3000";
             await page.getByText("No recurring rule, invoice, expense or payment was created.",{exact:false}).waitFor();
             record.recurringRulePreview="PASS";
           }
+          if(route==="/dashboard/finance-calculator"){
+            await page.getByRole("heading",{name:"Finance Calculator"}).waitFor();
+            await page.getByRole("button",{name:"Savings & investment"}).click();
+            await page.getByRole("button",{name:"Savings goal"}).click();
+            await page.getByRole("heading",{name:"Your projection schedule"}).waitFor();
+            await page.getByRole("button",{name:"Sales & pricing"}).click();
+            await page.getByRole("button",{name:"Margin & markup"}).click();
+            await page.getByLabel("Cost price").fill("80");
+            await page.getByLabel("Selling price").fill("100");
+            await page.getByText("20%",{exact:true}).waitFor();
+            record.calculatorSwitchAndMath="PASS";
+          }
           if(route==="/dashboard/tax-centre"){
             await page.getByRole("heading",{name:"Tax Centre"}).waitFor();
             await page.getByRole("button",{name:"Invoice tax review"}).click();
             await page.getByLabel("Tax reporting year").selectOption("2024");
             const search=page.getByRole("textbox",{name:"Search tax invoices"});
             await search.waitFor();
-            if(view==="mobile"){
+            if(view!=="desktop"){
               await page.getByRole("button",{name:/Olamide Ismail/}).first().click();
             }else{
               await page.getByRole("button",{name:"Details"}).first().click();
