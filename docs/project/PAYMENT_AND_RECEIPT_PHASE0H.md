@@ -12,14 +12,14 @@ Branch: `phase/00-finzefy-authority-ui-bootstrap`. No merge to main. No Neon env
 | 7. Reports | PRESENT, illustrative | `/dashboard/report`; cash measures from payment projection, not receipt counts. Server-sourced ledger required. |
 | 8. Profile editing | PRESENT | Settings Edit Profile routes to `/dashboard/settings/profile`; in-session only. |
 | 9. Other Services responsive icons | PRESENT | Faded semantic circles and mobile sizing. Await owner visual check. |
-| 10. Unnecessary Preview/Sandbox language | IMPROVED | Repetitive row/count footers removed; small transparent disclosures retained where real financial actions or downloadable unissued documents must not be misrepresented. |
+| 10. Unnecessary Preview/developer jargon | IMPROVED | Repetitive row/count footers removed; small transparent disclosures retained where real financial actions or downloadable unissued documents must not be misrepresented. |
 | 11. Announcements/Recent Updates | PRESENT | `/dashboard/announcement` and `/dashboard/updates` use Octalve blue icon/white cards. Await owner visual check. |
 | 12. Notifications | PRESENT | `/dashboard/notifications` has categories, read/unread, links, click through to settings; real financial/security alerts need backend outbox. |
 ## New corrections this checkpoint
 - Corrected broken 111-screen qualification: invoice customer edit test now checks live document input value; manual-bank fixture test selects eligible unpaid invoice, not already-paid invoice.
 - Locked invoice payment mode to invoice sample record, decoupling from editable current workspace default. Views, action sheet and manual record page enforce consistent eligibility.
 - Hardened projection against conflicting replay and cumulative over-refunds with unit tests.
-- Omitted blank item descriptions in both Modern and Classic Ledger HTML; notes render independently of optional merchant bank configuration in HTML and native PDF; removed repetitive UI/sandbox text from invoice draft PDF notes.
+- Omitted blank item descriptions in both Modern and Classic Ledger HTML; notes render independently of optional merchant bank configuration in HTML and native PDF; removed repetitive UI/developer-only text from invoice draft PDF notes.
 ## Risks and gates
 - Current test fixtures are in memory and do not persist. Server transactions must enforce merchant membership, authorization, KYC/provider status, financial-event idempotency, exact money, immutable issued PDFs and data protection.
 - Real invoice issuance, manual payment approval, gateway reconciliation, receipt generation/email, tax calculation/fiscalization and image storage NOT IMPLEMENTED.
