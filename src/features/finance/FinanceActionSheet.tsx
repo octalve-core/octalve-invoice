@@ -20,7 +20,7 @@ const specs:Record<Exclude<FinanceMode,"communications">,Spec>={
  },
  receivables:{
   title:"Plan receivables follow-up",
-  intro:"Select an ageing group and a contact approach. Never claim a debtor is overdue until the source invoice, due date and verified allocations are checked.",
+  intro:"Choose the overdue period and a follow-up approach. Check the invoice, payment history and due date before contacting a customer.",
   fields:[{key:"customer",label:"Customer (optional)",kind:"select"},{key:"age",label:"Age group",kind:"select",options:["Not yet overdue","1–30 days","31–60 days","61–90 days","90+ days"],required:true},{key:"approach",label:"Next step",kind:"select",options:["Review invoice evidence","Prepare gentle reminder","Request account reconciliation","Escalate for owner approval"],required:true}],
   authority:"Check the issued invoice, due date, payments received and any approved credit before following up."
  },
