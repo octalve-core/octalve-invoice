@@ -242,6 +242,12 @@ const origin = process.env.OCTALVE_BASE_URL || "http://127.0.0.1:3000";
             await page.getByRole("link",{name:/Statements of Account/}).waitFor();
             await page.getByRole("link",{name:/Bank Reconciliation/}).waitFor();
             await page.getByRole("link",{name:/Audit & Exceptions/}).waitFor();
+            const moreSearch=page.getByRole("textbox",{name:"Search More services"});
+            await moreSearch.fill("Audit");
+            await page.getByRole("link",{name:/Audit & Exceptions/}).waitFor();
+            if(await page.getByRole("link",{name:/Statements of Account/}).count())throw Error("More search failed to filter finance tiles");
+            await moreSearch.fill("");
+            await page.getByRole("link",{name:/Statements of Account/}).waitFor();
             record.financeNavigation="PASS";
           }
           if(route.startsWith("/dashboard/finance/")){
