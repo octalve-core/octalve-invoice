@@ -1,10 +1,13 @@
 name: Security — CodeQL
 on:
   push:
-    branches: [main, 'phase/**']
+    branches: [main, 'phase/**', 'review/**']
   pull_request:
     branches: [main]
   workflow_dispatch:
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 permissions:
   contents: read
   security-events: write
