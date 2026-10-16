@@ -1,6 +1,6 @@
 {
   "updatedAt": "2026-10-16",
-  "phase": "Phase 0I frontend Batch D source-qualified; 189/189 browser + 64/64 extra responsive, Node24 source build and CodeQL green. Owner review pending, Phase 1 not authorized.",
+  "phase": "Phase 0I Batch E source qualified (189/189 +64/64 browser; Node/pnpm/TS/tests/build and CodeQL PASS). Awaiting one review-only publication and owner UI acceptance.",
   "branch": "phase/0i-frontend-finance-workflows",
   "mainBootstrapSha": "87ad423dba3ced2445e109baa85114aea3d30037",
   "latestMigration": null,
@@ -51,14 +51,20 @@
     "latestReleasePreview": "https://octalve-invoice-n00uadeac-octalve-vault.vercel.app READY at c0737dd44a648b0de453d0da0cda76e87865fba1; compared to branch 4e4647d6 later commits only docs and browser test script (same application code). This is NOT Production.",
     "backendApproved": false,
     "phase0iCalculator": "20 finance calculators, formula and invalid-input tests passing at Batch C source SHA a4ac4381; projections and CSV are informational only.",
-    "phase0iBrowser": "PASS 189/189 across 1440 desktop/768 tablet/390 mobile and 64/64 across 320/360/430/1024 additional widths; includes real native PDF/PNG preview smoke, not owner-approved golden appearance.",
+    "phase0iBrowser": "PASS at 1890c5d839976cce99b901765a02ab98328e852e: 189/189 core at 1440/768/390 and 64/64 at 320/360/430/1024; real browser screenshot/PNG and native PDF smoke. Run 38920526112; artifact 12055190247. No pixel-perfect owner approval.",
     "phase0iLanguage": "Source-wide CI guard passed: no disallowed development-environment word in app/components/src.",
     "phase0iA11y": "Accessible dialog Escape/focus management passed responsive browser actions. Manual screen-reader and owner pixel reference approvals are not complete.",
     "phase0iBatchC": "PASS pinned branch SHA a4ac4381: source/build/tests CI run 38905668956; CodeQL run 38905669176; browser/screenshots run 38905662879 = 189/189 baseline and 64/64 narrower widths. Evidence artifact 12047932602. Batch C includes 20 business calculators, one auth form and finance action sheet preview; no backend actions were enabled. Review merge commit dcfe923a Vercel READY.",
     "phase0iBatchD": "PASS code a3a885ff0cc56092b1df9af10cc7088d7b05f205: Phase qualification run 38910648079; CodeQL run 38910647963; 189/189 browser + 64/64 extra responsive run 38910639932, artifact 12050297506.",
     "customerFacingCopy": "Automated source language guard (app/components/src), plus live visible rendered browser text assertions on 63 routes × 3 viewports, including finance, auth, billing and support. No false provider/fiscal completion labels permitted.",
     "financeComponentParity": "Eight finance screens, recurring, Tax Centre and Finance Calculator use shared RecordDataTable for desktop and canonical RecordMobileCard for mobile where applicable; still require owner visual reference approval.",
-    "invoiceMilestonePlanner": "PASS frontend 2–6 milestone plan, validated 100% distribution with exact minor-unit arithmetic, optional dates, and browser negative/unbalanced case tests. No real issuance/collection."
+    "invoiceMilestonePlanner": "PASS frontend 2–6 milestone plan, validated 100% distribution with exact minor-unit arithmetic, optional dates, and browser negative/unbalanced case tests. No real issuance/collection.",
+    "phase0iBatchDReview": "PASS Vercel READY dpl_4kyNqCvBVgd3wnTDtKuovzy1mwFE, stable review alias octalve-invoice-git-review-phase-0i-octalve-vault.vercel.app; HTTP 200 verified login, More, finance calculator, invoice/1, statement, recurring and tax centre. PR #5 merged to review only. Main not changed.",
+    "phase0iLatestPinnedSource": "PASS on dev branch SHA 149e896b799f6cefdfee2cd4a6383109e95311f9: phase qualification run 38911766764, CodeQL run 38911767241, browser 189/189 + 64/64 run 38911760840; artifact 12050338851 (36.3MB). Follow-up handoff/entry/state edits are documentation-only.",
+    "phase0iHandoff": "Comprehensive authoritative next chat read: docs/project/OCTALVE_INVOICE_PHASE_0I_NEXT_CHAT_HANDOFF_2026-10-16.md; NEXT_PHASE_PROMPT.md updated to point to it; old Phase 0H next-step text superseded.",
+    "phase0iReviewBranch": "Latest Batch D Vercel Review READY at merge SHA 78122f0759a096cbd6fc88d57b3034dd121124f4; https://octalve-invoice-git-review-phase-0i-octalve-vault.vercel.app; reviewed code qualified and last source branch followups docs-only.",
+    "phase0iBatchE": "PASS exact source 1890c5d839976cce99b901765a02ab98328e852e: Node24/pnpm frozen install/TS/lint/tests/Next build run 38920535188; CodeQL run 38920534494; 189/189 baseline browser +64/64 extra viewports run 38920526112, evidence artifact 12055190247. Recurring schedule and seven finance review forms only; no backend authority.",
+    "phase0iBatchEReview": "NOT PUBLISHED as of this docs commit; review/phase-0i remains Batch D READY 78122f. Publish only via qualified review PR, never main."
   },
   "blockers": [
     "Explicit owner approval for Phase 0I final UI and later backend Phase 1 remains absent. No Neon, real auth, payment gateways, money movement, NRS filings or real support/email delivery.",
@@ -71,12 +77,12 @@
     "Backend-approved authority needed before staff approvals, money posting, NRS, persistent finance ledgers, customer access, recurring issuance or communication delivery.",
     "Source and browser regressions pass; visual goldens and customer UX review still need owner sign-off."
   ],
-  "nextPhase": "Owner review Batch D on Vercel Review only, final non-invoice UI refinements, then owner-supplied dashboard logo and deferred invoice reference; do not start Phase 1 without explicit approval.",
-  "currentCodeCheckpoint": "a3a885ff0cc56092b1df9af10cc7088d7b05f205",
-  "lastVerifiedApplicationCommit": "a3a885ff0cc56092b1df9af10cc7088d7b05f205",
-  "exactNextPhase": "Owner review Batch D on Vercel Review only, final non-invoice UI refinements, then owner-supplied dashboard logo and deferred invoice reference; do not start Phase 1 without explicit approval.",
-  "previewCommitSha": "dcfe923a7b1439d6fda38c723a277a3b0d9c9f4f",
-  "previewDeploymentStatus": "READY — Phase 0I Batch C review deployment, branch review/phase-0i. Verified Vercel route HTTP 200 for calculator, finance, recurring, tax, login/signup, More and portal. This is not a Production/main release.",
+  "nextPhase": "Publish qualified Phase 0I Batch E to review/phase-0i only; verify Vercel READY SHA and all key routes. Continue unfinished owner-guided frontend and visual review; no backend Phase 1/main release without separate owner approval.",
+  "currentCodeCheckpoint": "1890c5d839976cce99b901765a02ab98328e852e",
+  "lastVerifiedApplicationCommit": "1890c5d839976cce99b901765a02ab98328e852e",
+  "exactNextPhase": "Publish qualified Phase 0I Batch E to review/phase-0i only; verify Vercel READY SHA and all key routes. Continue unfinished owner-guided frontend and visual review; no backend Phase 1/main release without separate owner approval.",
+  "previewCommitSha": "78122f0759a096cbd6fc88d57b3034dd121124f4",
+  "previewDeploymentStatus": "READY, review/phase-0i Batch D only, merged from review PR #5; Production main e01c915 unchanged",
   "phase0Merged": true,
   "productionDeployed": false,
   "productionApprovedByOwner": true,
@@ -86,7 +92,10 @@
   "phase0iBackendApproved": false,
   "phase0iProductionApproved": false,
   "backendApproved": false,
-  "lastQualifiedSourceHead": "a4ac4381573cc0e45bac13ad3ab975e0ff91ae17",
+  "lastQualifiedSourceHead": "1890c5d839976cce99b901765a02ab98328e852e",
   "productionApprovalScope": "Historical Phase 0H owner authorization for main merge only; NOT authorization for Phase 0I Batch C deployment or backend.",
-  "phase0iReviewCandidate": "Batch D — accessible shared record desktop tables; 2–6 valid milestone invoice split; polished merchant-facing copy. CI-green, not yet merged to review at this checkpoint."
+  "phase0iReviewCandidate": "Batch E source 1890c5d839976cce99b901765a02ab98328e852e qualified. Candidate review-only publication pending; Batch D still READY at review/phase-0i 78122f. Owner visual sign-off still pending.",
+  "newChatHandoff": "docs/project/OCTALVE_INVOICE_PHASE_0I_NEXT_CHAT_HANDOFF_2026-10-16.md",
+  "nextChatEntry": "docs/project/NEXT_PHASE_PROMPT.md",
+  "latestDocsOnlyHandoff": "9fc88ce5c6d73a0dc03be7f4c11ff35498610c1a; followed by this state update; no app code changed after qualified SHA 149e896b"
 }
