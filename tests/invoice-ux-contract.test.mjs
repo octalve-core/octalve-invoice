@@ -148,7 +148,7 @@ test("payment bank picker is searchable and not falsely called a verified full d
  assert.match(picker,/toLowerCase\(\)\.includes/);
  assert.match(picker,/ArrowDown/);
  assert.match(picker,/Suggestions only/);
- assert.match(picker,/if\(!open\)setQuery\(value\)/);
+ assert.match(picker,/value=\{open\?query:value\}/);
  assert.match(setup,/<NigerianBankPicker/);
  assert.match(setup,/About|SetupInfoNote/);
  assert.match(setup,/Account not verified/);
