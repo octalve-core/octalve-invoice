@@ -3,6 +3,7 @@ import Link from "next/link";
 import {useMerchantPreview,type DueDatePreference} from "@/src/features/merchant-preview/MerchantPreviewProvider";
 import type {CurrencyCode} from "@/src/features/invoice/types";
 import {merchantInitials} from "@/src/features/invoices/lib/document-number";
+import {InvoiceTemplateGallery} from "@/src/features/invoices/components/InvoiceTemplateGallery";
 const field="mt-1 block h-11 w-full rounded-xl border border-[#D7E2EF] bg-white px-3 text-sm text-[#18334B] focus-visible:outline-2 focus-visible:outline-[#0064E0]";
 export default function InvoiceSettingsPage(){
  const {settings,invoicePreferences,setInvoicePreferences,invoiceAppearance,setInvoiceAppearance,receiptAutoMode,setReceiptAutoMode}=useMerchantPreview();
@@ -16,9 +17,10 @@ export default function InvoiceSettingsPage(){
   <div className="grid gap-5 lg:grid-cols-2">
    <section className="space-y-4 rounded-2xl border border-[#E0EAF5] bg-white p-5 shadow-sm" aria-label="Document appearance settings">
     <header><h2 className="font-bold text-[#193955]">Document appearance</h2><p className="mt-1 text-xs text-slate-500">Your selected template and colours apply to new document previews.</p></header>
-    <label className="block text-xs font-semibold text-[#314761]">Default invoice template
-     <select className={field} value={invoiceAppearance.template} onChange={e=>appearance("template",e.target.value as typeof invoiceAppearance.template)}><option value="modern">Octalve Modern</option><option value="ledger">Classic Ledger</option></select>
-    </label>
+    <div className="space-y-2"><p className="text-xs font-semibold text-[#314761]">Default invoice template</p>
+     <InvoiceTemplateGallery selected={invoiceAppearance.template} onSelect={style=>appearance("template",style)}/>
+     <p className="text-[11px] text-slate-500">Only Octalve Modern and Classic Ledger are available. New original template layouts and the owner-supplied Legal design will follow separately.</p>
+    </div>
     <label className="flex items-center justify-between gap-3 text-xs font-semibold text-[#314761]">Template accent colour
      <input type="color" aria-label="Template accent colour" value={invoiceAppearance.accent} onChange={e=>appearance("accent",e.target.value)} className="h-10 w-16 cursor-pointer rounded-md border border-slate-200 bg-white p-1"/>
     </label>

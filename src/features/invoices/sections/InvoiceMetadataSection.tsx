@@ -23,7 +23,7 @@ function NativeDate({label,value,onChange}:{label:string;value:string;onChange:(
 export function InvoiceMetadataSection({draft,setDraft}:Props){
  const {customers,setCustomers,staff,setStaff,paymentMode,setPaymentMode}=useMerchantPreview();
  const [picker,setPicker]=useState<Picker>(null),[query,setQuery]=useState(""),[adding,setAdding]=useState(false);
- const [customer,setCustomer]=useState({name:"",email:"",phone:"",address:"",company:""});
+ const [customer,setCustomer]=useState({name:"",email:"",phone:"",address:"",company:"",customerType:"individual" as "individual"|"business",taxId:"",country:"",city:"",state:""});
  const [person,setPerson]=useState({name:"",email:"",phone:"",role:"Salesperson"});
  const [selectedStaff,setSelectedStaff]=useState("");
  const update=<K extends keyof InvoiceDraft>(key:K,value:InvoiceDraft[K])=>setDraft(prev=>({...prev,[key]:value}));
@@ -34,13 +34,26 @@ export function InvoiceMetadataSection({draft,setDraft}:Props){
   if(prefix==="issue")setDraft(p=>({...p,day:String(Number(d)),month:months[Number(m)-1]||"JAN",year:y}));
   else setDraft(p=>({...p,dueDay:String(Number(d)),dueMonth:months[Number(m)-1]||"JAN",dueYear:y}));
  }
- function chooseCustomer(row:CatalogCustomer){setDraft(p=>({...p,clientName:row.name,clientEmail:row.email,clientPhone:row.phone,clientAddress:row.address}));close();}
+ function chooseCustomer(row:CatalogCustomer){
+  setDraft(p=>({...p,
+   clientCustomerId:row.id,
+   clientName:row.billingName?.trim()||row.name,
+   clientEmail:row.email,clientPhone:row.phone,
+   clientAddress:row.address||row.addressLine1||"",
+   clientType:row.customerType||"individual",clientTaxId:row.taxId||"",
+   clientCompanyRegistration:row.companyRegistration||"",
+   clientCity:row.city||"",clientState:row.state||"",
+   clientPostalCode:row.postalCode||"",clientCountry:row.country||""
+  }));
+  close();
+ }
  function chooseStaff(row:CatalogStaff){setSelectedStaff(row.name);close();}
  function close(){setPicker(null);setQuery("");setAdding(false);}
  function addCustomer(){
   if(!customer.name.trim())return;
-  const next:CatalogCustomer={...customer,id:String(customers.length+1)};
-  setCustomers(p=>[...p,next]);chooseCustomer(next);setCustomer({name:"",email:"",phone:"",address:"",company:""});
+  const next:CatalogCustomer={...customer,id:crypto.randomUUID(),
+    billingName:customer.customerType==="business"?(customer.company.trim()||customer.name):customer.name};
+  setCustomers(p=>[...p,next]);chooseCustomer(next);setCustomer({name:"",email:"",phone:"",address:"",company:"",customerType:"individual",taxId:"",country:"",city:"",state:""});
  }
  function addStaff(){
   if(!person.name.trim())return;
@@ -80,6 +93,29 @@ export function InvoiceMetadataSection({draft,setDraft}:Props){
    <button onClick={()=>setPicker("payment")} className="flex h-10 w-full items-center justify-between rounded-xl bg-gray-50 px-3 text-left text-sm"><span className="truncate">{payments.find(x=>x.value===paymentMode)?.label}</span><ChevronDown size={16}/></button>
   </div>
   <Field label="Customer address" value={draft.clientAddress} onChange={v=>update("clientAddress",v)}/>
+  <div className="sm:col-span-2 rounded-xl border border-[#E2EAF4] bg-[#F8FBFF] p-3">
+   <div className="flex flex-wrap items-center justify-between gap-2">
+    <h3 className="text-xs font-semibold text-[#19364F]">Customer billing details</h3>
+    <span className="text-[11px] text-slate-500">{draft.clientCustomerId?"From customer record · editable on this draft":"Choose a customer to fill available details"}</span>
+   </div>
+   <div className="mt-3 grid grid-cols-1 gap-3 sm:grid-cols-2">
+    <label className="flex flex-col gap-1 text-xs">Customer type
+     <select aria-label="Customer type" value={draft.clientType||"individual"} onChange={e=>update("clientType",e.target.value as "business"|"individual")} className={input}>
+      <option value="individual">Individual</option><option value="business">Business</option>
+     </select></label>
+    <label className="flex flex-col gap-1 text-xs">Customer Tax ID (if applicable)
+     <input aria-label="Customer Tax ID" value={draft.clientTaxId||""} onChange={e=>update("clientTaxId",e.target.value)} className={input}/></label>
+    <label className="flex flex-col gap-1 text-xs">City
+     <input aria-label="Customer city" value={draft.clientCity||""} onChange={e=>update("clientCity",e.target.value)} className={input}/></label>
+    <label className="flex flex-col gap-1 text-xs">State
+     <input aria-label="Customer state" value={draft.clientState||""} onChange={e=>update("clientState",e.target.value)} className={input}/></label>
+    <label className="flex flex-col gap-1 text-xs">Postal code
+     <input aria-label="Customer postal code" value={draft.clientPostalCode||""} onChange={e=>update("clientPostalCode",e.target.value)} className={input}/></label>
+    <label className="flex flex-col gap-1 text-xs">Country
+     <input aria-label="Customer country" value={draft.clientCountry||""} onChange={e=>update("clientCountry",e.target.value)} className={input}/></label>
+   </div>
+   <p className="mt-2 text-[11px] text-slate-500">Edits here affect this draft only. They do not overwrite the customer master. Tax identification is required only where applicable.</p>
+  </div>
   <Field label="Invoice sender" value={draft.senderName} onChange={v=>update("senderName",v)}/>
   {picker?<div className="fixed inset-0 z-[100] flex items-end justify-center bg-black/45 md:items-center md:p-4" onClick={close}>
     <section role="dialog" aria-modal="true" aria-label={"Select "+picker} onClick={e=>e.stopPropagation()} className="max-h-[88dvh] w-full max-w-lg overflow-y-auto rounded-t-2xl bg-white p-4 pb-8 shadow-2xl md:rounded-2xl md:p-6">
@@ -96,7 +132,10 @@ export function InvoiceMetadataSection({draft,setDraft}:Props){
          <span className="min-w-0 flex-1"><span className="block truncate text-sm font-semibold text-[#19364f]">{entry.name}</span><span className="block truncate text-xs text-gray-500">{picker==="customer"?(entry as CatalogCustomer).company:(entry as CatalogStaff).role} · {entry.email}</span></span>
         </button>)}</div></>:picker==="customer"?<>
         <label className="block text-xs">Customer name *<input value={customer.name} onChange={e=>setCustomer(p=>({...p,name:e.target.value}))} className={input}/></label>
-        {(["email","phone","company","address"] as const).map(key=><label key={key} className="block text-xs capitalize">{key}<input value={customer[key]} onChange={e=>setCustomer(p=>({...p,[key]:e.target.value}))} className={input}/></label>)}
+        <label className="block text-xs">Customer type
+          <select aria-label="New customer type" value={customer.customerType} onChange={e=>setCustomer(p=>({...p,customerType:e.target.value as "individual"|"business"}))} className={input}><option value="individual">Individual</option><option value="business">Business</option></select>
+        </label>
+        {(["email","phone","company","address","taxId","city","state","country"] as const).map(key=><label key={key} className="block text-xs capitalize">{key}<input value={customer[key]} onChange={e=>setCustomer(p=>({...p,[key]:e.target.value}))} className={input}/></label>)}
         <button disabled={!customer.name.trim()} onClick={addCustomer} className="w-full rounded-full bg-[#0064E0] py-3 text-sm text-white disabled:opacity-40">Add and select customer</button>
        </>:<>
         {(["name","email","phone","role"] as const).map(key=><label key={key} className="block text-xs capitalize">{key}<input value={person[key]} onChange={e=>setPerson(p=>({...p,[key]:e.target.value}))} className={input}/></label>)}
