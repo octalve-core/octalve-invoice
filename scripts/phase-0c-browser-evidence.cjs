@@ -46,7 +46,7 @@ async function qualifyNativePdf(page, output, view, template) {
   return { pdf: path.basename(pdfPath), raster: path.basename(rasterPrefix + ".png"), pdfPages: (info.match(/^Pages:\s*(\d+)/m) || [])[1], selectableText: "PASS", paperA4: "PASS" };
 }
 
-const routes = ["/onboarding", "/login", "/signup", "/verify-email", "/business-info", "/set-currency", "/dashboard", "/dashboard/getting-started", "/dashboard/invoice", "/dashboard/invoice/create", "/dashboard/invoice/1", "/dashboard/invoice/1/edit", "/dashboard/receipt", "/dashboard/receipt/1", "/dashboard/receipt/create", "/dashboard/quotation", "/dashboard/expenses", "/dashboard/customer", "/dashboard/items", "/dashboard/items/add", "/dashboard/items/1/edit", "/dashboard/staff", "/dashboard/staff/create", "/dashboard/staff/1/edit", "/dashboard/credit-note", "/dashboard/other-services", "/dashboard/finance/statement", "/dashboard/finance/approvals", "/dashboard/finance/receivables", "/dashboard/finance/adjustments", "/dashboard/finance/communications", "/dashboard/finance/reconciliation", "/dashboard/finance/audit", "/dashboard/finance/currencies", "/dashboard/recurring", "/dashboard/recurring-expense", "/dashboard/tax-centre", "/dashboard/insights-support", "/dashboard/other-services/pay-tax", "/dashboard/report", "/dashboard/notifications", "/dashboard/payment-received", "/dashboard/announcement", "/dashboard/updates", "/dashboard/invoice/3/record-payment", "/dashboard/settings", "/dashboard/settings/profile", "/dashboard/settings/invoice", "/dashboard/settings/business", "/dashboard/settings/subscription", "/dashboard/settings/theme", "/dashboard/settings/faqs", "/dashboard/settings/deleted"];
+const routes = ["/onboarding", "/login", "/signup", "/verify-email", "/business-info", "/set-currency", "/dashboard", "/dashboard/getting-started", "/dashboard/invoice", "/dashboard/invoice/create", "/dashboard/invoice/1", "/dashboard/invoice/1/edit", "/dashboard/receipt", "/dashboard/receipt/1", "/dashboard/receipt/create", "/dashboard/quotation", "/dashboard/quotation/1", "/dashboard/expenses", "/dashboard/customer", "/dashboard/items", "/dashboard/items/add", "/dashboard/items/1/edit", "/dashboard/staff", "/dashboard/staff/create", "/dashboard/staff/1/edit", "/dashboard/credit-note", "/dashboard/other-services", "/dashboard/finance/statement", "/dashboard/finance/approvals", "/dashboard/finance/receivables", "/dashboard/finance/adjustments", "/dashboard/finance/communications", "/dashboard/finance/reconciliation", "/dashboard/finance/audit", "/dashboard/finance/currencies", "/dashboard/recurring", "/dashboard/recurring-expense", "/dashboard/tax-centre", "/dashboard/insights-support", "/dashboard/other-services/pay-tax", "/dashboard/report", "/dashboard/notifications", "/dashboard/payment-received", "/dashboard/announcement", "/dashboard/updates", "/dashboard/invoice/3/record-payment", "/dashboard/settings", "/dashboard/settings/profile", "/dashboard/settings/invoice", "/dashboard/settings/business", "/dashboard/settings/subscription", "/dashboard/settings/theme", "/dashboard/settings/faqs", "/dashboard/settings/deleted"];
 const viewports = {
   desktop: { width: 1440, height: 900 },
   tablet: { width: 768, height: 1024 },
@@ -82,6 +82,28 @@ const origin = process.env.OCTALVE_BASE_URL || "http://127.0.0.1:3000";
             const width=await page.locator('article[role="link"]').first().evaluate(el=>el.getBoundingClientRect().width);
             if(width > viewport.width+1)throw new Error("Invoice mobile card exceeds viewport");
             record.mobileCard="PASS";
+          }
+          if(route==="/dashboard/invoice/1"){
+            await page.getByRole("heading",{name:"Invoice workflow"}).waitFor();
+            await page.getByRole("tab",{name:"Installments"}).click();
+            await page.getByRole("button",{name:"Review proposed split"}).click();
+            await page.getByText("No payment schedule was saved or communicated.",{exact:false}).waitFor();
+            await page.getByRole("tab",{name:"Communication"}).click();
+            await page.getByRole("button",{name:"Payment reminder"}).click();
+            const composeInvoice=page.getByRole("dialog",{name:"Draft invoice communication"});
+            await composeInvoice.waitFor();
+            await composeInvoice.getByRole("button",{name:"Review draft (not sent)"}).click();
+            await page.getByText("No email, SMS or reminder was sent or queued.",{exact:false}).waitFor();
+            record.installmentAndMailPreview="PASS";
+          }
+          if(route==="/dashboard/quotation/1"){
+            await page.getByRole("heading",{name:/Quotation /}).first().waitFor();
+            await page.getByRole("button",{name:"Preview conversion to invoice"}).click();
+            await page.getByText("No invoice was created.",{exact:false}).waitFor();
+            if(await page.getByRole("button",{name:/Pay now|Record payment/i}).count())throw Error("Quote must not request money");
+            await page.getByRole("button",{name:"Prepare email"}).click();
+            await page.getByRole("dialog",{name:"Preview quotation email"}).waitFor();
+            record.quotationNoPayment="PASS";
           }
           if(route==="/dashboard/receipt") { await page.getByText("OL-00001RP").first().waitFor({state:"attached"});record.typeRef="RP"; }
           if(route==="/dashboard/quotation") { await page.getByText("OL-00001QUO").first().waitFor({state:"attached"});record.typeRef="QUO"; }
