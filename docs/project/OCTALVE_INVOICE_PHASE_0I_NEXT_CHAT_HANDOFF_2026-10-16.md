@@ -66,7 +66,7 @@ You are CONTINUING the existing **Octalve Invoice** system. It is a sophisticate
 
 **Prior premium settings:** Me/settings, proposal subscriptions, FAQ including calculator assumptions, theme presets, Deleted Records 14-day review/confirmation with reason, rollback and restricted financial hiding. Preview only and not a production audit/deletion system. Real billing/entitlements disabled; proposed monthly tiers **Free ₦0/25 invoices**, Starter **₦3,600**, Growth **₦7,700**, Business **₦11,800**; monthly/quarterly/yearly sample selection; Paystack/Flutterwave illustrative selector. Final 7-free-vs-25-free or transaction-fee commercial policy unresolved.
 
-**Copy/UX security:** owner forbids exposing the term “sandbox” in customer UI. Source recursion checker `scripts/check-user-facing-language.cjs` is wired to CI; do not reintroduce it in app/components/src. Keep truthful user-readable “Preview” or “not yet connected” only where it prevents false money/delivery claims, not giant developer banners throughout.
+**Copy/UX security:** owner forbids development-environment jargon in customer UI. Source recursion checker `scripts/check-user-facing-language.cjs` is wired to CI; do not reintroduce it in app/components/src. Keep truthful user-readable “Preview” or “not yet connected” only where it prevents false money/delivery claims, not giant developer banners throughout.
 
 ## 7. NON-NEGOTIABLE money/payment/receipt semantics
 - An **invoice** records a request/claim (pending receivable), not proof of a payment. Its status tracks issued/partial/paid/overdue/void separately from fiscal status.
