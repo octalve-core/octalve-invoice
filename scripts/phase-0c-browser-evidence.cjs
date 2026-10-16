@@ -183,12 +183,20 @@ const origin = process.env.OCTALVE_BASE_URL || "http://127.0.0.1:3000";
             record.subscriptionExpiredLayout="PASS";
             record.subscriptionNoFakePurchase="PASS";
           }
-          if(route==="/dashboard/settings/theme"){
+          if(route==="/dashboard/settings/invoice"){
             await page.getByRole("heading",{name:"Customize your invoices"}).waitFor();
             await page.getByRole("button",{name:"Choose #0B8063"}).click();
-            await page.getByRole("button",{name:"Apply to current Preview"}).click();
-            await page.getByText("Appearance preferences are available",{exact:false}).waitFor();
-            record.liveThemePreference="PASS";
+            await page.getByTestId("theme-draft-watermark").getByText("DRAFT · NOT ISSUED").first().waitFor();
+            await page.getByText("Changes appear in this preview immediately",{exact:false}).waitFor();
+            await page.getByLabel("Default currency").selectOption("GBP");
+            if(!await page.getByText("£250,000").first().isVisible())throw Error("Combined invoice settings did not update appearance preview currency");
+            await page.getByRole("button",{name:/Classic Ledger/}).first().click();
+            record.consolidatedInvoiceTheme="PASS";
+          }
+          if(route==="/dashboard/settings/theme"){
+            await page.waitForURL("**/dashboard/settings/invoice");
+            await page.getByRole("heading",{name:"Customize your invoices"}).waitFor();
+            record.themeRedirectCanonical="PASS";
           }
           if(route==="/dashboard/settings/faqs"){
             await page.getByRole("heading",{name:"How can we help?"}).waitFor();

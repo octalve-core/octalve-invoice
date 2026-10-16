@@ -2,7 +2,7 @@ import Link from "next/link";
 import { CheckCircle2, ArrowRight, CircleDashed, ShieldCheck } from "lucide-react";
 const tasks = [
   {title:"Set up online payment",desc:"Connect your own merchant provider when secure integrations are available.",href:"/dashboard/settings",available:false},
-  {title:"Customize invoice template",desc:"Choose the approved Octalve modern invoice or Classic Ledger.",href:"/dashboard/settings/invoice",available:true},
+  {title:"Customize invoices",desc:"Choose your invoice template, colours and document preferences together.",href:"/dashboard/settings/invoice",available:true},
   {title:"Add business information",desc:"Edit your company details, branding and authorized signature.",href:"/dashboard/settings/business",available:true},
   {title:"Set up app lock",desc:"An additional convenience lock, never a replacement for account authentication.",href:"/dashboard/settings",available:false}
 ] as const;
