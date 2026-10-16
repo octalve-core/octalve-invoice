@@ -72,3 +72,23 @@ test("invoice settings use shared merchant state without invented default tax",(
  assert.doesNotMatch(settings,/3\.5%|autoEnableTax|Auto Enable Tax/);
  assert.match(provider,/invoicePreferences:InvoicePreferences/);
 });
+
+test("one canonical invoice customization page includes gallery, colours, preview, defaults and receipts",()=>{
+ const invoice=read("app/(dashboard)/dashboard/settings/invoice/page.tsx");
+ const theme=read("app/(dashboard)/dashboard/settings/theme/page.tsx");
+ const settings=read("app/(dashboard)/dashboard/settings/page.tsx");
+ assert.match(invoice,/<InvoiceTemplateGallery/);
+ assert.match(invoice,/Template & colours/);
+ assert.match(invoice,/Font & layout/);
+ assert.match(invoice,/Live appearance preview/);
+ assert.match(invoice,/New invoice defaults/);
+ assert.match(invoice,/Receipts & payment preferences/);
+ assert.match(invoice,/DRAFT · NOT ISSUED/);
+ assert.match(invoice,/setInvoiceAppearance/);
+ assert.match(invoice,/setInvoicePreferences/);
+ assert.match(invoice,/setReceiptAutoMode/);
+ assert.doesNotMatch(invoice,/Apply to current Preview/);
+ assert.match(theme,/redirect\("\/dashboard\/settings\/invoice"\)/);
+ assert.match(settings,/Customize Invoices/);
+ assert.doesNotMatch(settings,/Theme Settings/);
+});
