@@ -5,6 +5,7 @@ import {ArrowLeft,Search,SlidersHorizontal,ChevronRight,Download,X,ShieldCheck,L
 import {useMerchantPreview} from "@/src/features/merchant-preview/MerchantPreviewProvider";
 import {useAccessibleDialog} from "@/src/features/records/components/useAccessibleDialog";
 import {RecordMobileCard} from "@/src/features/records/components/RecordVisual";
+import {RecordDataTable} from "@/src/features/records/components/RecordDataTable";
 import FinanceActionSheet from "./FinanceActionSheet";
 import type {PreviewRecord,RecordKind} from "@/src/features/records/preview-records";
 import {getFinanceMetrics,getFinanceRows,financeDefinitions,formatMinor,type FinanceMode,type FinanceRow} from "./preview-data";
@@ -86,7 +87,13 @@ export default function FinanceWorkspace({mode}:{mode:FinanceMode}){
      const card:PreviewRecord={id:r.id,kind,reference:r.reference,title:r.title,date:r.date,status,amount:r.amountMinor==null?undefined:(r.amountMinor<0?"− ":"")+formatMinor(Math.abs(r.amountMinor)),dueDate:r.due};
      return <RecordMobileCard key={r.id} record={card} onSelect={()=>setSelected(r)} statusLabel={r.status} dateLabel={r.status==="payment"?"Received":"Event"}/>;
     })}</div>
-   <div className="hidden lg:block"><table className="w-full table-fixed text-left text-sm"><thead className="bg-[#F5F8FC] text-[11px] uppercase tracking-wide text-slate-500"><tr>{config.columns.map((h,i)=><th key={h} className={"break-words px-4 py-3 font-semibold "+(i===0?"w-[18%]":"")}>{h}</th>)}<th className="w-[52px] px-2 py-3"><span className="sr-only">Actions</span></th></tr></thead><tbody className="divide-y divide-slate-100">{filtered.map(r=><tr key={r.id} className="hover:bg-[#F7FAFF]">{rowCells(mode,r,balances.get(r.id)??null).map((value,i)=><td key={i} className={"break-words px-4 py-4 text-xs "+(i===0?"font-semibold text-[#0064E0]":"text-[#3B5068]")}>{value}</td>)}<td className="px-2"><button type="button" aria-label={"View "+r.reference} onClick={()=>setSelected(r)} className="rounded-lg p-2 text-[#0064E0] hover:bg-[#EAF3FF]"><ChevronRight size={17}/></button></td></tr>)}</tbody></table></div>
+   <div className="hidden lg:block">
+    <RecordDataTable label={config.title+" records"} headers={config.columns} rows={filtered.map(r=>({
+      id:r.id,
+      cells:rowCells(mode,r,balances.get(r.id)??null).map((value,i)=>({value,emphasis:i===0})),
+      action:{label:"View "+r.reference,onClick:()=>setSelected(r)}
+    }))}/>
+   </div>
    {!filtered.length?<div className="flex min-h-48 flex-col items-center justify-center px-5 py-10 text-center"><LockKeyhole size={30} className="text-slate-300"/><h3 className="mt-3 text-sm font-semibold text-[#193955]">No records match this view</h3><p className="mt-1 max-w-sm text-xs leading-5 text-slate-500">{all.length?"Try clearing the search and filters.":"This workflow has no authenticated activity. We will only display actual events when its backend is approved."}</p><button type="button" onClick={reset} className="mt-4 rounded-full border border-[#0064E0] px-4 py-2 text-xs font-semibold text-[#0064E0]">Clear filters</button></div>:null}
    <footer className="flex flex-wrap items-center justify-between gap-3 border-t border-slate-100 px-4 py-3 text-xs text-slate-500"><span>Read-only preview · {filtered.length} result(s)</span><span>Desktop table / mobile cards</span></footer>
   </section>
