@@ -21,8 +21,7 @@ export function MobileCollectionChart({data}:{data:MonthPoint[]}){
 }
 export function MobileStatusChart({data,issuedCount}:{data:StatusPoint[];issuedCount:number}){
  const total=data.reduce((sum,d)=>sum+d.count,0),circumference=2*Math.PI*74;
- let offset=0;
- const sections=data.map(d=>{const size=total>0?d.count/total*circumference:0;const start=offset;offset+=size;return {...d,start,size};});
+ const sections=data.map((d,i)=>({ ...d,start:total?data.slice(0,i).reduce((sum,previous)=>sum+previous.count,0)/total*circumference:0,size:total?d.count/total*circumference:0 }));
  return <div className="md:hidden">
   <div className="mx-auto relative h-[208px] w-[208px]">
    <svg role="img" aria-label={total+" sample invoices grouped by status"} viewBox="0 0 200 200" className="h-full w-full">
