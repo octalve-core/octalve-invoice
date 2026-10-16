@@ -6,6 +6,7 @@ import {previewInvoices} from "@/src/features/invoices/lib/preview-records";
 import {formatDocumentNumber} from "@/src/features/invoices/lib/document-number";
 import {useMerchantPreview} from "@/src/features/merchant-preview/MerchantPreviewProvider";
 import {useAccessibleDialog} from "@/src/features/records/components/useAccessibleDialog";
+import {RecordDataTable} from "@/src/features/records/components/RecordDataTable";
 type View="overview"|"invoices"|"calendar"|"nrs";
 const views:{value:View;label:string}[]=[{value:"overview",label:"Overview"},{value:"invoices",label:"Invoice tax review"},{value:"calendar",label:"Tax calendar"},{value:"nrs",label:"NRS e-invoices"}];
 const periods=["2024","2025","2026"] as const;
@@ -33,7 +34,18 @@ export default function TaxCentre(){
    </div>:null}
    {view==="invoices"?<div className="min-w-0 p-4 sm:p-5"><div className="mb-4 flex gap-2"><label className="relative min-w-0 flex-1"><Search size={16} className="absolute left-3 top-3 text-slate-400"/><input aria-label="Search tax invoices" value={query} onChange={e=>setQuery(e.target.value)} className="h-10 w-full rounded-xl border border-slate-200 pl-9 pr-3 text-sm" placeholder="Search invoice or customer"/></label><button aria-label="Tax classification filter" type="button" onClick={()=>setFilterOpen(true)} className="rounded-xl border border-slate-200 p-2.5 text-[#0064E0]"><SlidersHorizontal size={18}/></button></div>
     <div className="divide-y divide-slate-100 lg:hidden">{filtered.map(i=><button key={i.id} type="button" onClick={()=>setDetail(i.id)} className="flex w-full min-w-0 items-center gap-3 py-4 text-left"><span className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-blue-50 text-[#0064E0]"><FileText size={18}/></span><span className="min-w-0 flex-1"><strong className="block truncate text-sm text-[#193955]">{i.customer}</strong><span className="block text-xs text-slate-500">{reference(i.id)} · {i.date}</span><span className="mt-1 block text-[11px] text-amber-700">Classification required</span></span><ChevronRight className="shrink-0 text-slate-400" size={17}/></button>)}</div>
-    <div className="hidden lg:block"><table className="w-full table-fixed text-left text-xs"><thead className="bg-[#F5F8FC] text-slate-500"><tr>{["Reference","Customer","Amount","Classification","Review"].map(h=><th key={h} className="px-4 py-3 font-semibold">{h}</th>)}</tr></thead><tbody className="divide-y divide-slate-100">{filtered.map(i=><tr key={i.id}><td className="break-words px-4 py-4 font-semibold text-[#0064E0]">{reference(i.id)}</td><td className="break-words px-4 py-4">{i.customer}</td><td className="px-4 py-4">{i.amount}</td><td className="px-4 py-4 text-amber-700">Unclassified</td><td className="px-4 py-4"><button type="button" onClick={()=>setDetail(i.id)} className="font-semibold text-[#0064E0]">Details</button></td></tr>)}</tbody></table></div>
+    <div className="hidden lg:block">
+     <RecordDataTable label="Invoice classification review" headers={["Reference","Customer","Amount","Classification","Review"]} rows={filtered.map(invoice=>({
+      id:invoice.id,
+      cells:[
+       {value:reference(invoice.id),emphasis:true},
+       {value:invoice.customer},
+       {value:invoice.amount},
+       {value:"Unclassified",className:"text-amber-700"},
+       {value:<button type="button" onClick={()=>setDetail(invoice.id)} className="font-semibold text-[#0064E0] focus-visible:outline-2 focus-visible:outline-[#0064E0]">Details</button>}
+      ]
+     }))}/>
+    </div>
     {!filtered.length?<p className="py-12 text-center text-xs text-slate-500">No issued sample invoices match this reporting year and search.</p>:null}
    </div>:null}
    {view==="calendar"?<div className="grid gap-3 p-4 sm:grid-cols-2 sm:p-5">{[["VAT returns","Taxpayer-specific eligibility, period and due date require official verification."],["WHT obligations","Applicable rates and remittance deadlines depend on transaction and taxpayer context."],["NRS fiscalization","E-invoice mandate dates, taxpayer scope and accredited integration must be confirmed."],["Filing evidence","Future tax calendar stores acknowledgements, payment references, period and legal holds."]].map(([label,text])=><article key={label} className="rounded-xl border border-slate-100 p-4"><span className="text-xs font-semibold text-[#0064E0]">Unscheduled · verify eligibility</span><h3 className="mt-2 font-semibold text-[#173652]">{label}</h3><p className="mt-2 text-xs leading-6 text-slate-500">{text}</p></article>)}</div>:null}
