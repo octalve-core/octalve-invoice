@@ -97,3 +97,10 @@ Read the full handoff **before performing any substantive write**; it explains p
 - Owner screen review remains open; no real bank-name API, all-bank provider list, NRS, authenticated issuance, live payment, Neon or main merge.
 
 - **Independent post-merge PASS** at `99262ad1c582a01844a8d7d0ac038f161244811e`: https://github.com/octalve-core/octalve-invoice/actions/runs/38972017716 (build/tests), https://github.com/octalve-core/octalve-invoice/actions/runs/38972017653 (CodeQL), https://github.com/octalve-core/octalve-invoice/actions/runs/38972017741 (**browser 189/189+64/64**); artifact https://github.com/octalve-core/octalve-invoice/actions/runs/38972017741/artifacts/12077667518 . Vercel READY exact Review merge.
+
+
+## Phase 0I Batch L — dark fixed desktop sidebar (16 October 2026)
+- Source app `bf61137052c91f1ca5b8e6ea73dcc44a7bca6a0f`; Review-only PR #13 https://github.com/octalve-core/octalve-invoice/pull/13 merged at `bccbf572ed59f53122377682922ca767fee0e742`. Exact Vercel Review READY deployment `dpl_Fr5eTGxaSv5EbtfSHkPL7hauLdPf`; stable https://octalve-invoice-git-review-phase-0i-octalve-vault.vercel.app . `main` e01c915 unchanged; PR #2 draft.
+- Desktop nav `#000A16`, active `#0064E0`, original PNG wordmark legibly retained. Dashboard main scroll and sidebar nav scroll independently; sidebar/footer are anchored to viewport. Footer has subscription Review plans and preview Logout; no fabricated tier or live signout. Mobile five-item bottom navigation untouched.
+- Qualified exact application source: build/lint/types/tests 38977093693 PASS, CodeQL 38977093728 PASS, browser **189/189 +64/64** 38977089157 PASS, artifact 12079546947. Independent postmerge runs build 38977638147 PASS, CodeQL 38977638140 PASS, browser 38977638151 still completing on first record.
+- Full report `docs/project/PHASE_0I_BATCH_L_FIXED_DARK_DESKTOP_SIDEBAR_2026-10-16.md`. Owner screen acceptance outstanding. No new backend/fintech/subscription/NRS/production authority.
