@@ -72,12 +72,13 @@
   "previewDeploymentStatus": "Batch B READY; fully tested Batch C is awaiting one review/phase-0i merge and Vercel auto Preview. Do not mistake Batch B URL for Batch C until the new SHA is verified.",
   "phase0Merged": true,
   "productionDeployed": false,
-  "productionApprovedByOwner": false,
+  "productionApprovedByOwner": true,
   "productionDeploymentStatus": "BLOCKED_VERCEL_402_API_DEPLOYMENTS_FREE_PER_DAY",
   "lastApprovedBranchHead": "4e4647d6c3385bc947b3d1bb19911d26c6e55b7f",
   "lastVerifiedMergeCommit": "7c8b0c6a131418a0fe7a29db01ce3397fa248ea3",
   "phase0iBackendApproved": false,
   "phase0iProductionApproved": false,
   "backendApproved": false,
-  "lastQualifiedSourceHead": "a4ac4381573cc0e45bac13ad3ab975e0ff91ae17"
+  "lastQualifiedSourceHead": "a4ac4381573cc0e45bac13ad3ab975e0ff91ae17",
+  "productionApprovalScope": "Historical Phase 0H owner authorization for main merge only; NOT authorization for Phase 0I Batch C deployment or backend."
 }
