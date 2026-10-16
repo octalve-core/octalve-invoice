@@ -2,7 +2,7 @@
 import {useState,type ChangeEvent} from "react";
 import Image from "next/image";
 import Link from "next/link";
-import {ArrowLeft,ArrowRight,BadgeCheck,Building2,CheckCircle2,ChevronDown,CreditCard,FileText,Landmark,LockKeyhole,Paintbrush,ShieldCheck,Upload,WalletCards,Settings2} from "lucide-react";
+import {ArrowLeft,ArrowRight,BadgeCheck,Building2,CheckCircle2,CreditCard,FileText,Landmark,LockKeyhole,Paintbrush,ShieldCheck,Upload,WalletCards,Settings2} from "lucide-react";
 import {toast} from "sonner";
 import {useMerchantPreview,type MerchantPreviewSettings} from "@/src/features/merchant-preview/MerchantPreviewProvider";
 
@@ -25,8 +25,8 @@ function Field({title,value,onChange,placeholder,type="text",required=false}:{
  return <label className={label}>{title}{required?<span className="text-[#D74B55]"> *</span>:null}
  <input type={type} value={value} placeholder={placeholder} onChange={e=>onChange(e.target.value)} className={input}/></label>;
 }
-const next=(step:Step):Step=>({business:"appearance",appearance:"payments",payments:"services",services:"services"})[step];
-function checkedImage(file:File|undefined,kind:"logo"|"signature",onLoaded:(src:string)=>void){
+const next=(step:Step):Step=>({business:"appearance",appearance:"payments",payments:"services",services:"services"} as const)[step];
+function checkedImage(file:File|undefined,onLoaded:(src:string)=>void){
  if(!file)return;
  if(!["image/png","image/jpeg","image/webp"].includes(file.type)||file.size>2*1024*1024){
   toast.error("Choose a PNG, JPG or WEBP image under 2 MB.");return;
@@ -38,7 +38,7 @@ function checkedImage(file:File|undefined,kind:"logo"|"signature",onLoaded:(src:
 }
 
 export function MerchantSetupJourney({initialStep="business"}:{initialStep?:Step}){
- const {settings,setSettings,logoPreview,setLogoPreview,signaturePreview,setSignaturePreview,invoiceAppearance,invoicePreferences,paymentMode,setPaymentMode}=useMerchantPreview();
+ const {settings,setSettings,logoPreview,setLogoPreview,signaturePreview,setSignaturePreview,invoiceAppearance,invoicePreferences}=useMerchantPreview();
  const [step,setStep]=useState<Step>(initialStep);
  const [moreAddress,setMoreAddress]=useState(Boolean(settings.city||settings.postalCode));
  const patch=<K extends keyof MerchantPreviewSettings>(key:K,value:MerchantPreviewSettings[K])=>
@@ -47,7 +47,7 @@ export function MerchantSetupJourney({initialStep="business"}:{initialStep?:Step
    return {...prev,[key]:value,...(invalidate?{verifiedAccountName:"",bankVerification:undefined}:{})};
   });
  const setUpload=(event:ChangeEvent<HTMLInputElement>,kind:"logo"|"signature")=>
-  checkedImage(event.target.files?.[0],kind,kind==="logo"?setLogoPreview:setSignaturePreview);
+  checkedImage(event.target.files?.[0],kind==="logo"?setLogoPreview:setSignaturePreview);
  const active=steps.findIndex(x=>x.key===step);
  const select=(s:Step)=>{setStep(s);};
  const hasProfile=Boolean(settings.businessName.trim()&&settings.businessAddress.trim()&&settings.businessPhone.trim());
@@ -189,14 +189,14 @@ export function MerchantSetupJourney({initialStep="business"}:{initialStep?:Step
      <div className="flex items-center gap-3"><Settings2 className="text-[#0064E0]"/><h2 className="text-lg font-bold text-[#173652]">Your business tools</h2></div>
      <p className="mt-2 text-sm text-slate-600">Your core workspace remains available. Open the tools you need now; you can return to change your business details and preferences later.</p>
      <div className="mt-5 grid gap-3 sm:grid-cols-2">
-      {[
+      {([
        ["Invoices","/dashboard/invoice","Create and manage invoices",FileText],
        ["Quotations","/dashboard/quotation","Prepare estimates",FileText],
        ["Customers","/dashboard/customer","Keep billing contacts together",Building2],
        ["Expenses","/dashboard/expenses","Organize business spending",WalletCards],
        ["Recurring schedules","/dashboard/recurring-expense","Review repeating plans",CreditCard],
        ["Tax & NRS","/dashboard/tax-centre","Prepare fiscal information",ShieldCheck]
-      ].map(([name,href,desc,Icon])=><Link key={String(name)} href={String(href)} className="flex gap-3 rounded-xl border border-[#E3ECF5] p-4 hover:border-[#0064E0] hover:bg-[#F8FBFF]">
+      ] as const).map(([name,href,desc,Icon])=><Link key={String(name)} href={String(href)} className="flex gap-3 rounded-xl border border-[#E3ECF5] p-4 hover:border-[#0064E0] hover:bg-[#F8FBFF]">
        <Icon size={20} className="shrink-0 text-[#0064E0]"/><span><span className="block text-sm font-semibold text-[#173652]">{String(name)}</span><span className="mt-1 block text-xs text-slate-500">{String(desc)}</span></span>
       </Link>)}
      </div>
