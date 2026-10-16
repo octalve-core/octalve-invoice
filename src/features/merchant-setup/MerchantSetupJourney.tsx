@@ -176,13 +176,13 @@ export function MerchantSetupJourney({initialStep="business"}:{initialStep?:Step
         ["Monnify","Payment links and virtual accounts"],
         ["Paystack","Online checkout and transfer collections"],
         ["Flutterwave","Online checkout and links"],
-        ["Octalve Finance","Future integrated Octalve account"]
+        ["Future Octalve connection","Approved integrated account (planned)"]
        ].map(([name,desc])=><div key={name} className="rounded-xl border border-[#E3ECF5] bg-[#FCFDFF] p-4">
         <div className="flex items-center justify-between gap-2"><p className="text-sm font-semibold text-[#173652]">{name}</p><LockKeyhole size={15} className="text-slate-400"/></div>
         <p className="mt-1 text-xs text-slate-500">{desc}</p><p className="mt-3 text-[11px] font-semibold text-slate-500">Not connected</p>
        </div>)}
       </div>
-      <p className="mt-4 text-xs text-slate-500">Connections must be authorized for the specific business. Octalve Finance is a future option, not an active banking service.</p>
+      <p className="mt-4 text-xs text-slate-500">Connections must be authorized for the specific business. An Octalve payment connection is a future option, not an active banking service.</p>
      </section>
     </>:null}
     {step==="services"?<section className={panel}>
