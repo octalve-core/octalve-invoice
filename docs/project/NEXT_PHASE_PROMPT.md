@@ -1,15 +1,21 @@
-# OCTALVE INVOICE — NEXT CONTINUATION, STILL PHASE 0H
+# OCTALVE INVOICE — NEXT CHAT ENTRY POINT (CURRENT PHASE 0I)
+**Updated 16 October 2026.** This file replaces the stale Phase 0H next-step prompt. The old history remains available in the separate archived Phase 0H handoff, master implementation and decisions.
 
-Begin at [OCTALVE_INVOICE_NEW_CHAT_HANDOFF_2026-10-15.md](./OCTALVE_INVOICE_NEW_CHAT_HANDOFF_2026-10-15.md), then read `OCTALVE_INVOICE_MASTER_IMPLEMENTATION.md`, `DECISIONS.md`, `PAYMENT_AND_RECEIPT_PHASE0H.md`, `RELEASE_CHECKLIST.md`, `state.json` and full live GitHub branch. Preserve approved Finzefy visuals, Octalve branding, Sapphire Modern/Classic Ledger/Classic Receipt templates and all financial/source-of-truth rules. Do not ask the owner to repeat earlier approvals. The current authority is the newest explicit owner correction above all older docs.
+## REQUIRED FIRST READ — one authoritative, comprehensive handoff
+[OCTALVE_INVOICE_PHASE_0I_NEXT_CHAT_HANDOFF_2026-10-16.md](./OCTALVE_INVOICE_PHASE_0I_NEXT_CHAT_HANDOFF_2026-10-16.md)
 
-**Branch:** `phase/00-finzefy-authority-ui-bootstrap`; **PR:** #1 DRAFT, unmerged. **Phase 0 remains OPEN — no explicit owner approval.** Never merge to main, move to Phase 1, provision Neon, switch on auth or run financial processing without owner's approval.
+## One-paragraph instruction for the incoming assistant
+Continue the **EXISTING** `octalve-core/octalve-invoice` app, NOT the separate Sapphire Quest project. Keep the Finzefy-derived mobile/desktop look, Octalve blue brand, canonical shared tables/mobile cards, exact invoice/payment/receipt accounting and all OWASP and NRS authority boundaries. Read the Phase 0I handoff and linked source documents; fetch latest GitHub source branch, PRs, CI runs and Vercel Review. The owner has approved developing the remaining frontend but **has not approved Phase 1/backend**. Final invoice template appearance is **deferred at owner's request**, and the owner must supply the new dashboard logo. Finish specialist UI workflows and owner visual review without claiming Preview demos perform actual email/payment/tax/portal operations. Commit to `phase/0i-frontend-finance-workflows`, qualify the full CI/browser suite and publish only one reviewed batch to `review/phase-0i`. Never merge `main`, deploy Production, provision Neon or activate financial authority without a NEW explicit owner instruction.
 
-**Latest verified application CI:** at `666d61cf232b3cfa2457698e8904716cfa37d4a4`, Github browser run `38796782601` PASS 111/111 (37 routes at desktop/tablet/mobile). Actual browser PNG download test for both Modern/Classic Ledger PASS, and native A4 PDF downloads passed selectable text/geometry plus PDF-to-PNG raster capture. Phase qualification and CodeQL PASS at same SHA. SEE `RELEASE_CHECKLIST.md` for the limits of that evidence and exact CI links.
+## Verified latest baseline
+- Development branch last checked source SHA: `149e896b799f6cefdfee2cd4a6383109e95311f9`. Later handoff/documentation commits do not imply new tested application code; fetch the fresh head.
+- Review Batch D merge: `78122f0759a096cbd6fc88d57b3034dd121124f4`, READY at https://octalve-invoice-git-review-phase-0i-octalve-vault.vercel.app .
+- `main` SHA: `e01c9158616f65b4e08d5b36318b8d27aef3189b`, without Phase 0I. Phase 0I PR #2 remains draft.
+- Last pinned development source/build CodeQL/browser success at `149e896`:
+  - Phase qualification: https://github.com/octalve-core/octalve-invoice/actions/runs/38911766764
+  - CodeQL: https://github.com/octalve-core/octalve-invoice/actions/runs/38911767241
+  - Browser: **189/189** core plus **64/64** extra viewport checks: https://github.com/octalve-core/octalve-invoice/actions/runs/38911760840
+  - Evidence: https://github.com/octalve-core/octalve-invoice/actions/runs/38911760840/artifacts/12050338851
+- Passing smoke/route tests do not establish owner-approved final invoice goldens, live payment security, real NRS compliance or Production launch.
 
-New changes since earlier handoff: fixed draft row-ID collision after add/delete/add, rejected contradictory refund replay and unsafe totals, corrected desktop invoice prefix and active Octalve blue tabs; exposed original inherited browser PNG export adapter with Octalve filenames and preserved native PDF templates. No persistence or receipts are now live. Owner's twelve requested correction statuses, including remaining gaps, are in `PAYMENT_AND_RECEIPT_PHASE0H.md`.
-
-**Current Vercel Preview:** https://octalve-invoice-15k58ai9u-octalve-vault.vercel.app, deployment `dpl_5juwc6yMMn2CvdEHooF1JJcyDwgj`, reported `READY` for phase-branch SHA `37b476ff78a60d996d5d468a4e694eac2a710339`. The /dashboard/invoice/create route was independently fetched with HTTP 200. This includes the PNG-capable application code `666d61c`; later documentation-only commits may be ahead without modifying the application bundle. A manual deployment attempt had initially returned Vercel HTTP 402 daily quota, but a delayed automatic GitHub-connected deployment **succeeded**. Do not reuse the older 14b Preview link for review.
-
-**Still outstanding:** exact owner-reference pixel golden screenshots versus app for desktop/mobile, Modern and Classic Ledger exported browser PNG vs approved reference, PDF rendered page comparison, Classic Receipt browser/PNG/native PDF A5 landscape and signatures, correction of any owner-provided new UI notes, final Vercel commit-matched Preview READY verification, owner explicit Phase 0 acceptance. UI References central Library folder currently contains no reference files; do not fake pixel comparisons. A successful PDF text smoke test is not golden parity.
-
-**Next actions:** inspect the current branch and CI again, finish owner corrections and document golden regressions, check Vercel deployment matching the branch commit, update project control files accurately, present Preview for owner review. Do not jump ahead to backend.
+Read the full handoff **before performing any substantive write**; it explains precisely what is finished, preview-only, deferred, prohibited and next.
