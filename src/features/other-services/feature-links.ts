@@ -1,7 +1,7 @@
 export const otherServiceItems=[
  {slug:"overview",title:"Overview",icon:"chart-no-axes-column",href:"/dashboard",ready:true},
  {slug:"report",title:"Report",icon:"scale",href:"/dashboard/report",ready:true},
- {slug:"create-statement",title:"Create Statement",icon:"file-text",href:"/dashboard/other-services/create-statement",ready:false},
+ {slug:"create-statement",title:"Create Statement",icon:"file-text",href:"/dashboard/finance/statement",ready:true},
  {slug:"items",title:"Items",icon:"package",href:"/dashboard/items",ready:true},
  {slug:"customer",title:"Customer",icon:"users",href:"/dashboard/customer",ready:true},
  {slug:"recurring-income-expense",title:"Recurring income/expense",icon:"refresh-cw",href:"/dashboard/other-services/recurring-income-expense",ready:false},
@@ -10,5 +10,13 @@ export const otherServiceItems=[
  {slug:"business-card",title:"Business Card",icon:"contact",href:"/dashboard/other-services/business-card",ready:false},
  {slug:"investment",title:"Investment",icon:"trending-up",href:"/dashboard/other-services/investment",ready:false},
  {slug:"digital-pay",title:"Digital Pay",icon:"wallet",href:"/dashboard/other-services/digital-pay",ready:false},
+ {slug:"statement-of-account",title:"Statements of Account",icon:"book-open",href:"/dashboard/finance/statement",ready:true},
+ {slug:"approvals",title:"Approvals",icon:"shield-check",href:"/dashboard/finance/approvals",ready:true},
+ {slug:"receivables-ageing",title:"Receivables Ageing",icon:"clock-3",href:"/dashboard/finance/receivables",ready:true},
+ {slug:"credit-debit-notes",title:"Credit & Debit Notes",icon:"files",href:"/dashboard/finance/adjustments",ready:true},
+ {slug:"communication-history",title:"Communication History",icon:"messages-square",href:"/dashboard/finance/communications",ready:true},
+ {slug:"bank-reconciliation",title:"Bank Reconciliation",icon:"landmark",href:"/dashboard/finance/reconciliation",ready:true},
+ {slug:"audit-exceptions",title:"Audit & Exceptions",icon:"shield-alert",href:"/dashboard/finance/audit",ready:true},
+ {slug:"multi-currency",title:"Multi-currency",icon:"coins",href:"/dashboard/finance/currencies",ready:true},
  {slug:"id-card",title:"ID Card",icon:"id-card",href:"/dashboard/other-services/id-card",ready:false}
 ] as const;
