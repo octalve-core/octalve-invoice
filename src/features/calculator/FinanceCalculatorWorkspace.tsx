@@ -3,6 +3,7 @@ import {useMemo,useState} from "react";
 import Link from "next/link";
 import {ArrowLeft,Calculator,Check,ChevronRight,Copy,Download,Info,RotateCcw,Search,ShieldCheck,SlidersHorizontal,TrendingUp} from "lucide-react";
 import {calculateFinance,calculatorDefinitions,calculatorGroups,getCalculator,type CalculatorGroup,type Calculation,type Field} from "./engine";
+import {RecordDataTable} from "@/src/features/records/components/RecordDataTable";
 
 type Unit=Field["unit"];
 const format=(v:number,unit:Unit)=>{
@@ -71,7 +72,12 @@ export default function FinanceCalculatorWorkspace(){
     </div>
     {result?.rows.length?<section aria-label="Calculator projection schedule" className="min-w-0 overflow-hidden rounded-2xl border border-[#E9EFF6] bg-white shadow-sm"><div className="flex flex-wrap items-center justify-between gap-2 border-b border-[#EDF2F8] p-4 sm:p-5"><div><h2 className="text-base font-bold text-[#173652]">Your projection schedule</h2><p className="mt-1 text-xs text-[#92A2B5]">{result.rows.length} periods · values rounded for display</p></div><div className="flex gap-2"><button type="button" onClick={()=>setShowAll(x=>!x)} className="rounded-full border border-[#DCE7F5] px-4 py-2 text-xs font-semibold text-[#416481]">{showAll?"Show fewer":"Show all rows"}</button><button type="button" onClick={exportRows} className="inline-flex items-center gap-2 rounded-full border border-[#DCE7F5] px-4 py-2 text-xs font-semibold text-[#416481]"><Download size={15}/> Export CSV</button></div></div>
       <div className="divide-y divide-slate-100 lg:hidden">{result.rows.slice(0,showAll?undefined:6).map((row,i)=><article key={i} className="p-4"><div className="flex items-center justify-between gap-3"><strong className="text-xs text-[#0064E0]">{result.columns[0]} {row[0]}</strong><span className="text-xs font-bold text-[#193955]">{format(row[row.length-1],"NGN")}</span></div><dl className="mt-3 grid grid-cols-2 gap-2">{row.slice(1,-1).map((v,j)=><div key={j} className="rounded-lg bg-[#F6F8FB] p-2"><dt className="text-[10px] text-[#8A9BAF]">{result.columns[j+1]}</dt><dd className="mt-1 break-words text-xs tabular-nums text-[#34536F]">{format(v,"NGN")}</dd></div>)}</dl></article>)}</div>
-      <div className="hidden lg:block"><table className="w-full table-fixed text-left text-xs"><thead className="bg-[#F4F8FC] text-[#6E839B]"><tr>{result.columns.map(c=><th key={c} className="px-4 py-3 font-semibold">{c}</th>)}</tr></thead><tbody className="divide-y divide-slate-100">{result.rows.slice(0,showAll?undefined:6).map((row,i)=><tr key={i} className="hover:bg-[#F9FBFE]">{row.map((v,j)=><td key={j} className="break-words px-4 py-3 tabular-nums text-[#31516E]">{j===0?v:format(v,"NGN")}</td>)}</tr>)}</tbody></table></div>
+      <div className="hidden lg:block">
+       <RecordDataTable label="Finance calculator projection schedule" headers={result.columns} rows={result.rows.slice(0,showAll?undefined:6).map((row,i)=>({
+        id:String(i)+"-"+active,
+        cells:row.map((value,j)=>({value:j===0?value:format(value,"NGN"),emphasis:j===0,className:"tabular-nums"}))
+       }))}/>
+      </div>
      </section>:null}
     {notification?<p role="status" className="flex items-center gap-2 rounded-xl border border-[#DDEAF9] bg-[#F1F8FF] p-3 text-xs text-[#285783]"><Check size={16}/>{notification}</p>:null}
    </div>
