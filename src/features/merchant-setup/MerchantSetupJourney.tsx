@@ -154,24 +154,26 @@ export function MerchantSetupJourney({initialStep="business"}:{initialStep?:Step
       <h2 className="flex items-center gap-2 text-lg font-bold text-[#173652]"><Landmark className="text-[#0064E0]"/> How do you want to receive payments?</h2>
       <p className="mt-2 text-sm text-slate-600">Set up bank transfers or explore collection partners.</p>
       <div className="mt-5 space-y-3">
-       <div className="rounded-xl border-2 border-[#0064E0] bg-[#F3F8FF] p-4">
-        <div className="flex items-center gap-3"><CreditCard size={19} className="text-[#0064E0]"/><p className="text-sm font-semibold text-[#173652]">Company bank transfer</p><span className="ml-auto rounded-full bg-blue-100 px-2 py-1 text-[10px] font-semibold text-blue-800">Manual review</span></div>
-        <p className="mt-2 text-xs leading-5 text-slate-600">Customers pay your business account directly. You may later record an eligible bank-transfer payment with supporting evidence and appropriate approval.</p>
+       <div className="flex flex-wrap items-center gap-2 rounded-xl border border-[#D7E5F8] bg-[#F2F7FE] px-3 py-3">
+        <CreditCard size={18} className="text-[#0064E0]"/><p className="flex-1 text-sm font-semibold text-[#173652]">Company bank transfer</p>
+        <span className="rounded-full bg-[#E2EDFF] px-2.5 py-1 text-[10px] font-semibold text-[#0052B8]">Manual</span>
+        <SetupInfoNote title="Manual bank transfer" detail="Customers pay your verified company account. Authorized staff may record a bank transfer only after checking evidence and completing approval."/>
        </div>
        <div className="grid gap-3 sm:grid-cols-2">
         <NigerianBankPicker value={settings.bankName} onChange={name=>patch("bankName",name)}/>
         <Field title="Account number" value={settings.accountNumber} onChange={v=>patch("accountNumber",v.replace(/[^0-9]/g,"").slice(0,10))} placeholder="10-digit NUBAN"/>
        </div>
        {settings.accountNumber&&!bankFormat?<p role="alert" className="text-xs text-amber-700">Enter a 10-digit account number.</p>:null}
-       <div className="rounded-xl border border-amber-200 bg-amber-50 px-4 py-3" role="status">
-        <p className="text-xs font-semibold text-amber-900">Account not verified</p>
-        <p className="mt-1 text-xs leading-5 text-amber-800">Bank-account name enquiry is not connected yet. The complete searchable Nigerian bank directory and verified account-holder name will appear here once secure verification is enabled. Account instructions will not appear on issued documents before verification.</p>
+       <div className="flex items-center gap-3 rounded-xl border border-amber-200 bg-[#FFFAEF] px-3 py-2.5" role="status">
+        <LockKeyhole className="shrink-0 text-amber-700" size={17}/>
+        <p className="flex-1 text-xs font-semibold text-amber-900">Account not verified</p>
+        <SetupInfoNote title="Account verification" detail="A ten-digit number alone does not confirm ownership. An approved bank-name enquiry must verify the bank and return the account holder's name before real payment instructions can be shown. Never enter a PIN, OTP or bank password."/>
        </div>
-       <p className="text-xs text-slate-500">Do not enter your ATM PIN, OTP or banking password. A bank and 10-digit number alone do not confirm account ownership.</p>
       </div>
      </section>
      <section className={panel}>
-      <h2 className="flex items-center gap-2 text-lg font-bold text-[#173652]"><WalletCards className="text-[#0064E0]"/> Online payment connections</h2>
+      <h2 className="flex items-center gap-2 text-lg font-bold text-[#173652]"><WalletCards className="text-[#0064E0]"/> Online payment connections
+       <SetupInfoNote title="Online payments" detail="A linked provider can later create a payment link or an invoice-specific account. It may differ from the merchant's settlement account. Only verified provider events can update invoices and reconciliation."/></h2>
       <p className="mt-2 text-sm text-slate-600">Choose a partner for online collections.</p>
       <div className="mt-4 grid gap-3 sm:grid-cols-2">
        {[
@@ -222,10 +224,10 @@ export function MerchantSetupJourney({initialStep="business"}:{initialStep?:Step
       <div className="flex gap-3 text-xs text-[#314761]"><LockKeyhole size={17} className="shrink-0 text-slate-500"/><span>Online payments: not connected</span></div>
      </div>
     </section>
-    <section className="rounded-2xl border border-[#E0EAF5] bg-white p-5">
-     <h3 className="flex items-center gap-2 text-sm font-semibold text-[#183652]"><ShieldCheck size={17} className="text-[#0064E0]"/> Before your first invoice</h3>
-     <p className="mt-2 text-xs leading-5 text-slate-600">Review the correct business identity and payment details. Invoice drafts are not issued documents, and bank accounts or payment providers must be verified before real payment instructions are used.</p>
-     {step==="payments"?<p className="mt-3 text-xs leading-5 text-slate-600">A dynamic collection account is not automatically your company&apos;s permanent settlement account. Reconciliation links the provider&apos;s verified payment reference to the invoice.</p>:null}
+    <section className="flex items-center gap-3 rounded-[22px] border border-[#E0EAF5] bg-white p-4 shadow-[0_10px_28px_rgba(20,59,106,.065)]">
+     <ShieldCheck size={18} className="shrink-0 text-[#0064E0]"/>
+     <p className="flex-1 text-xs font-semibold text-[#183652]">Safe setup</p>
+     <SetupInfoNote title="Before your first invoice" detail="Confirm your business identity and payment details. Invoice drafts are not issued documents. Real bank instructions require verification; a dynamic collection account can differ from your settlement account."/>
     </section>
    </aside>
   </div>
