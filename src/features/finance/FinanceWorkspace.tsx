@@ -3,6 +3,7 @@ import {useMemo,useState} from "react";
 import Link from "next/link";
 import {ArrowLeft,Search,SlidersHorizontal,ChevronRight,Download,X,ShieldCheck,LockKeyhole,CalendarDays,RotateCcw,FileText} from "lucide-react";
 import {useMerchantPreview} from "@/src/features/merchant-preview/MerchantPreviewProvider";
+import {useAccessibleDialog} from "@/src/features/records/components/useAccessibleDialog";
 import {getFinanceMetrics,getFinanceRows,financeDefinitions,formatMinor,type FinanceMode,type FinanceRow} from "./preview-data";
 
 const iso=(value:string)=>{const [d,m,y]=value.split("/");return d&&m&&y?y+"-"+m.padStart(2,"0")+"-"+d.padStart(2,"0"):"";};
@@ -29,6 +30,7 @@ export default function FinanceWorkspace({mode}:{mode:FinanceMode}){
  const [from,setFrom]=useState(""),[to,setTo]=useState(""),[draft,setDraft]=useState({from:"",to:"",customer:"all",status:"all"});
  const [filterOpen,setFilterOpen]=useState(false),[selected,setSelected]=useState<FinanceRow|null>(null);
  const [compose,setCompose]=useState(false),[subject,setSubject]=useState("Invoice follow-up"),[message,setMessage]=useState(""),[notice,setNotice]=useState("");
+ useAccessibleDialog(Boolean(filterOpen||selected||compose),()=>{setFilterOpen(false);setSelected(null);setCompose(false);});
  const all=useMemo(()=>getFinanceRows(mode,merchant),[mode,merchant]);
  const customers=useMemo(()=>[...new Set(all.map(r=>r.customer).filter((x):x is string=>Boolean(x)))].sort(),[all]);
  const filtered=useMemo(()=>all.filter(r=>{
