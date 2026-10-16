@@ -71,6 +71,21 @@ const origin = process.env.OCTALVE_BASE_URL || "http://127.0.0.1:3000";
           await page.waitForTimeout(350);
           if (viewport.width < 768) { const overflow = await page.evaluate(() => document.documentElement.scrollWidth > window.innerWidth + 2); if (overflow) throw new Error("Unexpected page-level horizontal overflow"); }
           if (record.statusCode !== 200) throw new Error("Non-200 status: " + record.statusCode);
+          if(route==="/login"||route==="/signup"){
+            const count=await page.locator("form").count();
+            if(count!==1)throw Error("Authentication must have exactly one form, got "+count);
+            await page.getByRole("textbox",{name:"Email address"}).fill("review@example.com");
+            await page.locator("#octalve-password").fill("LongRandomPassword123!");
+            if(route==="/signup"){
+              await page.getByRole("textbox",{name:"First name"}).fill("Example");
+              await page.getByRole("textbox",{name:"Last name"}).fill("Merchant");
+              await page.getByRole("textbox",{name:"Phone number"}).fill("08012345678");
+            }
+            await page.locator('form button[type="submit"]').click();
+            await page.getByText("Account access will be available after secure sign-in is connected.").waitFor();
+            if(new URL(page.url()).pathname!==route)throw Error("Unverified auth navigated to a session");
+            record.authSingleFormNoFakeLogin="PASS";
+          }
           if (route === "/dashboard" && view === "mobile") {
             const chart = page.getByRole("img",{name:/Monthly receivables comparison/});
             await chart.waitFor({state:"visible"});
