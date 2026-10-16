@@ -5,6 +5,7 @@ import {ArrowLeft,Search,SlidersHorizontal,ChevronRight,Download,X,ShieldCheck,L
 import {useMerchantPreview} from "@/src/features/merchant-preview/MerchantPreviewProvider";
 import {useAccessibleDialog} from "@/src/features/records/components/useAccessibleDialog";
 import {RecordMobileCard} from "@/src/features/records/components/RecordVisual";
+import FinanceActionSheet from "./FinanceActionSheet";
 import type {PreviewRecord,RecordKind} from "@/src/features/records/preview-records";
 import {getFinanceMetrics,getFinanceRows,financeDefinitions,formatMinor,type FinanceMode,type FinanceRow} from "./preview-data";
 
@@ -31,10 +32,12 @@ export default function FinanceWorkspace({mode}:{mode:FinanceMode}){
  const [query,setQuery]=useState(""),[status,setStatus]=useState("all"),[customer,setCustomer]=useState("all");
  const [from,setFrom]=useState(""),[to,setTo]=useState(""),[draft,setDraft]=useState({from:"",to:"",customer:"all",status:"all"});
  const [filterOpen,setFilterOpen]=useState(false),[selected,setSelected]=useState<FinanceRow|null>(null);
+ const [actionOpen,setActionOpen]=useState(false);
  const [compose,setCompose]=useState(false),[subject,setSubject]=useState("Invoice follow-up"),[message,setMessage]=useState(""),[notice,setNotice]=useState("");
- useAccessibleDialog(Boolean(filterOpen||selected||compose),()=>{setFilterOpen(false);setSelected(null);setCompose(false);});
+ useAccessibleDialog(Boolean(filterOpen||selected||compose||actionOpen),()=>{setFilterOpen(false);setSelected(null);setCompose(false);setActionOpen(false);});
  const all=useMemo(()=>getFinanceRows(mode,merchant),[mode,merchant]);
  const customers=useMemo(()=>[...new Set(all.map(r=>r.customer).filter((x):x is string=>Boolean(x)))].sort(),[all]);
+ const invoiceRefs=useMemo(()=>getFinanceRows("statement",merchant).filter(r=>r.status==="invoice").map(r=>r.reference),[merchant]);
  const filtered=useMemo(()=>all.filter(r=>{
   if(!isSelected(mode,r.status))return false;
   if(status!=="all"&&r.status!==status)return false;
@@ -53,7 +56,7 @@ export default function FinanceWorkspace({mode}:{mode:FinanceMode}){
   return map;
  },[mode,customer,all]);
  const metrics=getFinanceMetrics(mode,all);
- const previewAction=()=>mode==="communications"?setCompose(true):setNotice(config.primaryAction+" requires authenticated merchant data, owner permissions and a secure backend. No record or payment was changed.");
+ const previewAction=()=>mode==="communications"?setCompose(true):setActionOpen(true);
  const reset=()=>{setQuery("");setStatus("all");setCustomer("all");setFrom("");setTo("");};
  return <main className="min-w-0 space-y-5 pb-12">
   <header className="flex flex-wrap items-start justify-between gap-3">
@@ -88,6 +91,7 @@ export default function FinanceWorkspace({mode}:{mode:FinanceMode}){
    <footer className="flex flex-wrap items-center justify-between gap-3 border-t border-slate-100 px-4 py-3 text-xs text-slate-500"><span>Read-only preview · {filtered.length} result(s)</span><span>Desktop table / mobile cards</span></footer>
   </section>
   {notice?<p role="status" className="rounded-xl border border-blue-100 bg-blue-50 p-4 text-xs leading-6 text-[#245078]">{notice}</p>:null}
+  {actionOpen&&mode!=="communications"?<FinanceActionSheet mode={mode} customers={customers} invoices={invoiceRefs} onClose={()=>setActionOpen(false)}/>:null}
   {filterOpen?<div className="fixed inset-0 z-[130] flex items-end justify-center bg-[#031C32]/60 lg:items-center lg:p-4" onMouseDown={e=>{if(e.target===e.currentTarget)setFilterOpen(false);}}><section role="dialog" aria-modal="true" aria-label="Finance filters" className="max-h-[90dvh] w-full max-w-md overflow-auto rounded-t-[28px] bg-white p-5 pb-[max(1.5rem,env(safe-area-inset-bottom))] shadow-2xl lg:rounded-2xl">
    <div className="mx-auto mb-3 h-1 w-11 rounded-full bg-slate-200 lg:hidden"/><header className="flex items-center justify-between"><h2 className="text-lg font-semibold text-[#173652]">Filter records</h2><button type="button" aria-label="Close filters" onClick={()=>setFilterOpen(false)}><X size={19}/></button></header>
    <div className="mt-5 grid grid-cols-2 gap-3"><label className="text-xs text-slate-600">From<input type="date" aria-label="From finance date" value={draft.from} onChange={e=>setDraft(d=>({...d,from:e.target.value}))} className="mt-2 w-full min-w-0 rounded-xl border border-slate-200 p-2"/></label><label className="text-xs text-slate-600">To<input type="date" aria-label="To finance date" value={draft.to} onChange={e=>setDraft(d=>({...d,to:e.target.value}))} className="mt-2 w-full min-w-0 rounded-xl border border-slate-200 p-2"/></label></div>
