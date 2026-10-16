@@ -3,6 +3,8 @@ import {useMemo,useState} from "react";
 import Link from "next/link";
 import {ArrowLeft,CalendarClock,Search,SlidersHorizontal,Plus,X,ChevronRight,ShieldCheck,PauseCircle} from "lucide-react";
 import {useAccessibleDialog} from "@/src/features/records/components/useAccessibleDialog";
+import {RecordMobileCard} from "@/src/features/records/components/RecordVisual";
+import type {PreviewRecord} from "@/src/features/records/preview-records";
 type Kind="income"|"expense";
 type Cadence="weekly"|"monthly"|"quarterly"|"yearly";
 type Example={id:string,kind:Kind,name:string,party:string,amount:string,cadence:Cadence,next:string};
@@ -39,7 +41,10 @@ export default function RecurringWorkspace(){
     <div className="flex rounded-full bg-[#F1F5F9] p-1">{(["income","expense"] as const).map(t=><button type="button" key={t} aria-pressed={kind===t} onClick={()=>setKind(t)} className={"flex-1 rounded-full px-3 py-2 text-sm font-semibold "+(kind===t?"bg-[#0064E0] text-white":"text-[#597087]")}>{t==="income"?"Recurring invoices":"Recurring expenses"}</button>)}</div>
     <div className="flex items-center gap-2"><label className="relative min-w-0 flex-1"><Search size={17} className="absolute left-3 top-3 text-slate-400"/><input aria-label="Search recurring records" value={search} onChange={e=>setSearch(e.target.value)} placeholder="Search recurring rules" className="h-11 w-full rounded-xl border border-slate-200 pl-9 pr-3 text-sm"/></label><button type="button" aria-label="Filter recurring records" onClick={()=>setFilterOpen(true)} className="grid h-11 w-11 shrink-0 place-items-center rounded-xl border border-slate-200 text-[#315A7E]"><SlidersHorizontal size={17}/></button></div>
    </header>
-   <div className="divide-y divide-slate-100 lg:hidden">{rows.map(r=><button type="button" key={r.id} onClick={()=>setSelected(r)} className="flex w-full min-w-0 items-center gap-3 p-4 text-left hover:bg-[#F7FAFF]"><span className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-blue-50 text-[#0064E0]"><CalendarClock size={19}/></span><span className="min-w-0 flex-1"><strong className="block truncate text-sm text-[#183955]">{r.name}</strong><span className="mt-1 block truncate text-xs text-slate-500">{r.party}</span><span className="mt-1 text-[11px] capitalize text-[#0064E0]">{r.cadence} · next example {r.next}</span></span><span className="shrink-0 text-right"><strong className="block text-sm text-[#193955]">{r.amount}</strong><ChevronRight className="ml-auto mt-1 text-slate-400" size={17}/></span></button>)}</div>
+   <div className="space-y-2 p-3 lg:hidden">{rows.map(r=>{
+    const record:PreviewRecord={id:r.id,kind:r.kind==="income"?"invoice":"expense",reference:r.id,title:r.name,amount:r.amount,date:r.next,status:"open",category:r.party,dueDate:r.next};
+    return <RecordMobileCard key={r.id} record={record} onSelect={()=>setSelected(r)} statusLabel={r.cadence+" · example"} dateLabel="Next"/>;
+   })}</div>
    <div className="hidden lg:block"><table className="w-full table-fixed text-left text-sm"><thead className="bg-[#F5F8FC] text-xs text-slate-500"><tr>{["Reference","Name / counterparty","Amount","Frequency","Next example",""].map(x=><th key={x} className="px-4 py-3 font-semibold">{x}</th>)}</tr></thead><tbody className="divide-y divide-slate-100">{rows.map(r=><tr key={r.id} className="hover:bg-blue-50/40"><td className="break-words px-4 py-4 text-xs font-semibold text-[#0064E0]">{r.id}</td><td className="px-4 py-4"><p className="text-xs font-semibold text-[#183955]">{r.name}</p><p className="text-xs text-slate-500">{r.party}</p></td><td className="px-4 py-4 text-xs">{r.amount}</td><td className="px-4 py-4 text-xs capitalize">{r.cadence}</td><td className="px-4 py-4 text-xs">{r.next}</td><td className="px-4 py-4"><button type="button" aria-label={"Review "+r.id} onClick={()=>setSelected(r)} className="text-[#0064E0]"><ChevronRight size={17}/></button></td></tr>)}</tbody></table></div>
    {!rows.length?<p className="px-6 py-10 text-center text-sm text-slate-500">No matching patterns. Clear search or adjust frequency.</p>:null}
   </section>
