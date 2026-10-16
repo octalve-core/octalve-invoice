@@ -4,7 +4,7 @@ export const otherServiceItems=[
  {slug:"create-statement",title:"Create Statement",icon:"file-text",href:"/dashboard/finance/statement",ready:true},
  {slug:"items",title:"Items",icon:"package",href:"/dashboard/items",ready:true},
  {slug:"customer",title:"Customer",icon:"users",href:"/dashboard/customer",ready:true},
- {slug:"recurring-income-expense",title:"Recurring income/expense",icon:"refresh-cw",href:"/dashboard/other-services/recurring-income-expense",ready:false},
+ {slug:"recurring-income-expense",title:"Recurring income/expense",icon:"refresh-cw",href:"/dashboard/recurring",ready:true},
  {slug:"pay-tax",title:"Pay Tax",icon:"receipt-text",href:"/dashboard/other-services/pay-tax",ready:false},
  {slug:"finance-calculator",title:"Finance Calculator",icon:"calculator",href:"/dashboard/other-services/finance-calculator",ready:false},
  {slug:"business-card",title:"Business Card",icon:"contact",href:"/dashboard/other-services/business-card",ready:false},
