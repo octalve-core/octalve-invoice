@@ -31,7 +31,7 @@ Owner and Octalve built BOTH Finzefy and this product. This is completion/refine
 - Owner logo assets in repo: `public/branding/octalve-invoice-icon.png` and `public/branding/octalve-wordmark.png`. No invented/AI-regenerated branding. User avatar displays initials or uploaded user photo, NOT Octalve app icon. Merchant invoice logo falls back to merchant initials inside a circle if unset. Merchant identity/payment details originate from Business/Payment Settings, not hardcoded Sapphire company data.
 - Finzefy-style onboarding: signup, login, email OTP, password recovery, business information/logo/signature, currency, Getting Started checklist. Business profile and primary currency may be skipped, then completed and edited. The REAL backend must persist and safely rehydrate; UI state today is in-memory and not authentication.
 - “Other Services”: four across on desktop, three across on mobile, reduced icon sizing/gaps, accessible links; unavailable destinations show Coming Soon + Back to Overview, never 404.
-- Remove repeated engineering terms (sandbox, webhook, tenant, migration, database state) and repetitive Preview warnings FROM CUSTOMER UI. Preserve one honest disclosure or disabled/guarded state where otherwise a user would wrongly believe that an auth/payment/email/receipt/financial action succeeded. Never fake success to make UI cleaner.
+- Remove repeated engineering terms (test-environment terms, webhook, tenant, migration, database state) and repetitive Preview warnings FROM CUSTOMER UI. Preserve one honest disclosure or disabled/guarded state where otherwise a user would wrongly believe that an auth/payment/email/receipt/financial action succeeded. Never fake success to make UI cleaner.
 
 ## C. PINNED SOURCES — DO NOT MERGE HISTORIES
 - Target: https://github.com/octalve-core/octalve-invoice ; clean independent Git history, isolated Vercel project, future isolated Neon.
@@ -103,7 +103,7 @@ Phase 0H owner's 12 requested UI fixes — VERIFIED SOURCE PRESENCE, not visual 
 7. Reports: PRESENT with preview ledger; NO server-grade revenue reports yet.
 8. Edit Profile routing: PRESENT, temporary session state only.
 9. Other Services icon sizing/colours: PRESENT; owner visual confirmation pending.
-10. Excess “sandbox/preview” text: reduced; keep one truthful disclosure for disabled financial actions.
+10. Excess “development-preview” text: reduced; keep one truthful disclosure for disabled financial actions.
 11. Announcements/Recent Updates: PRESENT; owner still to approve premium design.
 12. Notification UI: PRESENT with categories, read/unread and links; no real events/outbox.
 Additional known: receipt creation allows later selection of PAID invoice or separate payment-preview branch; merchant receipt auto policy Off / Generate / Generate+Email is UI only.
