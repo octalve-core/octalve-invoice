@@ -334,6 +334,9 @@ const origin = process.env.OCTALVE_BASE_URL || "http://127.0.0.1:3000";
             await taxDialog.getByRole("button",{name:"Close tax review"}).click();
             await page.getByRole("button",{name:"NRS e-invoices"}).click();
             await page.getByText("No official NRS e-invoices submitted").waitFor();
+            await page.getByRole("region",{name:"NRS connection readiness"}).getByText("Not connected").waitFor();
+            if(await page.getByRole("region",{name:"NRS connection readiness"}).getByText("Not provided",{exact:true}).count()<1)throw Error("NRS readiness needs business identifiers");
+            record.nrsReadinessOnly="PASS";
             record.taxNoFalseLiability="PASS";
           }
           if(route==="/portal"){
@@ -374,9 +377,16 @@ const origin = process.env.OCTALVE_BASE_URL || "http://127.0.0.1:3000";
             await page.locator('section[aria-label="Invoice details"]').getByRole("button",{name:"Sample Customer"}).click();
             await page.getByRole("dialog",{name:"Select customer"}).getByRole("button",{name:/Add new customer/}).click();
             await page.getByRole("dialog",{name:"Select customer"}).getByLabel("Customer name *").fill("Golden Preview Customer");
+            await page.getByRole("dialog",{name:"Select customer"}).getByLabel("taxId",{exact:true}).fill("DEMO-TAX-ID");
+            await page.getByRole("dialog",{name:"Select customer"}).getByLabel("city",{exact:true}).fill("Akure");
+            await page.getByRole("dialog",{name:"Select customer"}).getByLabel("country",{exact:true}).fill("Nigeria");
             await page.getByRole("button",{name:"Add and select customer"}).click();
             await page.locator('#invoice-document').getByRole("textbox",{name:"Customer name"}).waitFor();
               if(await page.locator('#invoice-document').getByRole("textbox",{name:"Customer name"}).inputValue()!=="Golden Preview Customer")throw new Error("Customer picker did not update the selected-template document");
+            if(await page.getByRole("textbox",{name:"Customer Tax ID"}).inputValue()!=="DEMO-TAX-ID")throw Error("Selected customer Tax ID did not populate");
+            if(await page.getByRole("textbox",{name:"Customer city"}).inputValue()!=="Akure")throw Error("Customer billing city did not populate");
+            if(await page.getByRole("textbox",{name:"Customer country"}).inputValue()!=="Nigeria")throw Error("Customer billing country did not populate");
+            record.customerBillingAutoFill="PASS";
             await page.locator('#invoice-document').waitFor();
             await page.locator('#invoice-document').getByText("Octalve Limited").waitFor();
             if(await page.locator('#invoice-document').getByText("Sapphire Quest").count()) throw new Error("Legacy merchant branding remains");
