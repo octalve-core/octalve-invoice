@@ -13,6 +13,14 @@ export const defaultPreviewUser:PreviewUser={
 };
 export type PaymentMode="manual"|"monnify"|"flutterwave"|"paystack";
 export type ReceiptAutoMode="off"|"generate"|"generate_and_email";
+export type DueDatePreference="1week"|"2weeks"|"1month"|"custom";
+export type InvoicePreferences={
+ currency:"NGN"|"USD"|"GBP"|"EUR";preferredDueDate:DueDatePreference;
+ showPaymentHistory:boolean;enableAutoReminder:boolean;
+};
+export const defaultInvoicePreferences:InvoicePreferences={
+ currency:"NGN",preferredDueDate:"1week",showPaymentHistory:true,enableAutoReminder:false
+};
 export type InvoiceAppearance = {
  template:"modern"|"ledger"; accent:string; font:"system"|"serif"|"rounded";
  density:"comfortable"|"compact"; header:"standard"|"minimal";
@@ -49,6 +57,7 @@ type ContextValue={
  items:CatalogItem[];setItems:Dispatch<SetStateAction<CatalogItem[]>>;
  staff:CatalogStaff[];setStaff:Dispatch<SetStateAction<CatalogStaff[]>>;
  receiptAutoMode:ReceiptAutoMode;setReceiptAutoMode:Dispatch<SetStateAction<ReceiptAutoMode>>;
+ invoicePreferences:InvoicePreferences;setInvoicePreferences:Dispatch<SetStateAction<InvoicePreferences>>;
  invoiceAppearance:InvoiceAppearance;setInvoiceAppearance:Dispatch<SetStateAction<InvoiceAppearance>>;
  archivedRecords:ArchivedPreviewRecord[];setArchivedRecords:Dispatch<SetStateAction<ArchivedPreviewRecord[]>>;
  readNotificationIds:string[];setReadNotificationIds:Dispatch<SetStateAction<string[]>>;
@@ -71,12 +80,13 @@ export function MerchantPreviewProvider({children}:{children:ReactNode}){
  const [items,setItems]=useState<CatalogItem[]>(starterItems);
  const [staff,setStaff]=useState<CatalogStaff[]>(starterStaff);
  const [receiptAutoMode,setReceiptAutoMode]=useState<ReceiptAutoMode>("off");
+ const [invoicePreferences,setInvoicePreferences]=useState<InvoicePreferences>(defaultInvoicePreferences);
  const [invoiceAppearance,setInvoiceAppearance]=useState<InvoiceAppearance>(defaultInvoiceAppearance);
  const [archivedRecords,setArchivedRecords]=useState<ArchivedPreviewRecord[]>([]);
  const [readNotificationIds,setReadNotificationIds]=useState<string[]>([]);
  const [userImage,setUserImage]=useState<string|null>(null);
- const resetPreview=()=>{setSettings(defaults);setLogoPreview(null);setPaymentMode("manual");setUser(defaultPreviewUser);setUserImage(null);setCustomers(starterCustomers);setItems(starterItems);setStaff(starterStaff);setReceiptAutoMode("off");setInvoiceAppearance(defaultInvoiceAppearance);setArchivedRecords([]);setReadNotificationIds([]);};
- const value=useMemo(()=>({settings,setSettings,logoPreview,setLogoPreview,paymentMode,setPaymentMode,customers,setCustomers,items,setItems,staff,setStaff,receiptAutoMode,setReceiptAutoMode,invoiceAppearance,setInvoiceAppearance,archivedRecords,setArchivedRecords,readNotificationIds,setReadNotificationIds,user,setUser,userImage,setUserImage,resetPreview}),[settings,logoPreview,paymentMode,customers,items,staff,receiptAutoMode,invoiceAppearance,archivedRecords,readNotificationIds,user,userImage]);
+ const resetPreview=()=>{setSettings(defaults);setLogoPreview(null);setPaymentMode("manual");setUser(defaultPreviewUser);setUserImage(null);setCustomers(starterCustomers);setItems(starterItems);setStaff(starterStaff);setReceiptAutoMode("off");setInvoicePreferences(defaultInvoicePreferences);setInvoiceAppearance(defaultInvoiceAppearance);setArchivedRecords([]);setReadNotificationIds([]);};
+ const value=useMemo(()=>({settings,setSettings,logoPreview,setLogoPreview,paymentMode,setPaymentMode,customers,setCustomers,items,setItems,staff,setStaff,receiptAutoMode,setReceiptAutoMode,invoicePreferences,setInvoicePreferences,invoiceAppearance,setInvoiceAppearance,archivedRecords,setArchivedRecords,readNotificationIds,setReadNotificationIds,user,setUser,userImage,setUserImage,resetPreview}),[settings,logoPreview,paymentMode,customers,items,staff,receiptAutoMode,invoicePreferences,invoiceAppearance,archivedRecords,readNotificationIds,user,userImage]);
  return <C.Provider value={value}>{children}</C.Provider>;
 }
 export function useMerchantPreview(){const ctx=useContext(C);if(!ctx)throw new Error("Merchant preview provider missing");return ctx;}
