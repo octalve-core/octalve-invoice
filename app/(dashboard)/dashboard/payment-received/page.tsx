@@ -30,7 +30,7 @@ export default function PaymentReceivedPage(){
    </div>)}</div>
   </div>
   <div className="rounded-xl border border-blue-100 bg-white p-4 text-xs leading-6 text-gray-600">
-   These are illustrative payment events, not confirmation from a bank or provider. A new manual payment must be recorded from its invoice after independent bank verification; provider events must be reconciled automatically.
+   These are example payments. Record a bank transfer only after checking your account. Online payments are confirmed by their payment provider.
    <Link href="/dashboard/invoice" className="mt-2 flex items-center gap-2 font-semibold text-[#0064E0]">Select an invoice to record payment <ArrowRight size={14}/></Link>
   </div>
  </main>;

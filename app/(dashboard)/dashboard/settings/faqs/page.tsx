@@ -11,7 +11,7 @@ const topics=[
  {name:"Payments & accounting",questions:[
  ["When is an invoice treated as paid?","Only verified funds count. For direct company bank transfers, an authorized staff member must confirm bank-cleared payment evidence. Gateway or dynamic-account invoices require provider verification; a browser redirect or screenshot alone is insufficient."],
  ["Are receipts counted as separate revenue?","No. Verified payment transactions are the source of collections. An invoice contributes to receivables until allocated payment is verified; a receipt only documents that payment."],
- ["Can customers pay through Paystack, Flutterwave or a virtual account?","Those payment options are planned. They remain disabled until secure provider connections, webhooks, reconciliation and approval are completed."]]},
+ ["Can customers pay through Paystack, Flutterwave or a virtual account?","These options will become available once your business payment methods are connected and verified."]]},
  {name:"Security & records",questions:[
  ["What happens when I delete a record?","Deletion requires a second confirmation and a reason. Recoverable records go to Deleted Records for a proposed 14-day period; the current workspace uses example records that are not permanently saved. Issued invoices, payment records, receipts and audit evidence are never silently erased at 14 days."],
  ["Can staff hide or permanently remove payments?","No staff member should be able to erase payment evidence. Permanent financial records will require owner/admin privileges, immutable audit logs, retained finance history and authorization for voids or reversals."],

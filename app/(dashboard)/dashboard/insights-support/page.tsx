@@ -52,6 +52,6 @@ export default function InsightsSupportPage(){
     </section>
    </div>
   </>}
-  <p className="flex items-start gap-2 text-xs leading-5 text-slate-500"><Check size={16} className="mt-0.5 shrink-0"/> Security baseline: OWASP ASVS 5.0, tenant-scoped evidence, redacted customer data, no model-authoritative money movement, explicit approval for future actions.</p>
+  <p className="flex items-start gap-2 text-xs leading-5 text-slate-500"><Check size={16} className="mt-0.5 shrink-0"/> Insights are based on sample information and cannot authorize payments, change records or share private customer information.</p>
  </main>;
 }
