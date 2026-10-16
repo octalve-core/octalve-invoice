@@ -35,7 +35,7 @@ export default function InsightsSupportPage(){
    <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">{[
     {label:"Sample collections",value:fmt(collected),icon:WalletCards},
     {label:"Sample outstanding",value:fmt(Math.max(0,due)),icon:BarChart3},
-    {label:"Issued demo invoices",value:String(claims.length),icon:MessageSquareText},
+    {label:"Example issued invoices",value:String(claims.length),icon:MessageSquareText},
     {label:"Automated actions",value:"0",icon:Bot}
    ].map(card=><article key={card.label} className="rounded-2xl border border-slate-100 bg-white p-4 shadow-sm"><card.icon size={19} className="text-[#0064E0]"/><p className="mt-3 text-xs text-slate-500">{card.label}</p><p className="mt-1 break-words text-base font-bold text-[#173652] sm:text-lg">{card.value}</p></article>)}</div>
    <section className="grid gap-4 lg:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)]"><div className="space-y-3 rounded-2xl border border-slate-100 bg-white p-5 shadow-sm"><h2 className="flex items-center gap-2 font-semibold text-[#173652]"><Sparkles size={19} className="text-[#0064E0]"/> Ask about your sample workspace</h2><p className="text-xs leading-5 text-slate-500">Choose a verified read-only question. Live conversational analysis will be added only with secure tenant-scoped data.</p><div className="space-y-2">{metricQuestions.map(q=><button type="button" key={q.prompt} onClick={()=>setQuestion(q.prompt)} aria-pressed={question===q.prompt} className={"flex w-full items-center justify-between gap-3 rounded-xl border p-3 text-left text-xs "+(question===q.prompt?"border-[#0064E0] bg-blue-50 text-[#0064E0]":"border-slate-100 text-[#31516E]")}><span>{q.prompt}</span><ChevronRight size={16}/></button>)}</div></div>
