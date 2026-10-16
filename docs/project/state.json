@@ -1,6 +1,6 @@
 {
   "updatedAt": "2026-10-16",
-  "phase": "Phase 0I Batch G Review READY — draft watermark/export guard and shared invoice-preferences UI qualified. Owner visual acceptance pending; no main/Phase 1.",
+  "phase": "Phase 0I Batch H READY in Review: customer billing master, draft data isolation, NRS readiness and available template gallery. Owner acceptance pending; no Phase 1.",
   "branch": "phase/0i-frontend-finance-workflows",
   "mainBootstrapSha": "87ad423dba3ced2445e109baa85114aea3d30037",
   "latestMigration": null,
@@ -68,7 +68,8 @@
     "phase0iBatchF": "PASS exact code SHA 134156955ee5bece16560a8d0346744b28457d61: Node24 pnpm TypeScript lint source tests Next build 38933862294; CodeQL 38933862532; full browser 189/189 plus 64/64 mobile/tablet 38933856460, artifact 12059109669. Review-only PR #7 merged at 318bb8ae1d89bf394903867c0ed6ff44cb11e3dd, deployment READY.",
     "phase0iBatchFReview": "PASS review-only PR #7 merge 318bb8ae1d89bf394903867c0ed6ff44cb11e3dd; Vercel READY dpl_8b2kMjhwB6ZLhb4vd9R9Z7JKp5oD stable alias. Exact review merge (app code unchanged from 13415695) Phase qualification 38934451095 PASS, CodeQL 38934451220 PASS, browser 38934451152 PASS 189/189+64/64, evidence artifact 12060780726. main unchanged/Production not live.",
     "phase0iBatchG": "PASS exact source 1ab692b277adf21fc7a330b1d9b4fb1ed9877243: qualification 38948987174, CodeQL 38948987173, browser 38948980085 189/189 plus 64/64; screenshot evidence artifact 12068170245. Draft document previews consistently watermarked and no unrecorded browser PNG/PDF export. Prior 162342 source browser run failed due stale test copy; corrected test requalified at 1ab692.",
-    "phase0iBatchGReview": "Review-only PR #8 merged at ec3ab3a4181ce5bf99dcc235a4742c0b3f55766e; Vercel dpl_3XhyFEbcdsPq27zAA4ziCVALUqDt READY, stable alias. Merge source differs from qualified source only by docs/project/REVIEW_PHASE_0I_BATCH_A.md. Postmerge browser/security CI should be checked separately if running."
+    "phase0iBatchGReview": "Review-only PR #8 merged at ec3ab3a4181ce5bf99dcc235a4742c0b3f55766e; Vercel dpl_3XhyFEbcdsPq27zAA4ziCVALUqDt READY, stable alias. Merge source differs from qualified source only by docs/project/REVIEW_PHASE_0I_BATCH_A.md. Postmerge browser/security CI should be checked separately if running.",
+    "phase0iBatchH": "PASS exact source f30b727e22358752127e6ce04e2863f745c84b82: Node/pnpm/TypeScript/lint/tests/build 38951914088, CodeQL 38951914050, standard browser 189/189 and viewport 64/64 38951905973; evidence artifact 12068804114. Review PR #9 a47027b29a6810dbe006a1e9a338658e3701c45f, Vercel dpl_GthKFndetXz6XMYpTksQddZtnPon READY. Review merge app diff only prior review-history docs."
   },
   "blockers": [
     "Explicit owner approval for Phase 0I final UI and later backend Phase 1 remains absent. No Neon, real auth, payment gateways, money movement, NRS filings or real support/email delivery.",
@@ -81,12 +82,12 @@
     "Backend-approved authority needed before staff approvals, money posting, NRS, persistent finance ledgers, customer access, recurring issuance or communication delivery.",
     "Source and browser regressions pass; visual goldens and customer UX review still need owner sign-off."
   ],
-  "nextPhase": "Continue approved Phase 0I settings/data contract work: finish customer billing profile auto-fill and seller/buyer snapshots, template gallery for owner-provided styles, NRS-readiness enrollment model without live submissions. Real authenticated saved draft, server-side issue/export guard, immutable history, PDF export, NRS IRN require explicit Phase 1 approval. Owner visual approval of Batch G pending.",
-  "currentCodeCheckpoint": "1ab692b277adf21fc7a330b1d9b4fb1ed9877243",
-  "lastVerifiedApplicationCommit": "1ab692b277adf21fc7a330b1d9b4fb1ed9877243",
-  "exactNextPhase": "Continue approved Phase 0I settings/data contract work: finish customer billing profile auto-fill and seller/buyer snapshots, template gallery for owner-provided styles, NRS-readiness enrollment model without live submissions. Real authenticated saved draft, server-side issue/export guard, immutable history, PDF export, NRS IRN require explicit Phase 1 approval. Owner visual approval of Batch G pending.",
-  "previewCommitSha": "ec3ab3a4181ce5bf99dcc235a4742c0b3f55766e",
-  "previewDeploymentStatus": "READY Vercel review-only Batch G dpl_3XhyFEbcdsPq27zAA4ziCVALUqDt, SHA ec3ab3a4181ce5bf99dcc235a4742c0b3f55766e, stable review alias attached; main/Production untouched.",
+  "nextPhase": "Owner inspect Batch H customer master autofill, Tax ID metadata, NRS readiness and template gallery. Next candidate phase: complete multi-renderer original template design after owner supplies Nov/Legal reference; prepare authenticated data model, immutable issuance transaction, tenant isolation, event auditing, server export with verified NRS as separate Phase 1 only after explicit approval. No current backend activation.",
+  "currentCodeCheckpoint": "f30b727e22358752127e6ce04e2863f745c84b82",
+  "lastVerifiedApplicationCommit": "f30b727e22358752127e6ce04e2863f745c84b82",
+  "exactNextPhase": "Owner inspect Batch H customer master autofill, Tax ID metadata, NRS readiness and template gallery. Next candidate phase: complete multi-renderer original template design after owner supplies Nov/Legal reference; prepare authenticated data model, immutable issuance transaction, tenant isolation, event auditing, server export with verified NRS as separate Phase 1 only after explicit approval. No current backend activation.",
+  "previewCommitSha": "a47027b29a6810dbe006a1e9a338658e3701c45f",
+  "previewDeploymentStatus": "Vercel READY Review only deployment dpl_GthKFndetXz6XMYpTksQddZtnPon at a47027b29a6810dbe006a1e9a338658e3701c45f; main Production untouched.",
   "phase0Merged": true,
   "productionDeployed": false,
   "productionApprovedByOwner": true,
@@ -96,9 +97,9 @@
   "phase0iBackendApproved": false,
   "phase0iProductionApproved": false,
   "backendApproved": false,
-  "lastQualifiedSourceHead": "1ab692b277adf21fc7a330b1d9b4fb1ed9877243",
+  "lastQualifiedSourceHead": "f30b727e22358752127e6ce04e2863f745c84b82",
   "productionApprovalScope": "Historical Phase 0H owner authorization for main merge only; NOT authorization for Phase 0I Batch C deployment or backend.",
-  "phase0iReviewCandidate": "Batch G PUBLISHED review-only at ec3ab3a4181ce5bf99dcc235a4742c0b3f55766e through PR #8; source 1ab692b277adf21fc7a330b1d9b4fb1ed9877243 exact-source Node/TS/tests/build/CodeQL and browser 189/189+64/64 passed. Owner visual acceptance open.",
+  "phase0iReviewCandidate": "Batch H qualified app source f30b727e22358752127e6ce04e2863f745c84b82 and Review-only PR #9 merged a47027b29a6810dbe006a1e9a338658e3701c45f; Vercel READY. Original styles and live operations remain future stages.",
   "newChatHandoff": "docs/project/OCTALVE_INVOICE_PHASE_0I_NEXT_CHAT_HANDOFF_2026-10-16.md",
   "nextChatEntry": "docs/project/NEXT_PHASE_PROMPT.md",
   "latestDocsOnlyHandoff": "9fc88ce5c6d73a0dc03be7f4c11ff35498610c1a; followed by this state update; no app code changed after qualified SHA 149e896b",
