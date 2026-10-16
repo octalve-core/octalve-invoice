@@ -71,6 +71,11 @@ const origin = process.env.OCTALVE_BASE_URL || "http://127.0.0.1:3000";
           await page.waitForTimeout(350);
           if (viewport.width < 768) { const overflow = await page.evaluate(() => document.documentElement.scrollWidth > window.innerWidth + 2); if (overflow) throw new Error("Unexpected page-level horizontal overflow"); }
           if (record.statusCode !== 200) throw new Error("Non-200 status: " + record.statusCode);
+          // Audit actual rendered copy; Preview language must remain truthful until an operation is live.
+          const visibleText=await page.locator("body").innerText();
+          const disallowed=visibleText.match(/\b(?:sandbox|development)\b/i);
+          if(disallowed)throw Error("Customer-facing technical label exposed: "+disallowed[0]+" on "+route);
+          record.customerFacingLanguage="PASS";
           if(route==="/login"||route==="/signup"){
             const count=await page.locator("form").count();
             if(count!==1)throw Error("Authentication must have exactly one form, got "+count);
@@ -103,6 +108,16 @@ const origin = process.env.OCTALVE_BASE_URL || "http://127.0.0.1:3000";
             await page.getByRole("tab",{name:"Installments"}).click();
             await page.getByRole("button",{name:"Review proposed split"}).click();
             await page.getByText("No payment schedule was saved or communicated.",{exact:false}).waitFor();
+            await page.getByRole("button",{name:"Custom milestones"}).click();
+            await page.getByText("Total allocation: 100%",{exact:false}).waitFor();
+            await page.getByRole("button",{name:"Add milestone"}).click();
+            if(await page.getByRole("button",{name:"Review proposed split"}).isEnabled())throw Error("Unbalanced stages were accepted");
+            await page.getByRole("spinbutton",{name:"Milestone 1 percentage"}).fill("40");
+            await page.getByRole("spinbutton",{name:"Milestone 4 percentage"}).fill("10");
+            await page.getByText("Total allocation: 100%",{exact:false}).waitFor();
+            if(!await page.getByRole("button",{name:"Review proposed split"}).isEnabled())throw Error("Balanced milestone schedule was rejected");
+            await page.getByRole("button",{name:"Review proposed split"}).click();
+            record.customMilestoneValidation="PASS";
             await page.getByRole("tab",{name:"Communication"}).click();
             await page.getByRole("button",{name:"Payment reminder"}).click();
             const composeInvoice=page.getByRole("dialog",{name:"Draft invoice communication"});

@@ -108,3 +108,10 @@
 2026-10-16 D077: Consolidate legacy /dashboard/taxes into the Tax Centre. Retire sample Service Tax, GST and WHT percentages and console-logged pseudo creation. No generic rate is an automatic current legal tax liability; NRS eligibility, per-line classification, supporting evidence and filing acknowledgement require the official source and authenticated tax engine.
 
 2026-10-16 D078: Release quality is determined by actual GitHub source build, CodeQL, formula suite, complete browser interaction tests, 320/360/390/430/768/1024/1440 viewport checks and native PDF/PNG evidence at the final pinned application revision. Fix genuine regressions before one batched review/phase-0i Preview deployment. Owner still defers final Sapphire invoice redesign and distinct dashboard logo, and Phase 1/live finance are not authorized.
+
+
+2026-10-16 D079: In addition to the prior source-qualification work, a canonical RecordDataTable now drives desktop presentation in all eight finance modules, the unified recurring workspace, the NRS Tax Centre invoice review and the Finance Calculator projection schedule. RecordMobileCard remains the responsive finance/recurring mobile view. This is a design-system consolidation, not a change in ledger authority.
+
+2026-10-16 D080: Invoice payment planning now supports 2-stage or 2–6 user-configurable milestone preview with optional dates, strict 100% validation and exact minor-unit arithmetic. No plan is persisted; all payment/receipt authority and communication scheduling stay disabled until owner-approved backend and verification gates.
+
+2026-10-16 D081: Customer-facing copy must be professional and accurate: never falsely label a simulation 'production' or 'completed'. Automated browser checks reject visibly rendered 'sandbox' or 'development' terms across the primary checked routes, and source-language CI guards against reintroducing prohibited environment wording. Internal provider/environment identifiers and honest example/preview disclosures are allowed and necessary.

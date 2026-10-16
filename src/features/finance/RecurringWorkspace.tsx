@@ -4,6 +4,7 @@ import Link from "next/link";
 import {ArrowLeft,CalendarClock,Search,SlidersHorizontal,Plus,X,ChevronRight,ShieldCheck,PauseCircle} from "lucide-react";
 import {useAccessibleDialog} from "@/src/features/records/components/useAccessibleDialog";
 import {RecordMobileCard} from "@/src/features/records/components/RecordVisual";
+import {RecordDataTable} from "@/src/features/records/components/RecordDataTable";
 import type {PreviewRecord} from "@/src/features/records/preview-records";
 type Kind="income"|"expense";
 type Cadence="weekly"|"monthly"|"quarterly"|"yearly";
@@ -45,7 +46,19 @@ export default function RecurringWorkspace(){
     const record:PreviewRecord={id:r.id,kind:r.kind==="income"?"invoice":"expense",reference:r.id,title:r.name,amount:r.amount,date:r.next,status:"open",category:r.party,dueDate:r.next};
     return <RecordMobileCard key={r.id} record={record} onSelect={()=>setSelected(r)} statusLabel={r.cadence+" · example"} dateLabel="Next"/>;
    })}</div>
-   <div className="hidden lg:block"><table className="w-full table-fixed text-left text-sm"><thead className="bg-[#F5F8FC] text-xs text-slate-500"><tr>{["Reference","Name / counterparty","Amount","Frequency","Next example",""].map(x=><th key={x} className="px-4 py-3 font-semibold">{x}</th>)}</tr></thead><tbody className="divide-y divide-slate-100">{rows.map(r=><tr key={r.id} className="hover:bg-blue-50/40"><td className="break-words px-4 py-4 text-xs font-semibold text-[#0064E0]">{r.id}</td><td className="px-4 py-4"><p className="text-xs font-semibold text-[#183955]">{r.name}</p><p className="text-xs text-slate-500">{r.party}</p></td><td className="px-4 py-4 text-xs">{r.amount}</td><td className="px-4 py-4 text-xs capitalize">{r.cadence}</td><td className="px-4 py-4 text-xs">{r.next}</td><td className="px-4 py-4"><button type="button" aria-label={"Review "+r.id} onClick={()=>setSelected(r)} className="text-[#0064E0]"><ChevronRight size={17}/></button></td></tr>)}</tbody></table></div>
+   <div className="hidden lg:block">
+    <RecordDataTable label="Recurring schedule records" headers={["Reference","Name / counterparty","Amount","Frequency","Next example"]} rows={rows.map(r=>({
+      id:r.id,
+      cells:[
+       {value:r.id,emphasis:true},
+       {value:<><p className="font-semibold text-[#183955]">{r.name}</p><p className="mt-1 text-slate-500">{r.party}</p></>},
+       {value:r.amount},
+       {value:r.cadence,className:"capitalize"},
+       {value:r.next}
+      ],
+      action:{label:"Review "+r.id,onClick:()=>setSelected(r)}
+    }))}/>
+   </div>
    {!rows.length?<p className="px-6 py-10 text-center text-sm text-slate-500">No matching patterns. Clear search or adjust frequency.</p>:null}
   </section>
   {notice?<p role="status" className="rounded-xl bg-blue-50 p-3 text-xs text-[#245078]">{notice}</p>:null}
