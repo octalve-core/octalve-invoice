@@ -27,10 +27,14 @@ export default function ReportPage(){
   const outstanding=Math.max(0,billed-applied);
   const clientNames=new Set(issued.map(x=>x.customer));
   const statuses=["paid","pending","draft","overdue","partial","refunded"].map(status=>({name:status,count:previewInvoices.filter(x=>x.status===status&&toIso(x.date)>=start&&toIso(x.date)<=end).length})).filter(x=>x.count);
-  const monthSeries=months.map((label,index)=>{
-   const yr=2024,key=yr+"-"+String(index+1).padStart(2,"0");
+  const startMonth=Number(start.slice(0,4))*12+Number(start.slice(5,7))-1;
+  const endMonth=Number(end.slice(0,4))*12+Number(end.slice(5,7))-1;
+  const firstMonth=Math.max(startMonth,endMonth-11);
+  const monthSeries=Array.from({length:Math.max(0,endMonth-firstMonth+1)},(_,index)=>{
+   const absolute=firstMonth+index,yr=Math.floor(absolute/12),month=absolute%12;
+   const key=yr+"-"+String(month+1).padStart(2,"0");
    const matching=issued.filter(x=>toIso(x.date).startsWith(key));
-   return {name:label,billed:matching.reduce((s,i)=>s+amount(i.amount),0),collected:periodPayments.filter(p=>toIso(p.date).startsWith(key)).reduce((s,p)=>s+p.amountMinor/100,0),invoices:matching.length};
+   return {name:months[month],billed:matching.reduce((s,i)=>s+amount(i.amount),0),collected:periodPayments.filter(p=>toIso(p.date).startsWith(key)).reduce((s,p)=>s+p.amountMinor/100,0),invoices:matching.length};
   });
   const clients=[...new Map(issued.map(x=>[x.customer,{customer:x.customer,number:0,amount:0}])).values()];
   for(const i of issued){const v=clients.find(x=>x.customer===i.customer)!;v.number++;v.amount+=amount(i.amount);}
