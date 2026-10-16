@@ -31,7 +31,14 @@ export type ArchivedPreviewRecord = {
  kind:"invoice"|"receipt"|"quotation"|"expense"|"creditNote"|"customer"|"staff"|"item";
  id:string; reference:string; title:string; status:string; archivedAt:string; reason:string; originalAmount?:string;
 };
-export interface CatalogCustomer {id:string;name:string;email:string;phone:string;address:string;company:string;}
+/** A single merchant-owned customer record; fields remain optional for individual/non-NRS customers. */
+export interface CatalogCustomer {
+ id:string;name:string;email:string;phone:string;address:string;company:string;
+ customerType?:"business"|"individual";billingName?:string;taxId?:string;
+ companyRegistration?:string;companyId?:string;
+ addressLine1?:string;city?:string;state?:string;postalCode?:string;country?:string;
+ currency?:string;website?:string;
+}
 export interface CatalogItem {id:string;name:string;description:string;rate:string;taxPercent:string;discountPercent:string;category:string;type:"goods"|"service";}
 export interface CatalogStaff {id:string;name:string;email:string;role:string;phone:string;}
 export const starterCustomers:CatalogCustomer[]=[

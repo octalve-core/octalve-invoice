@@ -9,7 +9,7 @@ interface AddCustomerFormProps {
   onCancel?: () => void;
 }
 
-interface CustomerData {
+export interface CustomerData {
   customerType: "business" | "individual";
   firstName: string;
   lastName: string;
@@ -25,6 +25,7 @@ interface CustomerData {
   country: string;
   companyRegistration: string;
   companyId: string;
+  taxId: string;
   currency: string;
   website: string;
 }
@@ -64,6 +65,7 @@ export default function AddCustomerForm({
     country: "",
     companyRegistration: "",
     companyId: "",
+    taxId: "",
     currency: "",
     website: "",
   });
@@ -356,6 +358,19 @@ export default function AddCustomerForm({
                 }
                 className="w-full h-11 px-4 text-sm bg-white border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0064E0]/20 focus:border-[#0064E0]"
               />
+            </div>
+
+            <div>
+              <label htmlFor="customer-tax-id" className="block text-sm font-medium text-gray-700 mb-1">
+                Customer Tax ID (if applicable)
+              </label>
+              <input id="customer-tax-id" type="text" autoComplete="off"
+                value={formData.taxId}
+                onChange={(e) => setFormData({ ...formData, taxId: e.target.value })}
+                className="w-full h-11 px-4 text-sm bg-white border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0064E0]/20 focus:border-[#0064E0]"
+                placeholder="As registered with the relevant tax authority"
+              />
+              <p className="mt-1 text-xs text-slate-500">Separate from CAC registration or company ID. Not required for every individual customer.</p>
             </div>
 
             <div>

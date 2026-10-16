@@ -42,6 +42,15 @@ export interface InvoiceDraft {
   clientEmail: string;
   clientPhone: string;
   clientAddress: string;
+  /** Copied from selected customer for this draft; no server-issued immutable snapshot yet. */
+  clientCustomerId?:string;
+  clientType?:"business"|"individual";
+  clientTaxId?:string;
+  clientCompanyRegistration?:string;
+  clientCity?:string;
+  clientState?:string;
+  clientPostalCode?:string;
+  clientCountry?:string;
   invoiceNo: string;
   day: string;
   month: string;
