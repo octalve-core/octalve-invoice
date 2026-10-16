@@ -75,6 +75,6 @@ test("fail closed on extreme and invalid inputs",()=>{
  assert.throws(()=>calc("roi",{cost:0,proceeds:100}),/exceed/);
  assert.throws(()=>calc("dso",{receivables:100,sales:0,days:30}),/exceed/);
  assert.throws(()=>calc("depreciation",{cost:100,salvage:200,years:3}),/exceed/);
- assert.throws(()=>calc("payment-plan",{total:1200,rate:70.5}),/convert|integer|BigInt/);
+ assert.throws(()=>calc("payment-plan",{total:1200,rate:70.5}),/whole number/);
  assert.throws(()=>calc("unknown",{}),/Unknown/);
 });
