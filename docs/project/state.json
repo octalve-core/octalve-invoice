@@ -1,6 +1,6 @@
 {
   "updatedAt": "2026-10-16",
-  "phase": "Phase 0I frontend refinement — Batch C source qualified (189/189 browser + 64/64 responsive, TypeScript/build/tests/CodeQL); review branch deployment pending, Phase 1 not authorized.",
+  "phase": "Phase 0I frontend Batch D source-qualified; 189/189 browser + 64/64 extra responsive, Node24 source build and CodeQL green. Owner review pending, Phase 1 not authorized.",
   "branch": "phase/0i-frontend-finance-workflows",
   "mainBootstrapSha": "87ad423dba3ced2445e109baa85114aea3d30037",
   "latestMigration": null,
@@ -54,7 +54,11 @@
     "phase0iBrowser": "PASS 189/189 across 1440 desktop/768 tablet/390 mobile and 64/64 across 320/360/430/1024 additional widths; includes real native PDF/PNG preview smoke, not owner-approved golden appearance.",
     "phase0iLanguage": "Source-wide CI guard passed: no disallowed development-environment word in app/components/src.",
     "phase0iA11y": "Accessible dialog Escape/focus management passed responsive browser actions. Manual screen-reader and owner pixel reference approvals are not complete.",
-    "phase0iBatchC": "PASS pinned branch SHA a4ac4381: source/build/tests CI run 38905668956; CodeQL run 38905669176; browser/screenshots run 38905662879 = 189/189 baseline and 64/64 narrower widths. Evidence artifact 12047932602. Batch C includes 20 business calculators, one auth form and finance action sheet preview; no backend actions were enabled. Review merge commit dcfe923a Vercel READY."
+    "phase0iBatchC": "PASS pinned branch SHA a4ac4381: source/build/tests CI run 38905668956; CodeQL run 38905669176; browser/screenshots run 38905662879 = 189/189 baseline and 64/64 narrower widths. Evidence artifact 12047932602. Batch C includes 20 business calculators, one auth form and finance action sheet preview; no backend actions were enabled. Review merge commit dcfe923a Vercel READY.",
+    "phase0iBatchD": "PASS code a3a885ff0cc56092b1df9af10cc7088d7b05f205: Phase qualification run 38910648079; CodeQL run 38910647963; 189/189 browser + 64/64 extra responsive run 38910639932, artifact 12050297506.",
+    "customerFacingCopy": "Automated source language guard (app/components/src), plus live visible rendered browser text assertions on 63 routes × 3 viewports, including finance, auth, billing and support. No false provider/fiscal completion labels permitted.",
+    "financeComponentParity": "Eight finance screens, recurring, Tax Centre and Finance Calculator use shared RecordDataTable for desktop and canonical RecordMobileCard for mobile where applicable; still require owner visual reference approval.",
+    "invoiceMilestonePlanner": "PASS frontend 2–6 milestone plan, validated 100% distribution with exact minor-unit arithmetic, optional dates, and browser negative/unbalanced case tests. No real issuance/collection."
   },
   "blockers": [
     "Explicit owner approval for Phase 0I final UI and later backend Phase 1 remains absent. No Neon, real auth, payment gateways, money movement, NRS filings or real support/email delivery.",
@@ -62,12 +66,15 @@
     "Final Sapphire-derived invoice visual layout and PDF/PNG style/fidelity approval explicitly postponed by owner until other frontend features are reviewed.",
     "Specialized authenticated workflows — maker/checker, bank statement matching, debit/credit posting, immutable customer statements/audit, actual FX sources, portal access, recurring issuance, real invoice reminders — require separately authorized backend stages. Existing forms are read-only design reviews.",
     "Subscription prices/free allowance/payment provider fees require owner cost-model approval; no real subscription checkout enabled.",
-    "Golden screenshot/pixel review and Classic Receipt/multi-page custom native PDF parity are not fully certified."
+    "Golden screenshot/pixel review and Classic Receipt/multi-page custom native PDF parity are not fully certified.",
+    "Distinct dashboard logo remains owner-supplied; do not fabricate. Invoice template redesign remains owner-deferred.",
+    "Backend-approved authority needed before staff approvals, money posting, NRS, persistent finance ledgers, customer access, recurring issuance or communication delivery.",
+    "Source and browser regressions pass; visual goldens and customer UX review still need owner sign-off."
   ],
-  "nextPhase": "Owner visual review of READY Phase 0I Batch C Preview. Pending new dashboard logo, remaining specialized frontend UI corrections and owner-deferred invoice presentation. Phase 1 requires separate owner authorization; do not merge main or enable live auth/payments/NRS.",
-  "currentCodeCheckpoint": "e8ab0ab0330e930f5051d503541f6fb5ef989c1d",
-  "lastVerifiedApplicationCommit": "e8ab0ab0330e930f5051d503541f6fb5ef989c1d",
-  "exactNextPhase": "Owner visual review of READY Phase 0I Batch C Preview. Pending new dashboard logo, remaining specialized frontend UI corrections and owner-deferred invoice presentation. Phase 1 requires separate owner authorization; do not merge main or enable live auth/payments/NRS.",
+  "nextPhase": "Owner review Batch D on Vercel Review only, final non-invoice UI refinements, then owner-supplied dashboard logo and deferred invoice reference; do not start Phase 1 without explicit approval.",
+  "currentCodeCheckpoint": "a3a885ff0cc56092b1df9af10cc7088d7b05f205",
+  "lastVerifiedApplicationCommit": "a3a885ff0cc56092b1df9af10cc7088d7b05f205",
+  "exactNextPhase": "Owner review Batch D on Vercel Review only, final non-invoice UI refinements, then owner-supplied dashboard logo and deferred invoice reference; do not start Phase 1 without explicit approval.",
   "previewCommitSha": "dcfe923a7b1439d6fda38c723a277a3b0d9c9f4f",
   "previewDeploymentStatus": "READY — Phase 0I Batch C review deployment, branch review/phase-0i. Verified Vercel route HTTP 200 for calculator, finance, recurring, tax, login/signup, More and portal. This is not a Production/main release.",
   "phase0Merged": true,
@@ -80,5 +87,6 @@
   "phase0iProductionApproved": false,
   "backendApproved": false,
   "lastQualifiedSourceHead": "a4ac4381573cc0e45bac13ad3ab975e0ff91ae17",
-  "productionApprovalScope": "Historical Phase 0H owner authorization for main merge only; NOT authorization for Phase 0I Batch C deployment or backend."
+  "productionApprovalScope": "Historical Phase 0H owner authorization for main merge only; NOT authorization for Phase 0I Batch C deployment or backend.",
+  "phase0iReviewCandidate": "Batch D — accessible shared record desktop tables; 2–6 valid milestone invoice split; polished merchant-facing copy. CI-green, not yet merged to review at this checkpoint."
 }
