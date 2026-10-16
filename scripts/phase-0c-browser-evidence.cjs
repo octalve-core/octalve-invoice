@@ -380,7 +380,7 @@ const origin = process.env.OCTALVE_BASE_URL || "http://127.0.0.1:3000";
             await page.locator('#invoice-document').waitFor();
             await page.locator('#invoice-document').getByText("Octalve Limited").waitFor();
             if(await page.locator('#invoice-document').getByText("Sapphire Quest").count()) throw new Error("Legacy merchant branding remains");
-            const logoNotice=page.getByText("Your business logo is missing.");
+            const logoNotice=page.getByText("Your business logo has not been added.",{exact:false});
             await logoNotice.waitFor();
             // Regression: a deleted row must not cause later rows to share identifiers.
             // This also exercises invoice-item input -> both live template presentations.
