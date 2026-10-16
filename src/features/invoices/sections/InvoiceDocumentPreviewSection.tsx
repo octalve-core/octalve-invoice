@@ -70,7 +70,7 @@ export function InvoiceDocumentPreviewSection({draft,setDraft,profile,setProfile
  return <section aria-label="Live document preview" className="min-w-0 space-y-3">
    <div className="flex flex-wrap items-center justify-between gap-3">
      <div><h2 className="font-semibold text-[#1D2838]">Live {template==="modern"?"Modern Invoice":"Classic Ledger"} preview</h2>
-       <p className="text-xs text-gray-500">Browser and PDF use the same presentation data; preview only, not issued.</p></div>
+       <p className="text-xs text-gray-500">Review your document before downloading. This copy is not yet issued.</p></div>
      <div className="flex flex-wrap gap-2"><button onClick={()=>download("png")} type="button" className="rounded-lg border border-[#0064E0] px-4 py-2 text-xs font-semibold text-[#0064E0] hover:bg-blue-50">Download preview PNG</button><button onClick={()=>download("pdf")} type="button" className="rounded-lg bg-[#0064E0] px-4 py-2 text-xs font-semibold text-white hover:bg-[#0052B8]">Download preview PDF</button></div>
    </div>
    {!merchantLogo&&!dismissedLogo?<div className="flex flex-wrap items-center justify-between gap-2 rounded-lg border border-blue-100 bg-white p-3 text-xs"><span>Your business logo is missing. You can preview and download without it.</span><span className="flex gap-3"><Link href="/dashboard/settings/business" className="font-semibold text-[#0064E0]">Business Settings</Link><button type="button" className="text-gray-500" onClick={()=>setDismissedLogo(true)}>Continue without logo</button></span></div>:null}
