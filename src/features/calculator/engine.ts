@@ -165,6 +165,7 @@ export function calculateFinance(id:string,provided:Record<string,number>):Calcu
  }
  case "payment-plan":{
   if(v.total<=0)throw new Error("Invoice total must exceed zero");
+  if(!Number.isInteger(v.rate))throw new Error("Installment percentage must be a whole number");
   const cents=Math.round(v.total*100);
   if(!Number.isSafeInteger(cents))throw new Error("Invoice amount exceeds safe minor-unit range");
   const first=Number(BigInt(cents)*BigInt(v.rate)/BigInt(100))/100,remaining=(cents-Math.round(first*100))/100;
