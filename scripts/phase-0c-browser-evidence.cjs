@@ -219,6 +219,13 @@ const origin = process.env.OCTALVE_BASE_URL || "http://127.0.0.1:3000";
           if(route==="/dashboard/report"){
             await page.getByRole("heading",{name:"Reports"}).waitFor();
             await page.getByText("Recorded collections").first().waitFor();
+            if(view==="mobile"){
+              await page.getByRole("img",{name:/monthly values of invoicing and collections/}).waitFor();
+              await page.getByRole("img",{name:/sample invoices grouped by status/}).waitFor();
+              if(await page.locator("table").first().isVisible())throw Error("Desktop Top clients table should not be visible on mobile");
+              if(!await page.locator("a[href='/dashboard/customer']").filter({hasText:/invoice/}).first().isVisible())throw Error("Top client mobile card missing");
+              record.mobileReportChartsAndCards="PASS";
+            }
             record.report="PASS";
           }
                     if (route === "/dashboard/invoice/create") {
