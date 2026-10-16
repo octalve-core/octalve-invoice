@@ -46,7 +46,7 @@ async function qualifyNativePdf(page, output, view, template) {
   return { pdf: path.basename(pdfPath), raster: path.basename(rasterPrefix + ".png"), pdfPages: (info.match(/^Pages:\s*(\d+)/m) || [])[1], selectableText: "PASS", paperA4: "PASS" };
 }
 
-const routes = ["/onboarding", "/login", "/signup", "/verify-email", "/business-info", "/set-currency", "/dashboard", "/dashboard/getting-started", "/dashboard/invoice", "/dashboard/invoice/create", "/dashboard/invoice/1", "/dashboard/invoice/1/edit", "/dashboard/receipt", "/dashboard/receipt/1", "/dashboard/receipt/create", "/dashboard/quotation", "/dashboard/expenses", "/dashboard/customer", "/dashboard/items", "/dashboard/items/add", "/dashboard/items/1/edit", "/dashboard/staff", "/dashboard/staff/create", "/dashboard/staff/1/edit", "/dashboard/credit-note", "/dashboard/other-services", "/dashboard/finance/statement", "/dashboard/finance/approvals", "/dashboard/finance/receivables", "/dashboard/finance/adjustments", "/dashboard/finance/communications", "/dashboard/finance/reconciliation", "/dashboard/finance/audit", "/dashboard/finance/currencies", "/dashboard/other-services/pay-tax", "/dashboard/report", "/dashboard/notifications", "/dashboard/payment-received", "/dashboard/announcement", "/dashboard/updates", "/dashboard/invoice/3/record-payment", "/dashboard/settings", "/dashboard/settings/profile", "/dashboard/settings/invoice", "/dashboard/settings/business", "/dashboard/settings/subscription", "/dashboard/settings/theme", "/dashboard/settings/faqs", "/dashboard/settings/deleted"];
+const routes = ["/onboarding", "/login", "/signup", "/verify-email", "/business-info", "/set-currency", "/dashboard", "/dashboard/getting-started", "/dashboard/invoice", "/dashboard/invoice/create", "/dashboard/invoice/1", "/dashboard/invoice/1/edit", "/dashboard/receipt", "/dashboard/receipt/1", "/dashboard/receipt/create", "/dashboard/quotation", "/dashboard/expenses", "/dashboard/customer", "/dashboard/items", "/dashboard/items/add", "/dashboard/items/1/edit", "/dashboard/staff", "/dashboard/staff/create", "/dashboard/staff/1/edit", "/dashboard/credit-note", "/dashboard/other-services", "/dashboard/finance/statement", "/dashboard/finance/approvals", "/dashboard/finance/receivables", "/dashboard/finance/adjustments", "/dashboard/finance/communications", "/dashboard/finance/reconciliation", "/dashboard/finance/audit", "/dashboard/finance/currencies", "/dashboard/recurring", "/dashboard/recurring-expense", "/dashboard/other-services/pay-tax", "/dashboard/report", "/dashboard/notifications", "/dashboard/payment-received", "/dashboard/announcement", "/dashboard/updates", "/dashboard/invoice/3/record-payment", "/dashboard/settings", "/dashboard/settings/profile", "/dashboard/settings/invoice", "/dashboard/settings/business", "/dashboard/settings/subscription", "/dashboard/settings/theme", "/dashboard/settings/faqs", "/dashboard/settings/deleted"];
 const viewports = {
   desktop: { width: 1440, height: 900 },
   tablet: { width: 768, height: 1024 },
@@ -242,6 +242,27 @@ const origin = process.env.OCTALVE_BASE_URL || "http://127.0.0.1:3000";
             await page.getByRole("button",{name:"Clear filters"}).click();
             if(await input.inputValue()!=="")throw Error("Finance search not reset");
             record.financeFilters="PASS";
+          }
+          if(route==="/dashboard/recurring"||route==="/dashboard/recurring-expense"){
+            await page.getByRole("heading",{name:"Recurring income & expenses"}).waitFor();
+            const recurringSearch=page.getByRole("textbox",{name:"Search recurring records"});
+            await recurringSearch.waitFor();
+            await page.getByRole("button",{name:"Recurring expenses"}).click();
+            await page.getByRole("button",{name:"Filter recurring records"}).click();
+            const rf=page.getByRole("dialog",{name:"Recurring filters"});
+            await rf.waitFor();
+            await rf.getByLabel("Recurring frequency filter").selectOption("monthly");
+            await rf.getByRole("button",{name:"Apply filters"}).click();
+            await page.getByRole("button",{name:"New recurring rule"}).click();
+            const preview=page.getByRole("dialog",{name:"Recurring rule preview"});
+            await preview.waitFor();
+            if(await preview.getByRole("button",{name:"Review schedule (no save)"}).isEnabled())throw Error("Unvalidated recurring rule was accepted");
+            await preview.getByPlaceholder("e.g. Website maintenance").fill("Office utilities");
+            await preview.getByPlaceholder("Counterparty").fill("Sample vendor");
+            await preview.getByPlaceholder("25000.00").fill("5000.00");
+            await preview.getByRole("button",{name:"Review schedule (no save)"}).click();
+            await page.getByText("No recurring rule, invoice, expense or payment was created.",{exact:false}).waitFor();
+            record.recurringRulePreview="PASS";
           }
           if(route==="/dashboard/report"){
             await page.getByRole("heading",{name:"Reports"}).waitFor();
