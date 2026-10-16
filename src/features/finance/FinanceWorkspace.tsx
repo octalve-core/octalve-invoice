@@ -4,6 +4,8 @@ import Link from "next/link";
 import {ArrowLeft,Search,SlidersHorizontal,ChevronRight,Download,X,ShieldCheck,LockKeyhole,CalendarDays,RotateCcw,FileText} from "lucide-react";
 import {useMerchantPreview} from "@/src/features/merchant-preview/MerchantPreviewProvider";
 import {useAccessibleDialog} from "@/src/features/records/components/useAccessibleDialog";
+import {RecordMobileCard} from "@/src/features/records/components/RecordVisual";
+import type {PreviewRecord,RecordKind} from "@/src/features/records/preview-records";
 import {getFinanceMetrics,getFinanceRows,financeDefinitions,formatMinor,type FinanceMode,type FinanceRow} from "./preview-data";
 
 const iso=(value:string)=>{const [d,m,y]=value.split("/");return d&&m&&y?y+"-"+m.padStart(2,"0")+"-"+d.padStart(2,"0"):"";};
@@ -75,11 +77,12 @@ export default function FinanceWorkspace({mode}:{mode:FinanceMode}){
     </div>
     {mode==="statement"?<label className="flex items-center gap-2 text-xs text-slate-600">Customer <select aria-label="Statement customer" value={customer} onChange={e=>setCustomer(e.target.value)} className="min-w-0 max-w-[240px] rounded-lg border border-slate-200 p-2 text-sm"><option value="all">All customers (no combined balance)</option>{customers.map(c=><option value={c} key={c}>{c}</option>)}</select></label>:null}
    </header>
-   <div className="divide-y divide-slate-100 lg:hidden">{filtered.map(r=><button type="button" key={r.id} onClick={()=>setSelected(r)} className="flex w-full min-w-0 items-start gap-3 px-4 py-4 text-left hover:bg-[#F8FBFF]">
-      <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-[#EAF3FF] text-[#0064E0]"><FileText size={18}/></span>
-      <span className="min-w-0 flex-1"><strong className="block truncate text-sm text-[#173652]">{r.title}</strong><span className="mt-0.5 block truncate text-xs text-slate-500">{r.reference} · {r.date}</span><span className="mt-1 inline-block rounded-full bg-[#F2F5F9] px-2 py-1 text-[10px] font-medium capitalize text-[#486178]">{r.status}</span><span className="mt-2 block text-xs leading-5 text-slate-500">{r.type}</span></span>
-      <span className="max-w-[38%] shrink-0 text-right"><strong className="block break-words text-sm text-[#173652]">{r.amountMinor!=null?((r.amountMinor<0?"− ":"")+formatMinor(Math.abs(r.amountMinor))):"—"}</strong><ChevronRight size={17} className="ml-auto mt-2 text-slate-400"/></span>
-    </button>)}</div>
+   <div className="space-y-2 bg-white p-3 lg:hidden">{filtered.map(r=>{
+     const kind:RecordKind=mode==="adjustments"?"creditNote":mode==="reconciliation"||r.status==="payment"?"receipt":mode==="audit"?"staff":"invoice";
+     const status:PreviewRecord["status"]=r.status==="payment"?"paid":r.status==="credit"?"active":r.status==="current"?"pending":r.status.includes("days")?"overdue":"open";
+     const card:PreviewRecord={id:r.id,kind,reference:r.reference,title:r.title,date:r.date,status,amount:r.amountMinor==null?undefined:(r.amountMinor<0?"− ":"")+formatMinor(Math.abs(r.amountMinor)),dueDate:r.due};
+     return <RecordMobileCard key={r.id} record={card} onSelect={()=>setSelected(r)} statusLabel={r.status} dateLabel={r.status==="payment"?"Received":"Event"}/>;
+    })}</div>
    <div className="hidden lg:block"><table className="w-full table-fixed text-left text-sm"><thead className="bg-[#F5F8FC] text-[11px] uppercase tracking-wide text-slate-500"><tr>{config.columns.map((h,i)=><th key={h} className={"break-words px-4 py-3 font-semibold "+(i===0?"w-[18%]":"")}>{h}</th>)}<th className="w-[52px] px-2 py-3"><span className="sr-only">Actions</span></th></tr></thead><tbody className="divide-y divide-slate-100">{filtered.map(r=><tr key={r.id} className="hover:bg-[#F7FAFF]">{rowCells(mode,r,balances.get(r.id)??null).map((value,i)=><td key={i} className={"break-words px-4 py-4 text-xs "+(i===0?"font-semibold text-[#0064E0]":"text-[#3B5068]")}>{value}</td>)}<td className="px-2"><button type="button" aria-label={"View "+r.reference} onClick={()=>setSelected(r)} className="rounded-lg p-2 text-[#0064E0] hover:bg-[#EAF3FF]"><ChevronRight size={17}/></button></td></tr>)}</tbody></table></div>
    {!filtered.length?<div className="flex min-h-48 flex-col items-center justify-center px-5 py-10 text-center"><LockKeyhole size={30} className="text-slate-300"/><h3 className="mt-3 text-sm font-semibold text-[#193955]">No records match this view</h3><p className="mt-1 max-w-sm text-xs leading-5 text-slate-500">{all.length?"Try clearing the search and filters.":"This workflow has no authenticated activity. We will only display actual events when its backend is approved."}</p><button type="button" onClick={reset} className="mt-4 rounded-full border border-[#0064E0] px-4 py-2 text-xs font-semibold text-[#0064E0]">Clear filters</button></div>:null}
    <footer className="flex flex-wrap items-center justify-between gap-3 border-t border-slate-100 px-4 py-3 text-xs text-slate-500"><span>Read-only preview · {filtered.length} result(s)</span><span>Desktop table / mobile cards</span></footer>
