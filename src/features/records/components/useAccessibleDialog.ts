@@ -6,7 +6,7 @@ import {useEffect,useRef} from "react";
  */
 export function useAccessibleDialog(open:boolean,onClose:()=>void){
  const closeRef=useRef(onClose);
- closeRef.current=onClose;
+ useEffect(()=>{closeRef.current=onClose;},[onClose]);
  useEffect(()=>{
   if(!open)return;
   const previous=document.activeElement instanceof HTMLElement?document.activeElement:null;
