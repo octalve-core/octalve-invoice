@@ -92,3 +92,39 @@ test("one canonical invoice customization page includes gallery, colours, previe
  assert.match(settings,/Customize Invoices/);
  assert.doesNotMatch(settings,/Theme Settings/);
 });
+
+test("business settings and getting started use one canonical setup UI",()=>{
+ const legacy=read("app/(dashboard)/dashboard/settings/business/page.tsx");
+ const journey=read("src/features/merchant-setup/MerchantSetupJourney.tsx");
+ const start=read("app/(dashboard)/dashboard/getting-started/page.tsx");
+ const provider=read("src/features/merchant-preview/MerchantPreviewProvider.tsx");
+ assert.match(legacy,/redirect\("\/dashboard\/getting-started\?step=business"\)/);
+ assert.match(start,/<MerchantSetupJourney/);
+ assert.match(journey,/Business identity/);
+ assert.match(journey,/Business location/);
+ assert.match(journey,/How do you want to receive payments/);
+ assert.match(journey,/Online payment connections/);
+ assert.match(journey,/Account not verified/);
+ assert.match(journey,/setLogoPreview\(reader\.result as string\)/);
+ assert.match(provider,/businessDescription:string/);
+ assert.match(provider,/bankVerification\?/);
+});
+test("unverified business bank account is not leaked into invoice payment instructions",async()=>{
+ const {merchantPayment}=await import("../src/features/merchant-preview/merchant-presentation.ts");
+ const raw={businessName:"Example",bankName:"Example Bank",bankCode:"001",accountNumber:"0123456789"};
+ assert.deepEqual(merchantPayment(raw),{bankName:"",accountNumber:"",accountName:""});
+ assert.deepEqual(merchantPayment({...raw,verifiedAccountName:"A Business",
+  bankVerification:{status:"unverified",source:"trusted-server",bankCode:"001",accountNumber:"0123456789"}}),
+  {bankName:"",accountNumber:"",accountName:""});
+ assert.deepEqual(merchantPayment({...raw,verifiedAccountName:"A Business",
+  bankVerification:{status:"verified",source:"trusted-server",bankCode:"001",accountNumber:"0123456780"}}),
+  {bankName:"",accountNumber:"",accountName:""});
+ const verified={...raw,verifiedAccountName:"A Business",
+  bankVerification:{status:"verified",source:"trusted-server",bankCode:"001",accountNumber:"0123456789"}};
+ assert.deepEqual(merchantPayment(verified),{bankName:"Example Bank",accountNumber:"0123456789",accountName:"A Business"});
+});
+test("invoice picker does not activate disconnected external providers",()=>{
+ const metadata=read("src/features/invoices/sections/InvoiceMetadataSection.tsx");
+ assert.match(metadata,/disabled=\{p\.value!=="manual"\}/);
+ assert.match(metadata,/getting-started\?step=payments/);
+});

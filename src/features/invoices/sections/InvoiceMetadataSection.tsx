@@ -1,6 +1,7 @@
 "use client";
 import {useMemo,useState} from "react";
 import {CalendarDays,ChevronDown,Plus,Search,X,Users,UserRound,Wallet} from "lucide-react";
+import Link from "next/link";
 import type {InvoiceDraft} from "@/src/features/invoice/types";
 import {useMerchantPreview,type CatalogCustomer,type CatalogStaff,type PaymentMode} from "@/src/features/merchant-preview/MerchantPreviewProvider";
 type Props={draft:InvoiceDraft;setDraft:React.Dispatch<React.SetStateAction<InvoiceDraft>>};
@@ -121,8 +122,10 @@ export function InvoiceMetadataSection({draft,setDraft}:Props){
     <section role="dialog" aria-modal="true" aria-label={"Select "+picker} onClick={e=>e.stopPropagation()} className="max-h-[88dvh] w-full max-w-lg overflow-y-auto rounded-t-2xl bg-white p-4 pb-8 shadow-2xl md:rounded-2xl md:p-6">
      <div className="mx-auto mb-3 h-1 w-10 rounded-full bg-gray-200 md:hidden"/>
      <header className="mb-4 flex items-center justify-between"><h2 className="font-semibold text-[#18334b]">{picker==="customer"?"Select Customer":picker==="staff"?"Select Salesperson":"Payment Method"}</h2><button onClick={close} aria-label="Close picker"><X size={20}/></button></header>
-     {picker==="payment"?<div className="space-y-2">{payments.map(p=><button key={p.value} type="button" onClick={()=>{setPaymentMode(p.value);close();}} className={"flex w-full items-center gap-3 rounded-xl border px-4 py-3 text-left "+(paymentMode===p.value?"border-[#0064E0] bg-blue-50":"border-gray-100")}>
-      <Wallet className="shrink-0 text-[#0064E0]" size={20}/><span><span className="block text-sm font-medium">{p.label}</span><span className="text-xs text-gray-500">{p.note}</span></span></button>)}</div>:
+     {picker==="payment"?<div className="space-y-2">{payments.map(p=><button key={p.value} type="button" disabled={p.value!=="manual"} onClick={()=>{setPaymentMode(p.value);close();}} className={"flex w-full items-center gap-3 rounded-xl border px-4 py-3 text-left "+(paymentMode===p.value?"border-[#0064E0] bg-blue-50":"border-gray-100")+(p.value!=="manual"?" cursor-not-allowed opacity-55":"")}>
+      <Wallet className="shrink-0 text-[#0064E0]" size={20}/><span><span className="block text-sm font-medium">{p.label}{p.value!=="manual"?" · Not connected":""}</span><span className="text-xs text-gray-500">{p.note}</span></span></button>)}
+      <Link href="/dashboard/getting-started?step=payments" className="block rounded-xl border border-blue-200 px-4 py-3 text-center text-xs font-semibold text-[#0064E0]">View payment connections</Link>
+     </div>:
      <div className="space-y-3">
       {!adding?<><label className="relative block"><Search size={17} className="absolute left-3 top-3 text-gray-400"/><input autoFocus value={query} onChange={e=>setQuery(e.target.value)} placeholder={"Search "+(picker==="customer"?"customers":"salespeople")} className={input+" pl-10"}/></label>
        <button onClick={()=>setAdding(true)} className="flex w-full items-center justify-center gap-2 rounded-full bg-[#0064E0] px-3 py-3 text-sm font-semibold text-white"><Plus size={16}/>Add new {picker}</button>

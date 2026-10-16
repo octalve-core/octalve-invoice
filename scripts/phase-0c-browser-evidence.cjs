@@ -198,6 +198,19 @@ const origin = process.env.OCTALVE_BASE_URL || "http://127.0.0.1:3000";
             await page.getByRole("heading",{name:"Customize your invoices"}).waitFor();
             record.themeRedirectCanonical="PASS";
           }
+          if(route==="/dashboard/settings/business"){
+            await page.waitForURL("**/dashboard/getting-started?step=business");
+            await page.getByRole("heading",{name:"Set up your business workspace"}).waitFor();
+            record.businessRedirectCanonical="PASS";
+          }
+          if(route==="/dashboard/getting-started"){
+            await page.getByRole("heading",{name:"Set up your business workspace"}).waitFor();
+            await page.getByRole("button",{name:/Payments/}).first().click();
+            await page.getByText("Account not verified").waitFor();
+            await page.getByRole("button",{name:/Invoices/}).first().click();
+            await page.getByText("How do you want your invoices to look?").waitFor();
+            record.unifiedMerchantSetup="PASS";
+          }
           if(route==="/dashboard/settings/faqs"){
             await page.getByRole("heading",{name:"How can we help?"}).waitFor();
             await page.getByLabel("Search FAQs").fill("receipt");

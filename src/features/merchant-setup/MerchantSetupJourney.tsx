@@ -203,7 +203,7 @@ export function MerchantSetupJourney({initialStep="business"}:{initialStep?:Step
     </section>:null}
     <div className="flex flex-wrap items-center justify-between gap-3">
      <button type="button" onClick={()=>select(steps[Math.max(active-1,0)].key)} disabled={active===0} className="inline-flex min-h-11 items-center gap-2 rounded-full border border-[#C9D8EB] px-4 text-xs font-semibold text-[#193955] disabled:opacity-40"><ArrowLeft size={15}/> Previous</button>
-     {step!=="services"?<button type="button" onClick={()=>select(next(step))} className="inline-flex min-h-11 items-center gap-2 rounded-full bg-[#0064E0] px-5 text-sm font-semibold text-white">Save & continue <ArrowRight size={16}/></button>:
+     {step!=="services"?<button type="button" onClick={()=>select(next(step))} className="inline-flex min-h-11 items-center gap-2 rounded-full bg-[#0064E0] px-5 text-sm font-semibold text-white">Continue <ArrowRight size={16}/></button>:
       <Link href="/dashboard" className="inline-flex min-h-11 items-center gap-2 rounded-full bg-[#0064E0] px-5 text-sm font-semibold text-white">Go to overview <ArrowRight size={16}/></Link>}
     </div>
     <p className="text-xs text-slate-500">Your edits remain available while this preview session is open. Account saving and formal verification are introduced only when the secure service is enabled.</p>
