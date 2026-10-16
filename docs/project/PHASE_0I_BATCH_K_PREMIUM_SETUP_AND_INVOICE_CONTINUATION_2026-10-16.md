@@ -27,3 +27,5 @@ The user requested searchable access to all Nigerian banks. The new accessible p
 
 ## Owner acceptance
 Inspect Getting Started Payments and Invoices steps and invoice customization in desktop/mobile (320/360/390/430/768/1024/1440). Confirm hover/touch notes, bank search/selection, Back and Save & Continue redirect, and document watermark. Keep Phase 1, Neon, live gateway, actual NRS IRN/QR, issuance and Production unapproved.
+
+- **Independent post-merge PASS** at `99262ad1c582a01844a8d7d0ac038f161244811e`: https://github.com/octalve-core/octalve-invoice/actions/runs/38972017716 (build/tests), https://github.com/octalve-core/octalve-invoice/actions/runs/38972017653 (CodeQL), https://github.com/octalve-core/octalve-invoice/actions/runs/38972017741 (**browser 189/189+64/64**); artifact https://github.com/octalve-core/octalve-invoice/actions/runs/38972017741/artifacts/12077667518 . Vercel READY exact Review merge.
