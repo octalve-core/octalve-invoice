@@ -19,7 +19,7 @@ function Panel({name,title,description,open,onToggle,children}:{name:Part;title:
    <span className="min-w-0"><span className="block text-sm font-bold text-[#173652]">{title}</span><span className="mt-1 block text-[11px] leading-4 text-[#74869A]">{description}</span></span>
    {open?<ChevronUp size={19} className="shrink-0 text-[#0064E0]"/>:<ChevronDown size={19} className="shrink-0 text-[#0064E0]"/>}
   </button></h2>
-  <div id={"invoice-section-"+name} className={"border-t border-[#E9EFF6] p-4 sm:p-5"+(open?"":" hidden")}>{children}</div>
+  <div id={"invoice-section-"+name} hidden={!open} className="border-t border-[#E9EFF6] p-4 sm:p-5">{children}</div>
  </section>;
 }
 
