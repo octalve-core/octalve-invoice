@@ -3,6 +3,11 @@ import {createContext,useContext,useMemo,useState,type Dispatch,type ReactNode,t
 export interface MerchantPreviewSettings {
  businessName:string;businessAddress:string;businessPhone:string;businessDescription:string;
  rcNumber:string;taxId:string;bankName:string;accountNumber:string;email:string;website:string;
+ /** Business onboarding and document-issuance preparation fields (session-only until Phase 1). */
+ legalName?:string;industry?:string;country?:string;state?:string;city?:string;postalCode?:string;
+ language?:"en";timeZone?:string;invoicingMethod?:string;
+ bankCode?:string;verifiedAccountName?:string;
+ bankVerification?:Readonly<{status:"unverified"|"verified";bankCode:string;accountNumber:string;source:"trusted-server"}>;
 }
 export interface PreviewUser {
  fullName:string; email:string; phone:string;address:string;country:string;state:string;postalCode:string;
@@ -59,6 +64,7 @@ type ContextValue={
  settings:MerchantPreviewSettings;
  setSettings:Dispatch<SetStateAction<MerchantPreviewSettings>>;
  logoPreview:string|null;setLogoPreview:Dispatch<SetStateAction<string|null>>;
+ signaturePreview:string|null;setSignaturePreview:Dispatch<SetStateAction<string|null>>;
  paymentMode:PaymentMode;setPaymentMode:Dispatch<SetStateAction<PaymentMode>>;
  customers:CatalogCustomer[];setCustomers:Dispatch<SetStateAction<CatalogCustomer[]>>;
  items:CatalogItem[];setItems:Dispatch<SetStateAction<CatalogItem[]>>;
@@ -74,13 +80,16 @@ type ContextValue={
 };
 const defaults:MerchantPreviewSettings={
  businessName:"Octalve Limited",businessAddress:"",businessPhone:"",businessDescription:"",
- rcNumber:"",taxId:"",bankName:"",accountNumber:"",email:"",website:""
+ rcNumber:"",taxId:"",bankName:"",accountNumber:"",email:"",website:"",
+ legalName:"",industry:"",country:"Nigeria",state:"",city:"",postalCode:"",language:"en",timeZone:"Africa/Lagos",invoicingMethod:"",
+ bankCode:"",verifiedAccountName:"",bankVerification:undefined
 };
 const C=createContext<ContextValue|null>(null);
 /** Ephemeral cross-route demo context. No persistence, cookies, network or billing credentials. */
 export function MerchantPreviewProvider({children}:{children:ReactNode}){
  const [settings,setSettings]=useState<MerchantPreviewSettings>(defaults);
  const [logoPreview,setLogoPreview]=useState<string|null>(null);
+ const [signaturePreview,setSignaturePreview]=useState<string|null>(null);
  const [paymentMode,setPaymentMode]=useState<PaymentMode>("manual");
  const [user,setUser]=useState<PreviewUser>(defaultPreviewUser);
  const [customers,setCustomers]=useState<CatalogCustomer[]>(starterCustomers);
@@ -92,8 +101,8 @@ export function MerchantPreviewProvider({children}:{children:ReactNode}){
  const [archivedRecords,setArchivedRecords]=useState<ArchivedPreviewRecord[]>([]);
  const [readNotificationIds,setReadNotificationIds]=useState<string[]>([]);
  const [userImage,setUserImage]=useState<string|null>(null);
- const resetPreview=()=>{setSettings(defaults);setLogoPreview(null);setPaymentMode("manual");setUser(defaultPreviewUser);setUserImage(null);setCustomers(starterCustomers);setItems(starterItems);setStaff(starterStaff);setReceiptAutoMode("off");setInvoicePreferences(defaultInvoicePreferences);setInvoiceAppearance(defaultInvoiceAppearance);setArchivedRecords([]);setReadNotificationIds([]);};
- const value=useMemo(()=>({settings,setSettings,logoPreview,setLogoPreview,paymentMode,setPaymentMode,customers,setCustomers,items,setItems,staff,setStaff,receiptAutoMode,setReceiptAutoMode,invoicePreferences,setInvoicePreferences,invoiceAppearance,setInvoiceAppearance,archivedRecords,setArchivedRecords,readNotificationIds,setReadNotificationIds,user,setUser,userImage,setUserImage,resetPreview}),[settings,logoPreview,paymentMode,customers,items,staff,receiptAutoMode,invoicePreferences,invoiceAppearance,archivedRecords,readNotificationIds,user,userImage]);
+ const resetPreview=()=>{setSettings(defaults);setLogoPreview(null);setSignaturePreview(null);setPaymentMode("manual");setUser(defaultPreviewUser);setUserImage(null);setCustomers(starterCustomers);setItems(starterItems);setStaff(starterStaff);setReceiptAutoMode("off");setInvoicePreferences(defaultInvoicePreferences);setInvoiceAppearance(defaultInvoiceAppearance);setArchivedRecords([]);setReadNotificationIds([]);};
+ const value=useMemo(()=>({settings,setSettings,logoPreview,setLogoPreview,signaturePreview,setSignaturePreview,paymentMode,setPaymentMode,customers,setCustomers,items,setItems,staff,setStaff,receiptAutoMode,setReceiptAutoMode,invoicePreferences,setInvoicePreferences,invoiceAppearance,setInvoiceAppearance,archivedRecords,setArchivedRecords,readNotificationIds,setReadNotificationIds,user,setUser,userImage,setUserImage,resetPreview}),[settings,logoPreview,signaturePreview,paymentMode,customers,items,staff,receiptAutoMode,invoicePreferences,invoiceAppearance,archivedRecords,readNotificationIds,user,userImage]);
  return <C.Provider value={value}>{children}</C.Provider>;
 }
 export function useMerchantPreview(){const ctx=useContext(C);if(!ctx)throw new Error("Merchant preview provider missing");return ctx;}
