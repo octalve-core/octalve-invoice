@@ -32,3 +32,5 @@
 
 ## Unchanged financial restrictions
 Issued invoice requests are not collected cash; verified payment is the income truth source; receipts document verified payment and cannot double count; eligible bank transfer payments require manual evidence and authorization; gateway/dynamic-account Paid status requires verified provider events; customer QR, payment QR and NRS verification QR are separate. No secure backend, Neon, live auth, payments, emailed receipts, NRS fiscalization or Production launch approved by this release.
+
+- **Post-merge exact Review checks: all PASS.** Phase qualification https://github.com/octalve-core/octalve-invoice/actions/runs/38934451095 ; CodeQL https://github.com/octalve-core/octalve-invoice/actions/runs/38934451220 ; 189/189+64/64 browser https://github.com/octalve-core/octalve-invoice/actions/runs/38934451152 ; review-merge screenshot and PDF/PNG artifact https://github.com/octalve-core/octalve-invoice/actions/runs/38934451152/artifacts/12060780726 .
