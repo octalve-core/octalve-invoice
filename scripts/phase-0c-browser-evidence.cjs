@@ -71,6 +71,11 @@ const origin = process.env.OCTALVE_BASE_URL || "http://127.0.0.1:3000";
           await page.waitForTimeout(350);
           if (viewport.width < 768) { const overflow = await page.evaluate(() => document.documentElement.scrollWidth > window.innerWidth + 2); if (overflow) throw new Error("Unexpected page-level horizontal overflow"); }
           if (record.statusCode !== 200) throw new Error("Non-200 status: " + record.statusCode);
+          // Audit actual rendered copy; Preview language must remain truthful until an operation is live.
+          const visibleText=await page.locator("body").innerText();
+          const disallowed=visibleText.match(/\b(?:sandbox|development)\b/i);
+          if(disallowed)throw Error("Customer-facing technical label exposed: "+disallowed[0]+" on "+route);
+          record.customerFacingLanguage="PASS";
           if(route==="/login"||route==="/signup"){
             const count=await page.locator("form").count();
             if(count!==1)throw Error("Authentication must have exactly one form, got "+count);
