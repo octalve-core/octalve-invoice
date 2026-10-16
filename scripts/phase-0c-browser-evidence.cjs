@@ -104,27 +104,9 @@ const origin = process.env.OCTALVE_BASE_URL || "http://127.0.0.1:3000";
             record.mobileCard="PASS";
           }
           if(route==="/dashboard/invoice/1"){
-            await page.getByRole("heading",{name:"Invoice workflow"}).waitFor();
-            await page.getByRole("tab",{name:"Installments"}).click();
-            await page.getByRole("button",{name:"Review proposed split"}).click();
-            await page.getByText("No payment schedule was saved or communicated.",{exact:false}).waitFor();
-            await page.getByRole("button",{name:"Custom milestones"}).click();
-            await page.getByText("Total allocation: 100%",{exact:false}).waitFor();
-            await page.getByRole("button",{name:"Add milestone"}).click();
-            if(await page.getByRole("button",{name:"Review proposed split"}).isEnabled())throw Error("Unbalanced stages were accepted");
-            await page.getByRole("spinbutton",{name:"Milestone 1 percentage"}).fill("40");
-            await page.getByRole("spinbutton",{name:"Milestone 4 percentage"}).fill("10");
-            await page.getByText("Total allocation: 100%",{exact:false}).waitFor();
-            if(!await page.getByRole("button",{name:"Review proposed split"}).isEnabled())throw Error("Balanced milestone schedule was rejected");
-            await page.getByRole("button",{name:"Review proposed split"}).click();
-            record.customMilestoneValidation="PASS";
-            await page.getByRole("tab",{name:"Communication"}).click();
-            await page.getByRole("button",{name:"Payment reminder"}).click();
-            const composeInvoice=page.getByRole("dialog",{name:"Draft invoice communication"});
-            await composeInvoice.waitFor();
-            await composeInvoice.getByRole("button",{name:"Review draft (not sent)"}).click();
-            await page.getByText("No email, SMS or reminder was sent or queued.",{exact:false}).waitFor();
-            record.installmentAndMailPreview="PASS";
+            if(await page.getByRole("heading",{name:"Invoice workflow"}).count())throw Error("Issued invoice must not expose draft installment planner");
+            await page.getByRole("heading",{name:/Invoice OL-00001INV/}).waitFor();
+            record.issuedInvoiceReadOnlyPlan="PASS";
           }
           if(route==="/dashboard/quotation/1"){
             await page.getByRole("heading",{name:/Quotation /}).first().waitFor();
@@ -387,7 +369,7 @@ const origin = process.env.OCTALVE_BASE_URL || "http://127.0.0.1:3000";
             await page.getByRole("heading",{name:"Everything about your invoices in one place."}).waitFor();
             await page.getByRole("navigation",{name:"Customer portal sections"}).getByRole("button",{name:"Payments"}).click();
             await page.getByRole("heading",{name:"Only verified payments appear here"}).waitFor();
-            await page.getByText("No live payment or customer session can be initiated",{exact:false}).waitFor();
+            await page.getByText("Payments and sign-in are not available on this page.",{exact:false}).waitFor();
             record.portalDenyByDefault="PASS";
           }
           if(route==="/dashboard/insights-support"){
@@ -416,6 +398,8 @@ const origin = process.env.OCTALVE_BASE_URL || "http://127.0.0.1:3000";
                     if (route === "/dashboard/invoice/create") {
             await page.getByRole("heading", { name: "Create invoice" }).waitFor();
             await page.getByRole("heading", { name: "Live Modern Invoice preview" }).waitFor();
+            if(await page.getByRole("button",{name:/Invoice & customer details/}).getAttribute("aria-expanded")!=="true")throw Error("Customer details should open initially");
+            if(await page.getByRole("button",{name:/Products & services/}).getAttribute("aria-expanded")!=="false")throw Error("Items accordion should start collapsed");
             await page.locator('section[aria-label="Invoice details"]').getByRole("button",{name:"Sample Customer"}).click();
             await page.getByRole("dialog",{name:"Select customer"}).getByRole("button",{name:/Add new customer/}).click();
             await page.getByRole("dialog",{name:"Select customer"}).getByLabel("Customer name *").fill("Golden Preview Customer");
@@ -429,17 +413,59 @@ const origin = process.env.OCTALVE_BASE_URL || "http://127.0.0.1:3000";
             await logoNotice.waitFor();
             // Regression: a deleted row must not cause later rows to share identifiers.
             // This also exercises invoice-item input -> both live template presentations.
+            const itemsSectionButton=page.getByRole("button",{name:/Products & services/});
+            await itemsSectionButton.click();
+            if(await itemsSectionButton.getAttribute("aria-expanded")!=="true")throw Error("Products & services did not open");
             const itemEditor = page.locator('section[aria-label="Invoice products and services"]');
+            if(!await itemEditor.getByRole("button",{name:"+ Add row"}).isVisible())throw Error("Add row button is not visible when products section opens");
             await itemEditor.getByRole("button", { name: "+ Add row" }).click();
-            await itemEditor.getByRole("button", { name: "Remove row" }).first().click();
+            await itemEditor.getByRole("button", { name: "Edit item 1" }).click();
+            await itemEditor.getByRole("button", { name: "Remove row" }).click();
             await itemEditor.getByRole("button", { name: "+ Add row" }).click();
+            await itemEditor.getByRole("button", { name: "Expand items" }).click();
             await itemEditor.getByLabel("Product or service 1").fill("Golden Item One");
             await itemEditor.getByLabel("Product or service 2").fill("Golden Item Two");
             if (await itemEditor.getByLabel("Product or service 1").inputValue() !== "Golden Item One") throw Error("Invoice draft row identifiers collided after remove/add");
             await itemEditor.getByLabel("Rate for item 1").fill("1500");
             await itemEditor.getByLabel("Rate for item 2").fill("2750");
+            await page.getByRole("button",{name:/Totals, tax & notes/}).click();
             await page.getByLabel("Mail for customer / Notes").fill("PHASE ZERO NOTE WITHOUT BANK DETAILS");
+            if(await page.locator('section[aria-label="Invoice products and services"]').isVisible())throw Error("Opening charges must collapse product rows");
+            await page.getByRole("button",{name:/Products & services/}).click();
+            await itemEditor.getByRole("button",{name:"Edit item 1"}).click();
+            await itemEditor.getByRole("button",{name:"Edit item 2"}).click();
+            record.invoiceAccordion="PASS";
             if (await page.locator('#invoice-document').getByText("Editable sample line item").count()) throw Error("Removed description still visible on modern document");
+          if(route==="/dashboard/invoice/create"){
+            await page.getByRole("button",{name:/Payment plan & communication/}).click();
+            await page.getByRole("heading",{name:"Invoice workflow"}).waitFor();
+            await page.getByRole("tab",{name:"Installments"}).click();
+            await page.getByRole("button",{name:"Review proposed split"}).click();
+            await page.getByText("No payment schedule was saved or communicated.",{exact:false}).waitFor();
+            await page.getByRole("button",{name:"Custom milestones"}).click();
+            await page.getByText("Total allocation: 100%",{exact:false}).waitFor();
+            await page.getByRole("button",{name:"Add milestone"}).click();
+            if(await page.getByRole("button",{name:"Review proposed split"}).isEnabled())throw Error("Unbalanced stages were accepted");
+            await page.getByRole("spinbutton",{name:"Milestone 1 percentage"}).fill("40");
+            await page.getByRole("spinbutton",{name:"Milestone 4 percentage"}).fill("10");
+            await page.getByText("Total allocation: 100%",{exact:false}).waitFor();
+            if(!await page.getByRole("button",{name:"Review proposed split"}).isEnabled())throw Error("Balanced milestone schedule was rejected");
+            await page.getByRole("button",{name:"Review proposed split"}).click();
+            record.customMilestoneValidation="PASS";
+            await page.getByRole("button",{name:/Invoice & customer details/}).click();
+            if(await page.getByRole("spinbutton",{name:"Milestone 1 percentage"}).isVisible())throw Error("Collapsed invoice workflow remained visible");
+            await page.getByRole("button",{name:/Payment plan & communication/}).click();
+            if(await page.getByRole("spinbutton",{name:"Milestone 1 percentage"}).inputValue()!=="40")throw Error("Collapsing invoice workflow lost the merchant's installment plan");
+            record.invoiceWorkflowStateRetained="PASS";
+            await page.getByRole("tab",{name:"Communication"}).click();
+            await page.getByRole("button",{name:"Payment reminder"}).click();
+            const composeInvoice=page.getByRole("dialog",{name:"Draft invoice communication"});
+            await composeInvoice.waitFor();
+            await composeInvoice.getByRole("button",{name:"Review draft (not sent)"}).click();
+            await page.getByText("No email, SMS or reminder was sent or queued.",{exact:false}).waitFor();
+            record.installmentAndMailPreview="PASS";
+          }
+
             record.itemRowIdentityAndNotes = "PASS";
             record.merchantIdentity="PASS";
             if(view==="desktop"){

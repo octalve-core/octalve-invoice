@@ -52,15 +52,15 @@ export default function BusinessSettingsPage() {
   };
 
   const handleSave = () => {
-    toast.info("Business settings updated for this Preview session only. They are not stored on a server.");
+    toast.info("Business details updated for this session. Save them to your account once account saving is available.");
     router.push("/dashboard/invoice/create");
   };
 
   return (
     <>
       <section className="mx-auto mb-5 max-w-3xl rounded-xl border border-blue-100 bg-blue-50 p-3 text-sm text-[#00489F]">
-        <p className="font-medium">Preview-only business settings</p>
-        <p className="mt-1 text-xs">Company identity and payment information are shared with your invoice previews until you refresh this application. No server account is created or saved.</p>
+        <p className="font-medium">Business details</p>
+        <p className="mt-1 text-xs">Your business details and logo appear on document previews. Changes made here last for this session.</p>
         <label className="mt-3 block text-xs font-medium">Payment method for invoice preview
           <select aria-label="Payment method for invoice preview" value={paymentMode} onChange={e=>setPaymentMode(e.target.value as typeof paymentMode)} className="mt-1 block h-10 w-full rounded-lg border border-blue-200 bg-white px-3 text-sm">
             <option value="manual">Bank transfer (manual)</option><option value="monnify">Monnify (coming later)</option><option value="flutterwave">Flutterwave (coming later)</option><option value="paystack">Paystack (coming later)</option>

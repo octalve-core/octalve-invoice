@@ -42,7 +42,7 @@ export function RecordActionDialog({record,onClose,onAction}:{record:PreviewReco
    {record.kind==="invoice"&&record.status==="paid"?<Link href={"/dashboard/receipt/create?invoice="+record.id} onClick={onClose}
      className="mt-3 block rounded-lg bg-blue-50 px-3 py-3 text-center text-sm font-medium text-[#0064E0]">Issue a receipt for this paid invoice →</Link>:null}
    <button onClick={onClose} className="mt-4 w-full rounded-full border border-[#0064E0] py-2.5 text-sm font-medium text-[#0064E0]">Cancel</button>
-   <p className="mt-2 text-center text-[10px] text-gray-400">Preview-only actions; no record will be sent, deleted or refunded.</p>
+   <p className="mt-2 text-center text-[10px] text-gray-400">Review these options. Any action will require confirmation once your account is ready.</p>
   </section>
  </div>;
 }

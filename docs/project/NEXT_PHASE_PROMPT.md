@@ -9,7 +9,7 @@ Continue the **EXISTING** `octalve-core/octalve-invoice` app, NOT the separate S
 
 ## Verified latest baseline
 - Development source checkpoint: `1890c5d839976cce99b901765a02ab98328e852e` (Batch E finance review + recurring policy/date validation). Subsequent documentation commits do not imply new application code; always compare exact GitHub refs.
-- Review Batch D currently published: `78122f0759a096cbd6fc88d57b3034dd121124f4`, READY at https://octalve-invoice-git-review-phase-0i-octalve-vault.vercel.app .
+- Review Batch E published: `d791b816aae810a9575ca4cc415b7cfcc4a2ed98` via PR #6, READY at https://octalve-invoice-git-review-phase-0i-octalve-vault.vercel.app .
 - `main` SHA: `e01c9158616f65b4e08d5b36318b8d27aef3189b`, without Phase 0I. Phase 0I PR #2 remains draft.
 - Last pinned Batch E application source/build/CodeQL/browser success at `1890c5d839976cce99b901765a02ab98328e852e`:
   - Phase qualification: https://github.com/octalve-core/octalve-invoice/actions/runs/38920535188
@@ -23,4 +23,10 @@ Read the full handoff **before performing any substantive write**; it explains p
 ## Batch E source qualification checkpoint
 - Recurring calendar preview now validates true dates, month-end/leap-year anchors, inclusive cutoffs and 1–12 occurrences; captures review/tax/missed-run policies without scheduling.
 - Seven specialist finance review action forms include source context and explicit future authorization checklists, without posting financial events or exporting originals.
-- All new source passed CI and browser regression at `1890c5d839976cce99b901765a02ab98328e852e`; source-only Batch E is waiting for one intentional merge to `review/phase-0i` at this checkpoint. Owner visual acceptance, new dashboard logo, final invoice design, subscription costs and backend approval remain open.
+- All new source passed CI and browser regression at `1890c5d839976cce99b901765a02ab98328e852e`; docs-and-code candidate `2556eca` passed separate final CI and was merged to Review only at `d791b816` (Vercel READY). Owner visual acceptance, new dashboard logo, final invoice design, subscription costs and backend approval remain open.
+
+## Published Batch E (verified after review merge)
+- Review PR: https://github.com/octalve-core/octalve-invoice/pull/6 (merged to review only).
+- Vercel READY deployment: `dpl_7jcK5LgcWX4UKdrWv697joqULbL6` (review merge `d791b816`), stable alias unchanged.
+- Final candidate qualification: Node24/test/build 38921320625, CodeQL 38921320650, browser 38921314940 (189+64 checks), artifact 12055770414. Public-route HTTP probing by this chat tool failed; READY and internal browser checks are confirmed, not external authenticated route tests.
+- No Phase 0I main merge or backend authorization; PR #2 stays draft.

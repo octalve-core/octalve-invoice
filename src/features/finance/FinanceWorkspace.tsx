@@ -62,7 +62,7 @@ export default function FinanceWorkspace({mode}:{mode:FinanceMode}){
  return <main className="min-w-0 space-y-5 pb-12">
   <header className="flex flex-wrap items-start justify-between gap-3">
    <div className="min-w-0"><Link href="/dashboard/other-services" className="mb-2 inline-flex items-center gap-2 text-sm font-semibold text-[#0064E0]"><ArrowLeft size={16}/> More services</Link><h1 className="text-2xl font-bold text-[#173652] sm:text-3xl">{config.title}</h1><p className="mt-1 max-w-2xl text-sm leading-6 text-slate-500">{config.description}</p></div>
-   <span className="rounded-full bg-[#EAF3FF] px-3 py-1.5 text-xs font-semibold text-[#0064E0]">Example records · View only</span>
+   <span className="rounded-full bg-[#EAF3FF] px-3 py-1.5 text-xs font-semibold text-[#0064E0]">Sample records</span>
   </header>
   <div className="flex items-start gap-2 rounded-xl border border-blue-100 bg-[#F3F8FF] p-3 text-xs leading-5 text-[#245078]"><ShieldCheck className="mt-0.5 shrink-0" size={18}/><p>{config.note} Nothing on this page sends messages, changes financial records, authorizes staff or reports to NRS.</p></div>
   <div className="grid grid-cols-2 gap-3 lg:grid-cols-3 xl:grid-cols-5">{metrics.map(m=><article key={m.label} className="min-w-0 rounded-2xl border border-slate-100 bg-white p-4 shadow-sm"><p className="text-[11px] font-medium text-slate-500">{m.label}</p><p className="mt-2 break-words text-base font-bold text-[#183752] sm:text-lg">{m.value}</p></article>)}</div>
@@ -116,6 +116,6 @@ export default function FinanceWorkspace({mode}:{mode:FinanceMode}){
    <label className="block text-xs text-slate-500">Subject<input value={subject} onChange={e=>setSubject(e.target.value)} maxLength={120} className="mt-1 w-full rounded-xl border border-slate-200 p-3 text-sm"/></label><label className="block text-xs text-slate-500">Message<textarea value={message} onChange={e=>setMessage(e.target.value)} maxLength={3000} rows={5} placeholder="Write a respectful, factual update. Do not include unverified payment status." className="mt-1 w-full rounded-xl border border-slate-200 p-3 text-sm"/></label>
    <button type="button" onClick={()=>{setNotice("Draft reviewed locally. No message was sent, scheduled or saved.");setCompose(false);}} className="w-full rounded-full bg-[#0064E0] px-4 py-3 text-xs font-semibold text-white">Review draft (no sending)</button>
   </section></div>:null}
-  <p className="flex items-start gap-2 text-xs leading-5 text-slate-500"><CalendarDays className="mt-0.5 shrink-0" size={16}/> All finance views require server-side tenant checks, immutable financial/event history, and audited approvals before operational launch. <RotateCcw className="mt-0.5 shrink-0" size={15}/></p>
+  <p className="flex items-start gap-2 text-xs leading-5 text-slate-500"><CalendarDays className="mt-0.5 shrink-0" size={16}/> Finance actions will become available when your business records and required permissions are ready. <RotateCcw className="mt-0.5 shrink-0" size={15}/></p>
  </main>;
 }

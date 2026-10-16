@@ -22,3 +22,12 @@
 - Published Vercel Review at document preparation was Batch D; Batch E must be merged into `review/phase-0i` only after CI qualification and deployed READY. `main` untouched. PR #2 remains draft.
 - Remaining required frontend owner visual review and detailed screen states; independent dashboard logo asset absent; final invoice appearance deliberately deferred.
 - Subscription economics unapproved. No Phase 1/backend, Neon, real auth, payments, receipt/reconciliation ledger, issuance automation, NRS, support delivery or customer portal data may be enabled without new authorization.
+
+
+## Post-publication checkpoint
+- **Review-only PR #6 merged**: https://github.com/octalve-core/octalve-invoice/pull/6
+- Review commit: `d791b816aae810a9575ca4cc415b7cfcc4a2ed98`
+- **Vercel READY**: `dpl_7jcK5LgcWX4UKdrWv697joqULbL6`, original deployment https://octalve-invoice-6zr54x3d3-octalve-vault.vercel.app; stable owner URL https://octalve-invoice-git-review-phase-0i-octalve-vault.vercel.app assigned to this deployment.
+- Final docs+source candidate `2556eca98e643bc24dc2cd46e5de8f74c0b5f97a` passed Phase qualification 38921320625, CodeQL 38921320650, browser 38921314940 (189/189 +64/64), artifact 12055770414.
+- Direct external HTTP probing from this chat's public browser was inaccessible. Vercel metadata/alias/READY and GitHub isolated-browser regressions are confirmed; individual live route HTTP status has **not** been separately certified.
+- Main SHA e01c915 unchanged; PR #2 remains draft. Owner visual sign-off, commercial policy, final invoice appearance and all live finance/identity/NRS authority are **not** approved.
