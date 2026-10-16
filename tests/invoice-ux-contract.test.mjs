@@ -153,3 +153,20 @@ test("payment bank picker is searchable and not falsely called a verified full d
  assert.match(setup,/About|SetupInfoNote/);
  assert.match(setup,/Account not verified/);
 });
+
+test("premium desktop sidebar is dark blue-active, separately scrollable and keeps billing/logout anchored",()=>{
+ const sidebar=read("components/dashboard/Sidebar.tsx");
+ const layout=read("app/(dashboard)/layout.tsx");
+ assert.match(sidebar,/bg-\[#000A16\]/);
+ assert.match(sidebar,/bg-\[#0064E0\] text-white/);
+ assert.match(sidebar,/lg:h-dvh lg:min-h-0 lg:overflow-hidden/);
+ assert.match(sidebar,/min-h-0 flex-1 overflow-y-auto overscroll-contain/);
+ assert.match(sidebar,/Sidebar account and billing/);
+ assert.match(sidebar,/dashboard\/settings\/subscription/);
+ assert.match(sidebar,/<PreviewLogoutButton/);
+ assert.match(sidebar,/aria-current=\{isActive\?"page":undefined\}/);
+ assert.match(layout,/lg:h-dvh lg:min-h-0 lg:overflow-hidden/);
+ assert.match(layout,/lg:h-full lg:min-h-0 lg:overflow-y-auto/);
+ assert.match(layout,/<BottomNavbar \/>/);
+ assert.match(layout,/<MobileHeader \/>/);
+});

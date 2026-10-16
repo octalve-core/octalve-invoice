@@ -172,6 +172,35 @@ const origin = process.env.OCTALVE_BASE_URL || "http://127.0.0.1:3000";
             record.notifications="PASS";
           }
 
+          if(route==="/dashboard"&&view==="desktop"){
+            const sidebar=page.getByRole("complementary",{name:"Desktop workspace sidebar"});
+            await sidebar.getByRole("navigation",{name:"Desktop main navigation"}).getByRole("link",{name:"Overview"}).waitFor();
+            if(await sidebar.getByRole("navigation",{name:"Desktop main navigation"}).getByRole("link",{name:"Overview"}).getAttribute("aria-current")!=="page")throw Error("Overview not marked as active sidebar route");
+            const subs=sidebar.getByRole("link",{name:/Subscription/});
+            await subs.waitFor();
+            if((await subs.getAttribute("href"))!=="/dashboard/settings/subscription")throw Error("Subscription footer is not linked");
+            const layout=await page.evaluate(()=>{
+              const sidebar=document.querySelector('aside[aria-label="Desktop workspace sidebar"]');
+              const panel=sidebar?.nextElementSibling;
+              const nav=sidebar?.querySelector('nav[aria-label="Desktop main navigation"]');
+              const footer=sidebar?.querySelector('footer[aria-label="Sidebar account and billing"]');
+              if(!(sidebar instanceof HTMLElement)||!(panel instanceof HTMLElement)||!(nav instanceof HTMLElement)||!(footer instanceof HTMLElement))return {ok:false};
+              const start=sidebar.getBoundingClientRect();
+              panel.scrollTop=panel.scrollHeight;
+              nav.scrollTop=nav.scrollHeight;
+              const end=sidebar.getBoundingClientRect(),bottom=footer.getBoundingClientRect();
+              const bg=getComputedStyle(sidebar).backgroundColor;
+              const result={ok:Math.abs(start.top-end.top)<1&&Math.abs(start.left-end.left)<1&&bottom.bottom<=innerHeight+1&&bottom.bottom>innerHeight-100, bg,scroller:panel.scrollHeight>panel.clientHeight,navScrollable:nav.scrollHeight>nav.clientHeight,navScrolled:nav.scrollTop};
+              panel.scrollTop=0;nav.scrollTop=0;return result;
+            });
+            if(!layout.ok||layout.bg!=="rgb(0, 10, 22)"||!layout.scroller)throw Error("Desktop sidebar must be fixed at #000A16 and have an independent scrolling page: "+JSON.stringify(layout));
+            record.desktopSidebarAnchored="PASS";
+            record.sidebarSubscriptionFooter="PASS";
+          }
+          if(route==="/dashboard"&&view==="mobile"){
+            if(await page.getByRole("complementary",{name:"Desktop workspace sidebar"}).isVisible())throw Error("Desktop sidebar leaked into mobile");
+            record.mobileNavigationPreserved="PASS";
+          }
           if(route==="/dashboard/settings/subscription"){
             await page.getByRole("heading",{name:"Manage Subscription"}).waitFor();
             await page.getByRole("button",{name:"Yearly -15%"}).click();
