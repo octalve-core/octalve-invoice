@@ -33,10 +33,10 @@ function activeRoute(pathname:string,href:string){
  if(href==="/dashboard")return pathname==="/dashboard";
  if(href==="/dashboard/other-services")return pathname.startsWith(href)||
   pathname.startsWith("/dashboard/finance/")||
-  pathname.startsWith("/dashboard/recurring")||
+  (pathname==="/dashboard/recurring"||pathname.startsWith("/dashboard/recurring/"))||
   pathname.startsWith("/dashboard/tax-centre")||
   pathname.startsWith("/dashboard/insights-support");
- if(href==="/dashboard/settings")return pathname.startsWith(href);
+ if(href==="/dashboard/settings")return pathname.startsWith(href)&&!pathname.startsWith(href+"/subscription");
  return pathname===href||pathname.startsWith(href+"/");
 }
 
