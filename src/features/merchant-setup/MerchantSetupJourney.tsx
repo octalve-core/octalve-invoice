@@ -1,5 +1,7 @@
 "use client";
 import {useState,type ChangeEvent} from "react";
+import {NigerianBankPicker} from "./NigerianBankPicker";
+import {SetupInfoNote} from "./SetupInfoNote";
 import Image from "next/image";
 import Link from "next/link";
 import {ArrowLeft,ArrowRight,BadgeCheck,Building2,CheckCircle2,CreditCard,FileText,Landmark,LockKeyhole,Paintbrush,ShieldCheck,Upload,WalletCards,Settings2} from "lucide-react";
@@ -17,7 +19,7 @@ const industries=["Agriculture","Construction & property","Consulting & professi
 const states=["Abia","Adamawa","Akwa Ibom","Anambra","Bauchi","Bayelsa","Benue","Borno","Cross River","Delta","Ebonyi","Edo","Ekiti","Enugu","FCT","Gombe","Imo","Jigawa","Kaduna","Kano","Katsina","Kebbi","Kogi","Kwara","Lagos","Nasarawa","Niger","Ogun","Ondo","Osun","Oyo","Plateau","Rivers","Sokoto","Taraba","Yobe","Zamfara"] as const;
 const input="mt-1.5 h-11 w-full min-w-0 rounded-xl border border-[#D7E2EF] bg-white px-3 text-sm text-[#173652] outline-none transition focus:border-[#0064E0] focus:ring-2 focus:ring-[#0064E0]/10";
 const label="block min-w-0 text-xs font-semibold text-[#314761]";
-const panel="min-w-0 rounded-2xl border border-[#E0EAF5] bg-white p-4 shadow-sm sm:p-6";
+const panel="min-w-0 rounded-[22px] border border-[#E1EAF5] bg-white p-4 shadow-[0_14px_38px_rgba(23,54,89,.09)] sm:p-6";
 
 function Field({title,value,onChange,placeholder,type="text",required=false}:{
  title:string;value:string;onChange:(value:string)=>void;placeholder?:string;type?:string;required?:boolean
@@ -52,19 +54,19 @@ export function MerchantSetupJourney({initialStep="business"}:{initialStep?:Step
  const select=(s:Step)=>{setStep(s);};
  const hasProfile=Boolean(settings.businessName.trim()&&settings.businessAddress.trim()&&settings.businessPhone.trim());
  const bankFormat=/^[0-9]{10}$/.test(settings.accountNumber);
- return <main className="mx-auto w-full max-w-[1180px] min-w-0 space-y-5 pb-12">
+ return <main className="mx-auto w-full max-w-[1200px] min-w-0 space-y-5 rounded-[28px] bg-gradient-to-br from-[#F3F7FD] via-[#F9FBFF] to-[#F2F7FF] px-3 pb-10 pt-5 shadow-[0_18px_65px_rgba(27,65,112,.045)] sm:px-5 lg:px-7">
   <header className="space-y-2">
    <Link href="/dashboard/settings" className="inline-flex items-center gap-2 text-xs font-semibold text-[#0064E0]"><ArrowLeft size={15}/> Back to Settings</Link>
    <div className="flex flex-wrap items-start justify-between gap-4">
     <div><p className="text-[11px] font-semibold uppercase tracking-[.16em] text-[#0064E0]">Getting started</p>
      <h1 className="mt-1 text-2xl font-bold tracking-tight text-[#16344F] sm:text-3xl">Set up your business workspace</h1>
-     <p className="mt-1 text-sm text-slate-500">Your business identity, invoice preferences and collection options in one place. You can return to edit any section.</p></div>
+     <p className="mt-1 text-sm text-slate-500">Business details, invoices and payments — together.</p></div>
     <span className="rounded-full border border-blue-100 bg-[#F0F7FF] px-4 py-2 text-xs font-medium text-[#0064E0]">Step {active+1} of {steps.length}</span>
    </div>
   </header>
   <nav aria-label="Business setup steps" className="grid grid-cols-2 gap-2 sm:grid-cols-4">
    {steps.map((s,i)=><button key={s.key} type="button" onClick={()=>select(s.key)} aria-current={step===s.key?"step":undefined}
-    className={"flex min-w-0 items-center gap-2 rounded-xl border px-3 py-3 text-left transition focus-visible:outline-2 focus-visible:outline-[#0064E0] "+(step===s.key?"border-[#0064E0] bg-[#EEF5FF]":"border-[#E4EBF5] bg-white hover:bg-[#F8FBFF]")}>
+    className={"flex min-w-0 items-center gap-2 rounded-xl border px-3 py-3 text-left shadow-[0_6px_18px_rgba(18,53,89,.05)] transition focus-visible:outline-2 focus-visible:outline-[#0064E0] "+(step===s.key?"border-[#0064E0] bg-[#EEF5FF]":"border-[#E4EBF5] bg-white hover:bg-[#F8FBFF]")}>
     <span className={"grid h-8 w-8 shrink-0 place-items-center rounded-full text-xs font-bold "+(step===s.key?"bg-[#0064E0] text-white":"bg-[#F1F5FA] text-[#53677D]")}>{i+1}</span>
     <span className="min-w-0"><span className="block text-xs font-semibold text-[#183652]">{s.short}</span><span className="block truncate text-[10px] text-slate-500">{s.help.split(",")[0]}</span></span>
    </button>)}
@@ -74,7 +76,7 @@ export function MerchantSetupJourney({initialStep="business"}:{initialStep?:Step
     {step==="business"?<>
      <section className={panel}>
       <header className="flex items-center gap-3"><span className="grid h-10 w-10 place-items-center rounded-xl bg-blue-50 text-[#0064E0]"><Building2 size={20}/></span>
-       <div><h2 className="font-bold text-[#173652]">Business identity</h2><p className="text-xs text-slate-500">Tell customers who they are dealing with.</p></div></header>
+       <div><h2 className="font-bold text-[#173652]">Business identity</h2><p className="text-xs text-slate-500">Your business identity.</p></div></header>
       <div className="mt-5 flex flex-col items-start gap-3 border-b border-slate-100 pb-5 sm:flex-row sm:items-center">
        <label className="group relative grid h-24 w-24 shrink-0 cursor-pointer place-items-center overflow-hidden rounded-2xl border-2 border-dashed border-blue-200 bg-[#F8FBFF] text-[#0064E0]">
         {logoPreview?<Image src={logoPreview} unoptimized alt="Uploaded business logo" width={96} height={96} className="h-full w-full object-contain"/>:<Upload size={23}/>}
@@ -99,7 +101,7 @@ export function MerchantSetupJourney({initialStep="business"}:{initialStep?:Step
       </div>
      </section>
      <section className={panel}>
-      <h2 className="font-bold text-[#173652]">Business location</h2><p className="mt-1 text-xs text-slate-500">Use your registered or operating address. The address can appear on invoices and receipts.</p>
+      <h2 className="font-bold text-[#173652]">Business location</h2><p className="mt-1 text-xs text-slate-500">Location shown on documents.</p>
       <div className="mt-5 grid gap-4 sm:grid-cols-2">
        <label className={label}>Country
         <select aria-label="Business country" value={settings.country||"Nigeria"} onChange={e=>patch("country",e.target.value)} className={input}><option value="Nigeria">Nigeria</option><option value="Other">Other country (details to be completed)</option></select>
@@ -139,55 +141,57 @@ export function MerchantSetupJourney({initialStep="business"}:{initialStep?:Step
     </>:null}
     {step==="appearance"?<section className={panel}>
      <div className="flex items-center gap-3"><Paintbrush className="text-[#0064E0]"/><h2 className="text-lg font-bold text-[#173652]">How do you want your invoices to look?</h2></div>
-     <p className="mt-2 text-sm text-slate-600">Choose a template and tailor the colours, layout and logo using your business details. There is only one place to customize invoices.</p>
+     <p className="mt-2 text-sm text-slate-600">Choose your template, colours and layout.</p>
      <div className="mt-5 grid gap-3 sm:grid-cols-2">
       <div className="rounded-xl border border-blue-100 bg-[#F3F8FF] p-4"><p className="font-semibold text-[#173652]">{invoiceAppearance.template==="modern"?"Octalve Modern":"Classic Ledger"}</p><p className="mt-1 text-xs text-slate-500">Current template choice</p></div>
       <div className="rounded-xl border border-slate-100 p-4"><p className="font-semibold text-[#173652]">{invoicePreferences.currency}</p><p className="mt-1 text-xs text-slate-500">Default invoice currency</p></div>
      </div>
-     <Link href="/dashboard/settings/invoice" className="mt-5 inline-flex min-h-11 items-center gap-2 rounded-full bg-[#0064E0] px-5 text-sm font-semibold text-white">Customize invoice templates <ArrowRight size={16}/></Link>
-     <p className="mt-4 text-xs text-slate-500">Changes are shared with invoice creation. Draft invoices remain marked DRAFT — NOT ISSUED.</p>
+     <Link href="/dashboard/settings/invoice?from=getting-started" className="mt-5 inline-flex min-h-11 items-center gap-2 rounded-full bg-[#0064E0] px-5 text-sm font-semibold text-white">Customize invoices <ArrowRight size={16}/></Link>
+     <div className="mt-3 flex items-center gap-2 text-xs text-slate-500">Changes apply to new drafts. <SetupInfoNote title="Document safety" detail="Drafts are marked DRAFT — NOT ISSUED. Saving appearance settings does not issue an invoice or create an official PDF."/></div>
     </section>:null}
     {step==="payments"?<>
      <section className={panel}>
       <h2 className="flex items-center gap-2 text-lg font-bold text-[#173652]"><Landmark className="text-[#0064E0]"/> How do you want to receive payments?</h2>
-      <p className="mt-2 text-sm text-slate-600">Add your company account for ordinary bank transfers, or connect an authorized online collection service when available.</p>
+      <p className="mt-2 text-sm text-slate-600">Set up bank transfers or explore collection partners.</p>
       <div className="mt-5 space-y-3">
-       <div className="rounded-xl border-2 border-[#0064E0] bg-[#F3F8FF] p-4">
-        <div className="flex items-center gap-3"><CreditCard size={19} className="text-[#0064E0]"/><p className="text-sm font-semibold text-[#173652]">Company bank transfer</p><span className="ml-auto rounded-full bg-blue-100 px-2 py-1 text-[10px] font-semibold text-blue-800">Manual review</span></div>
-        <p className="mt-2 text-xs leading-5 text-slate-600">Customers pay your business account directly. You may later record an eligible bank-transfer payment with supporting evidence and appropriate approval.</p>
+       <div className="flex flex-wrap items-center gap-2 rounded-xl border border-[#D7E5F8] bg-[#F2F7FE] px-3 py-3">
+        <CreditCard size={18} className="text-[#0064E0]"/><p className="flex-1 text-sm font-semibold text-[#173652]">Company bank transfer</p>
+        <span className="rounded-full bg-[#E2EDFF] px-2.5 py-1 text-[10px] font-semibold text-[#0052B8]">Manual</span>
+        <SetupInfoNote title="Manual bank transfer" detail="Customers pay your verified company account. Authorized staff may record a bank transfer only after checking evidence and completing approval."/>
        </div>
        <div className="grid gap-3 sm:grid-cols-2">
-        <Field title="Bank name" value={settings.bankName} onChange={v=>patch("bankName",v)} placeholder="Enter your bank name for now"/>
+        <NigerianBankPicker value={settings.bankName} onChange={name=>patch("bankName",name)}/>
         <Field title="Account number" value={settings.accountNumber} onChange={v=>patch("accountNumber",v.replace(/[^0-9]/g,"").slice(0,10))} placeholder="10-digit NUBAN"/>
        </div>
-       {settings.accountNumber&&!bankFormat?<p role="alert" className="text-xs text-amber-700">Enter exactly 10 digits to check your account details.</p>:null}
-       <div className="rounded-xl border border-amber-200 bg-amber-50 px-4 py-3" role="status">
-        <p className="text-xs font-semibold text-amber-900">Account not verified</p>
-        <p className="mt-1 text-xs leading-5 text-amber-800">Bank-account name enquiry is not connected yet. The complete searchable Nigerian bank directory and verified account-holder name will appear here once secure verification is enabled. Account instructions will not appear on issued documents before verification.</p>
+       {settings.accountNumber&&!bankFormat?<p role="alert" className="text-xs text-amber-700">Enter a 10-digit account number.</p>:null}
+       <div className="flex items-center gap-3 rounded-xl border border-amber-200 bg-[#FFFAEF] px-3 py-2.5" role="status">
+        <LockKeyhole className="shrink-0 text-amber-700" size={17}/>
+        <p className="flex-1 text-xs font-semibold text-amber-900">Account not verified</p>
+        <SetupInfoNote title="Account verification" detail="A ten-digit number alone does not confirm ownership. An approved bank-name enquiry must verify the bank and return the account holder's name before real payment instructions can be shown. Never enter a PIN, OTP or bank password."/>
        </div>
-       <p className="text-xs text-slate-500">Do not enter your ATM PIN, OTP or banking password. A bank and 10-digit number alone do not confirm account ownership.</p>
       </div>
      </section>
      <section className={panel}>
-      <h2 className="flex items-center gap-2 text-lg font-bold text-[#173652]"><WalletCards className="text-[#0064E0]"/> Online payment connections</h2>
-      <p className="mt-2 text-sm text-slate-600">Payment links and invoice-specific collection accounts will belong to the provider you choose. You will be able to reconcile confirmed collections with individual invoices.</p>
+      <h2 className="flex items-center gap-2 text-lg font-bold text-[#173652]"><WalletCards className="text-[#0064E0]"/> Online payment connections
+       <SetupInfoNote title="Online payments" detail="A linked provider can later create a payment link or an invoice-specific account. It may differ from the merchant's settlement account. Only verified provider events can update invoices and reconciliation."/></h2>
+      <p className="mt-2 text-sm text-slate-600">Choose a partner for online collections.</p>
       <div className="mt-4 grid gap-3 sm:grid-cols-2">
        {[
         ["Monnify","Payment links and virtual accounts"],
         ["Paystack","Online checkout and transfer collections"],
         ["Flutterwave","Online checkout and links"],
         ["Future Octalve connection","Approved integrated account (planned)"]
-       ].map(([name,desc])=><div key={name} className="rounded-xl border border-[#E3ECF5] bg-[#FCFDFF] p-4">
+       ].map(([name,desc])=><div key={name} className="rounded-xl border border-[#E3ECF5] bg-[#FCFDFF] p-3.5 shadow-[0_5px_14px_rgba(22,55,96,.035)]">
         <div className="flex items-center justify-between gap-2"><p className="text-sm font-semibold text-[#173652]">{name}</p><LockKeyhole size={15} className="text-slate-400"/></div>
-        <p className="mt-1 text-xs text-slate-500">{desc}</p><p className="mt-3 text-[11px] font-semibold text-slate-500">Not connected</p>
+        <p className="mt-1 text-[11px] text-slate-500">{desc}</p><p className="mt-2 text-[11px] font-semibold text-amber-700">Not connected</p>
        </div>)}
       </div>
-      <p className="mt-4 text-xs text-slate-500">Connections must be authorized for the specific business. An Octalve payment connection is a future option, not an active banking service.</p>
+      <div className="mt-3 flex items-center gap-2 text-[11px] text-slate-500">Connect your provider later. <SetupInfoNote title="Merchant connections" detail="Each provider must be authorized for this business, including any future Octalve payment service. No accounts or payments are active in this preview."/></div>
      </section>
     </>:null}
     {step==="services"?<section className={panel}>
      <div className="flex items-center gap-3"><Settings2 className="text-[#0064E0]"/><h2 className="text-lg font-bold text-[#173652]">Your business tools</h2></div>
-     <p className="mt-2 text-sm text-slate-600">Your core workspace remains available. Open the tools you need now; you can return to change your business details and preferences later.</p>
+     <p className="mt-2 text-sm text-slate-600">Explore your business tools.</p>
      <div className="mt-5 grid gap-3 sm:grid-cols-2">
       {([
        ["Invoices","/dashboard/invoice","Create and manage invoices",FileText],
@@ -206,10 +210,10 @@ export function MerchantSetupJourney({initialStep="business"}:{initialStep?:Step
      {step!=="services"?<button type="button" onClick={()=>select(next(step))} className="inline-flex min-h-11 items-center gap-2 rounded-full bg-[#0064E0] px-5 text-sm font-semibold text-white">Continue <ArrowRight size={16}/></button>:
       <Link href="/dashboard" className="inline-flex min-h-11 items-center gap-2 rounded-full bg-[#0064E0] px-5 text-sm font-semibold text-white">Go to overview <ArrowRight size={16}/></Link>}
     </div>
-    <p className="text-xs text-slate-500">Your edits remain available while this preview session is open. Account saving and formal verification are introduced only when the secure service is enabled.</p>
+    <div className="flex items-center gap-2 text-[11px] text-slate-500">Changes stay in this session. <SetupInfoNote title="Saving setup" detail="Secure account saving and official bank verification require the authorized backend. Your current preview shares the selected details across screens."/></div>
    </div>
    <aside className="space-y-4 lg:sticky lg:top-24">
-    <section className="rounded-2xl border border-blue-100 bg-gradient-to-br from-[#F5FAFF] to-white p-5">
+    <section className="rounded-[22px] border border-blue-100 bg-gradient-to-br from-[#F4F9FF] to-white p-5 shadow-[0_12px_34px_rgba(20,59,106,.09)]">
      <p className="text-[11px] font-semibold uppercase tracking-wider text-[#0064E0]">Your setup summary</p>
      <p className="mt-2 break-words text-lg font-bold text-[#183652]">{settings.businessName||"Your business"}</p>
      <div className="mt-4 space-y-3">
@@ -220,10 +224,10 @@ export function MerchantSetupJourney({initialStep="business"}:{initialStep?:Step
       <div className="flex gap-3 text-xs text-[#314761]"><LockKeyhole size={17} className="shrink-0 text-slate-500"/><span>Online payments: not connected</span></div>
      </div>
     </section>
-    <section className="rounded-2xl border border-[#E0EAF5] bg-white p-5">
-     <h3 className="flex items-center gap-2 text-sm font-semibold text-[#183652]"><ShieldCheck size={17} className="text-[#0064E0]"/> Before your first invoice</h3>
-     <p className="mt-2 text-xs leading-5 text-slate-600">Review the correct business identity and payment details. Invoice drafts are not issued documents, and bank accounts or payment providers must be verified before real payment instructions are used.</p>
-     {step==="payments"?<p className="mt-3 text-xs leading-5 text-slate-600">A dynamic collection account is not automatically your company&apos;s permanent settlement account. Reconciliation links the provider&apos;s verified payment reference to the invoice.</p>:null}
+    <section className="flex items-center gap-3 rounded-[22px] border border-[#E0EAF5] bg-white p-4 shadow-[0_10px_28px_rgba(20,59,106,.065)]">
+     <ShieldCheck size={18} className="shrink-0 text-[#0064E0]"/>
+     <p className="flex-1 text-xs font-semibold text-[#183652]">Safe setup</p>
+     <SetupInfoNote title="Before your first invoice" detail="Confirm your business identity and payment details. Invoice drafts are not issued documents. Real bank instructions require verification; a dynamic collection account can differ from your settlement account."/>
     </section>
    </aside>
   </div>

@@ -128,3 +128,28 @@ test("invoice picker does not activate disconnected external providers",()=>{
  assert.match(metadata,/disabled=\{p\.value!=="manual"\}/);
  assert.match(metadata,/getting-started\?step=payments/);
 });
+
+test("invoice customization returns to Getting Started and saves session preferences before Payments",()=>{
+ const invoice=read("app/(dashboard)/dashboard/settings/invoice/page.tsx");
+ const journey=read("src/features/merchant-setup/MerchantSetupJourney.tsx");
+ assert.match(invoice,/query\.get\("from"\)==="getting-started"/);
+ assert.match(invoice,/gettting-started\?step=appearance|getting-started\?step=appearance/);
+ assert.match(invoice,/router\.push\("\/dashboard\/getting-started\?step=payments"\)/);
+ assert.match(invoice,/Save & Continue/);
+ assert.match(invoice,/Preferences kept for this session/);
+ assert.match(journey,/settings\/invoice\?from=getting-started/);
+});
+test("payment bank picker is searchable and not falsely called a verified full directory",()=>{
+ const picker=read("src/features/merchant-setup/NigerianBankPicker.tsx");
+ const setup=read("src/features/merchant-setup/MerchantSetupJourney.tsx");
+ assert.match(picker,/role="combobox"/);
+ assert.match(picker,/role="listbox"/);
+ assert.match(picker,/role="option"/);
+ assert.match(picker,/toLowerCase\(\)\.includes/);
+ assert.match(picker,/ArrowDown/);
+ assert.match(picker,/Suggestions only/);
+ assert.match(picker,/value=\{open\?query:value\}/);
+ assert.match(setup,/<NigerianBankPicker/);
+ assert.match(setup,/About|SetupInfoNote/);
+ assert.match(setup,/Account not verified/);
+});
