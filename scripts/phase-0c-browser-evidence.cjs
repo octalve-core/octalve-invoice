@@ -46,7 +46,7 @@ async function qualifyNativePdf(page, output, view, template) {
   return { pdf: path.basename(pdfPath), raster: path.basename(rasterPrefix + ".png"), pdfPages: (info.match(/^Pages:\s*(\d+)/m) || [])[1], selectableText: "PASS", paperA4: "PASS" };
 }
 
-const routes = ["/onboarding", "/login", "/signup", "/verify-email", "/business-info", "/set-currency", "/dashboard", "/dashboard/getting-started", "/dashboard/invoice", "/dashboard/invoice/create", "/dashboard/invoice/1", "/dashboard/invoice/1/edit", "/dashboard/receipt", "/dashboard/receipt/1", "/dashboard/receipt/create", "/dashboard/quotation", "/dashboard/expenses", "/dashboard/customer", "/dashboard/items", "/dashboard/items/add", "/dashboard/items/1/edit", "/dashboard/staff", "/dashboard/staff/create", "/dashboard/staff/1/edit", "/dashboard/credit-note", "/dashboard/other-services", "/dashboard/other-services/pay-tax", "/dashboard/report", "/dashboard/notifications", "/dashboard/payment-received", "/dashboard/announcement", "/dashboard/updates", "/dashboard/invoice/3/record-payment", "/dashboard/settings", "/dashboard/settings/profile", "/dashboard/settings/invoice", "/dashboard/settings/business", "/dashboard/settings/subscription", "/dashboard/settings/theme", "/dashboard/settings/faqs", "/dashboard/settings/deleted"];
+const routes = ["/onboarding", "/login", "/signup", "/verify-email", "/business-info", "/set-currency", "/dashboard", "/dashboard/getting-started", "/dashboard/invoice", "/dashboard/invoice/create", "/dashboard/invoice/1", "/dashboard/invoice/1/edit", "/dashboard/receipt", "/dashboard/receipt/1", "/dashboard/receipt/create", "/dashboard/quotation", "/dashboard/expenses", "/dashboard/customer", "/dashboard/items", "/dashboard/items/add", "/dashboard/items/1/edit", "/dashboard/staff", "/dashboard/staff/create", "/dashboard/staff/1/edit", "/dashboard/credit-note", "/dashboard/other-services", "/dashboard/finance/statement", "/dashboard/finance/approvals", "/dashboard/finance/receivables", "/dashboard/finance/adjustments", "/dashboard/finance/communications", "/dashboard/finance/reconciliation", "/dashboard/finance/audit", "/dashboard/finance/currencies", "/dashboard/other-services/pay-tax", "/dashboard/report", "/dashboard/notifications", "/dashboard/payment-received", "/dashboard/announcement", "/dashboard/updates", "/dashboard/invoice/3/record-payment", "/dashboard/settings", "/dashboard/settings/profile", "/dashboard/settings/invoice", "/dashboard/settings/business", "/dashboard/settings/subscription", "/dashboard/settings/theme", "/dashboard/settings/faqs", "/dashboard/settings/deleted"];
 const viewports = {
   desktop: { width: 1440, height: 900 },
   tablet: { width: 768, height: 1024 },
@@ -215,6 +215,33 @@ const origin = process.env.OCTALVE_BASE_URL || "http://127.0.0.1:3000";
             await confirm.getByRole("button",{name:"Move to Deleted Records"}).click();
             await page.getByText("moved to Deleted Records",{exact:false}).waitFor();
             record.deleteConfirmReasonAndArchive="PASS";
+          }
+          if(route==="/dashboard/other-services"){
+            await page.getByRole("link",{name:/Statements of Account/}).waitFor();
+            await page.getByRole("link",{name:/Bank Reconciliation/}).waitFor();
+            await page.getByRole("link",{name:/Audit & Exceptions/}).waitFor();
+            record.financeNavigation="PASS";
+          }
+          if(route.startsWith("/dashboard/finance/")){
+            await page.getByRole("searchbox",{name:"Search finance records"}).count();
+            const input=page.getByRole("textbox",{name:"Search finance records"});
+            await input.waitFor();
+            await page.getByRole("button",{name:"Filter finance records"}).click();
+            const filter=page.getByRole("dialog",{name:"Finance filters"});
+            await filter.waitFor();
+            await filter.getByRole("button",{name:"Apply filters"}).click();
+            if(view==="mobile"){
+              if(await page.locator("table").first().isVisible())throw Error("Finance desktop table shown on mobile");
+              record.financeMobileCards="PASS";
+            }else if(view==="desktop"){
+              await page.locator("table").first().waitFor();
+              record.financeDesktopTable="PASS";
+            }
+            await input.fill("NO_MATCH_12345");
+            await page.getByText("No records match this view").waitFor();
+            await page.getByRole("button",{name:"Clear filters"}).click();
+            if(await input.inputValue()!=="")throw Error("Finance search not reset");
+            record.financeFilters="PASS";
           }
           if(route==="/dashboard/report"){
             await page.getByRole("heading",{name:"Reports"}).waitFor();
