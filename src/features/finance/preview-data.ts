@@ -1,6 +1,7 @@
 import {previewInvoices} from "@/src/features/invoices/lib/preview-records";
 import {getPreviewRecords} from "@/src/features/records/preview-records";
 import {paymentPreview} from "@/src/features/payments/ledger";
+import {formatDocumentNumber} from "@/src/features/invoices/lib/document-number";
 
 export const financeModes=[
  "statement","approvals","receivables","adjustments","communications","reconciliation","audit","currencies"
@@ -30,10 +31,10 @@ const allocations=paymentPreview.filter(p=>p.status==="verified").flatMap(p=>p.a
 const allocated=(id:string)=>safeAmount(allocations.filter(a=>a.invoiceId===id).reduce((sum,a)=>sum+safeAmount(a.amountMinor),0));
 export const formatMinor=(minor:number,currency="NGN")=>new Intl.NumberFormat("en-NG",{style:"currency",currency,minimumFractionDigits:2,maximumFractionDigits:2}).format(safeAmount(minor)/100);
 
-export function getFinanceRows(mode:FinanceMode,asOf=new Date()):FinanceRow[]{
+export function getFinanceRows(mode:FinanceMode,merchant="Octalve Limited",asOf=new Date()):FinanceRow[]{
  if(mode==="statement"){
   const events:FinanceRow[]=[
-   ...issued.map(i=>({id:"i-"+i.id,reference:i.reference,title:i.customer,date:i.date,status:"invoice",type:"Invoice",customer:i.customer,amountMinor:i.amountMinor,details:"Issued invoice (debit)",sourceHref:"/dashboard/invoice/"+i.id})),
+   ...issued.map(i=>({id:"i-"+i.id,reference:formatDocumentNumber(merchant,Number(i.id),"invoice"),title:i.customer,date:i.date,status:"invoice",type:"Invoice",customer:i.customer,amountMinor:i.amountMinor,details:"Issued invoice (debit)",sourceHref:"/dashboard/invoice/"+i.id})),
    ...allocations.flatMap((a,index)=>{
     const claim=issued.find(i=>i.id===a.invoiceId);
     return claim?[{id:"p-"+a.paymentId+"-"+index,reference:a.paymentId,title:claim.customer,date:a.date,status:"payment",type:"Payment",customer:claim.customer,amountMinor:-a.amountMinor,details:"Verified sample payment allocation (credit)",sourceHref:"/dashboard/invoice/"+claim.id}]:[];
@@ -45,11 +46,11 @@ export function getFinanceRows(mode:FinanceMode,asOf=new Date()):FinanceRow[]{
   const remaining=safeAmount(i.amountMinor-allocated(i.id));if(remaining===0)return null;
   const days=Math.max(0,Math.floor((asOf.getTime()-parsed(i.dueDate).getTime())/86400000));
   const bucket=days===0||asOf<parsed(i.dueDate)?"current":days<=30?"1–30 days":days<=60?"31–60 days":days<=90?"61–90 days":"90+ days";
-  return {id:i.id,reference:i.reference,title:i.customer,customer:i.customer,date:i.date,due:i.dueDate,status:bucket,type:"Invoice",amountMinor:remaining,details:"Verified allocated sample funds deducted; "+days+" day(s) past due",sourceHref:"/dashboard/invoice/"+i.id};
+  return {id:i.id,reference:formatDocumentNumber(merchant,Number(i.id),"invoice"),title:i.customer,customer:i.customer,date:i.date,due:i.dueDate,status:bucket,type:"Invoice",amountMinor:remaining,details:"Verified allocated sample funds deducted; "+days+" day(s) past due",sourceHref:"/dashboard/invoice/"+i.id};
  }).filter((x):x is NonNullable<typeof x>=>x!==null);
- if(mode==="adjustments")return getPreviewRecords("creditNote","Octalve Limited").map(x=>({id:x.id,reference:x.reference,title:x.title,date:x.date,status:"credit",type:"Credit note · "+x.status,amountMinor:money(x.amount||"0"),customer:x.title,details:"Seeded credit-note document; cannot alter posted invoice/payment totals from this screen",sourceHref:"/dashboard/credit-note"}));
+ if(mode==="adjustments")return getPreviewRecords("creditNote",merchant).map(x=>({id:x.id,reference:x.reference,title:x.title,date:x.date,status:"credit",type:"Credit note · "+x.status,amountMinor:money(x.amount||"0"),customer:x.title,details:"Seeded credit-note document; cannot alter posted invoice/payment totals from this screen",sourceHref:"/dashboard/credit-note"}));
  if(mode==="reconciliation")return paymentPreview.map(p=>({id:p.id,reference:p.reference,title:p.customer,date:p.date,status:p.source,type:p.source,amountMinor:p.amountMinor,customer:p.customer,details:p.allocations.length+" linked invoice allocation(s) · "+p.status+" sample payment event. Not a live bank-statement match."}));
- if(mode==="currencies")return issued.map(i=>({id:i.id,reference:i.reference,title:i.customer,date:i.date,status:"NGN",type:"NGN",amountMinor:i.amountMinor,details:"Original currency NGN · 1:1 base unit; no FX quote applied",customer:i.customer,sourceHref:"/dashboard/invoice/"+i.id}));
+ if(mode==="currencies")return issued.map(i=>({id:i.id,reference:formatDocumentNumber(merchant,Number(i.id),"invoice"),title:i.customer,date:i.date,status:"NGN",type:"NGN",amountMinor:i.amountMinor,details:"Original currency NGN · 1:1 base unit; no FX quote applied",customer:i.customer,sourceHref:"/dashboard/invoice/"+i.id}));
  return [];
 }
 export function getFinanceMetrics(mode:FinanceMode,rows:FinanceRow[]){
