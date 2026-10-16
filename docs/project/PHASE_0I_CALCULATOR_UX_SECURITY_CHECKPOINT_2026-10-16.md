@@ -43,3 +43,20 @@ All source formulas are pure, bounded, reject invalid/nonfinite values, and chec
 
 ## Staging and deployment
 Keep daily commits in `phase/0i-frontend-finance-workflows` under Vercel auto-deployment suppression, and publish only an approved **CI-green** review batch to `review/phase-0i`, never to main. Stay on PR #2 draft for main until owner explicitly approves release. Confirm production runtime domain and authorization before any backend phase.
+
+
+## 2026-10-16 — Post-audit Batch C frontend corrections
+- `app/(auth)/components/SharedAuthForm.tsx` centralizes Zod/react-hook-form validation, first and last name, email, phone, secure password visibility and provider-disabled Google action. Browser submissions disclose no real account is created and do not transmit credentials.
+- `app/(auth)/components/UnifiedAuthScreen.tsx` preserves Octalve's split desktop artwork and mobile headings but now mounts **exactly one** actual form instance. `app/(auth)/layout.tsx` renders the route child once (formerly twice, duplicating state and controls). `/login` and `/signup` are thin wrappers, removing legacy donor business naming/placeholder terms.
+- `src/features/finance/FinanceActionSheet.tsx`: seven personalized bottom-sheet/desktop workflows: statement request, maker/checker approval request, collections follow-up, original-invoice credit/debit-note proposal, bank statement reconciliation parameters, audit investigation and currency-rate request. Inputs are validated and reviewable locally, but **nothing is persisted, issued, imported, approved or transacted**.
+- Tax consolidation: `/dashboard/taxes` redirects to `/dashboard/tax-centre` instead of exposing four unrelated hardcoded and misleading rates or console-only pretend creation; the old mobile tax list instead links to Tax Centre with no assumed tax rates.
+- Browser suite now asserts one DOM form per identity route and checks that valid submissions cannot enter a user session, expands coverage for password-reset/email/OTP pages, validates disabled-by-default seven finance review sheets and the retired tax route. Additional widths 320/360/430/1024 and browser/native PDF/PNG tests remain mandatory.
+- **Known historical failure:** browser run `38904664698` found 6 duplicate-form counts (162/168), correctly traced to two simultaneous shared form instances. `UnifiedAuthScreen` has been rewritten as one responsive tree; confirm the final full regression before marking resolved.
+- **Latest changed application code candidate:** `e8ab0ab0330e930f5051d503541f6fb5ef989c1d`. Source and browser CI must qualify a post-documentation HEAD before any review merge. No changes have been merged to main or Production as part of these Batch C fixes.
+
+### Deferred / still pending by explicit authority
+1. Final Sapphire-derived invoice presentation and custom native PDF appearance (owner postponed until the other frontend work is finished).
+2. A **new official dashboard logo** (owner has not supplied its asset).
+3. Authenticated storage/MFA, immutable money event model, server-approved installment posting, receipt/credit issuance, real recurring scheduler, authorization and data isolation, actual approval decision engine, bank data matching, actual NRS fiscalization, rate sources and tenant-bound customer portal; these are backend Phase 1+ and not authorized by these UI commits.
+4. Final subscription price/free-tier cost model, provider-fee contract and real subscription billing remain proposals awaiting owner approval.
+5. Owner visual approval of Phase 0I screens and golden design references; browser route checks prove structure and action safety, not perfect pixel matching.
