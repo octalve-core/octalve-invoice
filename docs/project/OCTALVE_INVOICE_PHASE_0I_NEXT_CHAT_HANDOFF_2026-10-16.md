@@ -162,3 +162,10 @@ This section supersedes older Batch E RELEASE STATUS paragraphs only; original d
 - This release documentation is appended on development after the reviewed source merge; it is documentation only and should **not** trigger a second Vercel review batch.
 
 - **Post-merge exact Review checks: all PASS.** Phase qualification https://github.com/octalve-core/octalve-invoice/actions/runs/38934451095 ; CodeQL https://github.com/octalve-core/octalve-invoice/actions/runs/38934451220 ; 189/189+64/64 browser https://github.com/octalve-core/octalve-invoice/actions/runs/38934451152 ; review-merge screenshot and PDF/PNG artifact https://github.com/octalve-core/octalve-invoice/actions/runs/38934451152/artifacts/12060780726 .
+
+
+## 16 October 2026 follow-up — NRS, consolidated Settings, template and export authority audit (NOT IMPLEMENTED)
+- Authoritative **research proposal**, NOT owner-approved code direction: [`docs/project/PHASE_0I_NRS_SETTINGS_TEMPLATE_ISSUANCE_AUDIT_2026-10-16.md`](./PHASE_0I_NRS_SETTINGS_TEMPLATE_ISSUANCE_AUDIT_2026-10-16.md).
+- Source audit established duplicated invoice settings, browser-only default template override, unrecorded draft PDF/PNG download, existing customer auto-fill of only contact fields, missing NRS Business ID/Service ID/tax-field and IRN persisted authority. Official NRS MBS references and proposed stage gates are in the audit.
+- Owner requests first consolidate Settings, block unrecorded invoice downloads, align customer catalog and document snapshot, support a multi-style template gallery (Octalve Modern/Classic Ledger plus four original general styles, Legal awaiting artwork) and plan future NRS integration/IRN/QR without activating them.
+- No active code or live NRS registration/deployment change was made for the audit. No additional review merge; **Batch F READY** remains latest qualified Preview. The previous restrictions on Phase 1, main, money movement, fiscalization, subscriptions and final artwork still stand. Owner decisions on draft export, Legal styling and NRS route are pending.
