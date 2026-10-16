@@ -291,6 +291,26 @@ const origin = process.env.OCTALVE_BASE_URL || "http://127.0.0.1:3000";
             await page.getByRole("button",{name:"Clear filters"}).click();
             if(await input.inputValue()!=="")throw Error("Finance search not reset");
             record.financeFilters="PASS";
+            const workflows={
+              statement:["Prepare statement","Prepare customer statement"],
+              approvals:["Request approval","Prepare an approval request"],
+              receivables:["Review receivables","Plan receivables follow-up"],
+              adjustments:["Prepare adjustment","Prepare credit or debit note"],
+              reconciliation:["Import statement","Plan statement reconciliation"],
+              audit:["Review exceptions","Prepare exception investigation"],
+              currencies:["Review currencies","Preview foreign-currency setup"]
+            };
+            const segment=route.split("/").at(-1),workflow=workflows[segment];
+            if(workflow){
+              const launch=page.getByRole("button",{name:workflow[0],exact:true});
+              await launch.click();
+              const sheet=page.getByRole("dialog",{name:workflow[1]});
+              await sheet.waitFor({state:"visible"});
+              if(await sheet.getByRole("button",{name:"Review details (no submission)"}).isEnabled())throw Error("Unvalidated finance action review accepted");
+              await page.keyboard.press("Escape");
+              await sheet.waitFor({state:"hidden"});
+              record.financeSafeActionSheet="PASS";
+            }
           }
           if(route==="/dashboard/recurring"||route==="/dashboard/recurring-expense"){
             await page.getByRole("heading",{name:"Recurring income & expenses"}).waitFor();
