@@ -413,8 +413,11 @@ const origin = process.env.OCTALVE_BASE_URL || "http://127.0.0.1:3000";
             await logoNotice.waitFor();
             // Regression: a deleted row must not cause later rows to share identifiers.
             // This also exercises invoice-item input -> both live template presentations.
-            await page.getByRole("button",{name:/Products & services/}).click();
+            const itemsSectionButton=page.getByRole("button",{name:/Products & services/});
+            await itemsSectionButton.click();
+            if(await itemsSectionButton.getAttribute("aria-expanded")!=="true")throw Error("Products & services did not open");
             const itemEditor = page.locator('section[aria-label="Invoice products and services"]');
+            if(!await itemEditor.getByRole("button",{name:"+ Add row"}).isVisible())throw Error("Add row button is not visible when products section opens");
             await itemEditor.getByRole("button", { name: "+ Add row" }).click();
             await itemEditor.getByRole("button", { name: "Edit item 1" }).click();
             await itemEditor.getByRole("button", { name: "Remove row" }).click();

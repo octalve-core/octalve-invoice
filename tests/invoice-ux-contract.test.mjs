@@ -9,7 +9,7 @@ test("invoice payment planning belongs to create/edit and never issued detail",(
  assert.match(editor,/<InvoiceWorkflowPanel\b/);
  assert.doesNotMatch(detail,/<InvoiceWorkflowPanel\b/);
  assert.match(editor,/aria-expanded=\{open\}/);
- assert.match(editor,/open\?"":" hidden"/);
+ assert.match(editor,/hidden=\{!open\}/);
  assert.match(editor,/Expand all/);
 });
 test("item sections support selective expansion and a deliberate expand-all option",()=>{
