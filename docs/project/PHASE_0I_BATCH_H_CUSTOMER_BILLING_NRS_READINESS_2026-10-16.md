@@ -27,3 +27,5 @@ Unissued invoice previews have mandatory repeated DRAFT watermark and no PDF/PNG
 
 ## Next owner review
 Check new customer address/Tax ID autofill across desktop/mobile; verify NRS status remains Not connected; test gallery default selection on creating next draft; provide Legal and Octalve design references before any new renderer. A successful code test does not constitute owner's pixel-perfect acceptance.
+
+- **Post-merge Review qualification: PASS**: https://github.com/octalve-core/octalve-invoice/actions/runs/38952605056 (build/tests), https://github.com/octalve-core/octalve-invoice/actions/runs/38952605046 (CodeQL), https://github.com/octalve-core/octalve-invoice/actions/runs/38952604926 (189/189+64/64 browser). Review screenshots: https://github.com/octalve-core/octalve-invoice/actions/runs/38952604926/artifacts/12068754269 . Exact merge SHA `a47027b29a6810dbe006a1e9a338658e3701c45f`, Vercel READY.
