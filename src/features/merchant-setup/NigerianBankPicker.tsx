@@ -7,7 +7,7 @@ import {Check,ChevronDown,Search} from "lucide-react";
  * Avoid storing guessed financial network bank codes.
  */
 export const previewBankSuggestions = [
- "Access Bank","Access Bank (Diamond legacy accounts)","Alternative Bank","Ecobank Nigeria",
+ "Access Bank","Alternative Bank","Ecobank Nigeria",
  "Fidelity Bank","First Bank of Nigeria","First City Monument Bank (FCMB)",
  "Globus Bank","Guaranty Trust Bank (GTBank)","Keystone Bank","Lotus Bank",
  "Nova Bank","Optimus Bank","Parallex Bank","Polaris Bank","PremiumTrust Bank",
@@ -17,7 +17,7 @@ export const previewBankSuggestions = [
  "Kuda Microfinance Bank","Moniepoint Microfinance Bank","OPay","PalmPay",
  "Rubies Microfinance Bank","VFD Microfinance Bank","FairMoney Microfinance Bank",
  "Sparkle Microfinance Bank","Carbon Microfinance Bank","Mintyn Microfinance Bank",
- "FinaTrust Microfinance Bank","Paga","Hope Payment Service Bank",
+ "Paga","Hope Payment Service Bank",
  "9 Payment Service Bank","MoMo Payment Service Bank","SmartCash Payment Service Bank"
 ] as const;
 
@@ -29,7 +29,7 @@ export function NigerianBankPicker({value,onChange}:{value:string;onChange:(bank
  const root=useRef<HTMLDivElement>(null);
  const id=useId();
  const filtered=useMemo(()=>previewBankSuggestions.filter(b=>b.toLowerCase().includes(query.trim().toLowerCase())).slice(0,35),[query]);
- useEffect(()=>setQuery(value),[value]);
+ useEffect(()=>{if(!open)setQuery(value);},[value,open]);
  useEffect(()=>{
   if(!open)return;
   const onPointerDown=(event:PointerEvent)=>{if(!root.current?.contains(event.target as Node)){setOpen(false);setQuery(value);}};
@@ -46,7 +46,7 @@ export function NigerianBankPicker({value,onChange}:{value:string;onChange:(bank
     value={query} placeholder="Search banks or fintechs" onFocus={()=>{setOpen(true);setActive(0);}}
     onChange={e=>{setQuery(e.target.value);setActive(0);setOpen(true);setTouched(false);if(value)onChange("");}}
     onKeyDown={e=>{
-     if(e.key==="ArrowDown"){e.preventDefault();setOpen(true);setActive(a=>Math.min(a+1,filtered.length-1));}
+     if(e.key==="ArrowDown"){e.preventDefault();setOpen(true);setActive(a=>Math.max(0,Math.min(a+1,filtered.length-1)));}
      if(e.key==="ArrowUp"){e.preventDefault();setActive(a=>Math.max(a-1,0));}
      if(e.key==="Escape"){setOpen(false);setQuery(value);}
      if(e.key==="Enter"&&open){e.preventDefault();if(filtered[active])choose(filtered[active]);}
