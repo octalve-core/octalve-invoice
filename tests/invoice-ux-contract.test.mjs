@@ -44,7 +44,7 @@ test("installment reviews display current percentages and exact allocated amount
  assert.match(workflow,/No payment schedule was saved or communicated\./);
 });
 test("merchant logo remains connected to both unissued invoice renderers",()=>{
- const settings=read("app/(dashboard)/dashboard/settings/business/page.tsx");
+ const settings=read("src/features/merchant-setup/MerchantSetupJourney.tsx");
  const composer=read("src/features/invoices/sections/InvoiceComposer.tsx");
  const preview=read("src/features/invoices/sections/InvoiceDocumentPreviewSection.tsx");
  assert.match(settings,/setLogoPreview\(reader\.result as string\)/);
