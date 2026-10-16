@@ -3,6 +3,7 @@ import {useParams} from "next/navigation";
 import Link from "next/link";
 import {getPreviewInvoice,previewInvoices} from "@/src/features/invoices/lib/preview-records";
 import {InvoiceDocumentPreviewSection} from "@/src/features/invoices/sections/InvoiceDocumentPreviewSection";
+import InvoiceWorkflowPanel from "@/src/features/invoices/sections/InvoiceWorkflowPanel";
 import {createPreviewInvoice} from "@/src/features/invoices/lib/preview-fixture";
 import {useMerchantPreview} from "@/src/features/merchant-preview/MerchantPreviewProvider";
 import {merchantCompany,merchantPayment} from "@/src/features/merchant-preview/merchant-presentation";
@@ -41,6 +42,7 @@ export default function InvoiceDetailsPage(){
     {["pending","partial","overdue"].includes(invoice.status)? invoice.paymentMode==="manual"?<Link href={`/dashboard/invoice/${id}/record-payment`} className="rounded-full border border-[#0064E0] px-4 py-2 text-sm font-medium text-[#0064E0]">Record payment</Link>:<span className="rounded-full bg-amber-50 px-3 py-2 text-xs text-amber-800">Awaiting provider verification</span>:null}
     <Link href={`/dashboard/invoice/${id}/edit`} className="rounded-full bg-[#0064E0] px-4 py-2 text-sm font-medium text-white">Edit Invoice</Link></div>
   </div>
+  <InvoiceWorkflowPanel invoice={{...invoice,reference:formatDocumentNumber(settings.businessName||"Octalve Limited",Number(id)||1,"invoice")}}/>
   <div className="grid min-w-0 items-start gap-4 lg:grid-cols-[minmax(260px,340px)_minmax(0,1fr)]">
    <aside aria-label="Invoice history" className="hidden min-w-0 rounded-2xl bg-white p-3 lg:block">
     <div className="mb-3 flex items-center justify-between"><h2 className="text-sm font-semibold text-[#273c55]">Invoices</h2><Link href="/dashboard/invoice" className="text-xs text-[#0064E0]">View all</Link></div>

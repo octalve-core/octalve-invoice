@@ -11,7 +11,7 @@ export default function TopNavbar(){
   <label className="relative block w-full max-w-md"><Search className="absolute left-3 top-2.5 h-5 w-5 text-gray-400"/>
    <input type="search" aria-label="Search workspace preview" placeholder="Search here..." className="h-10 w-full rounded-lg border border-gray-200 bg-gray-50 pl-10 pr-4 text-sm" /></label>
   <div className="flex items-center gap-2">
-   <button type="button" aria-label="Messages (coming later)" title="Messages (coming later)" className="rounded-lg p-2 text-gray-600 hover:bg-gray-100"><MessageSquare size={20}/></button>
+   <Link href="/dashboard/insights-support" aria-label="Business Insights and Octalve Support" title="Insights and Support" className="rounded-lg p-2 text-gray-600 hover:bg-gray-100"><MessageSquare size={20}/></Link>
    <Link href="/dashboard/notifications" aria-label="Notifications" title="Notifications" className="relative rounded-lg p-2 text-gray-600 hover:bg-gray-100"><Bell size={20}/>{readNotificationIds.length<4?<span className="absolute right-1.5 top-1.5 h-1.5 w-1.5 rounded-full bg-[#0064E0]"/>:null}</Link>
    <div className="relative ml-2 border-l pl-3">
     <button type="button" onClick={()=>setOpen(v=>!v)} aria-haspopup="menu" aria-expanded={open} aria-label="Account menu"

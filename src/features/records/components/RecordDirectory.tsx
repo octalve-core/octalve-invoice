@@ -47,6 +47,7 @@ export function RecordDirectory({kind,onCreate,onView,onEdit,showDesktopHeader=t
  function openView(record:PreviewRecord){
   if(kind==="invoice"){router.push("/dashboard/invoice/"+record.id);return;}
   if(kind==="receipt"){router.push("/dashboard/receipt/"+record.id);return;}
+  if(kind==="quotation"){router.push("/dashboard/quotation/"+record.id);return;}
   if(onView){onView(record);return;}
   setViewing(record);
  }
