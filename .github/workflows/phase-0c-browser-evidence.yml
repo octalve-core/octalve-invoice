@@ -1,8 +1,11 @@
 name: Phase 0C browser evidence
 on:
   push:
-    branches: [phase/00-finzefy-authority-ui-bootstrap, phase/0i-frontend-finance-workflows]
+    branches: [phase/00-finzefy-authority-ui-bootstrap, phase/0i-frontend-finance-workflows, 'review/**']
   workflow_dispatch:
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 permissions:
   contents: read
 jobs:
