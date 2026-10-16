@@ -18,6 +18,7 @@ export const otherServiceItems=[
  {slug:"bank-reconciliation",title:"Bank Reconciliation",icon:"landmark",href:"/dashboard/finance/reconciliation",ready:true},
  {slug:"audit-exceptions",title:"Audit & Exceptions",icon:"shield-alert",href:"/dashboard/finance/audit",ready:true},
  {slug:"multi-currency",title:"Multi-currency",icon:"coins",href:"/dashboard/finance/currencies",ready:true},
+ {slug:"customer-portal",title:"Customer Portal",icon:"panels-top-left",href:"/portal",ready:true},
  {slug:"insights-support",title:"Insights & Support",icon:"messages-square",href:"/dashboard/insights-support",ready:true},
  {slug:"id-card",title:"ID Card",icon:"id-card",href:"/dashboard/other-services/id-card",ready:false}
 ] as const;
