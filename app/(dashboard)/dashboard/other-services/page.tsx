@@ -3,7 +3,7 @@ import Link from "next/link";
 import {useRouter} from "next/navigation";
 import {ArrowLeft,FileText,Users,Wallet,FileSpreadsheet,BarChart3,Scale,ScrollText,Package,RefreshCw,ReceiptText,Calculator,ContactRound,TrendingUp,WalletCards,IdCard,BookOpen,ShieldCheck,Clock3,Files,MessagesSquare,Landmark,ShieldAlert,Coins} from "lucide-react";
 import {otherServiceItems} from "@/src/features/other-services/feature-links";
-const others=[BarChart3,Scale,ScrollText,Package,Users,RefreshCw,ReceiptText,Calculator,ContactRound,TrendingUp,WalletCards,IdCard,BookOpen,ShieldCheck,Clock3,Files,MessagesSquare,Landmark,ShieldAlert,Coins] as const;
+const others=[BarChart3,Scale,ScrollText,Package,Users,RefreshCw,ReceiptText,Calculator,ContactRound,TrendingUp,WalletCards,BookOpen,ShieldCheck,Clock3,Files,MessagesSquare,Landmark,ShieldAlert,Coins,IdCard] as const;
 const tones=["bg-blue-50 text-[#0064E0]","bg-emerald-50 text-emerald-600","bg-violet-50 text-violet-600","bg-amber-50 text-amber-600","bg-green-50 text-green-600","bg-cyan-50 text-cyan-600","bg-red-50 text-red-600","bg-slate-100 text-slate-700","bg-orange-50 text-orange-600","bg-indigo-50 text-indigo-600","bg-sky-50 text-sky-600","bg-purple-50 text-purple-600"];
 
 const quick=[
