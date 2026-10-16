@@ -25,3 +25,5 @@
 
 ## Limits and owner acceptance
 Front-end session-only settings are not authenticated backend settings; draft sample is not a printable invoice, NRS fiscalization is not connected. Original Ledger/Modern invoice renderer UI and protected PDF engines remain unchanged. Review visual layout on 320/360/390/430/768/1024/1440; test selection and preferences then Create Invoice, and verify historical preview remains draft-only. No new original template/Legal artwork without owner design, no main/Production or Phase 1 activation.
+
+- **Postmerge independent Review verification all PASSED** at `6f708b03b4c103f66a5044df2804f88c8bbd5edc`: build/TS/lint/tests https://github.com/octalve-core/octalve-invoice/actions/runs/38956348528 , CodeQL https://github.com/octalve-core/octalve-invoice/actions/runs/38956348520 , browser 189/189+64/64 https://github.com/octalve-core/octalve-invoice/actions/runs/38956348541 and screenshot artifact https://github.com/octalve-core/octalve-invoice/actions/runs/38956348541/artifacts/12070787870 . Vercel READY exact Review merge.
