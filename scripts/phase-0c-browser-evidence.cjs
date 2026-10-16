@@ -369,7 +369,7 @@ const origin = process.env.OCTALVE_BASE_URL || "http://127.0.0.1:3000";
             await page.getByRole("heading",{name:"Everything about your invoices in one place."}).waitFor();
             await page.getByRole("navigation",{name:"Customer portal sections"}).getByRole("button",{name:"Payments"}).click();
             await page.getByRole("heading",{name:"Only verified payments appear here"}).waitFor();
-            await page.getByText("No live payment or customer session can be initiated",{exact:false}).waitFor();
+            await page.getByText("Payments and sign-in are not available on this page.",{exact:false}).waitFor();
             record.portalDenyByDefault="PASS";
           }
           if(route==="/dashboard/insights-support"){
@@ -416,6 +416,7 @@ const origin = process.env.OCTALVE_BASE_URL || "http://127.0.0.1:3000";
             await page.getByRole("button",{name:/Products & services/}).click();
             const itemEditor = page.locator('section[aria-label="Invoice products and services"]');
             await itemEditor.getByRole("button", { name: "+ Add row" }).click();
+            await itemEditor.getByRole("button", { name: "Edit item 1" }).click();
             await itemEditor.getByRole("button", { name: "Remove row" }).click();
             await itemEditor.getByRole("button", { name: "+ Add row" }).click();
             await itemEditor.getByRole("button", { name: "Expand items" }).click();
