@@ -11,7 +11,7 @@ const format=(v:number,unit:Unit)=>{
  return new Intl.NumberFormat("en-NG",{maximumFractionDigits:2}).format(v)+(unit==="%"?"%":unit==="count"?"":" "+unit);
 };
 const defaults=(id:string)=>Object.fromEntries((getCalculator(id)?.fields||[]).map(f=>[f.key,String(f.initial)]));
-const sanitizeCsv=(value:string)=>/^[=+\-@\t\r]/.test(value)?"'"+value:value;
+const sanitizeCsv=(value:string)=>/^-?\d+(?:\.\d+)?$/.test(value)?value:/^[=+\-@\t\r]/.test(value)?"'"+value:value;
 function csvString(rows:string[][]){return rows.map(row=>row.map(cell=>'"'+sanitizeCsv(cell).replace(/"/g,'""')+'"').join(",")).join("\r\n");}
 function ProjectionChart({result}:{result:Calculation}){
  const rows=result.rows;
