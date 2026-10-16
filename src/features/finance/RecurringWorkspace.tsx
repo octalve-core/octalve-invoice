@@ -2,6 +2,7 @@
 import {useMemo,useState} from "react";
 import Link from "next/link";
 import {ArrowLeft,CalendarClock,Search,SlidersHorizontal,Plus,X,ChevronRight,ShieldCheck,PauseCircle} from "lucide-react";
+import {useAccessibleDialog} from "@/src/features/records/components/useAccessibleDialog";
 type Kind="income"|"expense";
 type Cadence="weekly"|"monthly"|"quarterly"|"yearly";
 type Example={id:string,kind:Kind,name:string,party:string,amount:string,cadence:Cadence,next:string};
@@ -25,6 +26,7 @@ export default function RecurringWorkspace(){
  const [kind,setKind]=useState<Kind>("income"),[search,setSearch]=useState(""),[filterOpen,setFilterOpen]=useState(false),[cadenceFilter,setCadenceFilter]=useState<"all"|Cadence>("all");
  const [selected,setSelected]=useState<Example|null>(null),[creator,setCreator]=useState(false),[notice,setNotice]=useState("");
  const [form,setForm]=useState<{name:string,party:string,amount:string,cadence:Cadence,start:string,count:number}>({name:"",party:"",amount:"",cadence:"monthly",start:"2026-11-01",count:3});
+ useAccessibleDialog(Boolean(filterOpen||selected||creator),()=>{setFilterOpen(false);setSelected(null);setCreator(false);});
  const rows=examples.filter(r=>r.kind===kind&&r.name.toLowerCase().includes(search.toLowerCase())&& (cadenceFilter==="all"||r.cadence===cadenceFilter));
  const preview=useMemo(()=>/^\d{4}-\d{2}-\d{2}$/.test(form.start)&&Number.isInteger(form.count)&&form.count>=1&&form.count<=12?Array.from({length:form.count},(_,i)=>advance(form.start,form.cadence,i)):[],[form.start,form.cadence,form.count]);
  const update=<K extends keyof typeof form>(key:K,value:(typeof form)[K])=>setForm(x=>({...x,[key]:value}));
