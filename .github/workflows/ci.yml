@@ -1,9 +1,12 @@
 name: Phase qualification
 on:
   push:
-    branches: [main, 'phase/**']
+    branches: [main, 'phase/**', 'review/**']
   pull_request:
     branches: [main]
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 permissions:
   contents: read
 jobs:
