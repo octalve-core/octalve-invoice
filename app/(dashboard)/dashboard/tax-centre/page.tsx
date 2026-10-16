@@ -5,6 +5,7 @@ import {ArrowLeft,CalendarDays,ChevronRight,FileCheck2,FileText,Info,Search,Shie
 import {previewInvoices} from "@/src/features/invoices/lib/preview-records";
 import {formatDocumentNumber} from "@/src/features/invoices/lib/document-number";
 import {useMerchantPreview} from "@/src/features/merchant-preview/MerchantPreviewProvider";
+import {useAccessibleDialog} from "@/src/features/records/components/useAccessibleDialog";
 type View="overview"|"invoices"|"calendar"|"nrs";
 const views:{value:View;label:string}[]=[{value:"overview",label:"Overview"},{value:"invoices",label:"Invoice tax review"},{value:"calendar",label:"Tax calendar"},{value:"nrs",label:"NRS e-invoices"}];
 const periods=["2024","2025","2026"] as const;
@@ -12,6 +13,7 @@ export default function TaxCentre(){
  const {settings}=useMerchantPreview();
  const reference=(id:string)=>formatDocumentNumber(settings.businessName||"Octalve Limited",Number(id),"invoice");
  const [view,setView]=useState<View>("overview"),[period,setPeriod]=useState<string>("2026"),[query,setQuery]=useState(""),[detail,setDetail]=useState<string|null>(null),[filterOpen,setFilterOpen]=useState(false);
+ useAccessibleDialog(Boolean(filterOpen||detail),()=>{setFilterOpen(false);setDetail(null);});
  const samples=useMemo(()=>previewInvoices.filter(x=>x.status!=="draft"&&x.date.endsWith(period)),[period]);
  const filtered=samples.filter(i=>[i.customer,reference(i.id),i.status].some(x=>x.toLowerCase().includes(query.trim().toLowerCase())));
  const selected=samples.find(x=>x.id===detail);

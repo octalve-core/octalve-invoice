@@ -37,6 +37,8 @@ jobs:
         run: pnpm typecheck
       - name: ESLint
         run: pnpm lint
+      - name: Customer-facing terminology
+        run: node scripts/check-user-facing-language.cjs
       - name: Tests
         run: pnpm test
       - name: Production build

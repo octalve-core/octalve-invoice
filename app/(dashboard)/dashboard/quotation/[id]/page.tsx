@@ -5,11 +5,13 @@ import Link from "next/link";
 import {ArrowLeft,CheckCircle2,ChevronRight,FileSpreadsheet,Mail,ShieldCheck,X} from "lucide-react";
 import {getPreviewRecords} from "@/src/features/records/preview-records";
 import {useMerchantPreview} from "@/src/features/merchant-preview/MerchantPreviewProvider";
+import {useAccessibleDialog} from "@/src/features/records/components/useAccessibleDialog";
 export default function QuotationDetail(){
  const {id}=useParams<{id:string}>(),{settings}=useMerchantPreview();
  const quotes=getPreviewRecords("quotation",settings.businessName||"Octalve Limited");
  const quote=quotes.find(q=>q.id===id);
  const [notice,setNotice]=useState(""),[compose,setCompose]=useState(false),[subject,setSubject]=useState("Quotation for your review"),[message,setMessage]=useState("Hello, please review the estimate and let us know whether you would like to proceed.");
+ useAccessibleDialog(compose,()=>setCompose(false));
  if(!quote)return <main className="rounded-2xl bg-white p-8"><h1>Quotation not found</h1><Link href="/dashboard/quotation" className="text-[#0064E0]">Back to quotations</Link></main>;
  return <main className="min-w-0 space-y-5 pb-12">
   <header className="flex flex-wrap items-start justify-between gap-3"><div><Link href="/dashboard/quotation" className="inline-flex items-center gap-2 text-sm font-semibold text-[#0064E0]"><ArrowLeft size={16}/> Back to quotations</Link><h1 className="mt-2 text-2xl font-bold text-[#173652]">Quotation {quote.reference}</h1><p className="mt-1 text-sm text-slate-500">Estimate details · not a payment request</p></div><div className="flex flex-wrap gap-2"><button type="button" onClick={()=>setCompose(true)} className="flex items-center gap-2 rounded-full border border-[#0064E0] px-4 py-2 text-xs font-semibold text-[#0064E0]"><Mail size={16}/> Prepare email</button><button type="button" onClick={()=>setNotice("A new invoice draft will require approval and refreshed tax classification. No invoice was created.")} className="rounded-full bg-[#0064E0] px-4 py-2 text-xs font-semibold text-white">Preview conversion to invoice</button></div></header>

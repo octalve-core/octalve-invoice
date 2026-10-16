@@ -6,7 +6,7 @@ export const otherServiceItems=[
  {slug:"customer",title:"Customer",icon:"users",href:"/dashboard/customer",ready:true},
  {slug:"recurring-income-expense",title:"Recurring income/expense",icon:"refresh-cw",href:"/dashboard/recurring",ready:true},
  {slug:"tax-centre",title:"Tax Centre",icon:"receipt-text",href:"/dashboard/tax-centre",ready:true},
- {slug:"finance-calculator",title:"Finance Calculator",icon:"calculator",href:"/dashboard/other-services/finance-calculator",ready:false},
+ {slug:"finance-calculator",title:"Finance Calculator",icon:"calculator",href:"/dashboard/finance-calculator",ready:true},
  {slug:"business-card",title:"Business Card",icon:"contact",href:"/dashboard/other-services/business-card",ready:false},
  {slug:"investment",title:"Investment",icon:"trending-up",href:"/dashboard/other-services/investment",ready:false},
  {slug:"digital-pay",title:"Digital Pay",icon:"wallet",href:"/dashboard/other-services/digital-pay",ready:false},

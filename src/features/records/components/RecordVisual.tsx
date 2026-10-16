@@ -27,7 +27,7 @@ export function RecordTypeIcon({kind,status,size="md"}:{kind:RecordKind;status:R
   <Icon size={size==="sm"?17:21} strokeWidth={1.7}/>
  </span>;
 }
-export function RecordMobileCard({record,onSelect}:{record:PreviewRecord;onSelect:(record:PreviewRecord)=>void}){
+export function RecordMobileCard({record,onSelect,statusLabel,dateLabel}:{record:PreviewRecord;onSelect:(record:PreviewRecord)=>void;statusLabel?:string;dateLabel?:string}){
  return <article role="link" tabIndex={0} aria-label={"Actions for "+record.reference}
   onClick={()=>onSelect(record)}
   onKeyDown={e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();onSelect(record);}}}
@@ -40,10 +40,10 @@ export function RecordMobileCard({record,onSelect}:{record:PreviewRecord;onSelec
    </div>
    <div className="mt-1 flex min-w-0 items-center justify-between gap-1.5">
     <span className="min-w-0 truncate rounded-full bg-white px-2 py-1 text-[10px] text-[#667487] sm:text-xs">{record.reference}</span>
-    <RecordStatusBadge status={record.status}/>
+    {statusLabel?<span className="inline-flex max-w-full items-center rounded-md bg-blue-50 px-2 py-1 text-[10px] font-medium text-[#0064E0] sm:text-xs">{statusLabel}</span>:<RecordStatusBadge status={record.status}/>}
    </div>
    <div className="mt-1.5 flex flex-wrap justify-between gap-x-2 gap-y-0.5 text-[10px] text-gray-400 sm:text-xs">
-    <span>{record.kind==="receipt"?"Received":"Created"}: {record.date}</span>
+    <span>{dateLabel|| (record.kind==="receipt"?"Received":"Created")}: {record.date}</span>
     {record.dueDate?<span>Due: {record.dueDate}</span>:record.paymentMethod?<span>{record.paymentMethod}</span>:null}
    </div>
   </div>
