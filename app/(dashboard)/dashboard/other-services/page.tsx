@@ -1,9 +1,30 @@
 "use client";
 import Link from "next/link";
 import {useRouter} from "next/navigation";
-import {ArrowLeft,FileText,Users,Wallet,FileSpreadsheet,BarChart3,Scale,ScrollText,Package,RefreshCw,ReceiptText,Calculator,ContactRound,TrendingUp,WalletCards,IdCard,BookOpen,ShieldCheck,Clock3,Files,MessagesSquare,Landmark,ShieldAlert,Coins,MessageSquareText} from "lucide-react";
+import {ArrowLeft,FileText,Users,Wallet,FileSpreadsheet,BarChart3,Scale,ScrollText,Package,RefreshCw,ReceiptText,Calculator,ContactRound,TrendingUp,WalletCards,IdCard,BookOpen,ShieldCheck,Clock3,Files,MessagesSquare,Landmark,ShieldAlert,Coins,type LucideIcon} from "lucide-react";
 import {otherServiceItems} from "@/src/features/other-services/feature-links";
-const others=[BarChart3,Scale,ScrollText,Package,Users,RefreshCw,ReceiptText,Calculator,ContactRound,TrendingUp,WalletCards,BookOpen,ShieldCheck,Clock3,Files,MessagesSquare,Landmark,ShieldAlert,Coins,MessageSquareText,IdCard] as const;
+const icons:Record<(typeof otherServiceItems)[number]["icon"],LucideIcon>={
+ "chart-no-axes-column":BarChart3,
+ "scale":Scale,
+ "file-text":ScrollText,
+ "package":Package,
+ "users":Users,
+ "refresh-cw":RefreshCw,
+ "receipt-text":ReceiptText,
+ "calculator":Calculator,
+ "contact":ContactRound,
+ "trending-up":TrendingUp,
+ "wallet":WalletCards,
+ "id-card":IdCard,
+ "book-open":BookOpen,
+ "shield-check":ShieldCheck,
+ "clock-3":Clock3,
+ "files":Files,
+ "messages-square":MessagesSquare,
+ "landmark":Landmark,
+ "shield-alert":ShieldAlert,
+ "coins":Coins
+};
 const tones=["bg-blue-50 text-[#0064E0]","bg-emerald-50 text-emerald-600","bg-violet-50 text-violet-600","bg-amber-50 text-amber-600","bg-green-50 text-green-600","bg-cyan-50 text-cyan-600","bg-red-50 text-red-600","bg-slate-100 text-slate-700","bg-orange-50 text-orange-600","bg-indigo-50 text-indigo-600","bg-sky-50 text-sky-600","bg-purple-50 text-purple-600"];
 
 const quick=[
@@ -29,7 +50,7 @@ export default function OtherServicesPage(){
   <section aria-label="Other services" className="rounded-2xl bg-white px-3 py-4 shadow-sm sm:px-6 sm:py-6">
    <h2 className="mb-2 text-lg font-semibold text-[#173652]">Workspace tools</h2><p className="mb-6 text-xs text-slate-500">Open an Octalve tool. Finance controls show preview data until the secured backend is approved.</p>
    <div className="grid grid-cols-3 gap-x-2 gap-y-5 lg:grid-cols-4 lg:gap-x-8 lg:gap-y-8">{otherServiceItems.map((item,i)=>{
-     const Icon=others[i];
+     const Icon=icons[item.icon];
      return <Link key={item.slug} href={item.href} className="flex min-w-0 flex-col items-center gap-3 text-center hover:opacity-80">
       <span className={`grid h-11 w-11 place-items-center rounded-full sm:h-16 sm:w-16 ${tones[i%tones.length]}`}>
         <Icon size={22} strokeWidth={1.8}/>
