@@ -10,7 +10,7 @@ const specs:Record<Exclude<FinanceMode,"communications">,Spec>={
   title:"Prepare customer statement",
   intro:"Choose the customer and date window for a statement request. A statement download becomes available once your business records are ready.",
   fields:[{key:"customer",label:"Customer",kind:"select",required:true},{key:"from",label:"Start date",kind:"date",required:true},{key:"to",label:"End date",kind:"date",required:true},{key:"format",label:"Future export format",kind:"select",options:["Reviewed PDF statement","Reviewed CSV ledger"]}],
-  authority:"Issued invoice, verified allocation, credit, refund and reversal history must be snapshotted and reconciled before a document is issued."
+  authority:"Statements must match issued invoices, received payments, approved credits and refunds for the selected dates."
  },
  approvals:{
   title:"Prepare an approval request",
@@ -22,25 +22,25 @@ const specs:Record<Exclude<FinanceMode,"communications">,Spec>={
   title:"Plan receivables follow-up",
   intro:"Select an ageing group and a contact approach. Never claim a debtor is overdue until the source invoice, due date and verified allocations are checked.",
   fields:[{key:"customer",label:"Customer (optional)",kind:"select"},{key:"age",label:"Age group",kind:"select",options:["Not yet overdue","1–30 days","31–60 days","61–90 days","90+ days"],required:true},{key:"approach",label:"Next step",kind:"select",options:["Review invoice evidence","Prepare gentle reminder","Request account reconciliation","Escalate for owner approval"],required:true}],
-  authority:"Unpaid balance and overdue state must originate from immutable issued documents, verified payments, credits and time-zone-aware due dates."
+  authority:"Check the issued invoice, due date, payments received and any approved credit before following up."
  },
  adjustments:{
   title:"Prepare credit or debit note",
-  intro:"Review an adjustment against the original document without editing the financial ledger or sending a fiscal document.",
+  intro:"Compare the proposed change with the original document. Reviewing it does not change an invoice or issue a credit note.",
   fields:[{key:"type",label:"Document type",kind:"select",options:["Credit note","Debit note"],required:true},{key:"invoice",label:"Original invoice",kind:"select",required:true},{key:"amount",label:"Adjustment amount (NGN)",kind:"money",required:true},{key:"line",label:"Affected item, quantity and tax basis",kind:"textarea"},{key:"reason",label:"Reason and item/tax context",kind:"textarea",required:true}],
-  authority:"An approved note needs reason codes, versioned original invoice, line-level tax/quantity changes, numbering, fiscal authority rules and role-restricted posting."
+  authority:"Confirm the original invoice, reason, affected items and any applicable tax before issuing an adjustment."
  },
  reconciliation:{
   title:"Plan statement reconciliation",
   intro:"Specify the account and statement period for a future import. A cleared bank entry must be checked before it confirms a payment.",
   fields:[{key:"account",label:"Account label",required:true},{key:"bankReference",label:"Statement entry reference (if known)"},{key:"entryStatus",label:"Bank entry status",kind:"select",options:["Cleared","Pending","Reversed","Unknown"]},{key:"from",label:"Statement start",kind:"date",required:true},{key:"to",label:"Statement end",kind:"date",required:true},{key:"approach",label:"Matching method",kind:"select",options:["Exact bank reference","Amount/date/customer review","Investigate unmatched credit","Review duplicate or reversal"],required:true}],
-  authority:"Import must validate file origin, duplicate fingerprints, cleared bank entries, maker/checker decisions and an immutable matching trail."
+  authority:"Verify the source of the statement, cleared payments and duplicates before matching transactions."
  },
  audit:{
   title:"Prepare exception investigation",
   intro:"Choose a category and severity for review. There are no recorded events to investigate yet.",
-  fields:[{key:"category",label:"Exception category",kind:"select",options:["Bank payment mismatch","Provider webhook mismatch","Unauthorized change attempt","Tax validation error","Duplicate recurring job","Document retention exception"],required:true},{key:"severity",label:"Review priority",kind:"select",options:["Informational","Moderate","High","Critical"],required:true},{key:"correlation",label:"Event / correlation ID (if known)"},{key:"reason",label:"Investigation summary",kind:"textarea",required:true}],
-  authority:"Real incidents require secure actor/time/event IDs, evidence hashes, tenant isolation, immutable append-only storage and controlled resolution."
+  fields:[{key:"category",label:"Exception category",kind:"select",options:["Bank payment mismatch","Online payment notification mismatch","Unauthorized change attempt","Tax validation error","Duplicate recurring job","Document retention exception"],required:true},{key:"severity",label:"Review priority",kind:"select",options:["Informational","Moderate","High","Critical"],required:true},{key:"correlation",label:"Event / correlation ID (if known)"},{key:"reason",label:"Investigation summary",kind:"textarea",required:true}],
+  authority:"Keep the original record and supporting evidence. Resolution requires an authorized reviewer."
  },
  currencies:{
   title:"Preview foreign-currency setup",
@@ -51,11 +51,11 @@ const specs:Record<Exclude<FinanceMode,"communications">,Spec>={
 };
 const reviewChecklist:Record<Exclude<FinanceMode,"communications">,string[]>={
  statement:["Confirm the customer belongs to this merchant","Reconcile the opening balance, issued documents and verified allocations","Snapshot the selected period before enabling PDF or CSV export"],
- approvals:["Show original evidence alongside the proposed change","Require an independent reviewer with appropriate privileges and step-up MFA","Record an immutable decision and protect against stale-version approval"],
+ approvals:["Show original evidence alongside the proposed change","Use a second authorized reviewer and identity confirmation","Keep a lasting record of the decision and prevent approval of outdated requests"],
  receivables:["Confirm due dates and allocations against issued invoices","Exclude void records and account for approved credits and reversals","Respect customer communication consent before any reminder"],
  adjustments:["Verify the original issued invoice and affected line items","Recalculate exact tax and totals with the approved classification","Allocate a new note number and preserve the original and audit trail"],
  reconciliation:["Authenticate the statement source and validate cleared entries","Detect duplicate imports and reversed funds before matching","Never manually override gateway or dynamic-account verification"],
- audit:["Correlate signed actor, tenant, event and trace identifiers","Preserve original evidence and redact restricted personal details","Require authorized resolution while retaining immutable history"],
+ audit:["Match the event to its date, responsible user and reference number","Keep the original evidence and protect private customer details","Require authorized resolution while retaining immutable history"],
  currencies:["Validate the currency minor units and effective-dated quote","Require an approved source before posting an FX conversion","Persist both original currency and base-currency amounts without floats"]
 };
 export default function FinanceActionSheet({mode,customers,invoices,onClose}:{mode:Exclude<FinanceMode,"communications">;customers:string[];invoices:string[];onClose:()=>void}){

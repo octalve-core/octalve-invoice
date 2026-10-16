@@ -26,6 +26,15 @@ test("owner-rejected implementation notices stay out of merchant-facing screens"
  const forbidden=["All calculations happen in this browser using your inputs.","Illustrative display only. No live merchant account","Preview patterns below are illustrative only.","Backend ledger, message outbox, tenant-specific portal tokens","Plan collections, communicate and prepare client-facing access."];
  for(const p of paths)for(const fragment of forbidden)assert.ok(!read(p).includes(fragment),p+" contains rejected copy "+fragment);
 });
+test("technical authority terms stay in engineering docs rather than merchant copy",()=>{
+ const screens=[
+  "src/features/finance/FinanceActionSheet.tsx",
+  "app/(dashboard)/dashboard/insights-support/page.tsx",
+  "app/(dashboard)/dashboard/tax-centre/page.tsx"
+ ];
+ const forbidden=["tenant isolation, immutable append-only storage","source invoice, due date and verified allocations","tenant-scoped data","seeded invoices","available for this tenant","Provider webhook mismatch"];
+ for(const file of screens)for(const phrase of forbidden)assert.ok(!read(file).includes(phrase),file+" still contains implementation copy: "+phrase);
+});
 test("merchant logo upload is shared with browser and native document exports",()=>{
  const settings=read("app/(dashboard)/dashboard/settings/business/page.tsx");
  const composer=read("src/features/invoices/sections/InvoiceComposer.tsx");
