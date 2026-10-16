@@ -39,9 +39,13 @@ export default function FinanceWorkspace({mode}:{mode:FinanceMode}){
  }),[all,mode,status,customer,from,to,query]);
  const balances=useMemo(()=>{
   const map=new Map<string,number>();let running=0;
-  for(const r of filtered){if(mode!=="statement"||customer==="all")break;running+=(r.amountMinor||0);map.set(r.id,running);}
+  if(mode==="statement"&&customer!=="all")for(const r of all){
+   if(r.customer!==customer)continue;
+   running+=(r.amountMinor||0);
+   map.set(r.id,running);
+  }
   return map;
- },[mode,customer,filtered]);
+ },[mode,customer,all]);
  const metrics=getFinanceMetrics(mode,all);
  const previewAction=()=>mode==="communications"?setCompose(true):setNotice(config.primaryAction+" requires authenticated merchant data, owner permissions and a secure backend. No record or payment was changed.");
  const reset=()=>{setQuery("");setStatus("all");setCustomer("all");setFrom("");setTo("");};
