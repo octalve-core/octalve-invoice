@@ -5,6 +5,7 @@ import {CalendarDays,ChevronRight,CircleHelp,FileText,LockKeyhole,Mail,MessageSq
 import type {PreviewInvoice} from "@/src/features/invoices/lib/preview-records";
 import {splitInstallment} from "@/src/features/invoices/lib/installments";
 import {paymentPreview} from "@/src/features/payments/ledger";
+import {useAccessibleDialog} from "@/src/features/records/components/useAccessibleDialog";
 type WorkflowTab="payments"|"communications"|"portal";
 type MessageKind="issue"|"reminder"|"update"|"paid";
 const fmt=(n:number)=>new Intl.NumberFormat("en-NG",{style:"currency",currency:"NGN",minimumFractionDigits:2,maximumFractionDigits:2}).format(n/100);
@@ -18,6 +19,7 @@ const messageKinds:{kind:MessageKind;label:string;subject:string;body:string}[]=
 export default function InvoiceWorkflowPanel({invoice}:{invoice:PreviewInvoice}){
  const [tab,setTab]=useState<WorkflowTab>("payments"),[percent,setPercent]=useState(70),[messageKind,setMessageKind]=useState<MessageKind>("reminder");
  const [sheet,setSheet]=useState(false),[subject,setSubject]=useState(""),[body,setBody]=useState(""),[notice,setNotice]=useState("");
+ useAccessibleDialog(sheet,()=>setSheet(false));
  const total=minorAmount(invoice.amount);
  const allocated=useMemo(()=>paymentPreview.filter(p=>p.status==="verified").flatMap(p=>p.allocations).filter(a=>a.invoiceId===invoice.id).reduce((n,a)=>n+a.amountMinor,0),[invoice.id]);
  const outstanding=Math.max(0,total-allocated);
