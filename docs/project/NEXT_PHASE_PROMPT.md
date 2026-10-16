@@ -30,3 +30,20 @@ Read the full handoff **before performing any substantive write**; it explains p
 - Vercel READY deployment: `dpl_7jcK5LgcWX4UKdrWv697joqULbL6` (review merge `d791b816`), stable alias unchanged.
 - Final candidate qualification: Node24/test/build 38921320625, CodeQL 38921320650, browser 38921314940 (189+64 checks), artifact 12055770414. Public-route HTTP probing by this chat tool failed; READY and internal browser checks are confirmed, not external authenticated route tests.
 - No Phase 0I main merge or backend authorization; PR #2 stays draft.
+
+
+## Batch F — published and qualified (16 October 2026)
+- App source: `134156955ee5bece16560a8d0346744b28457d61`; review-only PR #7 https://github.com/octalve-core/octalve-invoice/pull/7 merged at `318bb8ae1d89bf394903867c0ed6ff44cb11e3dd` into `review/phase-0i` only.
+- Vercel owner-facing Preview READY: `dpl_8b2kMjhwB6ZLhb4vd9R9Z7JKp5oD`; stable https://octalve-invoice-git-review-phase-0i-octalve-vault.vercel.app . Production remains not live; main e01c915 and PR #2 draft.
+- Source evidence: build/tests/lint/typecheck https://github.com/octalve-core/octalve-invoice/actions/runs/38933862294 PASS; CodeQL https://github.com/octalve-core/octalve-invoice/actions/runs/38933862532 PASS; 189/189 desktop/tablet/mobile and 64/64 additional responsive checks https://github.com/octalve-core/octalve-invoice/actions/runs/38933856460 PASS; PNG/PDF/screenshot artifact https://github.com/octalve-core/octalve-invoice/actions/runs/38933856460/artifacts/12059109669 .
+- UI: collapsible invoice creation/editing sections with preserved input state, single-open item controls with expand-all, draft-only installment and communications planning, zero-total guard, accurate chosen split preview, concise customer-language pass, merchant logo linkage preserved.
+- Remaining: owner screenshot reviews and corrections; some specialized finance/tax/support/portal actions remain frontend proposals. Uploaded logo is not persisted across new sessions until authorized backend. Separate dashboard logo absent. Invoice-template visual fidelity redesign is deliberately next and separate. Subscription economics unapproved. No verified payment, email, NRS, receipt, recurring scheduler, secure portal or ledger enabled by this batch.
+
+- **Post-merge exact Review checks: all PASS.** Phase qualification https://github.com/octalve-core/octalve-invoice/actions/runs/38934451095 ; CodeQL https://github.com/octalve-core/octalve-invoice/actions/runs/38934451220 ; 189/189+64/64 browser https://github.com/octalve-core/octalve-invoice/actions/runs/38934451152 ; review-merge screenshot and PDF/PNG artifact https://github.com/octalve-core/octalve-invoice/actions/runs/38934451152/artifacts/12060780726 .
+
+
+## 16 October 2026 follow-up — NRS, consolidated Settings, template and export authority audit (NOT IMPLEMENTED)
+- Authoritative **research proposal**, NOT owner-approved code direction: [`docs/project/PHASE_0I_NRS_SETTINGS_TEMPLATE_ISSUANCE_AUDIT_2026-10-16.md`](./PHASE_0I_NRS_SETTINGS_TEMPLATE_ISSUANCE_AUDIT_2026-10-16.md).
+- Source audit established duplicated invoice settings, browser-only default template override, unrecorded draft PDF/PNG download, existing customer auto-fill of only contact fields, missing NRS Business ID/Service ID/tax-field and IRN persisted authority. Official NRS MBS references and proposed stage gates are in the audit.
+- Owner requests first consolidate Settings, block unrecorded invoice downloads, align customer catalog and document snapshot, support a multi-style template gallery (Octalve Modern/Classic Ledger plus four original general styles, Legal awaiting artwork) and plan future NRS integration/IRN/QR without activating them.
+- No active code or live NRS registration/deployment change was made for the audit. No additional review merge; **Batch F READY** remains latest qualified Preview. The previous restrictions on Phase 1, main, money movement, fiscalization, subscriptions and final artwork still stand. Owner decisions on draft export, Legal styling and NRS route are pending.
