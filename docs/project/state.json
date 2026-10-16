@@ -1,6 +1,6 @@
 {
   "updatedAt": "2026-10-16",
-  "phase": "Phase 0I Batch I READY in owner Review: one Customize Invoices settings screen, live draft theme, template gallery, invoice defaults and receipt options. Owner visual acceptance pending; no Phase 1.",
+  "phase": "Phase 0I Batch J READY in Review: one guided business setup and payments readiness, bank account fail-closed invoice display, source verified 189/189 + 64/64; owner visual acceptance pending.",
   "branch": "phase/0i-frontend-finance-workflows",
   "mainBootstrapSha": "87ad423dba3ced2445e109baa85114aea3d30037",
   "latestMigration": null,
@@ -72,7 +72,8 @@
     "phase0iBatchH": "PASS exact source f30b727e22358752127e6ce04e2863f745c84b82: Node/pnpm/TypeScript/lint/tests/build 38951914088, CodeQL 38951914050, standard browser 189/189 and viewport 64/64 38951905973; evidence artifact 12068804114. Review PR #9 a47027b29a6810dbe006a1e9a338658e3701c45f, Vercel dpl_GthKFndetXz6XMYpTksQddZtnPon READY. Review merge app diff only prior review-history docs.",
     "phase0iBatchHReview": "PASS Review-only commit a47027b29a6810dbe006a1e9a338658e3701c45f: phase qualification 38952605056, CodeQL 38952605046, browser 38952604926 189/189+64/64, screenshot artifact 12068754269. Vercel dpl_GthKFndetXz6XMYpTksQddZtnPon READY exact merge, stable alias.",
     "phase0iBatchI": "Exact app SHA 72a2a947a49c41ece629fe458986ce13d07a9502: source build/TS/lint/tests run 38955806842 PASS; CodeQL 38955806900 PASS; browser 189/189 and extra viewport 64/64 run 38955799420 PASS, screenshot artifact 12070049528. Review-only PR #10 merged 6f708b03b4c103f66a5044df2804f88c8bbd5edc, Vercel dpl_CosR1UDqVt9PndPEJy7ieYxzPT6x READY. Merge only adds historical docs/project/REVIEW_PHASE_0I_BATCH_A.md beyond source.",
-    "phase0iBatchIReview": "PASS exact Review merge 6f708b03b4c103f66a5044df2804f88c8bbd5edc: Phase qualification 38956348528 PASS, CodeQL 38956348520 PASS, browser 189/189+64/64 38956348541 PASS, screenshots artifact 12070787870. Vercel stable alias deployment dpl_CosR1UDqVt9PndPEJy7ieYxzPT6x READY. No main/Production."
+    "phase0iBatchIReview": "PASS exact Review merge 6f708b03b4c103f66a5044df2804f88c8bbd5edc: Phase qualification 38956348528 PASS, CodeQL 38956348520 PASS, browser 189/189+64/64 38956348541 PASS, screenshots artifact 12070787870. Vercel stable alias deployment dpl_CosR1UDqVt9PndPEJy7ieYxzPT6x READY. No main/Production.",
+    "phase0iBatchJ": "PASS source 0bbd24bea935ae35b37609216324396bfab175be: phase qualification 38963372705, CodeQL 38963372754, browser 189/189 and extra 64/64 run 38963367327, screenshots artifact 12074470694. Review merge 9a772b9deac2e7e476ae9f75f7d40a59c4107c76 Vercel READY. Postmerge CI requires its own independent verification."
   },
   "blockers": [
     "Explicit owner approval for Phase 0I final UI and later backend Phase 1 remains absent. No Neon, real auth, payment gateways, money movement, NRS filings or real support/email delivery.",
@@ -85,12 +86,12 @@
     "Backend-approved authority needed before staff approvals, money posting, NRS, persistent finance ledgers, customer access, recurring issuance or communication delivery.",
     "Source and browser regressions pass; visual goldens and customer UX review still need owner sign-off."
   ],
-  "nextPhase": "Owner visually verify one consolidated Customize Invoices Settings page: template gallery, accent, font, header, logo, footer, currency, due terms, receipts and mandatory DRAFT paper watermark at 320/360/390/430/768/1024/1440. No duplicate theme page; old theme link redirects. Then proceed with separately approved renderer/Legal artwork or secure Phase 1 issuance only under explicit authorization.",
-  "currentCodeCheckpoint": "72a2a947a49c41ece629fe458986ce13d07a9502",
-  "lastVerifiedApplicationCommit": "72a2a947a49c41ece629fe458986ce13d07a9502",
-  "exactNextPhase": "Owner visually verify one consolidated Customize Invoices Settings page: template gallery, accent, font, header, logo, footer, currency, due terms, receipts and mandatory DRAFT paper watermark at 320/360/390/430/768/1024/1440. No duplicate theme page; old theme link redirects. Then proceed with separately approved renderer/Legal artwork or secure Phase 1 issuance only under explicit authorization.",
-  "previewCommitSha": "6f708b03b4c103f66a5044df2804f88c8bbd5edc",
-  "previewDeploymentStatus": "Vercel READY Review-only dpl_CosR1UDqVt9PndPEJy7ieYxzPT6x at 6f708b03b4c103f66a5044df2804f88c8bbd5edc stable review alias; main Production unchanged.",
+  "nextPhase": "Owner review Batch J Getting Started > business/invoice appearance/receiving payments/tools at 320-1440. Future bank directory/name enquiry must use approved trusted provider with credentials on authenticated server, no hardcoded incomplete Nigerian bank list, no false verified label. Phase 1 requires explicit separate authorization before bank-name validation APIs, persisted verified account records, money processing, NRS or authenticated invoice issuance. Original invoice/Legal art deferred.",
+  "currentCodeCheckpoint": "0bbd24bea935ae35b37609216324396bfab175be",
+  "lastVerifiedApplicationCommit": "0bbd24bea935ae35b37609216324396bfab175be",
+  "exactNextPhase": "Owner review Batch J Getting Started > business/invoice appearance/receiving payments/tools at 320-1440. Future bank directory/name enquiry must use approved trusted provider with credentials on authenticated server, no hardcoded incomplete Nigerian bank list, no false verified label. Phase 1 requires explicit separate authorization before bank-name validation APIs, persisted verified account records, money processing, NRS or authenticated invoice issuance. Original invoice/Legal art deferred.",
+  "previewCommitSha": "9a772b9deac2e7e476ae9f75f7d40a59c4107c76",
+  "previewDeploymentStatus": "Vercel READY Review-only dpl_38vqkksQn8NZZJ9G38FG4jn3fKSe at 9a772b9deac2e7e476ae9f75f7d40a59c4107c76 stable alias. Production main unchanged.",
   "phase0Merged": true,
   "productionDeployed": false,
   "productionApprovedByOwner": true,
@@ -100,9 +101,9 @@
   "phase0iBackendApproved": false,
   "phase0iProductionApproved": false,
   "backendApproved": false,
-  "lastQualifiedSourceHead": "72a2a947a49c41ece629fe458986ce13d07a9502",
+  "lastQualifiedSourceHead": "0bbd24bea935ae35b37609216324396bfab175be",
   "productionApprovalScope": "Historical Phase 0H owner authorization for main merge only; NOT authorization for Phase 0I Batch C deployment or backend.",
-  "phase0iReviewCandidate": "Batch I published Review-only via PR #10 merged 6f708b03b4c103f66a5044df2804f88c8bbd5edc; app source 72a2a947a49c41ece629fe458986ce13d07a9502 qualified 189/189+64/64, Node/pnpm/tests/build/CodeQL. Await owner visual acceptance.",
+  "phase0iReviewCandidate": "Batch J published Review-only PR #11 merged at 9a772b9deac2e7e476ae9f75f7d40a59c4107c76; source 0bbd24bea935ae35b37609216324396bfab175be qualified Node/TS/tests/build/CodeQL and 189+64 browser.",
   "newChatHandoff": "docs/project/OCTALVE_INVOICE_PHASE_0I_NEXT_CHAT_HANDOFF_2026-10-16.md",
   "nextChatEntry": "docs/project/NEXT_PHASE_PROMPT.md",
   "latestDocsOnlyHandoff": "9fc88ce5c6d73a0dc03be7f4c11ff35498610c1a; followed by this state update; no app code changed after qualified SHA 149e896b",
