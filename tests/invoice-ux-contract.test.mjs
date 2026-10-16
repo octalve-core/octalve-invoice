@@ -11,6 +11,8 @@ test("invoice payment planning belongs to create/edit and never issued detail",(
  assert.match(editor,/aria-expanded=\{open\}/);
  assert.match(editor,/hidden=\{!open\}/);
  assert.match(editor,/Expand all/);
+ assert.match(editor,/Number\.isSafeInteger\(totalMinor\)&&totalMinor>0/);
+ assert.match(editor,/Add an item with a positive amount before planning installments/);
 });
 test("item sections support selective expansion and a deliberate expand-all option",()=>{
  const c=read("src/features/invoices/sections/InvoiceItemsSection.tsx");

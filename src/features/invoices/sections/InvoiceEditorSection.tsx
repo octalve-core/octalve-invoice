@@ -31,7 +31,7 @@ export function InvoiceEditorSection({draft,setDraft}:Props){
  const update=<K extends keyof InvoiceDraft>(key:K,value:InvoiceDraft[K])=>setDraft(p=>({...p,[key]:value}));
  const total=calculateInvoiceTotals(draft.rows,draft.discount,draft.tax).total;
  const totalMinor=Math.round(total*100);
- const validTotal=Number.isSafeInteger(totalMinor)&&totalMinor>=0;
+ const validTotal=Number.isSafeInteger(totalMinor)&&totalMinor>0;
  return <section aria-label="Invoice input" className="min-w-0 space-y-3">
   <div className="flex flex-wrap items-center justify-between gap-2 px-1">
    <p className="text-xs text-slate-500">Complete each section while reviewing your invoice alongside.</p>
@@ -60,7 +60,7 @@ export function InvoiceEditorSection({draft,setDraft}:Props){
   </Panel>
   <Panel name="workflow" title="Payment plan & communication" description="Installments, draft messages and customer-sharing options" open={open.includes("workflow")} onToggle={()=>toggle("workflow")}>
    {validTotal?<InvoiceWorkflowPanel invoice={{id:"unsaved-draft",reference:draft.invoiceNo,customer:draft.clientName||"Customer",email:draft.clientEmail,amount:(totalMinor/100).toFixed(2),date:"",dueDate:"",status:"draft",paymentMode}} currency={draft.currency}/>:
-   <p role="alert" className="text-xs text-red-700">Check the amounts and quantities before planning installments.</p>}
+   <p role="alert" className="text-xs text-red-700">Add an item with a positive amount before planning installments.</p>}
   </Panel>
   <div className="flex flex-wrap gap-2 rounded-xl bg-white p-4">
    <button type="button" disabled className="rounded-full bg-[#0064E0] px-5 py-2.5 text-xs font-medium text-white opacity-55">Save draft</button>
