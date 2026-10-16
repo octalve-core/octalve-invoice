@@ -1,17 +1,13 @@
 "use client";
 import {useMemo,useState} from "react";
-import {CalendarDays,Check,ChevronRight,CircleHelp,FileText,LockKeyhole,Mail,MessageSquare,Percent,QrCode,Send,ShieldCheck,X} from "lucide-react";
+import {CalendarDays,ChevronRight,CircleHelp,FileText,LockKeyhole,Mail,MessageSquare,Percent,QrCode,Send,ShieldCheck,X} from "lucide-react";
 import type {PreviewInvoice} from "@/src/features/invoices/lib/preview-records";
+import {splitInstallment} from "@/src/features/invoices/lib/installments";
 import {paymentPreview} from "@/src/features/payments/ledger";
 type WorkflowTab="payments"|"communications"|"portal";
 type MessageKind="issue"|"reminder"|"update"|"paid";
 const fmt=(n:number)=>new Intl.NumberFormat("en-NG",{style:"currency",currency:"NGN",minimumFractionDigits:2,maximumFractionDigits:2}).format(n/100);
 function minorAmount(v:string){const n=Number(v.replace(/[^0-9.]/g,""));const minor=Math.round(n*100);if(!Number.isSafeInteger(minor)||minor<0)throw new Error("Invalid invoice amount");return minor;}
-export function splitInstallment(amountMinor:number,percent:number):[number,number]{
- if(!Number.isSafeInteger(amountMinor)||amountMinor<0||!Number.isInteger(percent)||percent<1||percent>99)throw new Error("Invalid installment plan");
- const first=Number(BigInt(amountMinor)*BigInt(percent)/100n);
- return [first,amountMinor-first];
-}
 const messageKinds:{kind:MessageKind;label:string;subject:string;body:string}[]=[
  {kind:"issue",label:"Send invoice",subject:"Your invoice is ready",body:"Hello, please find the invoice for your review. Let us know if you have any questions."},
  {kind:"reminder",label:"Payment reminder",subject:"Friendly invoice payment reminder",body:"Hello, this is a friendly reminder to review your outstanding invoice. Please disregard this message if payment is already being reconciled."},
