@@ -35,6 +35,14 @@ test("technical authority terms stay in engineering docs rather than merchant co
  const forbidden=["tenant isolation, immutable append-only storage","source invoice, due date and verified allocations","tenant-scoped data","seeded invoices","available for this tenant","Provider webhook mismatch"];
  for(const file of screens)for(const phrase of forbidden)assert.ok(!read(file).includes(phrase),file+" still contains implementation copy: "+phrase);
 });
+test("installment reviews display current percentages and exact allocated amounts, not a fixed split",()=>{
+ const workflow=read("src/features/invoices/sections/InvoiceWorkflowPanel.tsx");
+ assert.doesNotMatch(workflow,/70\/30 or custom installment amounts/);
+ assert.match(workflow,/Proposed split: \$\{percent\}%/);
+ assert.match(workflow,/Proposed milestones: \$\{stages\.map/);
+ assert.match(workflow,/fmt\(stageAmounts!\[i\]\)/);
+ assert.match(workflow,/No payment schedule was saved or communicated\./);
+});
 test("merchant logo upload is shared with browser and native document exports",()=>{
  const settings=read("app/(dashboard)/dashboard/settings/business/page.tsx");
  const composer=read("src/features/invoices/sections/InvoiceComposer.tsx");
