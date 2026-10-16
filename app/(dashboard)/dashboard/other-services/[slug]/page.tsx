@@ -8,6 +8,7 @@ export default async function ComingSoon({params}:{params:Promise<{slug:string}>
  if(!service)notFound();
  if(slug==="recurring-income-expense")redirect("/dashboard/recurring");
  if(slug==="create-statement")redirect("/dashboard/finance/statement");
+ if(slug==="pay-tax")redirect("/dashboard/tax-centre");
  return <main className="mx-auto flex min-h-[65vh] max-w-xl flex-col items-center justify-center gap-5 rounded-2xl bg-white p-8 text-center shadow-sm">
   <span className="grid h-20 w-20 place-items-center rounded-full bg-blue-50 text-[#0064E0]"><Clock3 size={36}/></span>
   <h1 className="text-2xl font-bold text-slate-900">{service.title}</h1>
