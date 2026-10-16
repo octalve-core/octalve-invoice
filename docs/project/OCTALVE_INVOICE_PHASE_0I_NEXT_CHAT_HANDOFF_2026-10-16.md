@@ -133,3 +133,12 @@ Read current code and live GitHub PRs/Actions as well; documents alone may lag b
 
 ## 13. One-sentence objective to retain in every turn
 **Build Octalve Invoice into a cohesive, premium, responsive, auditable, NRS-aware merchant finance workspace whose frontend is visually approved and whose eventual backend is authoritative about identity, payments, fiscal records and financial history — with exact owner design fidelity and ZERO shortcuts to payment or security authority.**
+
+
+## 14. 16 October 2026 — Batch E subsequent continuation checkpoint
+This section updates the original dated checkpoint. **Inspect current live refs before acting.**
+- Qualified new application source: 1890c5d839976cce99b901765a02ab98328e852e on `phase/0i-frontend-finance-workflows`. Code changes: `src/features/finance/RecurringWorkspace.tsx`, new `src/features/finance/recurring-schedule.ts` and its 5 unit tests, and specialist `src/features/finance/FinanceActionSheet.tsx`.
+- Actual verification at that application SHA: **Phase qualification PASS** https://github.com/octalve-core/octalve-invoice/actions/runs/38920535188; **CodeQL PASS** https://github.com/octalve-core/octalve-invoice/actions/runs/38920534494; **browser PASS 189/189 +64/64** https://github.com/octalve-core/octalve-invoice/actions/runs/38920526112; evidence https://github.com/octalve-core/octalve-invoice/actions/runs/38920526112/artifacts/12055190247 .
+- Functional changes: invalid/rollover dates and invalid schedule bounds now rejected; projected schedules can have end dates, proposed issuance/tax/missed policies, and do not persist. Finance action reviews provide original reference and proposed diff, customer/account/evidence, affected tax/lines, event correlation and FX effective date fields with explicit authority checklists; forms remain local and unsaved.
+- Review branch at time of this docs checkpoint: Batch D `78122f0759a096cbd6fc88d57b3034dd121124f4`, READY Vercel, with Batch E **NOT YET PUBLISHED**. After qualifying the docs-only follow-up, publish once to review only, verify READY, and update release status. `main` remains `e01c9158616f65b4e08d5b36318b8d27aef3189b` and PR #2 draft.
+- Incomplete frontend work still includes comprehensive owner reference review, deeper statement/ageing/communications/tax/portal/recurring actions, subscription commercial policy and design acceptance. Owner-provided dashboard logo is absent; final invoice-template appearance is expressly deferred. Do NOT enable backend/Neon/gateway/NRS/email/real customer portal or move PR #2 to ready.
