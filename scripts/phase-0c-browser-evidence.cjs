@@ -2,48 +2,19 @@
 const fs = require("node:fs");
 const path = require("node:path");
 const { chromium } = require("playwright");
-const { execFileSync } = require("node:child_process");
-async function qualifyBrowserPng(page, output, view, template) {
-  await page.getByRole("button", { name: "Download preview PNG" }).click();
-  const prompt = page.getByRole("dialog", { name: "Complete invoice details" });
-  await prompt.waitFor();
-  const [download] = await Promise.all([
-    page.waitForEvent("download", { timeout: 90000 }),
-    prompt.getByRole("button", { name: "Continue without details" }).click()
-  ]);
-  const pngPath = path.join(output, view + "-" + template + "-browser-export.png");
-  await download.saveAs(pngPath);
-  const bytes = fs.readFileSync(pngPath);
-  const magic = Buffer.from([137, 80, 78, 71, 13, 10, 26, 10]);
-  if (!bytes.subarray(0, 8).equals(magic)) throw Error("Downloaded browser PNG has invalid signature");
-  if (bytes.length < 24) throw Error("PNG too short");
-  const width = bytes.readUInt32BE(16), height = bytes.readUInt32BE(20);
-  if (width < 500 || height < 500) throw Error(template + " browser PNG geometry too small: " + width + "x" + height);
-  return { png: path.basename(pngPath), width, height, signature: "PASS" };
+async function qualifyBrowserPng(page) {
+  const preview = page.locator('section[aria-label="Live document preview"]');
+  await preview.getByTestId("draft-preview-watermark").waitFor();
+  if(await preview.getByRole("button",{name:/Download preview PNG/}).count())throw Error("Unissued invoice exposed PNG download");
+  if(!await preview.getByText("PDF and PNG available after issue").isVisible())throw Error("Missing draft export lock explanation");
+  return { draftExportBlocked:"PASS",watermark:"PASS" };
 }
-async function qualifyNativePdf(page, output, view, template) {
-  await page.getByRole("button", { name: "Download preview PDF" }).click();
-  const prompt = page.getByRole("dialog", { name: "Complete invoice details" });
-  await prompt.waitFor();
-  const [download] = await Promise.all([
-    page.waitForEvent("download", { timeout: 90000 }),
-    prompt.getByRole("button", { name: "Continue without details" }).click()
-  ]);
-  const pdfPath = path.join(output, view + "-" + template + "-native.pdf");
-  await download.saveAs(pdfPath);
-  const bytes = fs.readFileSync(pdfPath);
-  if (bytes.subarray(0, 5).toString("ascii") !== "%PDF-") throw Error("Native PDF magic bytes missing: " + template);
-  const info = execFileSync("pdfinfo", [pdfPath], { encoding: "utf8", timeout: 20000 });
-  if (!/Page size:\s*595(?:\.|\s)/.test(info)) throw Error(template + " PDF is not A4 at the default paper setting");
-  const extracted = execFileSync("pdftotext", ["-layout", pdfPath, "-"], { encoding: "utf8", timeout: 20000 }).replace(/\s+/g, " ");
-  for (const expected of ["Golden Preview Customer", "Golden Item One", "Golden Item Two", "PHASE ZERO NOTE WITHOUT BANK DETAILS"]) {
-    if (!extracted.toLocaleUpperCase("en").includes(expected.toLocaleUpperCase("en"))) throw Error(template + " PDF selectable text missing: " + expected);
-  }
-  if (extracted.includes("Editable sample line item")) throw Error(template + " PDF retained removed/blank item description");
-  const rasterPrefix = path.join(output, view + "-" + template + "-pdf-first-page");
-  execFileSync("pdftoppm", ["-f", "1", "-l", "1", "-singlefile", "-png", "-r", "115", pdfPath, rasterPrefix], { timeout: 60000 });
-  if (!fs.existsSync(rasterPrefix + ".png")) throw Error(template + " PDF raster PNG was not generated");
-  return { pdf: path.basename(pdfPath), raster: path.basename(rasterPrefix + ".png"), pdfPages: (info.match(/^Pages:\s*(\d+)/m) || [])[1], selectableText: "PASS", paperA4: "PASS" };
+async function qualifyNativePdf(page) {
+  const preview = page.locator('section[aria-label="Live document preview"]');
+  await preview.getByTestId("draft-preview-watermark").waitFor();
+  if(await preview.getByRole("button",{name:/Download preview PDF/}).count())throw Error("Unissued invoice exposed PDF download");
+  if(await page.getByRole("dialog",{name:"Complete invoice details"}).count())throw Error("Draft PDF download dialog remains available");
+  return { draftExportBlocked:"PASS",watermark:"PASS" };
 }
 
 const routes = ["/portal", "/onboarding", "/login", "/signup", "/forgot-password", "/check-email", "/enter-otp", "/set-new-password", "/password-success", "/email-verified", "/verify-email", "/business-info", "/set-currency", "/dashboard", "/dashboard/getting-started", "/dashboard/invoice", "/dashboard/invoice/create", "/dashboard/invoice/1", "/dashboard/invoice/1/edit", "/dashboard/receipt", "/dashboard/receipt/1", "/dashboard/receipt/create", "/dashboard/quotation", "/dashboard/quotation/1", "/dashboard/expenses", "/dashboard/customer", "/dashboard/items", "/dashboard/items/add", "/dashboard/items/1/edit", "/dashboard/staff", "/dashboard/staff/create", "/dashboard/staff/1/edit", "/dashboard/credit-note", "/dashboard/other-services", "/dashboard/finance/statement", "/dashboard/finance/approvals", "/dashboard/finance/receivables", "/dashboard/finance/adjustments", "/dashboard/finance/communications", "/dashboard/finance/reconciliation", "/dashboard/finance/audit", "/dashboard/finance/currencies", "/dashboard/recurring", "/dashboard/recurring-expense", "/dashboard/tax-centre", "/dashboard/taxes", "/dashboard/insights-support", "/dashboard/other-services/pay-tax", "/dashboard/finance-calculator", "/dashboard/report", "/dashboard/notifications", "/dashboard/payment-received", "/dashboard/announcement", "/dashboard/updates", "/dashboard/invoice/3/record-payment", "/dashboard/settings", "/dashboard/settings/profile", "/dashboard/settings/invoice", "/dashboard/settings/business", "/dashboard/settings/subscription", "/dashboard/settings/theme", "/dashboard/settings/faqs", "/dashboard/settings/deleted"];
@@ -473,6 +444,9 @@ const origin = process.env.OCTALVE_BASE_URL || "http://127.0.0.1:3000";
               const right=await page.locator('section[aria-label="Live document preview"]').boundingBox();
               if(!left||!right||Math.abs(left.width-right.width)>12)throw new Error("Desktop invoice columns are not approximately 50/50");
             }
+            if(await page.getByTestId("draft-preview-watermark").count()!==1)throw Error("Visible watermark missing from unissued document");
+            if(await page.getByTestId("draft-preview-watermark").getByText("DRAFT · NOT ISSUED").count()<5)throw Error("Repeated watermark not present across paper");
+            record.draftWatermark="PASS";
             await page.screenshot({ path: path.join(output, view+"-invoice-modern.png"), fullPage: true, animations: "disabled" });
             if (view === "desktop") { record.browserModernPng = await qualifyBrowserPng(page, output, view, "modern"); record.nativeModernPdf = await qualifyNativePdf(page, output, view, "modern"); }
             await page.getByLabel("Template").selectOption("ledger");
