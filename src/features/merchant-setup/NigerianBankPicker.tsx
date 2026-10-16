@@ -29,7 +29,7 @@ export function NigerianBankPicker({value,onChange}:{value:string;onChange:(bank
  const root=useRef<HTMLDivElement>(null);
  const id=useId();
  const filtered=useMemo(()=>previewBankSuggestions.filter(b=>b.toLowerCase().includes(query.trim().toLowerCase())).slice(0,35),[query]);
- useEffect(()=>{if(!open)setQuery(value);},[value,open]);
+ 
  useEffect(()=>{
   if(!open)return;
   const onPointerDown=(event:PointerEvent)=>{if(!root.current?.contains(event.target as Node)){setOpen(false);setQuery(value);}};
@@ -43,7 +43,7 @@ export function NigerianBankPicker({value,onChange}:{value:string;onChange:(bank
    <Search aria-hidden="true" size={17} className="pointer-events-none absolute left-3 top-3.5 text-slate-400"/>
    <input id={id} role="combobox" autoComplete="off" aria-autocomplete="list" aria-controls={id+"-options"} aria-expanded={open}
     aria-activedescendant={open&&filtered[active]?id+"-option-"+active:undefined}
-    value={query} placeholder="Search banks or fintechs" onFocus={()=>{setOpen(true);setActive(0);}}
+    value={open?query:value} placeholder="Search banks or fintechs" onFocus={()=>{setQuery(value);setOpen(true);setActive(0);}}
     onChange={e=>{setQuery(e.target.value);setActive(0);setOpen(true);setTouched(false);if(value)onChange("");}}
     onKeyDown={e=>{
      if(e.key==="ArrowDown"){e.preventDefault();setOpen(true);setActive(a=>Math.max(0,Math.min(a+1,filtered.length-1)));}
@@ -52,7 +52,7 @@ export function NigerianBankPicker({value,onChange}:{value:string;onChange:(bank
      if(e.key==="Enter"&&open){e.preventDefault();if(filtered[active])choose(filtered[active]);}
     }}
     className="h-11 w-full min-w-0 rounded-xl border border-[#D7E2EF] bg-white py-2 pl-10 pr-10 text-sm text-[#173652] outline-none focus:border-[#0064E0] focus:ring-2 focus:ring-[#0064E0]/10"/>
-   <button type="button" aria-label="Show bank options" onClick={()=>setOpen(x=>!x)} className="absolute right-1 top-1 h-9 w-9 rounded-lg text-[#6B7F97] hover:bg-slate-50"><ChevronDown size={18} className="mx-auto"/></button>
+   <button type="button" aria-label="Show bank options" onClick={()=>{setQuery(value);setOpen(x=>!x);}} className="absolute right-1 top-1 h-9 w-9 rounded-lg text-[#6B7F97] hover:bg-slate-50"><ChevronDown size={18} className="mx-auto"/></button>
   </div>
   {open?<div id={id+"-options"} role="listbox" aria-label="Suggested Nigerian institutions" className="absolute z-40 mt-1 max-h-64 w-full overflow-auto rounded-xl border border-[#DBE6F3] bg-white p-1.5 shadow-[0_20px_50px_rgba(20,48,89,.17)]">
    {filtered.length?filtered.map((bank,i)=><button key={bank} id={id+"-option-"+i} role="option" aria-selected={value===bank} type="button"
