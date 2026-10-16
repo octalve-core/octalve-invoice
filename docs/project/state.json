@@ -1,6 +1,6 @@
 {
   "updatedAt": "2026-10-16",
-  "phase": "Phase 0I frontend Batch D source-qualified; 189/189 browser + 64/64 extra responsive, Node24 source build and CodeQL green. Owner review pending, Phase 1 not authorized.",
+  "phase": "Phase 0I Batch D Review READY (189/189+64/64 regression, source & CodeQL passed); final owner visual approval and backend authorization pending",
   "branch": "phase/0i-frontend-finance-workflows",
   "mainBootstrapSha": "87ad423dba3ced2445e109baa85114aea3d30037",
   "latestMigration": null,
@@ -58,7 +58,8 @@
     "phase0iBatchD": "PASS code a3a885ff0cc56092b1df9af10cc7088d7b05f205: Phase qualification run 38910648079; CodeQL run 38910647963; 189/189 browser + 64/64 extra responsive run 38910639932, artifact 12050297506.",
     "customerFacingCopy": "Automated source language guard (app/components/src), plus live visible rendered browser text assertions on 63 routes × 3 viewports, including finance, auth, billing and support. No false provider/fiscal completion labels permitted.",
     "financeComponentParity": "Eight finance screens, recurring, Tax Centre and Finance Calculator use shared RecordDataTable for desktop and canonical RecordMobileCard for mobile where applicable; still require owner visual reference approval.",
-    "invoiceMilestonePlanner": "PASS frontend 2–6 milestone plan, validated 100% distribution with exact minor-unit arithmetic, optional dates, and browser negative/unbalanced case tests. No real issuance/collection."
+    "invoiceMilestonePlanner": "PASS frontend 2–6 milestone plan, validated 100% distribution with exact minor-unit arithmetic, optional dates, and browser negative/unbalanced case tests. No real issuance/collection.",
+    "phase0iBatchDReview": "PASS Vercel READY dpl_4kyNqCvBVgd3wnTDtKuovzy1mwFE, stable review alias octalve-invoice-git-review-phase-0i-octalve-vault.vercel.app; HTTP 200 verified login, More, finance calculator, invoice/1, statement, recurring and tax centre. PR #5 merged to review only. Main not changed."
   },
   "blockers": [
     "Explicit owner approval for Phase 0I final UI and later backend Phase 1 remains absent. No Neon, real auth, payment gateways, money movement, NRS filings or real support/email delivery.",
@@ -75,8 +76,8 @@
   "currentCodeCheckpoint": "a3a885ff0cc56092b1df9af10cc7088d7b05f205",
   "lastVerifiedApplicationCommit": "a3a885ff0cc56092b1df9af10cc7088d7b05f205",
   "exactNextPhase": "Owner review Batch D on Vercel Review only, final non-invoice UI refinements, then owner-supplied dashboard logo and deferred invoice reference; do not start Phase 1 without explicit approval.",
-  "previewCommitSha": "dcfe923a7b1439d6fda38c723a277a3b0d9c9f4f",
-  "previewDeploymentStatus": "READY — Phase 0I Batch C review deployment, branch review/phase-0i. Verified Vercel route HTTP 200 for calculator, finance, recurring, tax, login/signup, More and portal. This is not a Production/main release.",
+  "previewCommitSha": "78122f0759a096cbd6fc88d57b3034dd121124f4",
+  "previewDeploymentStatus": "READY, review/phase-0i Batch D only, merged from review PR #5; Production main e01c915 unchanged",
   "phase0Merged": true,
   "productionDeployed": false,
   "productionApprovedByOwner": true,
@@ -88,5 +89,5 @@
   "backendApproved": false,
   "lastQualifiedSourceHead": "a4ac4381573cc0e45bac13ad3ab975e0ff91ae17",
   "productionApprovalScope": "Historical Phase 0H owner authorization for main merge only; NOT authorization for Phase 0I Batch C deployment or backend.",
-  "phase0iReviewCandidate": "Batch D — accessible shared record desktop tables; 2–6 valid milestone invoice split; polished merchant-facing copy. CI-green, not yet merged to review at this checkpoint."
+  "phase0iReviewCandidate": "Batch D published as Vercel Review READY at 78122f0759a096cbd6fc88d57b3034dd121124f4. Application code a3a885ff0 qualified with 189/189 +64/64; docs-only follow-up merged. Owner sign-off pending."
 }
