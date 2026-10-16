@@ -30,7 +30,7 @@ const allocations=paymentPreview.filter(p=>p.status==="verified").flatMap(p=>p.a
 const allocated=(id:string)=>safeAmount(allocations.filter(a=>a.invoiceId===id).reduce((sum,a)=>sum+safeAmount(a.amountMinor),0));
 export const formatMinor=(minor:number,currency="NGN")=>new Intl.NumberFormat("en-NG",{style:"currency",currency,minimumFractionDigits:2,maximumFractionDigits:2}).format(safeAmount(minor)/100);
 
-export function getFinanceRows(mode:FinanceMode,asOf=new Date("2026-10-16T00:00:00Z")):FinanceRow[]{
+export function getFinanceRows(mode:FinanceMode,asOf=new Date()):FinanceRow[]{
  if(mode==="statement"){
   const events:FinanceRow[]=[
    ...issued.map(i=>({id:"i-"+i.id,reference:i.reference,title:i.customer,date:i.date,status:"invoice",type:"Invoice",customer:i.customer,amountMinor:i.amountMinor,details:"Issued invoice (debit)",sourceHref:"/dashboard/invoice/"+i.id})),
@@ -56,7 +56,7 @@ export function getFinanceMetrics(mode:FinanceMode,rows:FinanceRow[]){
  if(mode==="statement"){
   const invoiced=issued.reduce((s,i)=>s+i.amountMinor,0);
   const paid=allocations.reduce((s,a)=>s+a.amountMinor,0);
-  return [{label:"Issued claims",value:formatMinor(invoiced)},{label:"Verified allocations",value:formatMinor(paid)},{label:"Outstanding",value:formatMinor(Math.max(0,invoiced-paid))}];
+  return [{label:"Issued claims",value:formatMinor(invoiced)},{label:"Verified allocations",value:formatMinor(paid)},{label:"Outstanding",value:invoiced-paid<0?"Allocation exception":formatMinor(invoiced-paid)}];
  }
  if(mode==="receivables"){
   const buckets=["current","1–30 days","31–60 days","61–90 days","90+ days"];
