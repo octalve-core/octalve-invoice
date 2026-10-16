@@ -1,7 +1,7 @@
 name: Phase 0C browser evidence
 on:
   push:
-    branches: [phase/00-finzefy-authority-ui-bootstrap]
+    branches: [phase/00-finzefy-authority-ui-bootstrap, phase/0i-frontend-finance-workflows]
   workflow_dispatch:
 permissions:
   contents: read
