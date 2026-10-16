@@ -54,7 +54,7 @@
     "phase0iBrowser": "PASS 189/189 across 1440 desktop/768 tablet/390 mobile and 64/64 across 320/360/430/1024 additional widths; includes real native PDF/PNG preview smoke, not owner-approved golden appearance.",
     "phase0iLanguage": "Source-wide CI guard passed: no disallowed development-environment word in app/components/src.",
     "phase0iA11y": "Accessible dialog Escape/focus management passed responsive browser actions. Manual screen-reader and owner pixel reference approvals are not complete.",
-    "phase0iBatchC": "PASS pinned branch SHA a4ac4381: source/build/tests CI run 38905668956; CodeQL run 38905669176; browser/screenshots run 38905662879 = 189/189 baseline and 64/64 narrower widths. Evidence artifact 12047932602. Batch C includes 20 business calculators, one auth form and finance action sheet preview; no backend actions were enabled."
+    "phase0iBatchC": "PASS pinned branch SHA a4ac4381: source/build/tests CI run 38905668956; CodeQL run 38905669176; browser/screenshots run 38905662879 = 189/189 baseline and 64/64 narrower widths. Evidence artifact 12047932602. Batch C includes 20 business calculators, one auth form and finance action sheet preview; no backend actions were enabled. Review merge commit dcfe923a Vercel READY."
   },
   "blockers": [
     "Explicit owner approval for Phase 0I final UI and later backend Phase 1 remains absent. No Neon, real auth, payment gateways, money movement, NRS filings or real support/email delivery.",
@@ -64,12 +64,12 @@
     "Subscription prices/free allowance/payment provider fees require owner cost-model approval; no real subscription checkout enabled.",
     "Golden screenshot/pixel review and Classic Receipt/multi-page custom native PDF parity are not fully certified."
   ],
-  "nextPhase": "Publish exact CI-green Phase 0I Batch C to review/phase-0i only; owner reviews its mobile/desktop appearance and provides dashboard logo; finish frontend visual corrections and later invoice template. Do not merge to main or start Phase 1 without explicit approval.",
+  "nextPhase": "Owner visual review of READY Phase 0I Batch C Preview. Pending new dashboard logo, remaining specialized frontend UI corrections and owner-deferred invoice presentation. Phase 1 requires separate owner authorization; do not merge main or enable live auth/payments/NRS.",
   "currentCodeCheckpoint": "e8ab0ab0330e930f5051d503541f6fb5ef989c1d",
   "lastVerifiedApplicationCommit": "e8ab0ab0330e930f5051d503541f6fb5ef989c1d",
-  "exactNextPhase": "Publish exact CI-green Phase 0I Batch C to review/phase-0i only; owner reviews its mobile/desktop appearance and provides dashboard logo; finish frontend visual corrections and later invoice template. Do not merge to main or start Phase 1 without explicit approval.",
-  "previewCommitSha": "27c4e77d6b24ce4a270ab1d42a5c46eff8c70a44",
-  "previewDeploymentStatus": "Batch B READY; fully tested Batch C is awaiting one review/phase-0i merge and Vercel auto Preview. Do not mistake Batch B URL for Batch C until the new SHA is verified.",
+  "exactNextPhase": "Owner visual review of READY Phase 0I Batch C Preview. Pending new dashboard logo, remaining specialized frontend UI corrections and owner-deferred invoice presentation. Phase 1 requires separate owner authorization; do not merge main or enable live auth/payments/NRS.",
+  "previewCommitSha": "dcfe923a7b1439d6fda38c723a277a3b0d9c9f4f",
+  "previewDeploymentStatus": "READY — Phase 0I Batch C review deployment, branch review/phase-0i. Verified Vercel route HTTP 200 for calculator, finance, recurring, tax, login/signup, More and portal. This is not a Production/main release.",
   "phase0Merged": true,
   "productionDeployed": false,
   "productionApprovedByOwner": true,
