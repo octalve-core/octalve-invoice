@@ -30,3 +30,11 @@ Read the full handoff **before performing any substantive write**; it explains p
 - Vercel READY deployment: `dpl_7jcK5LgcWX4UKdrWv697joqULbL6` (review merge `d791b816`), stable alias unchanged.
 - Final candidate qualification: Node24/test/build 38921320625, CodeQL 38921320650, browser 38921314940 (189+64 checks), artifact 12055770414. Public-route HTTP probing by this chat tool failed; READY and internal browser checks are confirmed, not external authenticated route tests.
 - No Phase 0I main merge or backend authorization; PR #2 stays draft.
+
+
+## Batch F — published and qualified (16 October 2026)
+- App source: `134156955ee5bece16560a8d0346744b28457d61`; review-only PR #7 https://github.com/octalve-core/octalve-invoice/pull/7 merged at `318bb8ae1d89bf394903867c0ed6ff44cb11e3dd` into `review/phase-0i` only.
+- Vercel owner-facing Preview READY: `dpl_8b2kMjhwB6ZLhb4vd9R9Z7JKp5oD`; stable https://octalve-invoice-git-review-phase-0i-octalve-vault.vercel.app . Production remains not live; main e01c915 and PR #2 draft.
+- Source evidence: build/tests/lint/typecheck https://github.com/octalve-core/octalve-invoice/actions/runs/38933862294 PASS; CodeQL https://github.com/octalve-core/octalve-invoice/actions/runs/38933862532 PASS; 189/189 desktop/tablet/mobile and 64/64 additional responsive checks https://github.com/octalve-core/octalve-invoice/actions/runs/38933856460 PASS; PNG/PDF/screenshot artifact https://github.com/octalve-core/octalve-invoice/actions/runs/38933856460/artifacts/12059109669 .
+- UI: collapsible invoice creation/editing sections with preserved input state, single-open item controls with expand-all, draft-only installment and communications planning, zero-total guard, accurate chosen split preview, concise customer-language pass, merchant logo linkage preserved.
+- Remaining: owner screenshot reviews and corrections; some specialized finance/tax/support/portal actions remain frontend proposals. Uploaded logo is not persisted across new sessions until authorized backend. Separate dashboard logo absent. Invoice-template visual fidelity redesign is deliberately next and separate. Subscription economics unapproved. No verified payment, email, NRS, receipt, recurring scheduler, secure portal or ledger enabled by this batch.
