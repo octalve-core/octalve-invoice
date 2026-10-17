@@ -1,6 +1,6 @@
 {
   "updatedAt": "2026-10-17",
-  "phase": "Phase 0I Review Batch N published: Octalve Finance working product identity after Batch M More navigation. Backend/financial records still Preview-only; owner visual approval pending.",
+  "phase": "Phase 0I Batch P frontend payment setup source implemented, Review qualification/owner visual acceptance tracked separately.",
   "branch": "phase/0i-frontend-finance-workflows",
   "mainBootstrapSha": "87ad423dba3ced2445e109baa85114aea3d30037",
   "latestMigration": null,
@@ -94,7 +94,7 @@
     "Backend-approved authority needed before staff approvals, money posting, NRS, persistent finance ledgers, customer access, recurring issuance or communication delivery.",
     "Source and browser regressions pass; visual goldens and customer UX review still need owner sign-off."
   ],
-  "nextPhase": "Verify independently merged Review Batch N 189/189+64/64, maintain README/state/decisions; owner visual acceptance. Decide revenue/accounting basis, financial scope/target customer, provider exceptions, tax/NRS and subscription economics. Explicit Phase 1 approval separately required. No main or Production.",
+  "nextPhase": "Verify Batch P exact merged Review CI/Vercel and owner visual acceptance; after approval proceed Phase 0I Batch Q (invoice due and flexible milestones); Phase1/main/Production explicitly blocked.",
   "currentCodeCheckpoint": "a28392ab9715b7879f2f577f1f5ee50e9750d51e",
   "lastVerifiedApplicationCommit": "a28392ab9715b7879f2f577f1f5ee50e9750d51e",
   "exactNextPhase": "Phase 0I Batch P — refine canonical Getting Started Payment UX using existing app; product-proposed dynamic account and provider status only. Follow Batch Q due/milestone, R client/merchant templates, S Payment Received, T NRS/partner pitch after owner review. Phase1/main/Production still blocked.",
@@ -123,5 +123,8 @@
   "financeArchitectureProposals": "Proposed only (not approved): docs/project/FINANCIAL_METRICS_AND_EVENT_AUTHORITY.md, FINANCIAL_EXCEPTION_LIFECYCLE.md, expanded DATA_MODEL.md and OCTALVE_FINANCE_PRODUCT_IDENTITY_AND_DECISION_QUEUE_2026-10-17.md; no DB migrations or activated services.",
   "dynamicAccountOwnerClarifications": "D126-D129: 70/30 screenshot illustrative; preserve existing flexible splits/milestones, merchant numbering/logo; Flex Account=Dynamic Account; dynamic due timestamp <= provider actual expiry, separate late transfer exception path; no operational integration.",
   "dynamicAccountSpecification": "docs/project/OCTALVE_FINANCE_DYNAMIC_ACCOUNT_USER_JOURNEY_AND_BATCH_PLAN_2026-10-17.md — plan only, not functional account payment implementation",
-  "dynamicAccountAcceptanceMatrix": "docs/project/OCTALVE_FINANCE_DYNAMIC_ACCOUNT_ACCEPTANCE_MATRIX_2026-10-17.md — tracked J01-J20, no claims of completed future workflows"
+  "dynamicAccountAcceptanceMatrix": "docs/project/OCTALVE_FINANCE_DYNAMIC_ACCOUNT_ACCEPTANCE_MATRIX_2026-10-17.md — tracked J01-J20, no claims of completed future workflows",
+  "batchPSourceAppCommit": "b2bb828d638f4e4512b2ab85c37b7be2b54c44b5",
+  "batchPStatus": "Candidate; source Node24/TS/ESLint/tests/build 39033229121 PASS and CodeQL 39033229088 PASS. Browser QA and exact Review merged evidence to verify. No live connection, no account issuance, no financial integrations.",
+  "batchPReviewPR": "https://github.com/octalve-core/octalve-invoice/pull/19"
 }

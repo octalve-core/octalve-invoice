@@ -9,8 +9,8 @@ Legend: `RETAIN` = existing owner-approved requirement/code to avoid regressions
 | J01 | Existing approved branding, fixed dark desktop sidebar, five mobile tabs, Staff/Report/Tax in More | RETAIN | All | Exact code test and owner responsive screenshots |
 | J02 | Existing [merchant initials]-[5+ digit sequence][suffix] including INV/RP/QUO/CR/EXP/SF | RETAIN | All | Numbering contract + invoice screenshot with actual issuer |
 | J03 | Existing flexible instalment percentages 50/50, 70/30, custom and milestones | RETAIN; PENDING UI | Q | Exact kobo sum and representative split/milestone tests; do not lock to 70/30 |
-| J04 | Current Getting Started canonical Business→Invoices→Payments→Tools | RETAIN; PENDING UI | P | Mobile/desktop complete and settings return path test |
-| J05 | Rename Flex Account description to Dynamic Account and distinguish merchant bank/gateway | PENDING UI | P | Consistent UI wording and no fake provider connected status |
+| J04 | Current Getting Started canonical Business→Invoices→Payments→Tools | BATCH P SOURCE IMPLEMENTED; OWNER VISUAL SIGN-OFF OPEN | P | Existing journey and shared settings retained; source contract + targeted 320/360/390/430/768/1024/1440/short laptop QA required; exact Review merge evidence pending |
+| J05 | Rename Flex Account description to Dynamic Account and distinguish merchant bank/gateway | BATCH P SOURCE IMPLEMENTED; OWNER VISUAL SIGN-OFF OPEN | P | PaymentConnectionsPanel distinguishes unverified company bank, dynamic account, gateway and unavailable partner; no provider connected; exact Review merge evidence pending |
 | J06 | Monnify Dynamic Invoice vs 40min transfer, Flutterwave v3/v4, Paystack 8h matrix accurate | SPEC WRITTEN; SANDBOX OPEN | O / Phase1 | Official API documentation and real qualified provider response/contract |
 | J07 | Dynamic due timestamp never exceeds **actual confirmed** account expiry; invalid issue blocked | PENDING UI; BACKEND BLOCKED | Q / Phase1 | Valid/invalid boundaries, same day time, issuer timezone and provider-shortened expiry tests |
 | J08 | Each milestone uses eligible own collection intent (single-use account cannot support arbitrary partial by default) | PENDING UI; BACKEND BLOCKED | Q / Phase1 | 50/50, 70/30, 25/25/50, over/under and reversals |
@@ -43,3 +43,9 @@ A batch can be reported source-qualified only after exact source code tests; rep
 - Verify current exact branch/Review CI/Vercel and inspect existing Getting Started payment UI rather than reproducing donor designs.
 - Update J04/J05 and related responsive QA with evidence, leave blocked rows blocked.
 - Wait for owner to approve Batch P visuals before continuing Batch Q.
+
+### Batch P candidate scope, 17 October 2026
+- App-only source checkpoint `b2bb828d638f4e4512b2ab85c37b7be2b54c44b5` (before project-record updates): shared session-only `collectionSetup` preferences distinct from authoritative `paymentMode`, existing business bank search and unverified status retained, dynamic Monnify/Flutterwave version-aware product overview and Paystack short-term transfer restriction, gateway choices, unavailable Partner Bank; disabled provider credential preview with no actual API secrets or save.
+- Existing invoice instalment planner and numbering remain unchanged; J03/J07–J18 are **not** operationally complete; Batch Q owns due-date selector. Provider capability facts are published examples, not tenant validation or due-date guarantees.
+- Automated browser evidence includes 7 additional full-payment setup routes at 320/360/390/430/768/1024/1440 widths (1024+ short viewport), in addition to existing 189 core and 64 extra viewports. Qualification/run IDs and final Review SHA belong in Batch P release report.
+- Owner visual inspection required: small screen card density, safe-field disabled affordance, partner-bank wording, settings return path, provider content, 320px without horizontal scroll.
