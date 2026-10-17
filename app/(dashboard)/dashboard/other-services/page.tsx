@@ -2,7 +2,7 @@
 import Link from "next/link";
 import {useState} from "react";
 import {useRouter} from "next/navigation";
-import {ArrowLeft,Search,FileText,Users,Wallet,FileSpreadsheet,BarChart3,Scale,ScrollText,Package,RefreshCw,ReceiptText,Calculator,ContactRound,TrendingUp,WalletCards,IdCard,BookOpen,ShieldCheck,Clock3,Files,MessagesSquare,Landmark,ShieldAlert,Coins,PanelsTopLeft,type LucideIcon} from "lucide-react";
+import {ArrowLeft,Search,FileText,Users,Wallet,FileSpreadsheet,BarChart3,Scale,ScrollText,Package,RefreshCw,ReceiptText,Calculator,ContactRound,TrendingUp,WalletCards,IdCard,BookOpen,ShieldCheck,Clock3,Files,MessagesSquare,Landmark,ShieldAlert,Coins,PanelsTopLeft,UserCog,type LucideIcon} from "lucide-react";
 import {otherServiceItems} from "@/src/features/other-services/feature-links";
 const icons:Record<(typeof otherServiceItems)[number]["icon"],LucideIcon>={
  "chart-no-axes-column":BarChart3,
@@ -25,12 +25,13 @@ const icons:Record<(typeof otherServiceItems)[number]["icon"],LucideIcon>={
  "landmark":Landmark,
  "shield-alert":ShieldAlert,
  "coins":Coins,
- "panels-top-left":PanelsTopLeft
+ "panels-top-left":PanelsTopLeft,
+ "user-cog":UserCog
 };
 const tones=["bg-blue-50 text-[#0064E0]","bg-emerald-50 text-emerald-600","bg-violet-50 text-violet-600","bg-amber-50 text-amber-600","bg-green-50 text-green-600","bg-cyan-50 text-cyan-600","bg-red-50 text-red-600","bg-slate-100 text-slate-700","bg-orange-50 text-orange-600","bg-indigo-50 text-indigo-600","bg-sky-50 text-sky-600","bg-purple-50 text-purple-600"];
 
 const serviceGroups=[
- {title:"Business operations",description:"Your day-to-day workspace",slugs:["overview","report","items","customer","recurring-income-expense","create-statement"]},
+ {title:"Business operations",description:"Your day-to-day workspace",slugs:["overview","report","staff","items","customer","recurring-income-expense","create-statement"]},
  {title:"Finance & compliance",description:"Records, approvals and controls",slugs:["tax-centre","statement-of-account","approvals","receivables-ageing","credit-debit-notes","communication-history","bank-reconciliation","audit-exceptions","multi-currency","finance-calculator"]},
  {title:"Services & support",description:"Connections, access and assistance",slugs:["customer-portal","insights-support","business-card","investment","digital-pay","id-card"]}
 ] as const;
