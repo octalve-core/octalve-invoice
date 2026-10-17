@@ -263,7 +263,7 @@ const origin = process.env.OCTALVE_BASE_URL || "http://127.0.0.1:3000";
             await page.getByRole("option",{name:"Guaranty Trust Bank (GTBank)"}).click();
             if(await page.getByRole("combobox",{name:"Bank name"}).inputValue()!=="Guaranty Trust Bank (GTBank)")throw Error("Bank picker not preserved");
             if(!await page.getByRole("button",{name:"Add Account"}).isDisabled())throw Error("Bank added without server verification");
-            await page.goto(base+"/dashboard/getting-started?step=appearance",{waitUntil:"domcontentloaded"});
+            await page.goto(origin+"/dashboard/getting-started?step=appearance",{waitUntil:"domcontentloaded"});
             await page.getByText("How do you want your invoices to look?").waitFor();
             await page.getByRole("link",{name:/Customize invoices/}).click();
             await page.waitForURL("**/dashboard/settings/invoice?from=getting-started");
