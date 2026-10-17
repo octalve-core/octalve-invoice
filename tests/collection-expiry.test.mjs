@@ -32,9 +32,9 @@ test("Full/50-50/70-30/25-25-50/custom are retained, exact at subunit level",()=
 });
 test("Milestone dates must be ordered, valid and not later than contractual invoice due",()=>{
  assert.deepEqual(company([50,50],["2026-10-20T10:30",day]).errors,[]);
- assert.match(company([50,50],[day,"2026-11-01T00:00"]).errors.join(" "),"exceeds the invoice due");
- assert.match(company([50,50],["2026-10-30T10:00","2026-10-29T10:00"]).errors.join(" "),"chronological");
- assert.match(company([100],["2026-02-30T10:00"]).errors.join(" "),"invalid Lagos");
+ assert.match(company([50,50],[day,"2026-11-01T00:00"]).errors.join(" "),new RegExp("exceeds the invoice due"));
+ assert.match(company([50,50],["2026-10-30T10:00","2026-10-29T10:00"]).errors.join(" "),new RegExp("chronological"));
+ assert.match(company([100],["2026-02-30T10:00"]).errors.join(" "),new RegExp("invalid Lagos"));
 });
 test("Actual confirmed account expiry is inclusive at exact second, not date-only",()=>{
  const stages=[{id:"s1",share:100,dueAtLagos:day}];
@@ -42,13 +42,13 @@ test("Actual confirmed account expiry is inclusive at exact second, not date-onl
  const valid=dynamic(stages,proof);
  assert.deepEqual(valid.errors,[]);
  assert.equal(valid.readyForIssue,false,"still requires approved server issuance, even when preview test proof aligns");
- assert.match(dynamic(stages,[{...proof[0],expiresAtUtc:"2026-10-31T22:58:59Z"}]).errors.join(" "),"due after");
- assert.match(dynamic(stages,[{...proof[0],expiresAtUtc:"2026-10-17T09:59:59Z"}]).errors.join(" "),"already expired");
- assert.match(dynamic(stages,[{...proof[0],amountMinor:5}]).errors.join(" "),"matching");
- assert.match(dynamic(stages,[{...proof[0],provider:"monnify-invoice"}]).errors.join(" "),"matching");
- assert.match(dynamic(stages,[{...proof[0],expiresAtUtc:"2026-02-30T22:59:00Z"}]).errors.join(" "),"invalid provider");
- assert.match(dynamic(stages,[{...proof[0],accountReference:""}]).errors.join(" "),"distinct provider");
- assert.match(dynamic(stages,undefined).errors.join(" "),"provider-confirmed");
+ assert.match(dynamic(stages,[{...proof[0],expiresAtUtc:"2026-10-31T22:58:59Z"}]).errors.join(" "),new RegExp("due after"));
+ assert.match(dynamic(stages,[{...proof[0],expiresAtUtc:"2026-10-17T09:59:59Z"}]).errors.join(" "),new RegExp("already expired"));
+ assert.match(dynamic(stages,[{...proof[0],amountMinor:5}]).errors.join(" "),new RegExp("matching"));
+ assert.match(dynamic(stages,[{...proof[0],provider:"monnify-invoice"}]).errors.join(" "),new RegExp("matching"));
+ assert.match(dynamic(stages,[{...proof[0],expiresAtUtc:"2026-02-30T22:59:00Z"}]).errors.join(" "),new RegExp("invalid provider"));
+ assert.match(dynamic(stages,[{...proof[0],accountReference:""}]).errors.join(" "),new RegExp("distinct provider"));
+ assert.match(dynamic(stages,undefined).errors.join(" "),new RegExp("provider-confirmed"));
 });
 test("Milestone-specific dynamic accounts reject reused refs, missed dates, mismatched kobo and untrusted time",()=>{
  const stages=[{id:"a",share:70,dueAtLagos:"2026-10-20T15:00"},{id:"b",share:30,dueAtLagos:day}];
@@ -57,10 +57,10 @@ test("Milestone-specific dynamic accounts reject reused refs, missed dates, mism
   {stageId:"b",provider:"flutterwave-v4",amountMinor:3000001,accountReference:"ref-b",expiresAtUtc:"2026-10-31T22:59:00Z",confirmedByServer:true}
  ];
  assert.deepEqual(dynamic(stages,proofs).errors,[]);
- assert.match(dynamic(stages,[proofs[0],{...proofs[1],accountReference:"ref-a"}]).errors.join(" "),"distinct");
- assert.match(dynamic(stages,[proofs[0],{...proofs[1],amountMinor:3000000}]).errors.join(" "),"matching");
- assert.match(dynamic(stages,proofs,"").errors.join(" "),"Server issuance time");
- assert.match(dynamic([{...stages[0],dueAtLagos:""},stages[1]],proofs).errors.join(" "),"exact due");
+ assert.match(dynamic(stages,[proofs[0],{...proofs[1],accountReference:"ref-a"}]).errors.join(" "),new RegExp("distinct"));
+ assert.match(dynamic(stages,[proofs[0],{...proofs[1],amountMinor:3000000}]).errors.join(" "),new RegExp("matching"));
+ assert.match(dynamic(stages,proofs,"").errors.join(" "),new RegExp("Server issuance time"));
+ assert.match(dynamic([{...stages[0],dueAtLagos:""},stages[1]],proofs).errors.join(" "),new RegExp("exact due"));
 });
 test("Published provider limits are informative only, Monnify maximum unknown",()=>{
  assert.equal(providerPublishedReference("monnify-invoice").seconds,null);
