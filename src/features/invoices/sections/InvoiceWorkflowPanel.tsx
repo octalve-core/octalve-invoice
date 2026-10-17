@@ -87,7 +87,7 @@ export default function InvoiceWorkflowPanel({invoice,currency="NGN",invoiceDueA
      <input type="datetime-local" step={60} aria-label={n===0?"First milestone due time":"Remaining milestone due time"}
       max={invoiceDueAtLagos||undefined} value={twoDates[n]}
       onChange={e=>setTwoDates(previous=>n===0?[e.target.value,previous[1]]:[previous[0],e.target.value])} className={dateInputClass}/>
-    </label>)}</div></div>:
+    </label>)}</div></div>:stageMode==="custom"?
     <div className="space-y-3">
      <p className="text-xs text-slate-500">Allocate exactly 100% across 2–6 stages. Optional times help plan reminders, but no message or collection will be scheduled.</p>
      {stages.map((stage,i)=><div key={stage.id} className="grid grid-cols-[minmax(0,1fr)_80px] gap-2 rounded-xl border border-[#DDEAF8] p-3 sm:grid-cols-[minmax(0,1fr)_85px_minmax(0,1fr)_auto]">
@@ -100,7 +100,7 @@ export default function InvoiceWorkflowPanel({invoice,currency="NGN",invoiceDueA
       <button type="button" disabled={stages.length>=6} onClick={()=>setStages(items=>[...items,{id:crypto.randomUUID(),share:0,due:""}])} className="rounded-full border border-[#0064E0] px-3 py-2 text-xs font-semibold text-[#0064E0] disabled:opacity-40">Add milestone</button>
       <span role={validSchedule?"status":"alert"} className={"text-xs font-semibold "+(validSchedule?"text-[#118660]":"text-amber-800")}>Total allocation: {stageTotal}% {validSchedule?"· balanced":"· must be exactly 100%"}</span>
      </div>
-    </div>}
+    </div>:null}
    <p className="text-xs text-slate-500">Invoice due: <strong>{invoiceDueAtLagos||"invalid"}</strong> Africa/Lagos. Milestone times must be chronological and no later than the invoice due time.</p>
    {planCheck.errors.length>0?<div role="alert" className="rounded-xl border border-amber-200 bg-amber-50 p-3 text-xs leading-5 text-amber-900">
     <strong>Plan cannot be confirmed yet.</strong><ul className="mt-1 list-inside list-disc">{planCheck.errors.map(error=><li key={error}>{error}</li>)}</ul>
