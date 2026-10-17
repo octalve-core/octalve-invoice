@@ -42,7 +42,7 @@ function ProviderDetails({id}:{id:Exclude<PaymentMethodId,"bank-transfer"|"dynam
   <div className="rounded-xl bg-[#E8F6E9] p-4"><h2 className="text-lg font-bold text-[#173652]">{item.title}</h2><p className="mt-1 text-xs text-[#425D72]">{item.brief}</p></div>
   <fieldset><legend className="mb-2 text-xs font-semibold text-[#314761]">Environment</legend>
    <div className="inline-flex gap-1 rounded-xl bg-[#F0F4FA] p-1">{(["test","live"] as const).map(v=><button type="button" key={v} aria-pressed={env===v} onClick={()=>setEnv(v)}
-    className={"min-h-9 rounded-lg px-4 text-xs font-semibold "+(env===v?"bg-white text-[#0064E0] shadow-sm":"text-slate-600")}>{v==="test"?"Sandbox / Test":"Live"}</button>)}</div>
+    className={"min-h-9 rounded-lg px-4 text-xs font-semibold "+(env===v?"bg-white text-[#0064E0] shadow-sm":"text-slate-600")}>{v==="test"?"Test mode":"Live"}</button>)}</div>
   </fieldset>
   <div className="space-y-4" role="group" aria-label="Example credential fields">{CONNECTION_FIELDS[id].map(f=><Example key={f.label} {...f}/>)}</div>
   <Notice/>
