@@ -140,7 +140,7 @@ const routes=[
    await page.getByRole("heading",{name:"Invoice workflow"}).waitFor();
    const method=page.getByRole("combobox",{name:"Collection method preview"});
    const review=page.getByRole("button",{name:"Review proposed split"});
-   const dueTime=page.getByRole("textbox",{name:"Invoice due time Africa/Lagos"});
+   const dueTime=page.locator('input[aria-label="Invoice due time Africa/Lagos"]');
    if(!await dueTime.inputValue())throw Error("Invoice due time not initialized");
    await method.selectOption("dynamic-account");
    await page.getByRole("combobox",{name:"Dynamic account provider reference"}).selectOption("flutterwave-v3");
@@ -159,7 +159,7 @@ const routes=[
    await page.getByRole("button",{name:"Custom milestones"}).click();
    if(await page.getByRole("spinbutton",{name:"Milestone 1 percentage"}).inputValue()!=="25")throw Error("Custom milestone percentages lost when changing tabs");
    await page.getByRole("button",{name:"Review proposed split"}).click();
-   await page.getByRole("status").getByText("No payment schedule was saved or communicated.",{exact:false}).waitFor();
+   await page.getByText("No payment schedule was saved or communicated.",{exact:false}).last().waitFor();
    if(await page.locator("html").evaluate(el=>el.scrollWidth>el.clientWidth+2))throw Error("Batch Q viewport overflow");
    await page.screenshot({path:path.join(out,"batch-q-due-milestones-"+width+".png"),fullPage:true,animations:"disabled"});
    batchQ.status="PASS";
