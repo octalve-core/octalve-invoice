@@ -4,6 +4,8 @@ import Link from "next/link";
 import {getPreviewInvoice,previewInvoices} from "@/src/features/invoices/lib/preview-records";
 import {InvoiceDocumentPreviewSection} from "@/src/features/invoices/sections/InvoiceDocumentPreviewSection";
 import {createPreviewInvoice} from "@/src/features/invoices/lib/preview-fixture";
+import {buildAudiencePreviewDraft} from "@/src/features/invoices/lib/audience-preview";
+import {InvoiceAudienceToolbar} from "@/src/features/invoices/components/InvoiceAudienceToolbar";
 import {useMerchantPreview} from "@/src/features/merchant-preview/MerchantPreviewProvider";
 import {merchantCompany,merchantPayment} from "@/src/features/merchant-preview/merchant-presentation";
 import {useState} from "react";
@@ -14,11 +16,8 @@ export default function InvoiceDetailsPage(){
  const {id}=useParams<{id:string}>();
 
  const invoice=getPreviewInvoice(id);
- const [draft,setDraft]=useState(()=>{
-  const d=createPreviewInvoice();
-  return invoice?{...d,invoiceNo:invoice.reference,clientName:invoice.customer,clientEmail:invoice.email}:d;
- });
  const {settings,setSettings,logoPreview}=useMerchantPreview();
+ const [draft,setDraft]=useState(()=>invoice?buildAudiencePreviewDraft(invoice,settings.businessName):createPreviewInvoice());
  const company=merchantCompany(settings),payment=merchantPayment(settings);
  const displayDraft={...draft,invoiceNo:formatDocumentNumber(settings.businessName||"Octalve Limited",Number(id)||1,"invoice")};
  const setCompany:React.Dispatch<React.SetStateAction<typeof company>>=(action)=>setSettings(p=>{
@@ -41,6 +40,7 @@ export default function InvoiceDetailsPage(){
     {["pending","partial","overdue"].includes(invoice.status)? invoice.paymentMode==="manual"?<Link href={`/dashboard/invoice/${id}/record-payment`} className="rounded-full border border-[#0064E0] px-4 py-2 text-sm font-medium text-[#0064E0]">Record payment</Link>:<span className="rounded-full bg-amber-50 px-3 py-2 text-xs text-amber-800">Awaiting provider verification</span>:null}
     <Link href={`/dashboard/invoice/${id}/edit`} className="rounded-full bg-[#0064E0] px-4 py-2 text-sm font-medium text-white">Edit Invoice</Link></div>
   </div>
+  <InvoiceAudienceToolbar invoice={invoice} audience="merchant"/>
   <div className="grid min-w-0 items-start gap-4 lg:grid-cols-[minmax(260px,340px)_minmax(0,1fr)]">
    <aside aria-label="Invoice history" className="hidden min-w-0 rounded-2xl bg-white p-3 lg:block">
     <div className="mb-3 flex items-center justify-between"><h2 className="text-sm font-semibold text-[#273c55]">Invoices</h2><Link href="/dashboard/invoice" className="text-xs text-[#0064E0]">View all</Link></div>

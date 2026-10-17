@@ -1,6 +1,6 @@
 {
   "updatedAt": "2026-10-17",
-  "phase": "Phase 0I Batch Q frontend demo verified and promoted Review → main/Production; backend Phase 1 blocked.",
+  "phase": "Phase 0I Batch R customer/merchant invoice preview source qualification (frontend Review only)",
   "branch": "review/phase-0i",
   "mainBootstrapSha": "87ad423dba3ced2445e109baa85114aea3d30037",
   "latestMigration": null,
@@ -94,7 +94,7 @@
     "Backend-approved authority needed before staff approvals, money posting, NRS, persistent finance ledgers, customer access, recurring issuance or communication delivery.",
     "Source and browser regressions pass; visual goldens and customer UX review still need owner sign-off."
   ],
-  "nextPhase": "Batch Q technically complete and released as UI demo. Await owner visual feedback or authorisation to start Phase 0I Batch R, then S/T in approved order. Do not activate provider/real backend/Phase1.",
+  "nextPhase": "Qualify Batch R at exact SHA, merge reviewed PR to review/phase-0i only, verify independent Review CI + Vercel READY, seek owner screenshot acceptance. Then Batch S Payment Received UI and T NRS workflow; no Phase1 or Batch R main/Production without new authorisation.",
   "currentCodeCheckpoint": "1fa854cd65074fe0aea3ec02c4cdbd46b8d40261",
   "lastVerifiedApplicationCommit": "eac710ddadb80e6ed032ee209de434e0efe514e1",
   "exactNextPhase": "Phase 0I Batch R — client and merchant invoice template/issued-record Preview authority; then S Payment Received cross-provider ledger and expired-account exceptions; T NRS/compliance UX. Do not start without owner direction; Phase 1 still explicitly blocked.",
@@ -148,5 +148,9 @@
   "batchQProductionPR": "https://github.com/octalve-core/octalve-invoice/pull/27",
   "batchQReviewDeployment": "dpl_41ZTdJCSqp5LyRWtoghN8S8i7Pga READY exact 0e353e79970dd39a4689267729c92d120008c772",
   "batchQProductionDeployment": "dpl_75G3F9RrbyLMdz83rnEPaQbNKikx READY exact eac710ddadb80e6ed032ee209de434e0efe514e1",
-  "batchQEvidence": "Review qualification 39050599253, CodeQL 39050599351, browser 39050599394 189+64+7+7 artifact 12107562487; main qualification 39052280320 CodeQL 39052280312; all PASS."
+  "batchQEvidence": "Review qualification 39050599253, CodeQL 39050599351, browser 39050599394 189+64+7+7 artifact 12107562487; main qualification 39052280320 CodeQL 39052280312; all PASS.",
+  "batchRBranch": "phase/0i-batch-r-audience-invoice-preview",
+  "batchRSourceCheckpoint": "c05615afd0c015fb7f63127e1cefe555fb31a78d",
+  "batchRStatus": "Candidate frontend: shared invoice fixture and existing Modern/Classic renderer with distinct merchant/client toolbar; browser responsive evidence, Review PR and owner visual acceptance pending. Not issued.",
+  "batchRSecurityBoundary": "Client-facing preview is inside merchant workspace; NO public token, PDF/print/export, issue, active Pay Now/Check Payment/Report Transfer, merchant reminder/link, NRS QR, verified bank account/expiry, server snapshot or backend financial action."
 }
