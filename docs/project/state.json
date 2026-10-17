@@ -1,6 +1,6 @@
 {
   "updatedAt": "2026-10-17",
-  "phase": "Phase 0I Batch P Getting Started & Payment Settings UX REVIEW READY; automated qualification complete, owner visual acceptance pending.",
+  "phase": "Phase 0I Batch P owner-directed compact Getting Started review candidate (frontend-only); secure provider backend not activated.",
   "branch": "phase/0i-frontend-finance-workflows",
   "mainBootstrapSha": "87ad423dba3ced2445e109baa85114aea3d30037",
   "latestMigration": null,
@@ -94,7 +94,7 @@
     "Backend-approved authority needed before staff approvals, money posting, NRS, persistent finance ledgers, customer access, recurring issuance or communication delivery.",
     "Source and browser regressions pass; visual goldens and customer UX review still need owner sign-off."
   ],
-  "nextPhase": "Owner visual acceptance for Batch P, then Phase 0I Batch Q invoice due timestamp and flexible milestone preview; no real accounts or Phase1/main/Production.",
+  "nextPhase": "Verify owner compact checklist and payment pages visual fidelity, then Phase 0I Batch Q only after owner acceptance. For real provider/bank connections, secure backend Phase 1 authorization and provider merchant credentials/agreements required; main/Production blocked.",
   "currentCodeCheckpoint": "a28392ab9715b7879f2f577f1f5ee50e9750d51e",
   "lastVerifiedApplicationCommit": "a28392ab9715b7879f2f577f1f5ee50e9750d51e",
   "exactNextPhase": "Phase 0I Batch P — refine canonical Getting Started Payment UX using existing app; product-proposed dynamic account and provider status only. Follow Batch Q due/milestone, R client/merchant templates, S Payment Received, T NRS/partner pitch after owner review. Phase1/main/Production still blocked.",
@@ -128,5 +128,8 @@
   "batchPStatus": "REVIEW published/technical PASS; owner visual approval OPEN. UI-only dynamic/gateway/provider requirements previews, no connected provider, account verification or money.",
   "batchPReviewPR": "https://github.com/octalve-core/octalve-invoice/pull/19",
   "batchPReviewMerge": "1d7054ee21d83bd2f603fd96652839aeb5ad5d49",
-  "batchPEvidence": "Source d0220cf: 39034119068 qualification PASS, 39034118906 CodeQL PASS, 39034118927 browser 189/189 +64/64 +7/7 PASS artifact 12101786793. Merged Review 1d7054e: 39034391478 qualification PASS, 39034391482 CodeQL PASS, 39034391498 browser 189/189 +64/64 +7/7 PASS artifact 12101642932. Vercel dpl_2LZkBNoFpm2d8SPpxgV8JamCq5jA READY."
+  "batchPEvidence": "Source d0220cf: 39034119068 qualification PASS, 39034118906 CodeQL PASS, 39034118927 browser 189/189 +64/64 +7/7 PASS artifact 12101786793. Merged Review 1d7054e: 39034391478 qualification PASS, 39034391482 CodeQL PASS, 39034391498 browser 189/189 +64/64 +7/7 PASS artifact 12101642932. Vercel dpl_2LZkBNoFpm2d8SPpxgV8JamCq5jA READY.",
+  "batchPCompactSource": "phase/0i-batch-p-owner-compact-setup; compact four-item checklist; dedicated six payment setup routes; safe disabled credential examples; bank account Add Account gated on genuine server verification; focused payment FAQ.",
+  "batchPCompactStatus": "Source qualification PASSED on commit 21f326a (Node/TS/ESLint/terminology/tests/build 39038562687; CodeQL 39038562685); browser qualification pending at doc-commit writing; Review publication and post-merge evidence to follow. No real financial connection.",
+  "batchPCompactSecurity": "No live key or merchant ID capture; no local/session storage of secrets, no provider callbacks active. Phase1 needs secure authenticated tenant-scoped KMS/vault, server validation, bank enquiry, signed webhook, reconciliation and server-verified completion."
 }

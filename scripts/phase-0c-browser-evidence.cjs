@@ -254,21 +254,16 @@ const origin = process.env.OCTALVE_BASE_URL || "http://127.0.0.1:3000";
             record.businessRedirectCanonical="PASS";
           }
           if(route==="/dashboard/getting-started"){
-            await page.getByRole("heading",{name:"Set up your business workspace"}).waitFor();
-            await page.getByRole("button",{name:/Payments/}).first().click();
-            await page.getByText("Account not verified").waitFor();
+            await page.getByRole("heading",{name:"Your setup checklist"}).waitFor();
+            await page.getByRole("link",{name:/Set up payments and banks/}).click();
+            await page.getByRole("heading",{name:"Online Payments & Banks"}).waitFor();
+            await page.locator('a[href="/dashboard/getting-started/payments/bank-transfer"]').click();
+            await page.getByRole("heading",{name:"Bank Transfer"}).waitFor();
             await page.getByRole("combobox",{name:"Bank name"}).fill("Guaranty");
             await page.getByRole("option",{name:"Guaranty Trust Bank (GTBank)"}).click();
-            if(await page.getByRole("combobox",{name:"Bank name"}).inputValue()!=="Guaranty Trust Bank (GTBank)")throw Error("Searchable bank chooser selection did not persist");
-            if(view==="mobile"){
-              await page.getByRole("button",{name:"About Account verification"}).click();
-              await page.getByRole("dialog",{name:"Account verification"}).getByText("An approved bank-name enquiry",{exact:false}).waitFor();
-              await page.getByRole("button",{name:"Got it"}).click();
-            } else {
-              await page.getByRole("button",{name:"About Account verification"}).focus();
-              await page.getByRole("tooltip").getByText("Account verification").waitFor();
-            }
-            await page.getByRole("button",{name:/Invoices/}).first().click();
+            if(await page.getByRole("combobox",{name:"Bank name"}).inputValue()!=="Guaranty Trust Bank (GTBank)")throw Error("Bank picker not preserved");
+            if(!await page.getByRole("button",{name:"Add Account"}).isDisabled())throw Error("Bank added without server verification");
+            await page.goto(origin+"/dashboard/getting-started?step=appearance",{waitUntil:"domcontentloaded"});
             await page.getByText("How do you want your invoices to look?").waitFor();
             await page.getByRole("link",{name:/Customize invoices/}).click();
             await page.waitForURL("**/dashboard/settings/invoice?from=getting-started");
@@ -277,10 +272,10 @@ const origin = process.env.OCTALVE_BASE_URL || "http://127.0.0.1:3000";
             await page.getByRole("link",{name:/Customize invoices/}).click();
             await page.getByRole("button",{name:"Save & Continue"}).click();
             await page.waitForURL("**/dashboard/getting-started?step=payments");
-            await page.getByText("Account not verified").waitFor();
+            await page.getByRole("heading",{name:"Online Payments & Banks"}).waitFor();
             record.setupNavigationSaveAndBankSearch="PASS";
           }
-          if(route==="/dashboard/settings/faqs"){
+                    if(route==="/dashboard/settings/faqs"){
             await page.getByRole("heading",{name:"How can we help?"}).waitFor();
             await page.getByLabel("Search FAQs").fill("receipt");
             await page.getByRole("button",{name:/difference between an invoice and a receipt/}).click();

@@ -150,31 +150,7 @@ export function MerchantSetupJourney({initialStep="business"}:{initialStep?:Step
      <Link href="/dashboard/settings/invoice?from=getting-started" className="mt-5 inline-flex min-h-11 items-center gap-2 rounded-full bg-[#0064E0] px-5 text-sm font-semibold text-white">Customize invoices <ArrowRight size={16}/></Link>
      <div className="mt-3 flex items-center gap-2 text-xs text-slate-500">Changes apply to new drafts. <SetupInfoNote title="Document safety" detail="Drafts are marked DRAFT — NOT ISSUED. Saving appearance settings does not issue an invoice or create an official PDF."/></div>
     </section>:null}
-    {step==="payments"?<>
-     <section className={panel}>
-      <h2 className="flex items-center gap-2 text-lg font-bold text-[#173652]"><Landmark className="text-[#0064E0]"/> How do you want to receive payments?</h2>
-      <p className="mt-2 text-sm text-slate-600">Your company bank account is separate from provider-issued collection accounts.</p>
-      <div className="mt-5 space-y-3">
-       <div className="flex flex-wrap items-center gap-2 rounded-xl border border-[#D7E5F8] bg-[#F2F7FE] px-3 py-3">
-        <CreditCard size={18} className="text-[#0064E0]"/><p className="flex-1 text-sm font-semibold text-[#173652]">Company Bank Transfer</p>
-        <span className="rounded-full bg-[#E2EDFF] px-2.5 py-1 text-[10px] font-semibold text-[#0052B8]">Manual</span>
-        <SetupInfoNote title="Manual bank transfer" detail="Customers pay your verified company account. Authorized staff may record a bank transfer only after checking evidence and completing approval."/>
-       </div>
-       <div className="grid gap-3 sm:grid-cols-2">
-        <NigerianBankPicker value={settings.bankName} onChange={name=>patch("bankName",name)}/>
-        <Field title="Account number" value={settings.accountNumber} onChange={v=>patch("accountNumber",v.replace(/[^0-9]/g,"").slice(0,10))} placeholder="10-digit NUBAN"/>
-       </div>
-       {settings.accountNumber&&!bankFormat?<p role="alert" className="text-xs text-amber-700">Enter a 10-digit account number.</p>:null}
-       <div className="flex items-center gap-3 rounded-xl border border-amber-200 bg-[#FFFAEF] px-3 py-2.5" role="status">
-        <LockKeyhole className="shrink-0 text-amber-700" size={17}/>
-        <p className="flex-1 text-xs font-semibold text-amber-900">Account not verified</p>
-        <SetupInfoNote title="Account verification" detail="A ten-digit number alone does not confirm ownership. An approved bank-name enquiry must verify the bank and return the account holder's name before real payment instructions can be shown. Never enter a PIN, OTP or bank password."/>
-       </div>
-      </div>
-     </section>
-     <PaymentConnectionsPanel/>
-
-    </>:null}
+    {step==="payments"?<PaymentConnectionsPanel/>:null}
     {step==="services"?<section className={panel}>
      <div className="flex items-center gap-3"><Settings2 className="text-[#0064E0]"/><h2 className="text-lg font-bold text-[#173652]">Your business tools</h2></div>
      <p className="mt-2 text-sm text-slate-600">Explore your business tools.</p>
