@@ -20,10 +20,10 @@ function InvoiceSettingsContents(){
  const router=useRouter();
  const query=useSearchParams();
  const fromSetup=query.get("from")==="getting-started";
- const backPath=fromSetup?"/dashboard/getting-started?step=appearance":"/dashboard/settings";
+ const backPath=fromSetup?"/dashboard/getting-started":"/dashboard/settings";
  const save=()=>{
   toast.success("Preferences kept for this session.");
-  if(fromSetup)router.push("/dashboard/getting-started?step=payments");
+  if(fromSetup)router.push("/dashboard/getting-started");
  };
  const {invoiceAppearance,setInvoiceAppearance,settings,logoPreview,invoicePreferences,setInvoicePreferences,receiptAutoMode,setReceiptAutoMode}=useMerchantPreview();
  const patch=<K extends keyof InvoiceAppearance>(key:K,value:InvoiceAppearance[K])=>setInvoiceAppearance(p=>({...p,[key]:value}));
@@ -85,7 +85,7 @@ function InvoiceSettingsContents(){
       </select>
      </label>
      <p className="text-xs text-slate-500">Automatic receipts are available after verified payments.</p>
-     <Link href="/dashboard/getting-started?step=business" className="block rounded-xl border border-blue-100 p-3 text-sm font-semibold text-[#0064E0]">Business logo and bank details →</Link>
+     <Link href="/dashboard/getting-started/business" className="block rounded-xl border border-blue-100 p-3 text-sm font-semibold text-[#0064E0]">Business logo and bank details →</Link>
      <Link href="/dashboard/tax-centre" className="block rounded-xl border border-blue-100 p-3 text-sm font-semibold text-[#0064E0]">Tax & NRS readiness →</Link>
     </div>
    </details>

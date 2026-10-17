@@ -1,6 +1,7 @@
 "use client";
 import Link from "next/link";
-import {ArrowRight,Check,ChevronRight,CreditCard,FileText,Building2,LockKeyhole,FilePlus2,UserRoundPlus,ReceiptText,FileSpreadsheet} from "lucide-react";
+import {Check,ChevronRight,CreditCard,FileText,Building2,LockKeyhole} from "lucide-react";
+import {QuickCreatePanel} from "@/src/features/dashboard/QuickCreatePanel";
 import {useMerchantPreview} from "@/src/features/merchant-preview/MerchantPreviewProvider";
 import {previewSetupProgress} from "./setup-progress";
 import {PAYMENT_ROUTE} from "./payment-catalog";
@@ -11,20 +12,13 @@ export function GettingStartedHome(){
  const tasks=[
   {title:"Set up payments and banks",href:PAYMENT_ROUTE,done:progress.payment,Icon:CreditCard,detail:"0 connected in Preview"},
   {title:"Customize invoice template",href:"/dashboard/settings/invoice?from=getting-started",done:progress.invoice,Icon:FileText,detail:progress.invoice?"Preferences chosen":"Choose your style"},
-  {title:"Add business information",href:"/dashboard/getting-started?step=business",done:progress.business,Icon:Building2,detail:progress.business?"Preview details entered":"Business details"},
+  {title:"Add business information",href:"/dashboard/getting-started/business",done:progress.business,Icon:Building2,detail:progress.business?"Preview details entered":"Business details"},
   {title:"Set up app lock",href:"/dashboard/getting-started/app-lock",done:progress.appLock,Icon:LockKeyhole,detail:"Secure sign-in required"}
  ] as const;
- const create=[
-  {name:"New Invoice",url:"/dashboard/invoice/create",Icon:FilePlus2},
-  {name:"New Customer",url:"/dashboard/customer/add",Icon:UserRoundPlus},
-  {name:"New Expense",url:"/dashboard/expenses",Icon:ReceiptText},
-  {name:"New Quotation",url:"/dashboard/quotation",Icon:FileSpreadsheet}
- ] as const;
  return <main className="mx-auto w-full max-w-[720px] space-y-4 px-1 pb-8 sm:px-2">
-  <header className="flex items-center justify-between gap-3">
-   <div><p className="text-xs font-semibold text-[#0064E0]">GETTING STARTED</p>
-    <h1 className="mt-1 text-xl font-bold text-[#153450]">Your setup checklist</h1></div>
-   <Link href="/dashboard" className="rounded-full border border-[#CEDDEA] px-3 py-2 text-xs font-semibold text-[#173652]">Dashboard</Link>
+  <header>
+   <p className="text-xs font-semibold text-[#0064E0]">GETTING STARTED</p>
+   <h1 className="mt-1 text-xl font-bold text-[#153450]">Your setup checklist</h1>
   </header>
   <section className="rounded-[22px] border border-[#E4EBF3] bg-white p-4 shadow-sm sm:p-6" aria-label="Setup progress">
    <div className="flex gap-3"><span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-[#EFF5FF] text-2xl" aria-hidden="true">👋</span>
@@ -44,14 +38,6 @@ export function GettingStartedHome(){
    </div>
    <p className="mt-3 text-[11px] text-slate-500">Preview progress only. Actual payment connections and app lock are not enabled yet.</p>
   </section>
-  <section className="rounded-[22px] border border-[#E4EBF3] bg-white p-4 shadow-sm sm:p-6">
-   <h2 className="text-sm font-semibold text-[#173652]">Quick Create</h2>
-   <div className="mt-4 grid grid-cols-4 gap-2">
-    {create.map(item=><Link key={item.name} href={item.url} className="flex min-w-0 flex-col items-center gap-2 text-center text-[11px] font-medium text-[#314761] focus-visible:outline-2 focus-visible:outline-[#0064E0]">
-     <span className="grid h-11 w-11 place-items-center rounded-full bg-[#EEF5FF] text-[#0064E0]"><item.Icon size={20}/></span><span>{item.name}</span>
-    </Link>)}
-   </div>
-  </section>
-  <Link href="/dashboard/getting-started?step=business" className="inline-flex items-center gap-1 text-xs font-semibold text-[#0064E0]">Open full workspace setup <ArrowRight size={15}/></Link>
+  <QuickCreatePanel/>
  </main>;
 }

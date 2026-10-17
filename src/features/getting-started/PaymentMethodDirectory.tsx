@@ -11,7 +11,7 @@ export function PaymentMethodDirectory({embedded=false}:{embedded?:boolean}){
   </header>
   <div className="space-y-2">
    {PAYMENT_METHODS.map(method=><Link key={method.id} href={PAYMENT_ROUTE+"/"+method.id}
-    className="group flex min-h-[76px] items-center gap-3 rounded-xl border border-[#DEEBE4] bg-[#F5FBF7] px-4 py-3 transition hover:border-[#86AFEA] hover:bg-[#EDF6FF] focus-visible:outline-2 focus-visible:outline-[#0064E0]">
+    className="group flex min-h-[76px] items-center gap-3 rounded-xl border border-[#D9E6F8] bg-[#F4F8FF] px-4 py-3 transition hover:border-[#83B7FF] hover:bg-[#EAF3FF] focus-visible:outline-2 focus-visible:outline-[#0064E0]">
     <span className="min-w-0 flex-1"><span className="block text-sm font-bold text-[#173652]">{method.title}</span>
      <span className="mt-1 block text-[11px] leading-4 text-[#587087]">{method.brief}</span></span>
     <span className="shrink-0 rounded-full bg-white px-3 py-1.5 text-[11px] font-semibold text-[#0064E0]">Setup <ChevronRight size={13} className="inline"/></span>

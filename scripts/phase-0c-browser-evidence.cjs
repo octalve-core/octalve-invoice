@@ -249,33 +249,35 @@ const origin = process.env.OCTALVE_BASE_URL || "http://127.0.0.1:3000";
             record.themeRedirectCanonical="PASS";
           }
           if(route==="/dashboard/settings/business"){
-            await page.waitForURL("**/dashboard/getting-started?step=business");
-            await page.getByRole("heading",{name:"Set up your business workspace"}).waitFor();
+            await page.waitForURL("**/dashboard/getting-started/business");
+            await page.getByRole("heading",{name:"Business Identity",level:1}).waitFor();
             record.businessRedirectCanonical="PASS";
           }
           if(route==="/dashboard/getting-started"){
             await page.getByRole("heading",{name:"Your setup checklist"}).waitFor();
+            if(await page.getByRole("main").getByRole("link",{name:"Dashboard",exact:true}).count())throw Error("Redundant dashboard link in Getting Started");
+            if(await page.getByRole("link",{name:/Open full workspace setup/}).count())throw Error("Legacy workspace link remains");
+            await page.getByRole("region",{name:"Quick Create"}).getByRole("button",{name:/New Customer/}).waitFor();
+            await page.getByRole("link",{name:/Add business information/}).click();
+            await page.getByRole("heading",{name:"Business Identity",level:1}).waitFor();
+            await page.getByRole("textbox",{name:/Business or trading name/}).fill("Octalve Trial Ltd");
+            await page.getByRole("link",{name:"Back to checklist"}).click();
+            await page.getByRole("heading",{name:"Your setup checklist"}).waitFor();
+            await page.getByRole("link",{name:/Customize invoice template/}).click();
+            await page.waitForURL("**/dashboard/settings/invoice?from=getting-started");
+            await page.getByRole("link",{name:"Back to Getting Started"}).click();
+            await page.waitForURL("**/dashboard/getting-started");
             await page.getByRole("link",{name:/Set up payments and banks/}).click();
             await page.getByRole("heading",{name:"Online Payments & Banks"}).waitFor();
             await page.locator('a[href="/dashboard/getting-started/payments/bank-transfer"]').click();
             await page.getByRole("heading",{name:"Bank Transfer"}).waitFor();
             await page.getByRole("combobox",{name:"Bank name"}).fill("Guaranty");
             await page.getByRole("option",{name:"Guaranty Trust Bank (GTBank)"}).click();
-            if(await page.getByRole("combobox",{name:"Bank name"}).inputValue()!=="Guaranty Trust Bank (GTBank)")throw Error("Bank picker not preserved");
-            if(!await page.getByRole("button",{name:"Add Account"}).isDisabled())throw Error("Bank added without server verification");
-            await page.goto(origin+"/dashboard/getting-started?step=appearance",{waitUntil:"domcontentloaded"});
-            await page.getByText("How do you want your invoices to look?").waitFor();
-            await page.getByRole("link",{name:/Customize invoices/}).click();
-            await page.waitForURL("**/dashboard/settings/invoice?from=getting-started");
-            await page.getByRole("link",{name:"Back to Getting Started"}).click();
-            await page.waitForURL("**/dashboard/getting-started?step=appearance");
-            await page.getByRole("link",{name:/Customize invoices/}).click();
-            await page.getByRole("button",{name:"Save & Continue"}).click();
-            await page.waitForURL("**/dashboard/getting-started?step=payments");
-            await page.getByRole("heading",{name:"Online Payments & Banks"}).waitFor();
+            if(await page.getByRole("combobox",{name:"Bank name"}).inputValue()!=="Guaranty Trust Bank (GTBank)")throw Error("Searchable bank selection did not persist");
+            if(!await page.getByRole("button",{name:"Add Account"}).isDisabled())throw Error("Bank added without trusted server verification");
             record.setupNavigationSaveAndBankSearch="PASS";
           }
-                    if(route==="/dashboard/settings/faqs"){
+          if(route==="/dashboard/settings/faqs"){
             await page.getByRole("heading",{name:"How can we help?"}).waitFor();
             await page.getByLabel("Search FAQs").fill("receipt");
             await page.getByRole("button",{name:/difference between an invoice and a receipt/}).click();

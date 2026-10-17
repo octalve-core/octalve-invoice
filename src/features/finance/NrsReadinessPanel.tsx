@@ -26,7 +26,7 @@ export function NrsReadinessPanel(){
    </div>)}
   </div>
   <div className="mt-4 flex flex-wrap gap-2">
-   <Link href="/dashboard/getting-started?step=business" className="inline-flex min-h-10 items-center rounded-full bg-[#0064E0] px-4 text-xs font-semibold text-white">Edit business information</Link>
+   <Link href="/dashboard/getting-started/business" className="inline-flex min-h-10 items-center rounded-full bg-[#0064E0] px-4 text-xs font-semibold text-white">Edit business information</Link>
    <a href="https://einvoice.nrs.gov.ng/merchant-buyer-solution-portal" target="_blank" rel="noopener noreferrer" className="inline-flex min-h-10 items-center gap-2 rounded-full border border-[#D9E7F9] px-4 text-xs font-semibold text-[#0064E0]">NRS e-invoicing portal <ExternalLink size={14}/></a>
   </div>
   <div className="mt-4 flex items-center gap-2 border-t border-slate-100 pt-3 text-[11px] text-slate-500">

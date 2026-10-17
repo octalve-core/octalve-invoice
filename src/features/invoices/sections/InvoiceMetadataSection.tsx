@@ -124,7 +124,7 @@ export function InvoiceMetadataSection({draft,setDraft}:Props){
      <header className="mb-4 flex items-center justify-between"><h2 className="font-semibold text-[#18334b]">{picker==="customer"?"Select Customer":picker==="staff"?"Select Salesperson":"Payment Method"}</h2><button onClick={close} aria-label="Close picker"><X size={20}/></button></header>
      {picker==="payment"?<div className="space-y-2">{payments.map(p=><button key={p.value} type="button" disabled={p.value!=="manual"} onClick={()=>{setPaymentMode(p.value);close();}} className={"flex w-full items-center gap-3 rounded-xl border px-4 py-3 text-left "+(paymentMode===p.value?"border-[#0064E0] bg-blue-50":"border-gray-100")+(p.value!=="manual"?" cursor-not-allowed opacity-55":"")}>
       <Wallet className="shrink-0 text-[#0064E0]" size={20}/><span><span className="block text-sm font-medium">{p.label}{p.value!=="manual"?" · Not connected":""}</span><span className="text-xs text-gray-500">{p.note}</span></span></button>)}
-      <Link href="/dashboard/getting-started?step=payments" className="block rounded-xl border border-blue-200 px-4 py-3 text-center text-xs font-semibold text-[#0064E0]">View payment connections</Link>
+      <Link href="/dashboard/getting-started/payments" className="block rounded-xl border border-blue-200 px-4 py-3 text-center text-xs font-semibold text-[#0064E0]">View payment connections</Link>
      </div>:
      <div className="space-y-3">
       {!adding?<><label className="relative block"><Search size={17} className="absolute left-3 top-3 text-gray-400"/><input autoFocus value={query} onChange={e=>setQuery(e.target.value)} placeholder={"Search "+(picker==="customer"?"customers":"salespeople")} className={input+" pl-10"}/></label>

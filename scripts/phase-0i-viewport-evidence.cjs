@@ -71,9 +71,24 @@ const routes=[
    let response=await page.goto(base+"/dashboard/getting-started",{waitUntil:"domcontentloaded",timeout:18000});
    if(response?.status()!==200)throw Error("Checklist HTTP "+response?.status());
    await page.getByRole("heading",{name:"Your setup checklist"}).waitFor();
+   if(await page.getByRole("main").getByRole("link",{name:"Dashboard",exact:true}).count())throw Error("Getting Started retained redundant dashboard button");
+   if(await page.getByRole("link",{name:/Open full workspace setup/}).count())throw Error("Retired workspace entry point present");
+   const quick=page.getByRole("region",{name:"Quick Create"});
+   if(await quick.getByRole("button",{name:/New (Invoice|Customer|Expenses|Quotation)/}).count()!==4)throw Error("Shared Quick Create actions missing");
+   await page.getByRole("link",{name:/Add business information/}).click();
+   await page.getByRole("heading",{name:"Business Identity",level:1}).waitFor();
+   await page.getByRole("link",{name:"Back to checklist"}).click();
+   await page.getByRole("heading",{name:"Your setup checklist"}).waitFor();
+   await page.getByRole("link",{name:/Customize invoice template/}).click();
+   await page.waitForURL("**/dashboard/settings/invoice?from=getting-started");
+   await page.getByRole("link",{name:"Back to Getting Started"}).click();
+   await page.waitForURL("**/dashboard/getting-started");
    await page.getByRole("progressbar",{name:"Setup completion"}).waitFor();
    await page.getByRole("link",{name:/Set up payments and banks/}).click();
    await page.getByRole("heading",{name:"Online Payments & Banks"}).waitFor();
+   const cards=page.locator('a[href^="/dashboard/getting-started/payments/"]');
+   const cardStyle=await cards.first().evaluate(el=>getComputedStyle(el).backgroundColor);
+   if(cardStyle!=="rgb(244, 248, 255)")throw Error("Payment method cards must use the approved blue tint");
    if(await page.locator('a[href^="/dashboard/getting-started/payments/"]').count()!==6)throw Error("Six payment methods not available");
    if(await page.locator("html").evaluate(el=>el.scrollWidth>el.clientWidth+2))throw Error("Directory horizontal overflow");
    await page.screenshot({path:path.join(out,"batch-p-directory-"+width+".png"),fullPage:true,animations:"disabled"});
@@ -92,6 +107,20 @@ const routes=[
    await page.getByRole("textbox",{name:"Bank account number"}).fill("0123456789");
    if(!await page.getByRole("button",{name:"Add Account"}).isDisabled())throw Error("Unverified account could be added");
    await page.screenshot({path:path.join(out,"batch-p-bank-"+width+".png"),fullPage:true,animations:"disabled"});
+   await page.goto(base+"/dashboard",{waitUntil:"domcontentloaded",timeout:18000});
+   const welcome=page.getByRole("heading",{name:/Welcome to your dashboard|Welcome back/});
+   await welcome.waitFor();
+   const font=await welcome.evaluate(el=>parseFloat(getComputedStyle(el).fontSize));
+   if(width<640&&font>21)throw Error("Mobile welcome heading is oversized");
+   const newInvoice=page.getByRole("region",{name:"Quick Create"}).getByRole("button",{name:/New Invoice/});
+   await newInvoice.waitFor();
+   if(width<640){
+    const parts=newInvoice.locator("span.block");
+    const first=await parts.nth(0).boundingBox();
+    const second=await parts.nth(1).boundingBox();
+    if(!first||!second||second.y<=first.y+2)throw Error("Mobile Quick Create label must stack New above Invoice");
+   }
+   await page.screenshot({path:path.join(out,"owner-polish-dashboard-"+width+".png"),fullPage:false,animations:"disabled"});
    if(await page.locator("html").evaluate(el=>el.scrollWidth>el.clientWidth+2))throw Error("Setup horizontal overflow");
    detail.status="PASS";
   }catch(e){errors++;detail.status="FAIL";detail.error=String(e?.message||e).slice(0,650)}

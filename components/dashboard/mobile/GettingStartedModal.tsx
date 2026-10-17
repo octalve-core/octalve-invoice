@@ -10,7 +10,7 @@ export default function GettingStartedModal({isOpen,onClose}:{isOpen:boolean;onC
  const tasks=[
   {title:"Set up payments and banks",href:PAYMENT_ROUTE,done:progress.payment,Icon:CreditCard},
   {title:"Customize invoice template",href:"/dashboard/settings/invoice?from=getting-started",done:progress.invoice,Icon:FileText},
-  {title:"Add business information",href:"/dashboard/getting-started?step=business",done:progress.business,Icon:Building2},
+  {title:"Add business information",href:"/dashboard/getting-started/business",done:progress.business,Icon:Building2},
   {title:"Set up app lock",href:"/dashboard/getting-started/app-lock",done:progress.appLock,Icon:LockKeyhole}
  ];
  if(!isOpen)return null;
