@@ -78,10 +78,10 @@ const routes=[
    if(await page.locator("html").evaluate(el=>el.scrollWidth>el.clientWidth+2))throw Error("Directory horizontal overflow");
    await page.screenshot({path:path.join(out,"batch-p-directory-"+width+".png"),fullPage:true,animations:"disabled"});
    await page.locator('a[href="/dashboard/getting-started/payments/paystack"]').click();
-   await page.getByRole("heading",{name:"Paystack"}).waitFor();
+   await page.getByRole("heading",{name:"Paystack",level:1}).waitFor();
    const keys=page.getByRole("group",{name:"Example credential fields"});
    if(await keys.locator("input:enabled").count())throw Error("Live credential collection unexpectedly active");
-   await page.getByRole("button",{name:"Show example"}).click();
+   await page.getByRole("button",{name:"Show example"}).first().click();
    await page.getByRole("button",{name:"Hide example"}).waitFor();
    if(!await page.getByRole("button",{name:"Save & Verify Connection"}).isDisabled())throw Error("Fake provider connection is enabled");
    await page.screenshot({path:path.join(out,"batch-p-paystack-"+width+".png"),fullPage:true,animations:"disabled"});
