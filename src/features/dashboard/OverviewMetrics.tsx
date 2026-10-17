@@ -1,6 +1,7 @@
 "use client";
 import {ArrowDownRight,ArrowUpRight,Minus} from "lucide-react";
 import {SetupInfoNote} from "@/src/features/merchant-setup/SetupInfoNote";
+import {overviewChange} from "./overview-math";
 
 /** Example-only metrics. Actual business aggregates MUST be supplied by an authenticated
  * tenant-isolated payment/invoice ledger after Phase 1 approval. Never treat these as earnings.
@@ -12,10 +13,6 @@ export const overviewExampleMetrics=[
  {id:"outflow",title:"Total outflow",amount:240000,prior:200000,favourableWhenUp:false}
 ] as const;
 
-export function overviewChange(current:number,previous:number){
- if(previous===0)return current===0?0:null;
- return Math.round(((current-previous)/Math.abs(previous))*10)/10;
-}
 const money=(n:number)=>new Intl.NumberFormat("en-NG",{style:"currency",currency:"NGN",minimumFractionDigits:2,maximumFractionDigits:2}).format(n);
 
 export function OverviewMetrics(){

@@ -194,7 +194,7 @@ test("Overview uses one set of four financial cards on phone and desktop, not in
  assert.match(shared,/title:"Overdue invoices"/);
  assert.match(shared,/title:"Total outflow"/);
  assert.match(shared,/vs last month/);
- const {overviewChange}=await import("../src/features/dashboard/OverviewMetrics.tsx");
+ const {overviewChange}=await import("../src/features/dashboard/overview-math.ts");
  assert.equal(overviewChange(506000,500000),1.2);
  assert.equal(overviewChange(0,20000),-100);
  assert.equal(overviewChange(0,0),0);
