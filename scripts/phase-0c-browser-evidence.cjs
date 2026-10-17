@@ -250,16 +250,16 @@ const origin = process.env.OCTALVE_BASE_URL || "http://127.0.0.1:3000";
           }
           if(route==="/dashboard/settings/business"){
             await page.waitForURL("**/dashboard/getting-started/business");
-            await page.getByRole("heading",{name:"Business Identity"}).waitFor();
+            await page.getByRole("heading",{name:"Business Identity",level:1}).waitFor();
             record.businessRedirectCanonical="PASS";
           }
           if(route==="/dashboard/getting-started"){
             await page.getByRole("heading",{name:"Your setup checklist"}).waitFor();
-            if(await page.getByRole("link",{name:"Dashboard",exact:true}).count())throw Error("Redundant dashboard link in Getting Started");
+            if(await page.getByRole("main").getByRole("link",{name:"Dashboard",exact:true}).count())throw Error("Redundant dashboard link in Getting Started");
             if(await page.getByRole("link",{name:/Open full workspace setup/}).count())throw Error("Legacy workspace link remains");
             await page.getByRole("region",{name:"Quick Create"}).getByRole("button",{name:/New Customer/}).waitFor();
             await page.getByRole("link",{name:/Add business information/}).click();
-            await page.getByRole("heading",{name:"Business Identity"}).waitFor();
+            await page.getByRole("heading",{name:"Business Identity",level:1}).waitFor();
             await page.getByRole("textbox",{name:/Business or trading name/}).fill("Octalve Trial Ltd");
             await page.getByRole("link",{name:"Back to checklist"}).click();
             await page.getByRole("heading",{name:"Your setup checklist"}).waitFor();
