@@ -80,7 +80,8 @@
     "phase0iBatchL": "Exact source bf61137052c91f1ca5b8e6ea73dcc44a7bca6a0f: Phase qualification 38977093693 PASS, CodeQL 38977093728 PASS, browser 38977089157 PASS 189/189 +64/64, screenshot artifact 12079546947. Review-only PR #13 merge bccbf572ed59f53122377682922ca767fee0e742, Vercel dpl_Fr5eTGxaSv5EbtfSHkPL7hauLdPf READY. Independent Review CI build 38977638147 PASS and CodeQL 38977638140 PASS, postmerge browser 38977638151 still running when recorded.",
     "phase0iBatchLReview": "PASS independent Review merged SHA bccbf572ed59f53122377682922ca767fee0e742: phase qualification 38977638147, CodeQL 38977638140, standard browser 189/189 and responsive 64/64 run 38977638151, screenshots artifact 12079512768. Vercel exact merge READY dpl_Fr5eTGxaSv5EbtfSHkPL7hauLdPf; stable alias. No main or Phase 1.",
     "phase0iBatchMExactReview": "PASS: source and post-merge Review Node24/pnpm/TS/ESLint/unit/build, CodeQL, browser 189/189+64/64 and screenshots; run 39024806396, 39024806389, 39024806357; artifact 12098167364.",
-    "phase0iBatchNSource": "PASS a28392ab: Node24/pnpm/TS/ESLint/unit/build 39024999527, CodeQL 39024999370, browser 39024999380. Exact merged browser still requires verification."
+    "phase0iBatchNSource": "PASS a28392ab: Node24/pnpm/TS/ESLint/unit/build 39024999527, CodeQL 39024999370, browser 39024999380. Exact merged browser still requires verification.",
+    "phase0iBatchNExactReview": "PASS at merged bdacb471: build/typecheck/lint/test 39025244951, CodeQL 39025244992, browser 39025245001 189/189+64/64; screenshot artifact 12097798019. Vercel READY same SHA."
   },
   "blockers": [
     "Explicit owner approval for Phase 0I final UI and later backend Phase 1 remains absent. No Neon, real auth, payment gateways, money movement, NRS filings or real support/email delivery.",
@@ -98,7 +99,7 @@
   "lastVerifiedApplicationCommit": "a28392ab9715b7879f2f577f1f5ee50e9750d51e",
   "exactNextPhase": "Owner visual acceptance Batch L dark desktop sidebar at widths 1024/1440 and heights including shorter laptop screens; confirm fixed main scroll, independent nav scroll, Subscription pinned at bottom and Preview Logout confirmation, blue active state; mobile bottom navigation unchanged. Once accepted, return to separately approved original invoice/Legal template visual design. Do not trigger Phase 1, Neon, live NRS, banking, payment, paid subscription or Production.",
   "previewCommitSha": "bdacb471ef3f0a3e1e767d937806851dd35c1ac2",
-  "previewDeploymentStatus": "Vercel READY Review-only deployment dpl_HEBtKYaFK9yBfPXRkRxX8Pua9FWs matching bdacb471ef3f0a3e1e767d937806851dd35c1ac2; stable Review alias. Independent merged browser run 39025245001 pending at initial report; do not mark pass until verified.",
+  "previewDeploymentStatus": "Vercel READY Review-only deployment dpl_HEBtKYaFK9yBfPXRkRxX8Pua9FWs matching bdacb471ef3f0a3e1e767d937806851dd35c1ac2; stable Review alias. Post-merge independent Node/type/lint/test/build 39025244951 PASS, CodeQL 39025244992 PASS, browser 39025245001 PASS 189/189 + 64/64 screenshot artifact 12097798019.",
   "phase0Merged": true,
   "productionDeployed": false,
   "productionApprovedByOwner": true,
@@ -117,7 +118,7 @@
   "latestResearchAudit": "docs/project/PHASE_0I_NRS_SETTINGS_TEMPLATE_ISSUANCE_AUDIT_2026-10-16.md",
   "latestResearchStatus": "Audit/recommendations only, 2026-10-16. No application code, NRS provider connection, issue/download policy, template gallery or billing configuration implemented in this audit turn.",
   "phase0iBatchMReview": "Published Review-only PR #14 merge 971245ee659ff5a8e007c623dbf4d4ae38d24343; source f4da12b CI 39020952574 PASS, CodeQL 39020952521 PASS, browser 39020949804 PASS 189/189+64/64. Independent merged build 39024806396 PASS, CodeQL 39024806389 PASS, browser 39024806357 PASS 189/189+64/64 screenshot artifact 12098167364. Vercel dpl_5R5HSmYZxMBVANUbqWPazr26415G READY.",
-  "phase0iBatchNReview": "Published Review-only PR #15 merge bdacb471ef3f0a3e1e767d937806851dd35c1ac2; source a28392a build 39024999527 PASS, CodeQL 39024999370 PASS, browser 39024999380 PASS, screenshot artifact 12098435847. Independent merged build 39025244951 PASS, CodeQL 39025244992 PASS; browser 39025245001 pending at initial checkpoint. Vercel dpl_HEBtKYaFK9yBfPXRkRxX8Pua9FWs READY.",
+  "phase0iBatchNReview": "Review PR #15 merged bdacb471ef3f0a3e1e767d937806851dd35c1ac2; source a28392a qualification 39024999527 PASS, CodeQL 39024999370 PASS, browser 39024999380 PASS artifact 12098435847. Independent exact merged qualification 39025244951 PASS, CodeQL 39025244992 PASS, browser 39025245001 PASS 189/189 + 64/64, artifact 12097798019. Vercel READY dpl_HEBtKYaFK9yBfPXRkRxX8Pua9FWs. Main/Production/Phase 1 unchanged. Owner visual sign-off pending.",
   "workingProductName": "Octalve Finance — customer-facing working identity; builder Octalve Limited; merchant-issued document identity independent; repo/package/internal references kept.",
   "financeArchitectureProposals": "Proposed only (not approved): docs/project/FINANCIAL_METRICS_AND_EVENT_AUTHORITY.md, FINANCIAL_EXCEPTION_LIFECYCLE.md, expanded DATA_MODEL.md and OCTALVE_FINANCE_PRODUCT_IDENTITY_AND_DECISION_QUEUE_2026-10-17.md; no DB migrations or activated services."
 }
