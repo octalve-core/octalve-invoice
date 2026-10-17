@@ -1,9 +1,12 @@
 name: Phase qualification
 on:
   push:
-    branches: [main, 'phase/**']
+    branches: [main, 'phase/**', 'review/**']
   pull_request:
     branches: [main]
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.head.ref || github.ref_name }}
+  cancel-in-progress: true
 permissions:
   contents: read
 jobs:
@@ -34,6 +37,8 @@ jobs:
         run: pnpm typecheck
       - name: ESLint
         run: pnpm lint
+      - name: Customer-facing terminology
+        run: node scripts/check-user-facing-language.cjs
       - name: Tests
         run: pnpm test
       - name: Production build

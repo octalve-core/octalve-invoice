@@ -1,8 +1,11 @@
 name: Phase 0C browser evidence
 on:
   push:
-    branches: [phase/00-finzefy-authority-ui-bootstrap]
+    branches: [phase/00-finzefy-authority-ui-bootstrap, phase/0i-frontend-finance-workflows, 'review/**']
   workflow_dispatch:
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 permissions:
   contents: read
 jobs:
@@ -45,11 +48,19 @@ jobs:
           NODE_PATH: /tmp/octalve-playwright/node_modules
           OCTALVE_BASE_URL: http://127.0.0.1:3000
         run: node scripts/phase-0c-browser-evidence.cjs
+      - name: Extra narrow mobile and tablet responsive qualification
+        if: success()
+        env:
+          NODE_PATH: /tmp/octalve-playwright/node_modules
+          OCTALVE_BASE_URL: http://127.0.0.1:3000
+        run: node scripts/phase-0i-viewport-evidence.cjs
       - name: Upload browser evidence regardless of result
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: phase-0c-browser-evidence
-          path: artifacts/phase-0c/
+          path: |
+            artifacts/phase-0c/
+            artifacts/phase-0i-viewports/
           if-no-files-found: warn
           retention-days: 14

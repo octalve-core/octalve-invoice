@@ -28,7 +28,7 @@ export function RecordDetailDialog({record,onClose}:{record:PreviewRecord;onClos
     </section>:null}
    {record.kind==="quotation"?<p className="mt-4 rounded-lg bg-amber-50 p-3 text-xs text-amber-900">Quotation status concerns the estimate only. Acceptance or sending a quotation does not establish payment or issue a receipt.</p>:null}
    {record.kind==="creditNote"?<p className="mt-4 rounded-lg bg-slate-50 p-3 text-xs text-slate-700">Customer credit, invoice settlement and bank refund are different ledger events. The preview makes no financial changes.</p>:null}
-   <p className="mt-5 text-xs text-gray-500">Illustrative display only. No live merchant account, payment verification or financial document issuance.</p>
+   <p className="mt-5 text-xs text-gray-500">Sample record for reviewing layout and details. No changes have been made.</p>
    <button onClick={onClose} className="mt-3 w-full rounded-full bg-[#0064E0] px-4 py-3 text-sm text-white">Close</button>
   </section>
  </div>;

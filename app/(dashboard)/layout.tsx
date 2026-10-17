@@ -10,12 +10,12 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   return (
-    <MerchantPreviewProvider><div className="flex min-h-screen min-w-0 max-w-full overflow-x-clip bg-[#F9FAFB]">
+    <MerchantPreviewProvider><div className="flex min-h-screen min-w-0 max-w-full overflow-x-clip bg-[#F9FAFB] lg:h-dvh lg:min-h-0 lg:overflow-hidden">
       {/* Desktop Sidebar */}
       <Sidebar />
 
       {/* Main Content Area */}
-      <div className="flex min-w-0 flex-1 flex-col min-h-screen">
+      <div className="flex min-w-0 flex-1 flex-col min-h-screen lg:h-full lg:min-h-0 lg:overflow-y-auto lg:overscroll-contain">
         {/* Mobile Header */}
         <MobileHeader />
 

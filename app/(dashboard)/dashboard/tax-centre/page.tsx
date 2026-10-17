@@ -1,0 +1,60 @@
+"use client";
+import {useMemo,useState} from "react";
+import Link from "next/link";
+import {ArrowLeft,CalendarDays,ChevronRight,FileCheck2,FileText,Info,Search,ShieldCheck,SlidersHorizontal,X} from "lucide-react";
+import {previewInvoices} from "@/src/features/invoices/lib/preview-records";
+import {formatDocumentNumber} from "@/src/features/invoices/lib/document-number";
+import {useMerchantPreview} from "@/src/features/merchant-preview/MerchantPreviewProvider";
+import {useAccessibleDialog} from "@/src/features/records/components/useAccessibleDialog";
+import {RecordDataTable} from "@/src/features/records/components/RecordDataTable";
+import {NrsReadinessPanel} from "@/src/features/finance/NrsReadinessPanel";
+import {SetupInfoNote} from "@/src/features/merchant-setup/SetupInfoNote";
+type View="overview"|"invoices"|"calendar"|"nrs";
+const views:{value:View;label:string}[]=[{value:"overview",label:"Overview"},{value:"invoices",label:"Invoice tax review"},{value:"calendar",label:"Tax calendar"},{value:"nrs",label:"NRS e-invoices"}];
+const periods=["2024","2025","2026"] as const;
+export default function TaxCentre(){
+ const {settings}=useMerchantPreview();
+ const reference=(id:string)=>formatDocumentNumber(settings.businessName||"Octalve Limited",Number(id),"invoice");
+ const [view,setView]=useState<View>("overview"),[period,setPeriod]=useState<string>("2026"),[query,setQuery]=useState(""),[detail,setDetail]=useState<string|null>(null),[filterOpen,setFilterOpen]=useState(false);
+ useAccessibleDialog(Boolean(filterOpen||detail),()=>{setFilterOpen(false);setDetail(null);});
+ const samples=useMemo(()=>previewInvoices.filter(x=>x.status!=="draft"&&x.date.endsWith(period)),[period]);
+ const filtered=samples.filter(i=>[i.customer,reference(i.id),i.status].some(x=>x.toLowerCase().includes(query.trim().toLowerCase())));
+ const selected=samples.find(x=>x.id===detail);
+ return <main className="min-w-0 space-y-5 pb-12">
+  <div className="flex flex-wrap items-start justify-between gap-3"><div><Link href="/dashboard/other-services" className="inline-flex items-center gap-2 text-sm font-semibold text-[#0064E0]"><ArrowLeft size={16}/> More services</Link><h1 className="mt-2 text-2xl font-bold text-[#173652] sm:text-3xl">Tax Centre</h1><p className="mt-1 text-sm text-slate-500">Review tax records and NRS readiness.</p></div><span className="rounded-full bg-amber-50 px-3 py-2 text-xs font-semibold text-amber-800">Not connected to NRS</span></div>
+  <div className="flex items-center gap-2 rounded-xl border border-[#F4E6C4] bg-[#FFFBF2] px-3 py-2.5 text-xs text-amber-900"><span className="font-medium">Tax totals await classification.</span><SetupInfoNote title="Why no tax estimate?" detail="An invoice or payment total cannot determine tax owed. Verify the business tax profile, item-level tax categories, eligible input credits and reporting periods first. No filings or NRS confirmations exist in this workspace."/></div>
+  <div className="grid grid-cols-2 gap-3 xl:grid-cols-4">{[
+    ["Estimated output VAT","Needs classification"],["Eligible input VAT","Needs supporting records"],["Estimated payable","Unavailable"],["Filed / confirmed","0 live filings"]
+   ].map(([label,value])=><article key={label} className="min-w-0 rounded-2xl border border-slate-100 bg-white p-4 shadow-sm"><p className="text-xs text-slate-500">{label}</p><p className="mt-2 break-words text-sm font-bold text-[#193955] sm:text-base">{value}</p></article>)}</div>
+  <section className="min-w-0 overflow-hidden rounded-2xl border border-slate-100 bg-white shadow-sm">
+   <div className="flex flex-wrap justify-between gap-3 border-b border-slate-100 p-4 sm:p-5"><div><h2 className="font-semibold text-[#193955]">Tax reporting workspace</h2><p className="mt-1 text-xs text-slate-500">Review records by year.</p></div><label className="flex items-center gap-2 text-xs text-slate-600"><CalendarDays size={16}/> Year <select aria-label="Tax reporting year" value={period} onChange={e=>setPeriod(e.target.value)} className="rounded-lg border border-slate-200 p-2">{periods.map(y=><option key={y} value={y}>{y}</option>)}</select></label></div>
+   <nav aria-label="Tax centre sections" className="flex flex-wrap gap-2 border-b border-slate-100 p-3">{views.map(t=><button key={t.value} type="button" aria-pressed={view===t.value} onClick={()=>setView(t.value)} className={"rounded-full px-3 py-2 text-xs font-semibold "+(view===t.value?"bg-blue-50 text-[#0064E0]":"bg-[#F2F4F8] text-slate-600")}>{t.label}</button>)}</nav>
+   {view==="overview"?<div className="grid gap-4 p-4 lg:grid-cols-2 lg:p-5">
+    <article className="rounded-2xl border border-slate-100 bg-[#FAFBFD] p-5"><FileText className="text-[#0064E0]" size={24}/><h3 className="mt-3 font-semibold text-[#193955]">Invoices needing classification</h3><p className="mt-2 text-sm text-slate-600">{samples.length} invoices awaiting tax classification for {period}.</p><button type="button" onClick={()=>setView("invoices")} className="mt-4 text-sm font-semibold text-[#0064E0]">Review invoice list →</button></article>
+    <article className="rounded-2xl border border-slate-100 bg-[#FAFBFD] p-5"><ShieldCheck size={24} className="text-[#0064E0]"/><h3 className="mt-3 font-semibold text-[#193955]">Compliance status</h3><p className="mt-2 text-sm text-slate-600">No confirmed NRS submissions yet.</p><button type="button" onClick={()=>setView("nrs")} className="mt-4 text-sm font-semibold text-[#0064E0]">View NRS status →</button></article>
+    <article className="rounded-2xl border border-slate-100 bg-[#FAFBFD] p-5 lg:col-span-2"><h3 className="font-semibold text-[#193955]">Separate the financial events</h3><div className="mt-3 grid gap-2 sm:grid-cols-3">{[["Invoice","Document and tax category"],["Payment","Confirmed collection"],["Filing","NRS acknowledgement"]].map(([a,b])=><div key={a} className="rounded-xl bg-white p-3 text-xs"><strong className="block text-[#193955]">{a}</strong><span className="mt-1 block leading-5 text-slate-500">{b}</span></div>)}</div></article>
+   </div>:null}
+   {view==="invoices"?<div className="min-w-0 p-4 sm:p-5"><div className="mb-4 flex gap-2"><label className="relative min-w-0 flex-1"><Search size={16} className="absolute left-3 top-3 text-slate-400"/><input aria-label="Search tax invoices" value={query} onChange={e=>setQuery(e.target.value)} className="h-10 w-full rounded-xl border border-slate-200 pl-9 pr-3 text-sm" placeholder="Search invoice or customer"/></label><button aria-label="Tax classification filter" type="button" onClick={()=>setFilterOpen(true)} className="rounded-xl border border-slate-200 p-2.5 text-[#0064E0]"><SlidersHorizontal size={18}/></button></div>
+    <div className="divide-y divide-slate-100 lg:hidden">{filtered.map(i=><button key={i.id} type="button" onClick={()=>setDetail(i.id)} className="flex w-full min-w-0 items-center gap-3 py-4 text-left"><span className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-blue-50 text-[#0064E0]"><FileText size={18}/></span><span className="min-w-0 flex-1"><strong className="block truncate text-sm text-[#193955]">{i.customer}</strong><span className="block text-xs text-slate-500">{reference(i.id)} · {i.date}</span><span className="mt-1 block text-[11px] text-amber-700">Classification required</span></span><ChevronRight className="shrink-0 text-slate-400" size={17}/></button>)}</div>
+    <div className="hidden lg:block">
+     <RecordDataTable label="Invoice classification review" headers={["Reference","Customer","Amount","Classification","Review"]} rows={filtered.map(invoice=>({
+      id:invoice.id,
+      cells:[
+       {value:reference(invoice.id),emphasis:true},
+       {value:invoice.customer},
+       {value:invoice.amount},
+       {value:"Unclassified",className:"text-amber-700"},
+       {value:<button type="button" onClick={()=>setDetail(invoice.id)} className="font-semibold text-[#0064E0] focus-visible:outline-2 focus-visible:outline-[#0064E0]">Details</button>}
+      ]
+     }))}/>
+    </div>
+    {!filtered.length?<p className="py-12 text-center text-xs text-slate-500">No matching invoices for this period.</p>:null}
+   </div>:null}
+   {view==="calendar"?<div className="grid gap-3 p-4 sm:grid-cols-2 sm:p-5">{[["VAT returns","Confirm taxpayer eligibility and period."],["WHT obligations","Review applicable transactions and deadlines."],["NRS e-invoicing","Confirm your rollout and connection."],["Filing history","Keep official acknowledgements."]].map(([label,text])=><article key={label} className="rounded-xl border border-slate-100 p-4"><span className="text-xs font-semibold text-[#0064E0]">Unscheduled · verify eligibility</span><h3 className="mt-2 font-semibold text-[#173652]">{label}</h3><p className="mt-2 text-xs leading-6 text-slate-500">{text}</p></article>)}</div>:null}
+   {view==="nrs"?<div className="space-y-4 p-4 sm:p-5"><NrsReadinessPanel/><div className="flex items-center gap-3 rounded-xl bg-[#F5F8FC] p-3 text-xs text-[#23415F]"><FileCheck2 size={19} className="shrink-0 text-[#0064E0]"/><span className="flex-1 font-semibold">No NRS e-invoices submitted</span><SetupInfoNote title="Official e-invoice status" detail="Official validation, IRN issuance, NRS QR, reporting responses and secure retries require an authorized connection. Customer portal and payment QR codes are different from an official NRS QR."/></div><div className="grid grid-cols-2 gap-3 sm:grid-cols-4">{["Draft","Submitted","Validated","Rejected"].map(x=><div key={x} className="rounded-xl border border-slate-100 p-4 text-center"><p className="text-xs text-slate-500">{x}</p><strong className="mt-2 block text-xl text-[#173652]">0</strong></div>)}</div></div>:null}
+  </section>
+  {filterOpen?<div className="fixed inset-0 z-[120] flex items-end justify-center bg-[#031C32]/60 lg:items-center lg:p-4"><section role="dialog" aria-modal="true" aria-label="Tax invoice filters" className="w-full max-w-md space-y-4 rounded-t-[28px] bg-white p-5 pb-[max(1.5rem,env(safe-area-inset-bottom))] lg:rounded-2xl"><div className="flex items-center justify-between"><h2 className="font-semibold text-[#173652]">Classification filters</h2><button aria-label="Close tax filters" onClick={()=>setFilterOpen(false)}><X size={19}/></button></div><p className="text-sm leading-6 text-slate-600">Invoices need verified item-level tax categories before calculation.</p><button type="button" onClick={()=>setFilterOpen(false)} className="w-full rounded-full bg-[#0064E0] px-4 py-3 text-xs font-semibold text-white">Show unclassified invoices</button></section></div>:null}
+  {selected?<div className="fixed inset-0 z-[120] flex items-end justify-center bg-[#031C32]/60 lg:items-center lg:p-4"><section role="dialog" aria-modal="true" aria-label={"Tax review "+reference(selected.id)} className="w-full max-w-lg space-y-4 rounded-t-[28px] bg-white p-5 pb-[max(1.5rem,env(safe-area-inset-bottom))] lg:rounded-2xl"><div className="flex items-center justify-between"><h2 className="font-semibold text-[#193955]">{reference(selected.id)}</h2><button aria-label="Close tax review" onClick={()=>setDetail(null)}><X size={18}/></button></div><p className="text-sm text-slate-600">{selected.customer} · {selected.amount} · {selected.date}</p><p className="flex gap-2 rounded-xl bg-amber-50 p-3 text-xs leading-6 text-amber-900"><Info size={17} className="mt-0.5 shrink-0"/>Tax classifications, eligible input credits and fiscal tax point are unavailable. Do not multiply this invoice by an assumed generic rate or treat payment as tax remittance.</p><Link href={"/dashboard/invoice/"+selected.id} className="block rounded-full bg-[#0064E0] px-4 py-3 text-center text-xs font-semibold text-white">Open original invoice</Link><button onClick={()=>setDetail(null)} className="w-full rounded-full border border-[#0064E0] px-4 py-3 text-xs font-semibold text-[#0064E0]">Close</button></section></div>:null}
+  <p className="text-xs leading-6 text-slate-500">Tax classifications and filings require verified business records.</p>
+ </main>;
+}

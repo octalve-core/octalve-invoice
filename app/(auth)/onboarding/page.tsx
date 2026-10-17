@@ -77,10 +77,10 @@ export default function OnboardingPage() {
           <div className="relative z-10 text-center">
             <BrandWordmark className="text-3xl mx-auto mb-6 text-[#0064E0]" />
             <h2 className="text-3xl font-bold text-[#1D2838] mb-2">
-              Welcome to Octalve Invoice
+              Welcome to Octalve Finance
             </h2>
             <p className="text-gray-600">
-              Your complete business finance solution
+              A connected business finance workspace
             </p>
           </div>
 

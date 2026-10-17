@@ -8,6 +8,6 @@ export default function ExpensesPage(){
  return <div className="min-w-0 space-y-5">
   {notice?<p role="status" className="rounded-lg bg-blue-50 p-3 text-sm text-blue-800">{notice}</p>:null}
   <RecordDirectory kind="expense" onCreate={()=>setCreating(true)}/>
-  <CreateExpenseModal isOpen={creating} onClose={()=>setCreating(false)} onSubmit={()=>{setCreating(false);setNotice("Expense form Preview only. No expense was saved or paid.");}}/>
+  <CreateExpenseModal isOpen={creating} onClose={()=>setCreating(false)} onSubmit={()=>{setCreating(false);setNotice("Expense not saved. Expense recording will be available after secure setup.");}}/>
  </div>;
 }

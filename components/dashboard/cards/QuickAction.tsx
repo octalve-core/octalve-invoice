@@ -19,6 +19,8 @@ export default function QuickAction({icon:Icon,label,tone="blue",onClick}:QuickA
    <span className={`flex h-12 w-12 items-center justify-center rounded-full sm:h-14 sm:w-14 ${palette.surface}`}>
      <Icon className={`h-6 w-6 ${palette.foreground}`}/>
    </span>
-   <span className="max-w-full text-center text-[11px] font-medium leading-tight text-gray-700 sm:text-sm">{label}</span>
+   <span className="max-w-full text-center text-[11px] font-medium leading-tight text-gray-700 sm:text-sm">
+     {label.startsWith("New ")?<><span className="block sm:inline">New</span>{" "}<span className="block sm:inline">{label.slice(4)}</span></>:label}
+   </span>
  </button>;
 }

@@ -1,0 +1,38 @@
+# PHASE 0I — OWNER COMPACT GETTING STARTED AND PAYMENT CONNECTION UX
+
+**17 October 2026 — Review-only corrective continuation of Batch P, no Phase 1/Production authority.**
+
+## What owner clarified
+The previous combined payment panel was too wordy and lacked progressive dedicated setup screens. Existing supplied donor layout calls for a four-task home with completion percentage, Quick Create and six payment routes (Paystack, Flutterwave, Monnify, Dynamic Account formerly Flex Account, Company Bank Transfer, PayPal). When one method is actually connected, Payments checklist should count as complete and other methods can be configured later. Real bank verification must precede Add Account; provider connection requires its own secure credential form and real server callback/verification. A radio card or browser-only state may **never** mark Connected.
+
+## Reused and changed
+- Existing repository, `MerchantSetupJourney` business/invoice settings and shared merchant data retained under the same route `?step=business|appearance|payments|services`; no duplicate business profile.
+- New `src/features/getting-started/` cohesive folder: `GettingStartedHome`, `PaymentMethodDirectory`, `PaymentSetupDetail`, provider `payment-catalog` and `setup-progress`.
+- Routes: `/dashboard/getting-started` main 4-task checklist; `/dashboard/getting-started/payments` list; `/dashboard/getting-started/payments/[method]` dedicated six setup screens; `/dashboard/getting-started/app-lock` truthful not-available page; `/dashboard/settings/faqs/payment-setup` focused FAQ with official provider references.
+- Shared merchant bank picker and account number remain session-only, edits invalidate previous verification; verified account Add Account disabled until a trusted server enquiry.
+- Payment provider pages display short example-format credentials, hidden by default (Reveal **example only**), test/live demonstration, future HTTPS callback instructions and disabled Save & Verify. No secrets collected/transmitted or stored. Dynamic Account page links to Monnify and Flutterwave, rather than creating a fictitious independent connection.
+- Mobile GettingStartedModal no longer lets tapping rows mark tasks complete artificially. Completion comes from entered preview business details, customised invoice preferences, and (in future) verified server payment + authenticated app-lock evidence. Currently those last two remain false in Preview.
+
+## Official provider connection and webhook comparison (reviewed 17 October 2026)
+| Provider | Verified documented credentials | Server validation and callback notes |
+| --- | --- | --- |
+| Paystack | Secret Key `sk_test_•••` for server; optional inline Public Key `pk_test_•••`. | Backend-authorised Paystack API query (never fake connected); dashboard webhook HMAC-SHA512 `x-paystack-signature` using secret. https://paystack.com/docs/api/authentication/ https://paystack.com/docs/payments/webhooks/ |
+| Flutterwave v3 | Secret/Public API keys; encryption key only where direct card operations need it. | Secret-holder API version must be selected and authenticated; v3 optional `verif-hash` and v4 HMAC-SHA256 base64 `flutterwave-signature` differ; choose validated webhook version. https://developer.flutterwave.com/docs/authentication https://developer.flutterwave.com/docs/webhooks https://developer.flutterwave.com/v4.0/docs/webhooks |
+| Monnify | API Key, Secret Key, Contract Code. | Authenticate through server-side Monnify token API, verify merchant contract/capability; dynamic invoices new per-invoice virtual account and configurable requested `expiryDate` subject provider. Monnify `monnify-signature` HMAC-SHA512 production; sandbox callback signature rules differ, never assume test events are production valid. https://developers.monnify.com/docs/collections/quickstart https://developers.monnify.com/docs/collections/one-time-payments/invoice https://developers.monnify.com/docs/webhooks |
+| PayPal | REST OAuth client ID and client secret, plus webhook ID for event verification. | Server obtains scoped OAuth token, checks merchant business account eligibility/region; webhook signature verified via PayPal verification and webhook ID; Nigerian merchant eligibility not assumed. https://developer.paypal.com/api/rest/authentication https://developer.paypal.com/api/rest/webhooks/rest/ |
+| Bank Transfer | Supported bank code, 10-digit NUBAN, resolved holder name and business ownership authorisation | Tenant-server name enquiry against provider bank list; match and approval, audit before Add Account; screenshots and 10-digit format are not evidence. |
+| Dynamic Account | No independent key; uses authorised Monnify, eligible Flutterwave or separately contracted bank adapter. | Do not permit selected invoice/milestone due later than provider **confirmed** virtual-account expiry. Paystack 15m–8h transfer not a multi-day invoice account. |
+
+## Secure server **required** before enabling connection (NOT IMPLEMENTED)
+1. Authenticated tenant and staff RBAC; step-up MFA for adding/rotating/revoking provider credentials; POST CSRF/Origin checks, strict HTTPS, small bounded payload, rate limiting, audit.
+2. Credential entry on purpose-built secure form only when backend exists; never `localStorage`, `sessionStorage`, URL, source maps, analytics, logs, console, React global preview context or build-time client env. Use server-side envelope encryption/KMS secret vault, per-tenant/provider/env binding, encryption key rotation, immutable credential-change audit and immediate redaction of secrets.
+3. Server validation uses fixed allowlisted provider API endpoints, safe timeouts, correct env, permissions and merchant-owner identity/contract; persisted connection state `PENDING_VALIDATION → VERIFIED/FAILED/REVOKED`. A successful credential test alone may not prove invoice-account product permission or settlement account ownership.
+4. Assigned HTTPS webhook endpoint from trusted server for each provider/integration, preferably with an opaque connection reference and signed provider events, never merchant-configurable arbitrary callback URL. Allow Copy only once provisioned/active. Webhook must verify raw-body signature/version, tenant/merchant, reference, amount, currency and finality; reject replays and use durable inbox/idempotency/outbox and provider re-query where necessary.
+5. Bank list/current bank codes and name enquiry must be obtained by approved server integration. Add Account only with verified holder name/approved ownership proof; independent company bank account is not a provider-generated virtual account.
+6. Registration/validation and real money movement require a fresh **separate** Phase 1 authorisation, migration/DB/security review, provider contract and sandbox qualification; this corrective Review UI makes no external calls.
+
+## Verification gate
+Exact source qualification, security scan, existing 189 browser route checks +64 viewports +7 new interactive payment/setup screens at 320/360/390/430/768/1024/1440 incl narrow 650px-height desktop; owner manual screenshot parity; exact merged Review build/CodeQL/browser and Vercel READY before marking Published. **Do not claim live validation or a working callback when this frontend Preview is released.**
+
+## Deliberately outstanding
+True bank holder verification/Add Account, provider key submission & credential vault, live callback URLs, PayPal eligibility, per-provider verified connection states, bank/provider payment recognition and NRS authority remain blocked. Batch Q due-date/milestone validations and later R/S/T templates/reconciliation/NRS are separate.
