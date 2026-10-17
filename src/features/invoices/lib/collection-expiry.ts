@@ -1,11 +1,11 @@
-import {allocateStages} from "./installments";
-import {dynamicAccountCapabilities} from "@/src/features/merchant-setup/payment-capabilities";
+import {allocateStages} from "./installments.ts";
+import {dynamicAccountCapabilities} from "../../merchant-setup/payment-capabilities.ts";
 export const INVOICE_TIMEZONE="Africa/Lagos" as const;
 export type DynamicProvider=(typeof dynamicAccountCapabilities)[number]["id"];
 export type CollectionMode="company-bank"|"dynamic-account";
 export type ProposedStage={id:string;share:number;dueAtLagos:string};
 export type ConfirmedAccountExpiry={
- stageId:string;provider:DynamicProvider;amountMinor:number;
+ stageId:string;provider:DynamicProvider;amountMinor:number;accountReference:string;
  expiresAtUtc:string;confirmedByServer:true;
 };
 export type PlanCheck={errors:string[];amountsMinor:number[];providerVerificationRequired:boolean;readyForIssue:boolean};
@@ -38,6 +38,7 @@ export function evaluateCollectionPlan(input:{
  totalMinor:number;invoiceDueAtLagos:string;stages:readonly ProposedStage[];
  mode:CollectionMode;provider?:DynamicProvider;
  verifiedExpiries?:readonly ConfirmedAccountExpiry[];
+ asOfUtc?:string;
 }):PlanCheck{
  const errors:string[]=[];
  const {stages,mode,invoiceDueAtLagos,totalMinor}=input;
@@ -52,6 +53,7 @@ export function evaluateCollectionPlan(input:{
  const allocationOk=stages.length>0&&stages.length<=6&&stages.every(s=>Number.isSafeInteger(s.share)&&s.share>0&&s.share<=100)&&stages.reduce((sum,s)=>sum+s.share,0)===100;
  if(!allocationOk)errors.push("Milestone percentages must add up to exactly 100%.");
  const amountsMinor=allocationOk&&Number.isSafeInteger(totalMinor)&&totalMinor>0?allocateStages(totalMinor,stages.map(s=>s.share)):[];
+ if(amountsMinor.some(amount=>amount<=0))errors.push("Every milestone must have a positive payable amount.");
  const invoiceDue=lagosLocalToUtc(invoiceDueAtLagos);
  if(invoiceDue===null)errors.push("Set a valid invoice due date and time (Africa/Lagos).");
  let previous:number|null=null;
@@ -72,14 +74,20 @@ export function evaluateCollectionPlan(input:{
    errors.push("A real provider-confirmed account and expiry is required for each milestone.");
   }else{
    const seen=new Set<string>();
+   const references=new Set<string>();
+   const asOf=input.asOfUtc?strictProviderUtc(input.asOfUtc):null;
+   if(asOf===null)errors.push("Server issuance time is required to evaluate provider account expiry.");
    stages.forEach((stage,i)=>{
     const entry=input.verifiedExpiries!.find(e=>e.stageId===stage.id);
     if(!entry||seen.has(stage.id)||entry.confirmedByServer!==true||entry.provider!==input.provider||entry.amountMinor!==amountsMinor[i]){
      errors.push("Milestone "+(i+1)+" has no matching server-confirmed account expiry.");return;
     }
     seen.add(stage.id);
+    if(!entry.accountReference||references.has(entry.accountReference))errors.push("Each milestone needs a distinct provider account reference.");
+    references.add(entry.accountReference);
     const expiry=strictProviderUtc(entry.expiresAtUtc),due=lagosLocalToUtc(stage.dueAtLagos);
     if(expiry===null)errors.push("Milestone "+(i+1)+" has an invalid provider expiry timestamp.");
+    else if(asOf!==null&&expiry<=asOf)errors.push("Milestone "+(i+1)+" provider account already expired.");
     else if(due!==null&&due>expiry)errors.push("Milestone "+(i+1)+" is due after its provider account expires.");
    });
   }
