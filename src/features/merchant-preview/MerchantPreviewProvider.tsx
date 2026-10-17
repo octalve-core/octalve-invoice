@@ -17,6 +17,15 @@ export const defaultPreviewUser:PreviewUser={
  fullName:"",email:"",phone:"",address:"",country:"nigeria",state:"",postalCode:""
 };
 export type PaymentMode="manual"|"monnify"|"flutterwave"|"paystack";
+/** Phase 0I: an unconnected, session-only UI preference; never payment authorization. */
+export type PreviewCollectionSetup={
+ channel:"company-bank"|"dynamic-account"|"gateway";
+ dynamicProvider:"monnify-invoice"|"flutterwave-v3"|"flutterwave-v4";
+ gatewayProvider:"paystack"|"flutterwave"|"monnify";
+};
+export const defaultPreviewCollectionSetup:PreviewCollectionSetup={
+ channel:"company-bank",dynamicProvider:"monnify-invoice",gatewayProvider:"paystack"
+};
 export type ReceiptAutoMode="off"|"generate"|"generate_and_email";
 export type DueDatePreference="1week"|"2weeks"|"1month"|"custom";
 export type InvoicePreferences={
@@ -66,6 +75,7 @@ type ContextValue={
  logoPreview:string|null;setLogoPreview:Dispatch<SetStateAction<string|null>>;
  signaturePreview:string|null;setSignaturePreview:Dispatch<SetStateAction<string|null>>;
  paymentMode:PaymentMode;setPaymentMode:Dispatch<SetStateAction<PaymentMode>>;
+ collectionSetup:PreviewCollectionSetup;setCollectionSetup:Dispatch<SetStateAction<PreviewCollectionSetup>>;
  customers:CatalogCustomer[];setCustomers:Dispatch<SetStateAction<CatalogCustomer[]>>;
  items:CatalogItem[];setItems:Dispatch<SetStateAction<CatalogItem[]>>;
  staff:CatalogStaff[];setStaff:Dispatch<SetStateAction<CatalogStaff[]>>;
@@ -91,6 +101,7 @@ export function MerchantPreviewProvider({children}:{children:ReactNode}){
  const [logoPreview,setLogoPreview]=useState<string|null>(null);
  const [signaturePreview,setSignaturePreview]=useState<string|null>(null);
  const [paymentMode,setPaymentMode]=useState<PaymentMode>("manual");
+ const [collectionSetup,setCollectionSetup]=useState<PreviewCollectionSetup>(defaultPreviewCollectionSetup);
  const [user,setUser]=useState<PreviewUser>(defaultPreviewUser);
  const [customers,setCustomers]=useState<CatalogCustomer[]>(starterCustomers);
  const [items,setItems]=useState<CatalogItem[]>(starterItems);
@@ -101,8 +112,8 @@ export function MerchantPreviewProvider({children}:{children:ReactNode}){
  const [archivedRecords,setArchivedRecords]=useState<ArchivedPreviewRecord[]>([]);
  const [readNotificationIds,setReadNotificationIds]=useState<string[]>([]);
  const [userImage,setUserImage]=useState<string|null>(null);
- const resetPreview=()=>{setSettings(defaults);setLogoPreview(null);setSignaturePreview(null);setPaymentMode("manual");setUser(defaultPreviewUser);setUserImage(null);setCustomers(starterCustomers);setItems(starterItems);setStaff(starterStaff);setReceiptAutoMode("off");setInvoicePreferences(defaultInvoicePreferences);setInvoiceAppearance(defaultInvoiceAppearance);setArchivedRecords([]);setReadNotificationIds([]);};
- const value=useMemo(()=>({settings,setSettings,logoPreview,setLogoPreview,signaturePreview,setSignaturePreview,paymentMode,setPaymentMode,customers,setCustomers,items,setItems,staff,setStaff,receiptAutoMode,setReceiptAutoMode,invoicePreferences,setInvoicePreferences,invoiceAppearance,setInvoiceAppearance,archivedRecords,setArchivedRecords,readNotificationIds,setReadNotificationIds,user,setUser,userImage,setUserImage,resetPreview}),[settings,logoPreview,signaturePreview,paymentMode,customers,items,staff,receiptAutoMode,invoicePreferences,invoiceAppearance,archivedRecords,readNotificationIds,user,userImage]);
+ const resetPreview=()=>{setSettings(defaults);setLogoPreview(null);setSignaturePreview(null);setPaymentMode("manual");setCollectionSetup(defaultPreviewCollectionSetup);setUser(defaultPreviewUser);setUserImage(null);setCustomers(starterCustomers);setItems(starterItems);setStaff(starterStaff);setReceiptAutoMode("off");setInvoicePreferences(defaultInvoicePreferences);setInvoiceAppearance(defaultInvoiceAppearance);setArchivedRecords([]);setReadNotificationIds([]);};
+ const value=useMemo(()=>({settings,setSettings,logoPreview,setLogoPreview,signaturePreview,setSignaturePreview,paymentMode,setPaymentMode,collectionSetup,setCollectionSetup,customers,setCustomers,items,setItems,staff,setStaff,receiptAutoMode,setReceiptAutoMode,invoicePreferences,setInvoicePreferences,invoiceAppearance,setInvoiceAppearance,archivedRecords,setArchivedRecords,readNotificationIds,setReadNotificationIds,user,setUser,userImage,setUserImage,resetPreview}),[settings,logoPreview,signaturePreview,paymentMode,collectionSetup,customers,items,staff,receiptAutoMode,invoicePreferences,invoiceAppearance,archivedRecords,readNotificationIds,user,userImage]);
  return <C.Provider value={value}>{children}</C.Provider>;
 }
 export function useMerchantPreview(){const ctx=useContext(C);if(!ctx)throw new Error("Merchant preview provider missing");return ctx;}
