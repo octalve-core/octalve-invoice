@@ -186,8 +186,8 @@ const routes=[
    await page.getByRole("region",{name:"Merchant invoice controls"}).waitFor();
    if(!await page.getByRole("button",{name:"Send Reminder"}).isDisabled())throw Error("Unissued reminder became active");
    if(!await page.getByRole("button",{name:"Copy Client Link"}).isDisabled())throw Error("Client link copied before issuance");
-   const merchantNumber=await page.locator(".invoice-preview-paper").getByLabel("Invoice number").innerText();
-   const merchantAmount=await page.locator(".invoice-preview-paper").getByText("₦120,000.00").first().innerText();
+   const merchantNumber=await page.locator(".invoice-preview-paper .sq-v4-invoice-number").innerText();
+   const merchantAmount=await page.locator(".invoice-preview-paper .sq-v4-amount-line strong").innerText();
    await noOverflow("merchant");
    await page.screenshot({path:path.join(out,"batch-r-merchant-"+width+".png"),fullPage:true,animations:"disabled"});
    await page.getByRole("link",{name:"Client-facing preview"}).click();
@@ -197,8 +197,8 @@ const routes=[
    for(const label of ["Download","Print Invoice","Report Transfer"]){
     if(!await page.getByRole("button",{name:label,exact:true}).isDisabled())throw Error("Premature client action "+label);
    }
-   if(await page.locator(".invoice-preview-paper").getByLabel("Invoice number").innerText()!==merchantNumber)throw Error("Audience invoice reference mismatch");
-   if(await page.locator(".invoice-preview-paper").getByText(merchantAmount).count()<1)throw Error("Audience invoice total mismatch");
+   if(await page.locator(".invoice-preview-paper .sq-v4-invoice-number").innerText()!==merchantNumber)throw Error("Audience invoice reference mismatch");
+   if(await page.locator(".invoice-preview-paper .sq-v4-amount-line strong").innerText()!==merchantAmount)throw Error("Audience invoice total mismatch");
    await page.getByText("No NRS-issued IRN/QR",{exact:false}).waitFor();
    await noOverflow("client");
    await page.screenshot({path:path.join(out,"batch-r-client-"+width+".png"),fullPage:true,animations:"disabled"});
