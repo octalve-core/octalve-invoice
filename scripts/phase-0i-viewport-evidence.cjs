@@ -169,7 +169,7 @@ const routes=[
  }
  }finally{await browser.close();}
  fs.writeFileSync(path.join(out,"report.json"),JSON.stringify({head:process.env.GITHUB_SHA||"local",results},null,2));
- console.log("Phase 0I viewport checks:",results.filter(x=>!x.batchP&&x.status==="PASS").length,"/",results.filter(x=>!x.batchP).length);
+ console.log("Phase 0I viewport checks:",results.filter(x=>!x.batchP&&!x.batchQ&&x.status==="PASS").length,"/",results.filter(x=>!x.batchP&&!x.batchQ).length);
  console.log("Batch P payment setup checks:",results.filter(x=>x.batchP?.status==="PASS").length,"/",results.filter(x=>x.batchP).length);
  console.log("Batch Q invoice due and milestone checks:",results.filter(x=>x.batchQ?.status==="PASS").length,"/",results.filter(x=>x.batchQ).length);
  for(const failed of results.filter(x=>x.status==="FAIL"))console.error("VIEWPORT FAIL",failed.width,failed.route,failed.error);
