@@ -30,7 +30,7 @@ export function NrsReadinessPanel(){
    <a href="https://einvoice.nrs.gov.ng/merchant-buyer-solution-portal" target="_blank" rel="noopener noreferrer" className="inline-flex min-h-10 items-center gap-2 rounded-full border border-[#D9E7F9] px-4 text-xs font-semibold text-[#0064E0]">NRS e-invoicing portal <ExternalLink size={14}/></a>
   </div>
   <div className="mt-4 flex items-center gap-2 border-t border-slate-100 pt-3 text-[11px] text-slate-500">
-   No official IRNs, QR codes or filings yet.
+   No NRS submissions or IRNs yet.
    <SetupInfoNote title="What happens when connected?" detail="After secure taxpayer authorization, Octalve can validate linked business details, use official Business and Service IDs, classify taxable invoice lines, exchange structured documents, track IRNs and verification outcomes, and reconcile filing acknowledgements. Tax amounts and filing deadlines still depend on valid tax rules and supporting records."/>
   </div>
  </section>;
