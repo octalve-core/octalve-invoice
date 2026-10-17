@@ -167,13 +167,61 @@ const routes=[
   results.push({batchQ});
   await page.close();
  }
+
+ // Batch R: customer vs merchant render parity and non-operational controls, responsive.
+ const rWidths=[320,360,390,430,768,1024,1440];
+ for(const width of rWidths){
+  const page=await browser.newPage({viewport:{width,height:width>=1024?650:780},deviceScaleFactor:1});
+  const batchR={width,status:"unknown"};
+  try{
+   const visit=async route=>{
+    const response=await page.goto(base+route,{waitUntil:"domcontentloaded",timeout:18000});
+    if(response?.status()!==200)throw Error("Invoice audience HTTP "+response?.status()+" "+route);
+   };
+   const noOverflow=async label=>{
+    const overflow=await page.locator("html").evaluate(el=>el.scrollWidth>el.clientWidth+2);
+    if(overflow)throw Error(label+" horizontal overflow");
+   };
+   await visit("/dashboard/invoice/1");
+   await page.getByRole("region",{name:"Merchant invoice controls"}).waitFor();
+   if(!await page.getByRole("button",{name:"Send Reminder"}).isDisabled())throw Error("Unissued reminder became active");
+   if(!await page.getByRole("button",{name:"Copy Client Link"}).isDisabled())throw Error("Client link copied before issuance");
+   const merchantNumber=await page.locator(".invoice-preview-paper").getByLabel("Invoice number").innerText();
+   const merchantAmount=await page.locator(".invoice-preview-paper").getByText("₦120,000.00").first().innerText();
+   await noOverflow("merchant");
+   await page.screenshot({path:path.join(out,"batch-r-merchant-"+width+".png"),fullPage:true,animations:"disabled"});
+   await page.getByRole("link",{name:"Client-facing preview"}).click();
+   await page.getByRole("heading",{name:"Client-facing invoice preview",level:1}).waitFor();
+   await page.getByRole("region",{name:"Client invoice controls"}).waitFor();
+   if(await page.locator('[data-testid="draft-preview-watermark"]').count()!==1)throw Error("Client invoice lacks draft watermark");
+   for(const label of ["Download","Print Invoice","Report Transfer"]){
+    if(!await page.getByRole("button",{name:label,exact:true}).isDisabled())throw Error("Premature client action "+label);
+   }
+   if(await page.locator(".invoice-preview-paper").getByLabel("Invoice number").innerText()!==merchantNumber)throw Error("Audience invoice reference mismatch");
+   if(await page.locator(".invoice-preview-paper").getByText(merchantAmount).count()<1)throw Error("Audience invoice total mismatch");
+   await page.getByText("No NRS-issued IRN/QR",{exact:false}).waitFor();
+   await noOverflow("client");
+   await page.screenshot({path:path.join(out,"batch-r-client-"+width+".png"),fullPage:true,animations:"disabled"});
+   await visit("/dashboard/invoice/2/client-preview");
+   await page.getByText("Monnify collection",{exact:true}).waitFor();
+   if(!await page.getByRole("button",{name:"Check Payment"}).isDisabled())throw Error("False payment confirmation");
+   await visit("/dashboard/invoice/4/client-preview");
+   await page.getByText("Paystack checkout",{exact:true}).waitFor();
+   if(!await page.getByRole("button",{name:"Pay Now"}).isDisabled())throw Error("Disconnected checkout activated");
+   batchR.status="PASS";
+  }catch(e){errors++;batchR.status="FAIL";batchR.error=String(e?.message||e).slice(0,690);}
+  results.push({batchR});
+  await page.close();
+ }
  }finally{await browser.close();}
  fs.writeFileSync(path.join(out,"report.json"),JSON.stringify({head:process.env.GITHUB_SHA||"local",results},null,2));
- console.log("Phase 0I viewport checks:",results.filter(x=>!x.batchP&&!x.batchQ&&x.status==="PASS").length,"/",results.filter(x=>!x.batchP&&!x.batchQ).length);
+ console.log("Phase 0I viewport checks:",results.filter(x=>!x.batchP&&!x.batchQ&&!x.batchR&&x.status==="PASS").length,"/",results.filter(x=>!x.batchP&&!x.batchQ&&!x.batchR).length);
  console.log("Batch P payment setup checks:",results.filter(x=>x.batchP?.status==="PASS").length,"/",results.filter(x=>x.batchP).length);
  console.log("Batch Q invoice due and milestone checks:",results.filter(x=>x.batchQ?.status==="PASS").length,"/",results.filter(x=>x.batchQ).length);
+ console.log("Batch R merchant/client template checks:",results.filter(x=>x.batchR?.status==="PASS").length,"/",results.filter(x=>x.batchR).length);
  for(const failed of results.filter(x=>x.status==="FAIL"))console.error("VIEWPORT FAIL",failed.width,failed.route,failed.error);
  for(const failed of results.filter(x=>x.batchP?.status==="FAIL"))console.error("BATCH P FAIL",failed.batchP.width,failed.batchP.error);
  for(const failed of results.filter(x=>x.batchQ?.status==="FAIL"))console.error("BATCH Q FAIL",failed.batchQ.width,failed.batchQ.error);
+ for(const failed of results.filter(x=>x.batchR?.status==="FAIL"))console.error("BATCH R FAIL",failed.batchR.width,failed.batchR.error);
  if(errors)process.exitCode=1;
 })().catch(e=>{console.error(e);process.exitCode=1;});
