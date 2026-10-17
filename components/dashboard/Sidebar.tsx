@@ -7,7 +7,7 @@ import {BrandWordmark} from "@/src/shared/ui/BrandWordmark";
 import {PreviewLogoutButton} from "@/src/features/merchant-preview/PreviewLogoutButton";
 import {
  LayoutDashboard,FileText,Receipt,FileSpreadsheet,Wallet,Users,Package,
- RefreshCcw,CreditCard,FileMinus,MoreHorizontal,UserCog,BarChart3,Settings,
+ RefreshCcw,CreditCard,FileMinus,MoreHorizontal,Settings,
  ChevronRight,ChevronDown,Sparkles,ArrowUpRight
 } from "lucide-react";
 import type {ElementType} from "react";
@@ -25,8 +25,6 @@ const navItems:NavItem[]=[
  {label:"Payment Received",href:"/dashboard/payment-received",icon:CreditCard},
  {label:"Credit note",href:"/dashboard/credit-note",icon:FileMinus},
  {label:"Other Services",href:"/dashboard/other-services",icon:MoreHorizontal},
- {label:"Staff",href:"/dashboard/staff",icon:UserCog},
- {label:"Report",href:"/dashboard/report",icon:BarChart3},
  {label:"Settings",href:"/dashboard/settings",icon:Settings}
 ];
 function activeRoute(pathname:string,href:string){
@@ -35,7 +33,9 @@ function activeRoute(pathname:string,href:string){
   pathname.startsWith("/dashboard/finance/")||
   (pathname==="/dashboard/recurring"||pathname.startsWith("/dashboard/recurring/"))||
   pathname.startsWith("/dashboard/tax-centre")||
-  pathname.startsWith("/dashboard/insights-support");
+  pathname.startsWith("/dashboard/insights-support")||
+  pathname.startsWith("/dashboard/staff")||
+  pathname.startsWith("/dashboard/report");
  if(href==="/dashboard/settings")return pathname.startsWith(href)&&!pathname.startsWith(href+"/subscription");
  return pathname===href||pathname.startsWith(href+"/");
 }
@@ -69,7 +69,7 @@ export default function Sidebar(){
      </div>:null}
    </div>
 
-   <nav aria-label="Desktop main navigation" className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-3 pb-3 [scrollbar-color:#294059_transparent] [scrollbar-width:thin]">
+   <nav aria-label="Desktop main navigation" className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-3 pb-3 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
     <p className="px-3 pb-2 pt-1 text-[10px] font-semibold uppercase tracking-[.17em] text-slate-500">Main menu</p>
     <ul className="space-y-1">
      {navItems.map(item=>{

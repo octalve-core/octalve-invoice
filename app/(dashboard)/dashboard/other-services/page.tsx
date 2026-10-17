@@ -2,7 +2,7 @@
 import Link from "next/link";
 import {useState} from "react";
 import {useRouter} from "next/navigation";
-import {ArrowLeft,Search,FileText,Users,Wallet,FileSpreadsheet,BarChart3,Scale,ScrollText,Package,RefreshCw,ReceiptText,Calculator,ContactRound,TrendingUp,WalletCards,IdCard,BookOpen,ShieldCheck,Clock3,Files,MessagesSquare,Landmark,ShieldAlert,Coins,PanelsTopLeft,type LucideIcon} from "lucide-react";
+import {ArrowLeft,Search,FileText,Users,Wallet,FileSpreadsheet,BarChart3,Scale,ScrollText,Package,RefreshCw,ReceiptText,Calculator,ContactRound,TrendingUp,WalletCards,IdCard,BookOpen,ShieldCheck,Clock3,Files,MessagesSquare,Landmark,ShieldAlert,Coins,PanelsTopLeft,UserCog,type LucideIcon} from "lucide-react";
 import {otherServiceItems} from "@/src/features/other-services/feature-links";
 const icons:Record<(typeof otherServiceItems)[number]["icon"],LucideIcon>={
  "chart-no-axes-column":BarChart3,
@@ -25,12 +25,13 @@ const icons:Record<(typeof otherServiceItems)[number]["icon"],LucideIcon>={
  "landmark":Landmark,
  "shield-alert":ShieldAlert,
  "coins":Coins,
- "panels-top-left":PanelsTopLeft
+ "panels-top-left":PanelsTopLeft,
+ "user-cog":UserCog
 };
 const tones=["bg-blue-50 text-[#0064E0]","bg-emerald-50 text-emerald-600","bg-violet-50 text-violet-600","bg-amber-50 text-amber-600","bg-green-50 text-green-600","bg-cyan-50 text-cyan-600","bg-red-50 text-red-600","bg-slate-100 text-slate-700","bg-orange-50 text-orange-600","bg-indigo-50 text-indigo-600","bg-sky-50 text-sky-600","bg-purple-50 text-purple-600"];
 
 const serviceGroups=[
- {title:"Business operations",description:"Your day-to-day workspace",slugs:["overview","report","items","customer","recurring-income-expense","create-statement"]},
+ {title:"Business operations",description:"Your day-to-day workspace",slugs:["overview","report","staff","items","customer","recurring-income-expense","create-statement"]},
  {title:"Finance & compliance",description:"Records, approvals and controls",slugs:["tax-centre","statement-of-account","approvals","receivables-ageing","credit-debit-notes","communication-history","bank-reconciliation","audit-exceptions","multi-currency","finance-calculator"]},
  {title:"Services & support",description:"Connections, access and assistance",slugs:["customer-portal","insights-support","business-card","investment","digital-pay","id-card"]}
 ] as const;
@@ -56,7 +57,7 @@ export default function OtherServicesPage(){
    </Link>)}</div>
   </section>
   <section aria-label="Other services" className="rounded-2xl bg-white px-3 py-4 shadow-sm sm:px-6 sm:py-6">
-   <h2 className="mb-2 text-lg font-semibold text-[#173652]">Workspace tools</h2><p className="mb-6 text-xs text-slate-500">Open an Octalve tool. Finance controls show preview data until the secured backend is approved.</p>
+   <h2 className="mb-2 text-lg font-semibold text-[#173652]">Workspace tools</h2><p className="mb-5 text-xs text-slate-500">Find your business tools in one place.</p>
    <label className="relative mb-6 block"><Search className="absolute left-3 top-3 text-slate-400" size={18}/><input aria-label="Search More services" value={search} onChange={e=>setSearch(e.target.value)} placeholder="Find a tool or service" className="h-11 w-full rounded-xl border border-slate-200 bg-[#FBFCFF] pl-10 pr-3 text-sm outline-none focus:border-[#0064E0]"/></label>
    <div className="space-y-7">{serviceGroups.map(group=>{
     const items=otherServiceItems.filter(item=>group.slugs.some(slug=>slug===item.slug)&&item.title.toLowerCase().includes(search.toLowerCase().trim()));

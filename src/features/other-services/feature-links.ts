@@ -1,6 +1,7 @@
 export const otherServiceItems=[
  {slug:"overview",title:"Overview",icon:"chart-no-axes-column",href:"/dashboard",ready:true},
  {slug:"report",title:"Report",icon:"scale",href:"/dashboard/report",ready:true},
+ {slug:"staff",title:"Staff",icon:"user-cog",href:"/dashboard/staff",ready:true},
  {slug:"create-statement",title:"Create Statement",icon:"file-text",href:"/dashboard/finance/statement",ready:true},
  {slug:"items",title:"Items",icon:"package",href:"/dashboard/items",ready:true},
  {slug:"customer",title:"Customer",icon:"users",href:"/dashboard/customer",ready:true},

@@ -55,7 +55,7 @@ export default function ReceivableChart({
             </span>
 
           </div>
-          <p className="mt-1 text-xs text-gray-500">Last month ₦925,000 · sample figures</p>
+          <p className="mt-1 text-xs text-gray-500">Last month ₦925,000 · example comparison</p>
         </div>
         <select aria-label="Chart period" className="px-3 py-2 text-sm border border-gray-200 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-[#0064E0]/20">
           <option>Monthly (2024)</option>

@@ -99,6 +99,26 @@ const origin = process.env.OCTALVE_BASE_URL || "http://127.0.0.1:3000";
             await page.getByRole("link",{name:/Finance Calculator/}).waitFor();
             await page.getByRole("link",{name:/Tax Centre/}).waitFor();
           }
+          if(route==="/dashboard/other-services"){
+            const services=page.getByRole("region",{name:"Other services"});
+            await services.getByRole("link",{name:/Staff/}).waitFor();
+            await services.getByRole("link",{name:/Report/}).waitFor();
+            record.staffReportInMore="PASS";
+          }
+          if(route==="/dashboard"&&view==="desktop"){
+            const side=page.getByRole("complementary",{name:"Desktop workspace sidebar"});
+            if(await side.getByRole("link",{name:"Staff",exact:true}).count()||await side.getByRole("link",{name:"Report",exact:true}).count())throw Error("Duplicate Staff/Report menu links remain on desktop sidebar");
+            if(!await page.getByRole("region",{name:"Business overview summary"}).getByText("vs last month").count())throw Error("Unified finance trend comparison missing");
+            record.unifiedDesktopOverview="PASS";
+          }
+          if(route==="/dashboard"&&view==="mobile"){
+            const summary=page.getByRole("region",{name:"Business overview summary"});
+            if(await summary.locator("article").count()!==4)throw Error("Mobile overview should have four common finance cards");
+            await summary.getByRole("button",{name:"About Example figures"}).click();
+            await page.getByRole("dialog",{name:"Example figures"}).waitFor();
+            await page.getByRole("button",{name:"Got it"}).click();
+            record.unifiedMobileOverview="PASS";
+          }
           if(route==="/dashboard/other-services/pay-tax"){
             await page.waitForURL(/\/dashboard\/tax-centre\/?$/);
             await page.getByRole("heading",{name:"Tax Centre"}).waitFor();
@@ -240,8 +260,14 @@ const origin = process.env.OCTALVE_BASE_URL || "http://127.0.0.1:3000";
             await page.getByRole("combobox",{name:"Bank name"}).fill("Guaranty");
             await page.getByRole("option",{name:"Guaranty Trust Bank (GTBank)"}).click();
             if(await page.getByRole("combobox",{name:"Bank name"}).inputValue()!=="Guaranty Trust Bank (GTBank)")throw Error("Searchable bank chooser selection did not persist");
-            await page.getByRole("button",{name:"About Account verification"}).focus();
-            await page.getByRole("tooltip").getByText("Account verification").waitFor();
+            if(view==="mobile"){
+              await page.getByRole("button",{name:"About Account verification"}).click();
+              await page.getByRole("dialog",{name:"Account verification"}).getByText("An approved bank-name enquiry",{exact:false}).waitFor();
+              await page.getByRole("button",{name:"Got it"}).click();
+            } else {
+              await page.getByRole("button",{name:"About Account verification"}).focus();
+              await page.getByRole("tooltip").getByText("Account verification").waitFor();
+            }
             await page.getByRole("button",{name:/Invoices/}).first().click();
             await page.getByText("How do you want your invoices to look?").waitFor();
             await page.getByRole("link",{name:/Customize invoices/}).click();
@@ -397,9 +423,9 @@ const origin = process.env.OCTALVE_BASE_URL || "http://127.0.0.1:3000";
             await taxDialog.waitFor();
             await taxDialog.getByRole("button",{name:"Close tax review"}).click();
             await page.getByRole("button",{name:"NRS e-invoices"}).click();
-            await page.getByText("No official NRS e-invoices submitted").waitFor();
+            await page.getByText("No NRS e-invoices submitted").waitFor();
             await page.getByRole("region",{name:"NRS connection readiness"}).getByText("Not connected").waitFor();
-            if(await page.getByRole("region",{name:"NRS connection readiness"}).getByText("Not provided",{exact:true}).count()<1)throw Error("NRS readiness needs business identifiers");
+            if(await page.getByRole("region",{name:"NRS connection readiness"}).getByText("Add details",{exact:true}).count()<1)throw Error("NRS readiness needs business identifiers");
             record.nrsReadinessOnly="PASS";
             record.taxNoFalseLiability="PASS";
           }

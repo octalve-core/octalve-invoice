@@ -5,7 +5,7 @@ import { useState } from "react";
 import {useRouter} from "next/navigation";
 import {useMerchantPreview} from "@/src/features/merchant-preview/MerchantPreviewProvider";
 import Tabs from "@/components/dashboard/ui/Tabs";
-import StatCard from "@/components/dashboard/cards/StatCard";
+import {OverviewMetrics} from "@/src/features/dashboard/OverviewMetrics";
 import QuickAction from "@/components/dashboard/cards/QuickAction";
 import ReceivableChart from "@/components/dashboard/charts/ReceivableChart";
 import TransactionTable from "@/components/dashboard/tables/TransactionTable";
@@ -27,29 +27,6 @@ const quickActions = [
   { icon: FileSpreadsheet, label: "New Quotation", action: "quotation", tone: "orange" as const },
 ];
 
-const statsData = [
-  {
-    title: "Total Sales",
-    value: "2,420",
-    change: 40,
-    chartData: [30, 40, 25, 50, 49, 60, 70, 91, 85, 95],
-    chartColor: "#0064E0",
-  },
-  {
-    title: "Total Invoice",
-    value: "1,210",
-    change: -8,
-    chartData: [50, 45, 60, 55, 40, 35, 45, 40, 35, 30],
-    chartColor: "#EF4444",
-  },
-  {
-    title: "Total Orders",
-    value: "316",
-    change: 23,
-    chartData: [20, 35, 40, 50, 55, 60, 65, 70, 80, 85],
-    chartColor: "#0064E0",
-  },
-];
 
 export default function DashboardPage() {
   const router=useRouter();
@@ -96,29 +73,7 @@ export default function DashboardPage() {
         </div>
       </div>
 
-      <p className="text-xs text-gray-500">Illustrative financial figures</p>
-      {/* Small-screen financial card grouping from the approved Flutter reference. */}
-      <section aria-label="Mobile receivables" className="md:hidden grid grid-cols-2 gap-2">
-        {[["Current invoice","₦506,000.00"],["Total inflow","₦506,000.00"],["Overdue invoice","₦0.00"],["Total outflow","₦240,000.00"]].map(([label,value])=>(
-          <div key={label} className="min-w-0 rounded-lg border border-gray-100 bg-white px-3 py-3">
-            <p className="text-[11px] text-gray-600">{label}</p>
-            <p className="mt-1 truncate text-sm font-semibold text-[#172f4d]">{value}</p>
-          </div>
-        ))}
-      </section>
-      {/* Stats Cards */}
-      <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {statsData.map((stat) => (
-          <StatCard
-            key={stat.title}
-            title={stat.title}
-            value={stat.value}
-            change={stat.change}
-            chartData={stat.chartData}
-            chartColor={stat.chartColor}
-          />
-        ))}
-      </div>
+      <OverviewMetrics />
 
       {/* Receivable Summary */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">

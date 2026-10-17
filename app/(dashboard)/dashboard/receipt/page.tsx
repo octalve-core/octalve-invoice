@@ -13,6 +13,6 @@ export default function ReceiptPage(){
   <div className="hidden lg:block"><h1 className="text-2xl font-bold text-[#1d2838]">Receipt</h1><p className="mt-1 text-sm text-gray-500">Create and manage payment receipts</p></div>
   <RecordMetricsSection kind="receipt"/>
   <RecordDirectory kind="receipt" showDesktopHeader={false} onCreate={()=>router.push("/dashboard/receipt/create")}/>
-  <CreateReceiptModal isOpen={creating} onClose={()=>setCreating(false)} onSubmit={()=>{setCreating(false);setNotice("Receipt form Preview only. No receipt was issued, payment recorded or bank transfer confirmed.");}}/>
+  <CreateReceiptModal isOpen={creating} onClose={()=>setCreating(false)} onSubmit={()=>{setCreating(false);setNotice("Receipt not issued. No payment was recorded.");}}/>
  </div>;
 }

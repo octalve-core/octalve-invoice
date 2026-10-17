@@ -170,3 +170,47 @@ test("premium desktop sidebar is dark blue-active, separately scrollable and kee
  assert.match(layout,/<BottomNavbar \/>/);
  assert.match(layout,/<MobileHeader \/>/);
 });
+
+test("Staff and Report remain routed through More, with invisible sidebar scrollbar",()=>{
+ const side=read("components/dashboard/Sidebar.tsx");
+ const data=read("src/features/other-services/feature-links.ts");
+ const more=read("app/(dashboard)/dashboard/other-services/page.tsx");
+ assert.doesNotMatch(side,/\{label:"Staff"/);
+ assert.doesNotMatch(side,/\{label:"Report"/);
+ assert.match(side,/\[scrollbar-width:none\]/);
+ assert.match(side,/\[&::-webkit-scrollbar\]:hidden/);
+ assert.match(data,/slug:"staff",title:"Staff",icon:"user-cog",href:"\/dashboard\/staff",ready:true/);
+ assert.match(data,/slug:"report",title:"Report",icon:"scale",href:"\/dashboard\/report",ready:true/);
+ assert.match(more,/"user-cog":UserCog/);
+ assert.match(more,/slugs:\["overview","report","staff"/);
+});
+test("Overview uses one set of four financial cards on phone and desktop, not invoice stats",async()=>{
+ const home=read("app/(dashboard)/dashboard/page.tsx");
+ const shared=read("src/features/dashboard/OverviewMetrics.tsx");
+ assert.match(home,/<OverviewMetrics \/>/);
+ assert.doesNotMatch(home,/statsData|<StatCard|Mobile receivables/);
+ assert.match(shared,/title:"Current invoices"/);
+ assert.match(shared,/title:"Total inflow"/);
+ assert.match(shared,/title:"Overdue invoices"/);
+ assert.match(shared,/title:"Total outflow"/);
+ assert.match(shared,/vs last month/);
+ const {overviewChange}=await import("../src/features/dashboard/overview-math.ts");
+ assert.equal(overviewChange(506000,500000),1.2);
+ assert.equal(overviewChange(0,20000),-100);
+ assert.equal(overviewChange(0,0),0);
+ assert.equal(overviewChange(100,0),null);
+});
+test("Tax Centre stays non-filing but links one business setup and uses compact disclosures",()=>{
+ const tax=read("app/(dashboard)/dashboard/tax-centre/page.tsx");
+ const nrs=read("src/features/finance/NrsReadinessPanel.tsx");
+ const note=read("src/features/merchant-setup/SetupInfoNote.tsx");
+ assert.match(tax,/Tax totals await classification/);
+ assert.match(tax,/No NRS e-invoices submitted/);
+ assert.match(tax,/<SetupInfoNote/);
+ assert.match(nrs,/getting-started\?step=business/);
+ assert.match(nrs,/No NRS submissions/);
+ assert.match(nrs,/Not connected/);
+ assert.match(note,/createPortal/);
+ assert.match(note,/role="dialog"/);
+ assert.match(note,/env\(safe-area-inset-bottom\)/);
+});
