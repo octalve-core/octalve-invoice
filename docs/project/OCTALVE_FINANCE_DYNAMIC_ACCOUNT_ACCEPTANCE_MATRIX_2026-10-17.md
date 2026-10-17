@@ -63,3 +63,9 @@ J03/custom splits and J07/provider-authoritative due-date guard are NOT marked c
 - **P-C06** Payment checklist completes after genuine connected/verified method only; supporting other methods later must not reset earlier verified methods. **BACKEND REQUIRED**.
 - **P-C07** App Lock completion via authenticated security authority, not toggleable Preview checkbox. **BACKEND REQUIRED**.
 - **P-C08** Customer-provided visual parity and end-to-end E2E at 320/360/390/430/768/1024/1440 and short laptop heights; full 189+64 route/viewport suites. **OWNER ACCEPTANCE + CI PENDING**.
+
+### 17 October 2026 — Batch P owner corrections: independently verified release
+- **P-C01/P-C02/P-C08 frontend and responsive:** PASS automated at source Review `25cc853595612be1f336f45709ddf52d31afc388`: 189/189 routes, 64/64 existing views, 7/7 owner interactions including 320, 360, 390, 430, 768, 1024 and 1440 widths, short-height laptop, blue cards, direct business/customization, shared Quick Create and mobile label stacking. Owner human acceptance remains a distinct decision.
+- **P-C03/P-C04:** verified-ownership Add Account and provider Save & Verify remain fail-closed UI requirements, **not connected / BLOCKED backend**. Never treat disabled examples as real credentials.
+- **P-C05–P-C07:** expiry/due authority, real connected status, App Lock and merchant bank verification still **blocked/unimplemented**; future Phase 1/new approval needed for real infrastructure. Custom milestone policy remains.
+- **PR evidence:** Review PR22 / independent Review qualification 39044477247, CodeQL 39044477240, browser 39044477417 PASS; Production demo main PR23 `1fa854cd65074fe0aea3ec02c4cdbd46b8d40261` main qualification 39046695605 and CodeQL 39046695681 PASS; Vercel Production `dpl_35BWEzAq2bdW35QAR7R6MhLMDBtE` READY. This production approval is limited to frontend demo, not live financial services.
