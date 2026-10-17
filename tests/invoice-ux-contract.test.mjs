@@ -103,7 +103,7 @@ test("business settings and getting started use one canonical setup UI",()=>{
  assert.match(journey,/Business identity/);
  assert.match(journey,/Business location/);
  assert.match(journey,/How do you want to receive payments/);
- assert.match(journey,/Online payment connections/);
+ assert.match(read("src/features/merchant-setup/PaymentConnectionsPanel.tsx"),/Online payment connections/);
  assert.match(journey,/Account not verified/);
  assert.match(journey,/reader\.readAsDataURL\(file\)/);
  assert.match(provider,/businessDescription:string/);
@@ -213,4 +213,43 @@ test("Tax Centre stays non-filing but links one business setup and uses compact 
  assert.match(note,/createPortal/);
  assert.match(note,/role="dialog"/);
  assert.match(note,/env\(safe-area-inset-bottom\)/);
+});
+
+test("Batch P uses one canonical payment setup and keeps real payment methods disconnected",()=>{
+ const journey=read("src/features/merchant-setup/MerchantSetupJourney.tsx");
+ const connections=read("src/features/merchant-setup/PaymentConnectionsPanel.tsx");
+ const settings=read("app/(dashboard)/dashboard/settings/page.tsx");
+ const provider=read("src/features/merchant-preview/MerchantPreviewProvider.tsx");
+ const options=read("src/features/merchant-setup/payment-capabilities.ts");
+ const invoice=read("src/features/invoices/sections/InvoiceMetadataSection.tsx");
+ assert.match(journey,/Business identity/);
+ assert.match(journey,/Company Bank Transfer/);
+ assert.match(journey,/<PaymentConnectionsPanel\/>/);
+ assert.match(journey,/<NigerianBankPicker/);
+ assert.match(journey,/Account not verified/);
+ assert.match(settings,/\["Payment connections","\/dashboard\/getting-started\?step=payments"/);
+ assert.match(connections,/Dynamic Account/);
+ assert.match(connections,/Online payment connections/);
+ assert.match(connections,/Partner Bank Collection/);
+ assert.match(connections,/Coming soon/);
+ assert.match(connections,/Not connected/);
+ assert.match(connections,/Provider secret key/);
+ assert.match(connections,/fieldset disabled/);
+ assert.doesNotMatch(connections,/localStorage|sessionStorage|fetch\(|getServerSideProps|setPaymentMode\(/);
+ assert.match(provider,/collectionSetup:PreviewCollectionSetup/);
+ assert.match(provider,/setCollectionSetup\(defaultPreviewCollectionSetup\)/);
+ assert.match(invoice,/disabled=\{p\.value!=="manual"\}/);
+});
+test("Batch P provider account limits remain separate and server expiry is required later",()=>{
+ const caps=read("src/features/merchant-setup/payment-capabilities.ts");
+ const ui=read("src/features/merchant-setup/PaymentConnectionsPanel.tsx");
+ assert.match(caps,/monnify-invoice/);
+ assert.match(caps,/expiryDate/);
+ assert.match(caps,/limitSeconds:null/);
+ assert.match(caps,/5270401/);
+ assert.match(caps,/31536000/);
+ assert.match(caps,/15 minutes–8 hours/);
+ assert.match(ui,/provider-confirmed account expiry/);
+ assert.match(ui,/Batch Q/);
+ assert.match(ui,/reference only/);
 });

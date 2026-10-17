@@ -1,6 +1,7 @@
 "use client";
 import {useState,type ChangeEvent} from "react";
 import {NigerianBankPicker} from "./NigerianBankPicker";
+import {PaymentConnectionsPanel} from "./PaymentConnectionsPanel";
 import {SetupInfoNote} from "./SetupInfoNote";
 import Image from "next/image";
 import Link from "next/link";
@@ -152,10 +153,10 @@ export function MerchantSetupJourney({initialStep="business"}:{initialStep?:Step
     {step==="payments"?<>
      <section className={panel}>
       <h2 className="flex items-center gap-2 text-lg font-bold text-[#173652]"><Landmark className="text-[#0064E0]"/> How do you want to receive payments?</h2>
-      <p className="mt-2 text-sm text-slate-600">Set up bank transfers or explore collection partners.</p>
+      <p className="mt-2 text-sm text-slate-600">Your company bank account is separate from provider-issued collection accounts.</p>
       <div className="mt-5 space-y-3">
        <div className="flex flex-wrap items-center gap-2 rounded-xl border border-[#D7E5F8] bg-[#F2F7FE] px-3 py-3">
-        <CreditCard size={18} className="text-[#0064E0]"/><p className="flex-1 text-sm font-semibold text-[#173652]">Company bank transfer</p>
+        <CreditCard size={18} className="text-[#0064E0]"/><p className="flex-1 text-sm font-semibold text-[#173652]">Company Bank Transfer</p>
         <span className="rounded-full bg-[#E2EDFF] px-2.5 py-1 text-[10px] font-semibold text-[#0052B8]">Manual</span>
         <SetupInfoNote title="Manual bank transfer" detail="Customers pay your verified company account. Authorized staff may record a bank transfer only after checking evidence and completing approval."/>
        </div>
@@ -171,23 +172,8 @@ export function MerchantSetupJourney({initialStep="business"}:{initialStep?:Step
        </div>
       </div>
      </section>
-     <section className={panel}>
-      <h2 className="flex items-center gap-2 text-lg font-bold text-[#173652]"><WalletCards className="text-[#0064E0]"/> Online payment connections
-       <SetupInfoNote title="Online payments" detail="A linked provider can later create a payment link or an invoice-specific account. It may differ from the merchant's settlement account. Only verified provider events can update invoices and reconciliation."/></h2>
-      <p className="mt-2 text-sm text-slate-600">Choose a partner for online collections.</p>
-      <div className="mt-4 grid gap-3 sm:grid-cols-2">
-       {[
-        ["Monnify","Payment links and virtual accounts"],
-        ["Paystack","Online checkout and transfer collections"],
-        ["Flutterwave","Online checkout and links"],
-        ["Future Octalve connection","Approved integrated account (planned)"]
-       ].map(([name,desc])=><div key={name} className="rounded-xl border border-[#E3ECF5] bg-[#FCFDFF] p-3.5 shadow-[0_5px_14px_rgba(22,55,96,.035)]">
-        <div className="flex items-center justify-between gap-2"><p className="text-sm font-semibold text-[#173652]">{name}</p><LockKeyhole size={15} className="text-slate-400"/></div>
-        <p className="mt-1 text-[11px] text-slate-500">{desc}</p><p className="mt-2 text-[11px] font-semibold text-amber-700">Not connected</p>
-       </div>)}
-      </div>
-      <div className="mt-3 flex items-center gap-2 text-[11px] text-slate-500">Connect your provider later. <SetupInfoNote title="Merchant connections" detail="Each provider must be authorized for this business, including any future Octalve payment service. No accounts or payments are active in this preview."/></div>
-     </section>
+     <PaymentConnectionsPanel/>
+
     </>:null}
     {step==="services"?<section className={panel}>
      <div className="flex items-center gap-3"><Settings2 className="text-[#0064E0]"/><h2 className="text-lg font-bold text-[#173652]">Your business tools</h2></div>

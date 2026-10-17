@@ -1,0 +1,26 @@
+# OCTALVE FINANCE — PHASE 0I BATCH P: GETTING STARTED & PAYMENT SETTINGS UX
+
+**17 October 2026.** Frontend changes only. Owner reference: four-screen setup/gateway visual samples and Batch O dynamic account owner specification. **No real provider, bank, NRS, accounting or receipt processing authorised.**
+
+## Implementation inventory and preservation
+Prior Review: `8b603267382c1279183b241decb86db89bffcfd4` ; old development `f4da12b3079537398ebfd38fab15ab98ea974ae4`, diverged from Review's historical merges. Base Batch P on exact Review tree (no history rewriting). Existing `MerchantSetupJourney` was already the canonical four-step Business/Invoices/Payments/Tools journey; `/dashboard/settings/business` redirects to its Business step. Invoices link to the existing invoice customization route; bank picker is curated, searchable and unverified. Preserve `#0064E0` brand, `#000A16` sidebar, responsive mobile tabs, merchant logo, company owner controls, numbering/receipts, template engine and existing financial records.
+
+### Changed source
+- `src/features/merchant-setup/PaymentConnectionsPanel.tsx`: new child of existing canonical Payments step. Clear Dynamic Account, Online payment connections, Partner Bank unavailable. Monnify Dynamic Invoice and independent Flutterwave v3/v4 expiry descriptions; Paystack short-duration (15 minutes–8 hours) transfer noted, not offered as a multi-day PDF virtual account.
+- `src/features/merchant-setup/payment-capabilities.ts`: read-only documented **reference**, not verified merchant entitlements or invoice payment authorities. Monnify maximum unknown pending contract; Flutterwave version maxima kept separate.
+- `MerchantPreviewProvider.tsx`: distinct `collectionSetup` ephemeral preference, resets with Preview. No changes to `paymentMode` invoice authorization; no localStorage, token capture or actual API connection.
+- `MerchantSetupJourney.tsx`: keeps business profile and existing canonical manual-bank inputs, now renders dedicated payment panel instead of inline provider placeholder cards. Bank name/number edits still invalidate any prior verified record.
+- `app/(dashboard)/dashboard/settings/page.tsx`: Payment connections link directs to `/dashboard/getting-started?step=payments` (no duplicate Settings screen).
+- `tests/invoice-ux-contract.test.mjs`: source-level regression covers disabled provider methods, plan boundaries and canonical route/component; previous parent-component assertion updated to check refactored child rather than falsely failing.
+- `scripts/phase-0i-viewport-evidence.cjs`: retains original 64 viewport checks, adds 7 separate interactive Payment Setup runs at 320/360/390/430/768/1024/1440, preserving selection across step navigation, inspecting disabled credentials and horizontal overflow/short desktop height.
+
+### Non-operational safety constraints
+- Company bank **Account not verified**, no 10-digit string construed as legal account ownership. Provider cards **Not connected**. Partner Bank **Coming soon**. Provider secret inputs are disabled, never posted/stored, and explicitly labelled as unavailable.
+- Selecting a provider is a session-only illustrative comparison; DOES NOT enable the invoice picker. Payment confirmations, gateway checkout, dynamic virtual account issuance, NRS fiscal data, payment allocation, real bank name enquiry and backend credentials all remain blocked Phase 1.
+- Due timestamp <= provider confirmed expiry is documented, NOT implemented as live date picker in Batch P; preserve existing full/custom 50/50/70/30/date milestone UI for Batch Q. No changes to issued PDF or merchant/customer template views.
+
+## Verification checkpoints
+Source application commit `b2bb828d638f4e4512b2ab85c37b7be2b54c44b5` qualified Node24/pnpm frozen/TypeScript/ESLint/terminology/unit tests/production build in https://github.com/octalve-core/octalve-invoice/actions/runs/39033229121 and CodeQL in https://github.com/octalve-core/octalve-invoice/actions/runs/39033229088. Browser QA branch `review/qa-batch-p-payment-setup-20261017` requires successful existing 189 routes + 64 viewport and new 7 interactive cases. **Do not report fully published or accepted until source/new merged checks and Vercel exact SHA are confirmed.**
+
+## Outstanding and next
+Independent exact merged Review CI+Vercel; owner visual inspection on mobile/desktop/short height; provider copy review; Batch Q invoice composer due timestamp eligibility, provider response mismatch, arbitrary instalment calculations. Batch R templates; S Payment Received; T NRS compliance walk-through/pitch. No Phase 1/Neon/providers/real payments/NRS credentials, Production or `main` merge.
