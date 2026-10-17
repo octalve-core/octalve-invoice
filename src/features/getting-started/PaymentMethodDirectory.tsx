@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import {ArrowLeft,ChevronRight,ShieldCheck,CheckCircle2} from "lucide-react";
+import {ArrowLeft,ChevronRight,ShieldCheck} from "lucide-react";
 import {PAYMENT_METHODS,PAYMENT_ROUTE,PAYMENT_FAQ} from "./payment-catalog";
 export function PaymentMethodDirectory({embedded=false}:{embedded?:boolean}){
  return <section className="mx-auto w-full max-w-[720px] min-w-0 space-y-4" aria-label="Payment method setup">
