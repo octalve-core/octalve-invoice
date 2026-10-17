@@ -127,11 +127,53 @@ const routes=[
   results.push({batchP:detail});
   await page.close();
  }
+
+ // Batch Q: independent invoice due/milestone responsive smoke tests.
+ const qWidths=[320,360,390,430,768,1024,1440];
+ for(const width of qWidths){
+  const page=await browser.newPage({viewport:{width,height:width>=1024?650:780},deviceScaleFactor:1});
+  const batchQ={width,status:"unknown"};
+  try{
+   const response=await page.goto(base+"/dashboard/invoice/create",{waitUntil:"domcontentloaded",timeout:20000});
+   if(response?.status()!==200)throw Error("Invoice composer HTTP "+response?.status());
+   await page.getByRole("button",{name:/Payment plan & communication/}).click();
+   await page.getByRole("heading",{name:"Invoice workflow"}).waitFor();
+   const method=page.getByRole("combobox",{name:"Collection method preview"});
+   const review=page.getByRole("button",{name:"Review proposed split"});
+   const dueTime=page.getByRole("textbox",{name:"Invoice due time Africa/Lagos"});
+   if(!await dueTime.inputValue())throw Error("Invoice due time not initialized");
+   await method.selectOption("dynamic-account");
+   await page.getByRole("combobox",{name:"Dynamic account provider reference"}).selectOption("flutterwave-v3");
+   await page.getByText("No account or expiry has been issued.",{exact:false}).waitFor();
+   if(!await review.isDisabled())throw Error("Dynamic plan reviewed without verified account");
+   await page.getByRole("button",{name:"Custom milestones"}).click();
+   await page.getByRole("spinbutton",{name:"Milestone 1 percentage"}).fill("25");
+   await page.getByRole("spinbutton",{name:"Milestone 2 percentage"}).fill("25");
+   await page.getByRole("spinbutton",{name:"Milestone 3 percentage"}).fill("50");
+   await page.getByText("Total allocation: 100%",{exact:false}).waitFor();
+   if(!await review.isDisabled())throw Error("Dynamic milestones treated as valid without provider response");
+   await method.selectOption("company-bank");
+   await page.getByRole("button",{name:"Full payment"}).click();
+   if(await review.isDisabled())throw Error("Manual full payment preview unexpectedly blocked");
+   await page.getByRole("button",{name:"Two installments"}).click();
+   await page.getByRole("button",{name:"Custom milestones"}).click();
+   if(await page.getByRole("spinbutton",{name:"Milestone 1 percentage"}).inputValue()!=="25")throw Error("Custom milestone percentages lost when changing tabs");
+   await page.getByRole("button",{name:"Review proposed split"}).click();
+   await page.getByRole("status").getByText("No payment schedule was saved or communicated.",{exact:false}).waitFor();
+   if(await page.locator("html").evaluate(el=>el.scrollWidth>el.clientWidth+2))throw Error("Batch Q viewport overflow");
+   await page.screenshot({path:path.join(out,"batch-q-due-milestones-"+width+".png"),fullPage:true,animations:"disabled"});
+   batchQ.status="PASS";
+  }catch(e){errors++;batchQ.status="FAIL";batchQ.error=String(e?.message||e).slice(0,720);}
+  results.push({batchQ});
+  await page.close();
+ }
  }finally{await browser.close();}
  fs.writeFileSync(path.join(out,"report.json"),JSON.stringify({head:process.env.GITHUB_SHA||"local",results},null,2));
  console.log("Phase 0I viewport checks:",results.filter(x=>!x.batchP&&x.status==="PASS").length,"/",results.filter(x=>!x.batchP).length);
  console.log("Batch P payment setup checks:",results.filter(x=>x.batchP?.status==="PASS").length,"/",results.filter(x=>x.batchP).length);
+ console.log("Batch Q invoice due and milestone checks:",results.filter(x=>x.batchQ?.status==="PASS").length,"/",results.filter(x=>x.batchQ).length);
  for(const failed of results.filter(x=>x.status==="FAIL"))console.error("VIEWPORT FAIL",failed.width,failed.route,failed.error);
  for(const failed of results.filter(x=>x.batchP?.status==="FAIL"))console.error("BATCH P FAIL",failed.batchP.width,failed.batchP.error);
+ for(const failed of results.filter(x=>x.batchQ?.status==="FAIL"))console.error("BATCH Q FAIL",failed.batchQ.width,failed.batchQ.error);
  if(errors)process.exitCode=1;
 })().catch(e=>{console.error(e);process.exitCode=1;});
