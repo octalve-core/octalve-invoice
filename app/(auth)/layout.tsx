@@ -1,7 +1,7 @@
 import React from "react";
 import {AuthHeader} from "./components/AuthHeader";
 import {Toaster} from "@/components/ui/sonner";
-export const metadata={title:"Octalve Invoice · Account",description:"Manage your Octalve Invoice account"};
+export const metadata={title:"Octalve Finance · Account",description:"Manage your Octalve Finance workspace"};
 export default function AuthLayout({children}:{children:React.ReactNode}){
  return <main className="auth-container auth-layout min-h-screen bg-white">
    <div className="smallScreen">
