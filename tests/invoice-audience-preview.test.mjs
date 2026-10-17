@@ -11,6 +11,8 @@ test("Both audiences use exactly one preview source without duplicating issue au
  assert.match(client,/buildAudiencePreviewDraft\(invoice,settings\.businessName\)/);
  assert.match(merchant,/<InvoiceDocumentPreviewSection/);
  assert.match(client,/<InvoiceDocumentPreviewSection/);
+ assert.match(merchant,/template=\{invoiceAppearance\.template\}/);
+ assert.match(client,/template=\{invoiceAppearance\.template\}/);
  assert.match(source,/formatDocumentNumber/);
  assert.match(source,/record\.amount/);
  assert.match(source,/record\.date/);

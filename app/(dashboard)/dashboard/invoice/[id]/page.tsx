@@ -16,7 +16,7 @@ export default function InvoiceDetailsPage(){
  const {id}=useParams<{id:string}>();
 
  const invoice=getPreviewInvoice(id);
- const {settings,setSettings,logoPreview}=useMerchantPreview();
+ const {settings,setSettings,logoPreview,invoiceAppearance}=useMerchantPreview();
  const [draft,setDraft]=useState(()=>invoice?buildAudiencePreviewDraft(invoice,settings.businessName):createPreviewInvoice());
  const company=merchantCompany(settings),payment=merchantPayment(settings);
  const displayDraft={...draft,invoiceNo:formatDocumentNumber(settings.businessName||"Octalve Limited",Number(id)||1,"invoice")};
@@ -54,7 +54,7 @@ export default function InvoiceDetailsPage(){
      </Link>)}</div>
    </aside>
    <div className="min-w-0"><InvoiceDocumentPreviewSection draft={displayDraft} setDraft={setDraft}
-    profile={company} setProfile={setCompany} payment={payment} setPayment={setPayment} template="modern" merchantLogo={logoPreview} paymentMode={invoice.paymentMode}/></div>
+    profile={company} setProfile={setCompany} payment={payment} setPayment={setPayment} template={invoiceAppearance.template} merchantLogo={logoPreview} paymentMode={invoice.paymentMode}/></div>
   </div>
  </div>;
 }
