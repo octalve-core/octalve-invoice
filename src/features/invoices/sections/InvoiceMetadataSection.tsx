@@ -4,7 +4,7 @@ import {CalendarDays,ChevronDown,Plus,Search,X,Users,UserRound,Wallet} from "luc
 import Link from "next/link";
 import type {InvoiceDraft} from "@/src/features/invoice/types";
 import {useMerchantPreview,type CatalogCustomer,type CatalogStaff,type PaymentMode} from "@/src/features/merchant-preview/MerchantPreviewProvider";
-type Props={draft:InvoiceDraft;setDraft:React.Dispatch<React.SetStateAction<InvoiceDraft>>};
+type Props={draft:InvoiceDraft;setDraft:React.Dispatch<React.SetStateAction<InvoiceDraft>>;dueTime:string;setDueTime:(time:string)=>void;};
 type Picker="customer"|"staff"|"payment"|null;
 const months=["JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT","NOV","DEC"];
 function Field({label,value,onChange,placeholder="",disabled=false}:{label:string;value:string;placeholder?:string;disabled?:boolean;onChange:(x:string)=>void}){
@@ -21,7 +21,7 @@ function NativeDate({label,value,onChange}:{label:string;value:string;onChange:(
    <CalendarDays size={16} className="pointer-events-none hidden shrink-0 text-[#0064E0] sm:block"/>
   </span></label>;
 }
-export function InvoiceMetadataSection({draft,setDraft}:Props){
+export function InvoiceMetadataSection({draft,setDraft,dueTime,setDueTime}:Props){
  const {customers,setCustomers,staff,setStaff,paymentMode,setPaymentMode}=useMerchantPreview();
  const [picker,setPicker]=useState<Picker>(null),[query,setQuery]=useState(""),[adding,setAdding]=useState(false);
  const [customer,setCustomer]=useState({name:"",email:"",phone:"",address:"",company:"",customerType:"individual" as "individual"|"business",taxId:"",country:"",city:"",state:""});
@@ -84,6 +84,10 @@ export function InvoiceMetadataSection({draft,setDraft}:Props){
   <label className="flex min-w-0 flex-col gap-1.5 text-xs"><span className="font-medium">Currency</span><select value={draft.currency} onChange={e=>update("currency",e.target.value as InvoiceDraft["currency"])} className="h-10 rounded-xl bg-gray-50 px-3 text-sm">{["NGN","USD","GBP","EUR"].map(c=><option key={c}>{c}</option>)}</select></label>
   <NativeDate label="Date issued" value={issued} onChange={v=>changeDate(v,"issue")}/>
   <NativeDate label="Due date" value={due} onChange={v=>changeDate(v,"due")}/>
+  <label className="flex min-w-0 flex-col gap-1.5 text-xs font-medium text-[#22334B]">Due time (Africa/Lagos)
+   <input type="time" step={60} aria-label="Invoice due time Africa/Lagos" value={dueTime} onChange={e=>setDueTime(e.target.value)}
+    className="h-10 w-full min-w-0 rounded-xl border border-gray-100 bg-gray-50 px-3 text-sm outline-none focus:border-[#0064E0]"/>
+  </label>
   <Field label="Invoice subject" value={draft.senderRole} onChange={v=>update("senderRole",v)} placeholder="What is this invoice for?"/>
   <label className="flex min-w-0 flex-col gap-1.5 text-xs"><span className="font-medium">Recurring duration</span><select disabled className="h-10 rounded-xl bg-gray-50 px-3 text-sm text-gray-400"><option>Not configured</option></select></label>
   <div className="flex min-w-0 flex-col gap-1.5 text-xs"><span className="font-medium">Sales Person</span><div className="flex gap-2">
