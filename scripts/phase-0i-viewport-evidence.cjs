@@ -62,37 +62,38 @@ const routes=[
    await page.close();
   }
 
- // Additional Batch P checks, separate from the established 64-view matrix.
+ // Batch P compact setup and six dedicated routes — separate from standard 64 checks.
  const paymentWidths=[320,360,390,430,768,1024,1440];
  for(const width of paymentWidths){
-  const page=await browser.newPage({viewport:{width,height:width>=1024?700:780},deviceScaleFactor:1});
+  const page=await browser.newPage({viewport:{width,height:width>=1024?650:780},deviceScaleFactor:1});
   const detail={width,status:"unknown"};
   try{
-   const response=await page.goto(base+"/dashboard/getting-started?step=payments",{waitUntil:"domcontentloaded",timeout:18000});
-   if(response?.status()!==200)throw Error("Payment setup HTTP "+response?.status());
-   await page.getByRole("heading",{name:"Dynamic Account"}).waitFor();
-   await page.getByRole("heading",{name:"Online payment connections"}).waitFor();
-   await page.getByRole("heading",{name:/Partner Bank Collection/}).waitFor();
-   await page.getByText("Account not verified").waitFor();
-   await page.getByRole("radio",{name:"Flutterwave v4"}).check();
-   await page.getByRole("radio",{name:"Paystack gateway"}).check();
-   await page.getByRole("button",{name:"View connection requirements"}).click();
-   await page.getByRole("region",{name:"Future connection requirements"}).waitFor();
-   const fields=page.getByRole("group",{name:"Unavailable credential entry preview"});
-   if(await fields.locator("input:enabled").count())throw Error("Credential entry unexpectedly enabled");
-   await page.getByRole("button",{name:"Hide connection requirements"}).click();
-   await page.getByRole("button",{name:/Tools/}).first().click();
-   await page.getByRole("button",{name:/Payments/}).first().click();
-   if(!await page.getByRole("radio",{name:"Flutterwave v4"}).isChecked())throw Error("Dynamic provider preference lost on step navigation");
-   if(!await page.getByRole("radio",{name:"Paystack gateway"}).isChecked())throw Error("Gateway preference lost on step navigation");
-   if(await page.locator("html").evaluate(el=>el.scrollWidth>el.clientWidth+2))throw Error("Payment setup horizontal overflow");
-   if(width>=1024){
-     const side=page.getByRole("complementary",{name:"Desktop workspace sidebar"});
-     if(!await side.isVisible())throw Error("Desktop sidebar hidden");
-   }
-   const screenshot="batch-p-payment-setup-"+width+".png";
-   await page.screenshot({path:path.join(out,screenshot),fullPage:true,animations:"disabled"});
-   detail.status="PASS";detail.screenshot=screenshot;
+   let response=await page.goto(base+"/dashboard/getting-started",{waitUntil:"domcontentloaded",timeout:18000});
+   if(response?.status()!==200)throw Error("Checklist HTTP "+response?.status());
+   await page.getByRole("heading",{name:"Your setup checklist"}).waitFor();
+   await page.getByRole("progressbar",{name:"Setup completion"}).waitFor();
+   await page.getByRole("link",{name:/Set up payments and banks/}).click();
+   await page.getByRole("heading",{name:"Online Payments & Banks"}).waitFor();
+   if(await page.locator('a[href^="/dashboard/getting-started/payments/"]').count()!==6)throw Error("Six payment methods not available");
+   if(await page.locator("html").evaluate(el=>el.scrollWidth>el.clientWidth+2))throw Error("Directory horizontal overflow");
+   await page.screenshot({path:path.join(out,"batch-p-directory-"+width+".png"),fullPage:true,animations:"disabled"});
+   await page.locator('a[href="/dashboard/getting-started/payments/paystack"]').click();
+   await page.getByRole("heading",{name:"Paystack"}).waitFor();
+   const keys=page.getByRole("group",{name:"Example credential fields"});
+   if(await keys.locator("input:enabled").count())throw Error("Live credential collection unexpectedly active");
+   await page.getByRole("button",{name:"Show example"}).click();
+   await page.getByRole("button",{name:"Hide example"}).waitFor();
+   if(!await page.getByRole("button",{name:"Save & Verify Connection"}).isDisabled())throw Error("Fake provider connection is enabled");
+   await page.screenshot({path:path.join(out,"batch-p-paystack-"+width+".png"),fullPage:true,animations:"disabled"});
+   await page.getByRole("link",{name:"← All payment methods"}).click();
+   await page.locator('a[href="/dashboard/getting-started/payments/bank-transfer"]').click();
+   await page.getByRole("combobox",{name:"Bank name"}).fill("Guaranty");
+   await page.getByRole("option",{name:"Guaranty Trust Bank (GTBank)"}).click();
+   await page.getByRole("textbox",{name:"Bank account number"}).fill("0123456789");
+   if(!await page.getByRole("button",{name:"Add Account"}).isDisabled())throw Error("Unverified account could be added");
+   await page.screenshot({path:path.join(out,"batch-p-bank-"+width+".png"),fullPage:true,animations:"disabled"});
+   if(await page.locator("html").evaluate(el=>el.scrollWidth>el.clientWidth+2))throw Error("Setup horizontal overflow");
+   detail.status="PASS";
   }catch(e){errors++;detail.status="FAIL";detail.error=String(e?.message||e).slice(0,650)}
   results.push({batchP:detail});
   await page.close();

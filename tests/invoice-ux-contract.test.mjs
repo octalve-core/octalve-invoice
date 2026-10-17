@@ -102,9 +102,9 @@ test("business settings and getting started use one canonical setup UI",()=>{
  assert.match(start,/<MerchantSetupJourney/);
  assert.match(journey,/Business identity/);
  assert.match(journey,/Business location/);
- assert.match(journey,/How do you want to receive payments/);
- assert.match(read("src/features/merchant-setup/PaymentConnectionsPanel.tsx"),/Online payment connections/);
- assert.match(journey,/Account not verified/);
+ assert.match(read("src/features/getting-started/PaymentMethodDirectory.tsx"),/Online Payments & Banks/);
+ assert.match(read("src/features/merchant-setup/PaymentConnectionsPanel.tsx"),/PaymentMethodDirectory/);
+ assert.match(read("src/features/getting-started/PaymentSetupDetail.tsx"),/Not connected/);
  assert.match(journey,/reader\.readAsDataURL\(file\)/);
  assert.match(provider,/businessDescription:string/);
  assert.match(provider,/bankVerification\?/);
@@ -149,9 +149,9 @@ test("payment bank picker is searchable and not falsely called a verified full d
  assert.match(picker,/ArrowDown/);
  assert.match(picker,/Suggestions only/);
  assert.match(picker,/value=\{open\?query:value\}/);
- assert.match(setup,/<NigerianBankPicker/);
+ assert.match(read("src/features/getting-started/PaymentSetupDetail.tsx"),/<NigerianBankPicker/);
  assert.match(setup,/About|SetupInfoNote/);
- assert.match(setup,/Account not verified/);
+ assert.match(read("src/features/getting-started/PaymentSetupDetail.tsx"),/Verify account/);
 });
 
 test("premium desktop sidebar is dark blue-active, separately scrollable and keeps billing/logout anchored",()=>{
@@ -215,41 +215,65 @@ test("Tax Centre stays non-filing but links one business setup and uses compact 
  assert.match(note,/env\(safe-area-inset-bottom\)/);
 });
 
-test("Batch P uses one canonical payment setup and keeps real payment methods disconnected",()=>{
- const journey=read("src/features/merchant-setup/MerchantSetupJourney.tsx");
- const connections=read("src/features/merchant-setup/PaymentConnectionsPanel.tsx");
+
+test("Getting Started is progressive, canonical, and counts real setup evidence only",async()=>{
+ const root=read("app/(dashboard)/dashboard/getting-started/page.tsx");
+ const home=read("src/features/getting-started/GettingStartedHome.tsx");
+ const progress=read("src/features/getting-started/setup-progress.ts");
+ const mobile=read("components/dashboard/mobile/GettingStartedModal.tsx");
+ const directory=read("src/features/getting-started/PaymentMethodDirectory.tsx");
  const settings=read("app/(dashboard)/dashboard/settings/page.tsx");
- const provider=read("src/features/merchant-preview/MerchantPreviewProvider.tsx");
- const options=read("src/features/merchant-setup/payment-capabilities.ts");
- const invoice=read("src/features/invoices/sections/InvoiceMetadataSection.tsx");
- assert.match(journey,/Business identity/);
- assert.match(journey,/Company Bank Transfer/);
+ const journey=read("src/features/merchant-setup/MerchantSetupJourney.tsx");
+ assert.match(root,/if\(!query\.step\)return <GettingStartedHome\/>/);
+ assert.match(root,/<MerchantSetupJourney initialStep=\{step\}\/>/);
+ assert.match(home,/Your setup checklist/);
+ assert.match(home,/Set up payments and banks/);
+ assert.match(home,/Customize invoice template/);
+ assert.match(home,/Add business information/);
+ assert.match(home,/Set up app lock/);
+ assert.match(home,/progress\.completed/);
+ assert.match(mobile,/previewSetupProgress/);
+ assert.doesNotMatch(mobile,/toggleTask|setCompletedTasks/);
+ assert.match(progress,/const payment=false/);
+ assert.match(progress,/const appLock=false/);
+ assert.match(settings,/\["Payment connections","\/dashboard\/getting-started\/payments"/);
  assert.match(journey,/<PaymentConnectionsPanel\/>/);
- assert.match(journey,/<NigerianBankPicker/);
- assert.match(journey,/Account not verified/);
- assert.match(settings,/\["Payment connections","\/dashboard\/getting-started\?step=payments"/);
- assert.match(connections,/Dynamic Account/);
- assert.match(connections,/Online payment connections/);
- assert.match(connections,/Partner Bank Collection/);
- assert.match(connections,/Coming soon/);
- assert.match(connections,/Not connected/);
- assert.match(connections,/Provider secret key/);
- assert.match(connections,/fieldset disabled/);
- assert.doesNotMatch(connections,/localStorage|sessionStorage|fetch\(|getServerSideProps|setPaymentMode\(/);
+ assert.match(directory,/PAYMENT_METHODS\.map/);
+ assert.match(directory,/0 of 6 connected/);
+});
+test("Every payment method has a dedicated safe route and no client-only connection state",()=>{
+ const catalog=read("src/features/getting-started/payment-catalog.ts");
+ const detail=read("src/features/getting-started/PaymentSetupDetail.tsx");
+ const route=read("app/(dashboard)/dashboard/getting-started/payments/[method]/page.tsx");
+ const provider=read("src/features/merchant-preview/MerchantPreviewProvider.tsx");
+ const invoice=read("src/features/invoices/sections/InvoiceMetadataSection.tsx");
+ for(const slug of ["paystack","flutterwave","monnify","dynamic-account","bank-transfer","paypal"])
+  assert.match(catalog,new RegExp('id:"'+slug+'"'));
+ assert.match(route,/isPaymentMethod\(method\)/);
+ assert.match(detail,/Save & Verify Connection/);
+ assert.match(detail,/Webhook \/ Callback URL/);
+ assert.match(detail,/Awaiting secure webhook assignment/);
+ assert.match(detail,/Show example/);
+ assert.match(detail,/disabled readOnly/);
+ assert.match(detail,/Verify account — secure service required/);
+ assert.match(detail,/Add Account/);
+ assert.match(detail,/bankVerification:undefined/);
+ assert.doesNotMatch(detail,/localStorage|sessionStorage|document\.cookie|fetch\(|setPaymentMode\(/);
  assert.match(provider,/collectionSetup:PreviewCollectionSetup/);
- assert.match(provider,/setCollectionSetup\(defaultPreviewCollectionSetup\)/);
  assert.match(invoice,/disabled=\{p\.value!=="manual"\}/);
 });
-test("Batch P provider account limits remain separate and server expiry is required later",()=>{
- const caps=read("src/features/merchant-setup/payment-capabilities.ts");
- const ui=read("src/features/merchant-setup/PaymentConnectionsPanel.tsx");
- assert.match(caps,/monnify-invoice/);
- assert.match(caps,/expiryDate/);
- assert.match(caps,/limitSeconds:null/);
- assert.match(caps,/5270401/);
- assert.match(caps,/31536000/);
- assert.match(caps,/15 minutes–8 hours/);
- assert.match(ui,/provider-confirmed account expiry/);
- assert.match(ui,/Batch Q/);
- assert.match(ui,/reference only/);
+test("Provider-specific credential examples and limits do not imply live eligibility",()=>{
+ const catalog=read("src/features/getting-started/payment-catalog.ts");
+ const prior=read("src/features/merchant-setup/payment-capabilities.ts");
+ const detail=read("src/features/getting-started/PaymentSetupDetail.tsx");
+ assert.match(catalog,/Public key/);
+ assert.match(catalog,/Secret key/);
+ assert.match(catalog,/Contract code/);
+ assert.match(catalog,/Client ID/);
+ assert.match(catalog,/Client secret/);
+ assert.match(prior,/5270401/);
+ assert.match(prior,/31536000/);
+ assert.match(prior,/expiryDate/);
+ assert.match(catalog,/15 minutes–8 hours/);
+ assert.match(detail,/real keys/);
 });
