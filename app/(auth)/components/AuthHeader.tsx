@@ -12,7 +12,7 @@ export const AuthHeader=()=>{
    <button type="button" onClick={()=>router.back()} aria-label="Go back" className="grid h-10 w-10 shrink-0 place-items-center rounded-xl hover:bg-[#F3F7FD] focus-visible:outline-2 focus-visible:outline-[#0064E0]">
     <Image src="/backArrow.svg" alt="" width={16} height={25}/>
    </button>
-   {isIdentityScreen?<Link href="/onboarding" aria-label="Octalve Invoice welcome" className="flex min-w-0 flex-1 items-center justify-center"><BrandWordmark width={155}/></Link>:<span className="flex-1"/>}
+   {isIdentityScreen?<Link href="/onboarding" aria-label="Octalve Finance welcome" className="flex min-w-0 flex-1 items-center justify-center"><BrandWordmark width={155}/></Link>:<span className="flex-1"/>}
    <span aria-hidden className="w-10 shrink-0"/>
   </div>;
 };

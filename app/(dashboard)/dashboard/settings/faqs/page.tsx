@@ -6,11 +6,11 @@ const topics=[
  {name:"Invoices & documents",questions:[
  ["What is the difference between an invoice and a receipt?","An invoice requests or records money owed. A receipt confirms a payment already received. Receipts can reference invoices, but producing a receipt never creates additional revenue."],
  ["Can I create a receipt after an invoice has been paid?","Yes. Select an eligible paid invoice when creating a receipt, or choose an independently verified payment. A receipt can be generated later without changing the original invoice."],
- ["Can I download an invoice again?","You can download previews in this phase. After secure issuance is implemented, exact issued PDF snapshots will be stored so later profile or template changes cannot alter past invoices."],
+ ["Can I download an invoice again?","Unissued drafts cannot be downloaded. When secure issuance becomes available, the original issued PDF snapshot will be stored for authorised later downloads; newer business settings must not rewrite it."],
  ["Can I customize invoice colours, fonts and layout?","Theme Settings contains approved document-style options and a live design preview. Final exported-template parity must pass PDF/PNG checks before customised styles can be issued."]]},
  {name:"Payments & accounting",questions:[
  ["When is an invoice treated as paid?","Only verified funds count. For direct company bank transfers, an authorized staff member must confirm bank-cleared payment evidence. Gateway or dynamic-account invoices require provider verification; a browser redirect or screenshot alone is insufficient."],
- ["Are receipts counted as separate revenue?","No. Verified payment transactions are the source of collections. An invoice contributes to receivables until allocated payment is verified; a receipt only documents that payment."],
+ ["Are receipts counted as separate revenue?","No. Verified payment events prove collections, not necessarily earned revenue. Invoices can create receivables; receipts document a collection and never add another cash event."],
  ["Can customers pay through Paystack, Flutterwave or a virtual account?","These options will become available once your business payment methods are connected and verified."]]},
  {name:"Security & records",questions:[
  ["What happens when I delete a record?","Deletion requires a second confirmation and a reason. Recoverable records go to Deleted Records for a proposed 14-day period; the current workspace uses example records that are not permanently saved. Issued invoices, payment records, receipts and audit evidence are never silently erased at 14 days."],
