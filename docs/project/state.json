@@ -1,6 +1,6 @@
 {
   "updatedAt": "2026-10-17",
-  "phase": "Phase 0I Batch P frontend payment setup source implemented, Review qualification/owner visual acceptance tracked separately.",
+  "phase": "Phase 0I Batch P Getting Started & Payment Settings UX REVIEW READY; automated qualification complete, owner visual acceptance pending.",
   "branch": "phase/0i-frontend-finance-workflows",
   "mainBootstrapSha": "87ad423dba3ced2445e109baa85114aea3d30037",
   "latestMigration": null,
@@ -94,12 +94,12 @@
     "Backend-approved authority needed before staff approvals, money posting, NRS, persistent finance ledgers, customer access, recurring issuance or communication delivery.",
     "Source and browser regressions pass; visual goldens and customer UX review still need owner sign-off."
   ],
-  "nextPhase": "Verify Batch P exact merged Review CI/Vercel and owner visual acceptance; after approval proceed Phase 0I Batch Q (invoice due and flexible milestones); Phase1/main/Production explicitly blocked.",
+  "nextPhase": "Owner visual acceptance for Batch P, then Phase 0I Batch Q invoice due timestamp and flexible milestone preview; no real accounts or Phase1/main/Production.",
   "currentCodeCheckpoint": "a28392ab9715b7879f2f577f1f5ee50e9750d51e",
   "lastVerifiedApplicationCommit": "a28392ab9715b7879f2f577f1f5ee50e9750d51e",
   "exactNextPhase": "Phase 0I Batch P — refine canonical Getting Started Payment UX using existing app; product-proposed dynamic account and provider status only. Follow Batch Q due/milestone, R client/merchant templates, S Payment Received, T NRS/partner pitch after owner review. Phase1/main/Production still blocked.",
-  "previewCommitSha": "bdacb471ef3f0a3e1e767d937806851dd35c1ac2",
-  "previewDeploymentStatus": "Vercel READY Review-only deployment dpl_HEBtKYaFK9yBfPXRkRxX8Pua9FWs matching bdacb471ef3f0a3e1e767d937806851dd35c1ac2; stable Review alias. Post-merge independent Node/type/lint/test/build 39025244951 PASS, CodeQL 39025244992 PASS, browser 39025245001 PASS 189/189 + 64/64 screenshot artifact 12097798019.",
+  "previewCommitSha": "1d7054ee21d83bd2f603fd96652839aeb5ad5d49",
+  "previewDeploymentStatus": "Vercel READY dpl_2LZkBNoFpm2d8SPpxgV8JamCq5jA exact Review merged 1d7054ee21d83bd2f603fd96652839aeb5ad5d49, independent Node 39034391478 PASS CodeQL 39034391482 PASS browser 39034391498 189/189 +64/64 +7/7 PASS artifact 12101642932.",
   "phase0Merged": true,
   "productionDeployed": false,
   "productionApprovedByOwner": true,
@@ -125,6 +125,8 @@
   "dynamicAccountSpecification": "docs/project/OCTALVE_FINANCE_DYNAMIC_ACCOUNT_USER_JOURNEY_AND_BATCH_PLAN_2026-10-17.md — plan only, not functional account payment implementation",
   "dynamicAccountAcceptanceMatrix": "docs/project/OCTALVE_FINANCE_DYNAMIC_ACCOUNT_ACCEPTANCE_MATRIX_2026-10-17.md — tracked J01-J20, no claims of completed future workflows",
   "batchPSourceAppCommit": "b2bb828d638f4e4512b2ab85c37b7be2b54c44b5",
-  "batchPStatus": "Candidate; source Node24/TS/ESLint/tests/build 39033229121 PASS and CodeQL 39033229088 PASS. Browser QA and exact Review merged evidence to verify. No live connection, no account issuance, no financial integrations.",
-  "batchPReviewPR": "https://github.com/octalve-core/octalve-invoice/pull/19"
+  "batchPStatus": "REVIEW published/technical PASS; owner visual approval OPEN. UI-only dynamic/gateway/provider requirements previews, no connected provider, account verification or money.",
+  "batchPReviewPR": "https://github.com/octalve-core/octalve-invoice/pull/19",
+  "batchPReviewMerge": "1d7054ee21d83bd2f603fd96652839aeb5ad5d49",
+  "batchPEvidence": "Source d0220cf: 39034119068 qualification PASS, 39034118906 CodeQL PASS, 39034118927 browser 189/189 +64/64 +7/7 PASS artifact 12101786793. Merged Review 1d7054e: 39034391478 qualification PASS, 39034391482 CodeQL PASS, 39034391498 browser 189/189 +64/64 +7/7 PASS artifact 12101642932. Vercel dpl_2LZkBNoFpm2d8SPpxgV8JamCq5jA READY."
 }
