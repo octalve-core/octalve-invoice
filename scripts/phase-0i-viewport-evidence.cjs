@@ -70,7 +70,6 @@ const routes=[
   try{
    const response=await page.goto(base+"/dashboard/getting-started?step=payments",{waitUntil:"domcontentloaded",timeout:18000});
    if(response?.status()!==200)throw Error("Payment setup HTTP "+response?.status());
-   const container=page.getByRole("main").last();
    await page.getByRole("heading",{name:"Dynamic Account"}).waitFor();
    await page.getByRole("heading",{name:"Online payment connections"}).waitFor();
    await page.getByRole("heading",{name:/Partner Bank Collection/}).waitFor();
