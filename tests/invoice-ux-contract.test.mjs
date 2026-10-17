@@ -103,7 +103,7 @@ test("business settings and getting started use one canonical setup UI",()=>{
  assert.match(journey,/Business identity/);
  assert.match(journey,/Business location/);
  assert.match(journey,/How do you want to receive payments/);
- assert.match(journey,/Online payment connections/);
+ assert.match(read("src/features/merchant-setup/PaymentConnectionsPanel.tsx"),/Online payment connections/);
  assert.match(journey,/Account not verified/);
  assert.match(journey,/reader\.readAsDataURL\(file\)/);
  assert.match(provider,/businessDescription:string/);
