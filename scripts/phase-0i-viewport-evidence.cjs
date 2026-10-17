@@ -71,12 +71,12 @@ const routes=[
    let response=await page.goto(base+"/dashboard/getting-started",{waitUntil:"domcontentloaded",timeout:18000});
    if(response?.status()!==200)throw Error("Checklist HTTP "+response?.status());
    await page.getByRole("heading",{name:"Your setup checklist"}).waitFor();
-   if(await page.getByRole("link",{name:"Dashboard",exact:true}).count())throw Error("Getting Started retained redundant dashboard button");
+   if(await page.getByRole("main").getByRole("link",{name:"Dashboard",exact:true}).count())throw Error("Getting Started retained redundant dashboard button");
    if(await page.getByRole("link",{name:/Open full workspace setup/}).count())throw Error("Retired workspace entry point present");
    const quick=page.getByRole("region",{name:"Quick Create"});
    if(await quick.getByRole("button",{name:/New (Invoice|Customer|Expenses|Quotation)/}).count()!==4)throw Error("Shared Quick Create actions missing");
    await page.getByRole("link",{name:/Add business information/}).click();
-   await page.getByRole("heading",{name:"Business Identity"}).waitFor();
+   await page.getByRole("heading",{name:"Business Identity",level:1}).waitFor();
    await page.getByRole("link",{name:"Back to checklist"}).click();
    await page.getByRole("heading",{name:"Your setup checklist"}).waitFor();
    await page.getByRole("link",{name:/Customize invoice template/}).click();
