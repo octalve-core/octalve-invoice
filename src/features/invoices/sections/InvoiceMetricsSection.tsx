@@ -1,6 +1,7 @@
 "use client";
 
 import StatCard from "@/components/dashboard/cards/StatCard";
+import {SetupInfoNote} from "@/src/features/merchant-setup/SetupInfoNote";
 
 /** Preserved Finzefy invoice-card layout, with demo fixtures isolated here.
  * TODO backend phase: replace these fixtures using authorized merchant totals.
@@ -17,7 +18,7 @@ const previewMetrics = [
 export function InvoiceMetricsSection() {
   return (
     <section aria-label="Invoice preview metrics">
-      <p className="mb-2 text-xs text-gray-500">Sample figures — UI preview only</p>
+      <div className="mb-2 flex items-center gap-2 text-xs text-slate-500">Invoice summary <span className="ml-auto inline-flex items-center gap-1">Example <SetupInfoNote title="Invoice example data" detail="These are example dashboard values, not issued merchant records. Actual invoicing totals will come from your business records after secure setup."/></span></div>
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {previewMetrics.map((stat) => (
           <StatCard key={stat.title} title={stat.title} value={stat.value}

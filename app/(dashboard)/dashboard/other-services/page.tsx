@@ -57,7 +57,7 @@ export default function OtherServicesPage(){
    </Link>)}</div>
   </section>
   <section aria-label="Other services" className="rounded-2xl bg-white px-3 py-4 shadow-sm sm:px-6 sm:py-6">
-   <h2 className="mb-2 text-lg font-semibold text-[#173652]">Workspace tools</h2><p className="mb-6 text-xs text-slate-500">Open an Octalve tool. Finance controls show preview data until the secured backend is approved.</p>
+   <h2 className="mb-2 text-lg font-semibold text-[#173652]">Workspace tools</h2><p className="mb-5 text-xs text-slate-500">Find your business tools in one place.</p>
    <label className="relative mb-6 block"><Search className="absolute left-3 top-3 text-slate-400" size={18}/><input aria-label="Search More services" value={search} onChange={e=>setSearch(e.target.value)} placeholder="Find a tool or service" className="h-11 w-full rounded-xl border border-slate-200 bg-[#FBFCFF] pl-10 pr-3 text-sm outline-none focus:border-[#0064E0]"/></label>
    <div className="space-y-7">{serviceGroups.map(group=>{
     const items=otherServiceItems.filter(item=>group.slugs.some(slug=>slug===item.slug)&&item.title.toLowerCase().includes(search.toLowerCase().trim()));
