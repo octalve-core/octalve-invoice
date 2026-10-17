@@ -1,6 +1,6 @@
 {
   "updatedAt": "2026-10-17",
-  "phase": "Phase 0I Batch R customer/merchant invoice preview source qualification (frontend Review only)",
+  "phase": "Phase 0I Batch R customer/merchant invoice PREVIEW technically completed on Review; owner visual sign-off open.",
   "branch": "review/phase-0i",
   "mainBootstrapSha": "87ad423dba3ced2445e109baa85114aea3d30037",
   "latestMigration": null,
@@ -94,12 +94,12 @@
     "Backend-approved authority needed before staff approvals, money posting, NRS, persistent finance ledgers, customer access, recurring issuance or communication delivery.",
     "Source and browser regressions pass; visual goldens and customer UX review still need owner sign-off."
   ],
-  "nextPhase": "Qualify Batch R at exact SHA, merge reviewed PR to review/phase-0i only, verify independent Review CI + Vercel READY, seek owner screenshot acceptance. Then Batch S Payment Received UI and T NRS workflow; no Phase1 or Batch R main/Production without new authorisation.",
+  "nextPhase": "Owner visual inspection of Batch R merchant/client demo and any corrections; proceed to Phase 0I Batch S Payment Received UI, followed by T NRS. Review-only release for R; main/Production not authorised for R. Phase1/real payment/NRS/issuance blocked.",
   "currentCodeCheckpoint": "1fa854cd65074fe0aea3ec02c4cdbd46b8d40261",
   "lastVerifiedApplicationCommit": "eac710ddadb80e6ed032ee209de434e0efe514e1",
   "exactNextPhase": "Phase 0I Batch R — client and merchant invoice template/issued-record Preview authority; then S Payment Received cross-provider ledger and expired-account exceptions; T NRS/compliance UX. Do not start without owner direction; Phase 1 still explicitly blocked.",
-  "previewCommitSha": "0e353e79970dd39a4689267729c92d120008c772",
-  "previewDeploymentStatus": "Batch Q Review READY dpl_41ZTdJCSqp5LyRWtoghN8S8i7Pga at 0e353e7; 39050599253/39050599351/39050599394 all PASS.",
+  "previewCommitSha": "077db13d0c7e6415e5340c65c41e9bb2f83d88a5",
+  "previewDeploymentStatus": "READY dpl_CKtiF4mzBahqF4Z2vH65WTkdo26e exact Review app SHA 077db13d; independent Node 39056453847, CodeQL 39056453836, browser 39056453830 189/189 +64/64 +7/7P +7/7Q +7/7R all PASS artifact 12110220543.",
   "phase0Merged": true,
   "productionDeployed": true,
   "productionApprovedByOwner": true,
@@ -151,6 +151,13 @@
   "batchQEvidence": "Review qualification 39050599253, CodeQL 39050599351, browser 39050599394 189+64+7+7 artifact 12107562487; main qualification 39052280320 CodeQL 39052280312; all PASS.",
   "batchRBranch": "phase/0i-batch-r-audience-invoice-preview",
   "batchRSourceCheckpoint": "c05615afd0c015fb7f63127e1cefe555fb31a78d",
-  "batchRStatus": "Candidate frontend: shared invoice fixture and existing Modern/Classic renderer with distinct merchant/client toolbar; browser responsive evidence, Review PR and owner visual acceptance pending. Not issued.",
-  "batchRSecurityBoundary": "Client-facing preview is inside merchant workspace; NO public token, PDF/print/export, issue, active Pay Now/Check Payment/Report Transfer, merchant reminder/link, NRS QR, verified bank account/expiry, server snapshot or backend financial action."
+  "batchRStatus": "REVIEW RELEASE technically PASS. PR #30 and correction PR #31 merged. Merchant/client matching data and chosen template; actions disabled, no actual issued snapshot or public client route. OWNER VISUAL ACCEPTANCE OPEN.",
+  "batchRSecurityBoundary": "Client-facing preview is inside merchant workspace; NO public token, PDF/print/export, issue, active Pay Now/Check Payment/Report Transfer, merchant reminder/link, NRS QR, verified bank account/expiry, server snapshot or backend financial action.",
+  "batchRReviewAppSha": "077db13d0c7e6415e5340c65c41e9bb2f83d88a5",
+  "batchRReviewPRs": [
+    "https://github.com/octalve-core/octalve-invoice/pull/30",
+    "https://github.com/octalve-core/octalve-invoice/pull/31"
+  ],
+  "batchRReviewDeployment": "dpl_CKtiF4mzBahqF4Z2vH65WTkdo26e READY same app SHA.",
+  "batchREvidence": "Source 74c11435 Node 39056100897 CodeQL 39056100893 browser 39056100881 PASS; merged Review 077db13d Node 39056453847 CodeQL 39056453836 browser 39056453830 PASS 189/189+64/64+7/7P+7/7Q+7/7R artifact 12110220543."
 }
