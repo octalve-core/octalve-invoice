@@ -93,19 +93,24 @@ test("one canonical invoice customization page includes gallery, colours, previe
  assert.doesNotMatch(settings,/Theme Settings/);
 });
 
-test("business settings and getting started use one canonical setup UI",()=>{
+test("one extracted Business Identity editor serves setup and Settings without duplicate workspace",()=>{
  const legacy=read("app/(dashboard)/dashboard/settings/business/page.tsx");
- const journey=read("src/features/merchant-setup/MerchantSetupJourney.tsx");
- const start=read("app/(dashboard)/dashboard/getting-started/page.tsx");
+ const root=read("app/(dashboard)/dashboard/getting-started/page.tsx");
+ const page=read("app/(dashboard)/dashboard/getting-started/business/page.tsx");
+ const editor=read("src/features/getting-started/BusinessIdentityPage.tsx");
+ const previous=read("src/features/merchant-setup/MerchantSetupJourney.tsx");
  const provider=read("src/features/merchant-preview/MerchantPreviewProvider.tsx");
- assert.match(legacy,/redirect\("\/dashboard\/getting-started\?step=business"\)/);
- assert.match(start,/<MerchantSetupJourney/);
- assert.match(journey,/Business identity/);
- assert.match(journey,/Business location/);
- assert.match(read("src/features/getting-started/PaymentMethodDirectory.tsx"),/Online Payments & Banks/);
- assert.match(read("src/features/merchant-setup/PaymentConnectionsPanel.tsx"),/PaymentMethodDirectory/);
- assert.match(read("src/features/getting-started/PaymentSetupDetail.tsx"),/Not connected/);
- assert.match(journey,/reader\.readAsDataURL\(file\)/);
+ assert.match(legacy,/redirect\("\/dashboard\/getting-started\/business"\)/);
+ assert.match(page,/<BusinessIdentityPage\/>/);
+ assert.match(root,/step==="business"\)redirect\("\/dashboard\/getting-started\/business"\)/);
+ assert.match(root,/step==="appearance"\)redirect\("\/dashboard\/settings\/invoice/);
+ assert.match(root,/step==="payments"\)redirect\("\/dashboard\/getting-started\/payments"\)/);
+ assert.match(editor,/Business identity/);
+ assert.match(editor,/Business location/);
+ assert.match(editor,/reader\.readAsDataURL\(file\)/);
+ assert.match(editor,/bankVerification:undefined/);
+ assert.match(previous,/BusinessIdentityPage as MerchantSetupJourney/);
+ assert.doesNotMatch(root,/Set up your business workspace/);
  assert.match(provider,/businessDescription:string/);
  assert.match(provider,/bankVerification\?/);
 });
@@ -126,22 +131,24 @@ test("unverified business bank account is not leaked into invoice payment instru
 test("invoice picker does not activate disconnected external providers",()=>{
  const metadata=read("src/features/invoices/sections/InvoiceMetadataSection.tsx");
  assert.match(metadata,/disabled=\{p\.value!=="manual"\}/);
- assert.match(metadata,/getting-started\?step=payments/);
+ assert.match(metadata,/getting-started\/payments/);
 });
 
-test("invoice customization returns to Getting Started and saves session preferences before Payments",()=>{
+test("invoice customization returns directly to checklist instead of retired workspace",()=>{
  const invoice=read("app/(dashboard)/dashboard/settings/invoice/page.tsx");
- const journey=read("src/features/merchant-setup/MerchantSetupJourney.tsx");
+ const editor=read("src/features/getting-started/BusinessIdentityPage.tsx");
+ const home=read("src/features/getting-started/GettingStartedHome.tsx");
  assert.match(invoice,/query\.get\("from"\)==="getting-started"/);
- assert.match(invoice,/gettting-started\?step=appearance|getting-started\?step=appearance/);
- assert.match(invoice,/router\.push\("\/dashboard\/getting-started\?step=payments"\)/);
+ assert.match(invoice,/const backPath=fromSetup\?"\/dashboard\/getting-started"/);
+ assert.match(invoice,/router\.push\("\/dashboard\/getting-started"\)/);
  assert.match(invoice,/Save & Continue/);
  assert.match(invoice,/Preferences kept for this session/);
- assert.match(journey,/settings\/invoice\?from=getting-started/);
+ assert.match(home,/settings\/invoice\?from=getting-started/);
+ assert.match(editor,/Back to checklist/);
 });
 test("payment bank picker is searchable and not falsely called a verified full directory",()=>{
  const picker=read("src/features/merchant-setup/NigerianBankPicker.tsx");
- const setup=read("src/features/merchant-setup/MerchantSetupJourney.tsx");
+ const setup=read("src/features/getting-started/PaymentSetupDetail.tsx");
  assert.match(picker,/role="combobox"/);
  assert.match(picker,/role="listbox"/);
  assert.match(picker,/role="option"/);
@@ -150,7 +157,7 @@ test("payment bank picker is searchable and not falsely called a verified full d
  assert.match(picker,/Suggestions only/);
  assert.match(picker,/value=\{open\?query:value\}/);
  assert.match(read("src/features/getting-started/PaymentSetupDetail.tsx"),/<NigerianBankPicker/);
- assert.match(setup,/About|SetupInfoNote/);
+ assert.match(setup,/Verify account/);
  assert.match(read("src/features/getting-started/PaymentSetupDetail.tsx"),/Verify account/);
 });
 
@@ -207,7 +214,7 @@ test("Tax Centre stays non-filing but links one business setup and uses compact 
  assert.match(tax,/Tax totals await classification/);
  assert.match(tax,/No NRS e-invoices submitted/);
  assert.match(tax,/<SetupInfoNote/);
- assert.match(nrs,/getting-started\?step=business/);
+ assert.match(nrs,/getting-started\/business/);
  assert.match(nrs,/No NRS submissions/);
  assert.match(nrs,/Not connected/);
  assert.match(note,/createPortal/);
@@ -216,29 +223,40 @@ test("Tax Centre stays non-filing but links one business setup and uses compact 
 });
 
 
-test("Getting Started is progressive, canonical, and counts real setup evidence only",async()=>{
+test("progressive checklist is not a duplicate workspace and uses the same Quick Create as Overview",()=>{
  const root=read("app/(dashboard)/dashboard/getting-started/page.tsx");
  const home=read("src/features/getting-started/GettingStartedHome.tsx");
+ const overview=read("app/(dashboard)/dashboard/page.tsx");
+ const quick=read("src/features/dashboard/QuickCreatePanel.tsx");
+ const action=read("components/dashboard/cards/QuickAction.tsx");
  const progress=read("src/features/getting-started/setup-progress.ts");
  const mobile=read("components/dashboard/mobile/GettingStartedModal.tsx");
  const directory=read("src/features/getting-started/PaymentMethodDirectory.tsx");
  const settings=read("app/(dashboard)/dashboard/settings/page.tsx");
- const journey=read("src/features/merchant-setup/MerchantSetupJourney.tsx");
- assert.match(root,/if\(!query\.step\)return <GettingStartedHome\/>/);
- assert.match(root,/<MerchantSetupJourney initialStep=\{step\}\/>/);
+ assert.match(root,/<GettingStartedHome\/>/);
+ assert.match(root,/redirect\("\/dashboard\/getting-started\/business"\)/);
  assert.match(home,/Your setup checklist/);
  assert.match(home,/Set up payments and banks/);
  assert.match(home,/Customize invoice template/);
  assert.match(home,/Add business information/);
  assert.match(home,/Set up app lock/);
  assert.match(home,/progress\.completed/);
+ assert.doesNotMatch(home,/Open full workspace setup|href="\/dashboard"/);
+ assert.match(home,/<QuickCreatePanel\/>/);
+ assert.match(overview,/<QuickCreatePanel\/>/);
+ assert.match(overview,/text-xl font-bold leading-snug text-gray-900 sm:text-2xl/);
+ assert.match(quick,/tone:"green"/);
+ assert.match(quick,/tone:"red"/);
+ assert.match(quick,/tone:"orange"/);
+ assert.match(action,/label\.startsWith\("New "\)/);
+ assert.match(action,/block sm:inline/);
  assert.match(mobile,/previewSetupProgress/);
  assert.doesNotMatch(mobile,/toggleTask|setCompletedTasks/);
  assert.match(progress,/const payment=false/);
  assert.match(progress,/const appLock=false/);
  assert.match(settings,/\["Payment connections","\/dashboard\/getting-started\/payments"/);
- assert.match(journey,/<PaymentConnectionsPanel\/>/);
  assert.match(directory,/PAYMENT_METHODS\.map/);
+ assert.match(directory,/border-\[#D9E6F8\] bg-\[#F4F8FF\]/);
  assert.match(directory,/0 of 6 connected/);
 });
 test("Every payment method has a dedicated safe route and no client-only connection state",()=>{
