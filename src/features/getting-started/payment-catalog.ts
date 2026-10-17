@@ -35,5 +35,5 @@ export const CONNECTION_FIELDS:{
   {label:"Client secret",example:"••••••••",secret:true}
  ]
 };
-export const PAYMENT_FAQ="/dashboard/settings/faqs";
+export const PAYMENT_FAQ="/dashboard/settings/faqs/payment-setup";
 export const PAYMENT_ROUTE="/dashboard/getting-started/payments";
