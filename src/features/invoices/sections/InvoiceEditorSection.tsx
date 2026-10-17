@@ -7,6 +7,7 @@ import {useMerchantPreview} from "@/src/features/merchant-preview/MerchantPrevie
 import {InvoiceMetadataSection} from "./InvoiceMetadataSection";
 import {InvoiceItemsSection} from "./InvoiceItemsSection";
 import InvoiceWorkflowPanel from "./InvoiceWorkflowPanel";
+import {lagosDateTime} from "@/src/features/invoices/lib/collection-expiry";
 
 type Props={draft:InvoiceDraft;setDraft:React.Dispatch<React.SetStateAction<InvoiceDraft>>};
 type Part="details"|"items"|"charges"|"workflow";
@@ -26,11 +27,17 @@ function Panel({name,title,description,open,onToggle,children}:{name:Part;title:
 export function InvoiceEditorSection({draft,setDraft}:Props){
  const {paymentMode}=useMerchantPreview();
  const [open,setOpen]=useState<Part[]>(["details"]);
+ const [dueTime,setDueTime]=useState("23:59");
  const allOpen=open.length===parts.length;
  const toggle=(part:Part)=>setOpen(previous=>previous.includes(part)?previous.filter(x=>x!==part):[part]);
  const update=<K extends keyof InvoiceDraft>(key:K,value:InvoiceDraft[K])=>setDraft(p=>({...p,[key]:value}));
  const total=calculateInvoiceTotals(draft.rows,draft.discount,draft.tax).total;
  const totalMinor=Math.round(total*100);
+ const months=["JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT","NOV","DEC"];
+ const index=months.indexOf(draft.dueMonth.toUpperCase());
+ const dueIso=index>=0&&/^\d{4}$/.test(draft.dueYear)&&Number(draft.dueDay)>=1
+  ?draft.dueYear+"-"+String(index+1).padStart(2,"0")+"-"+String(draft.dueDay).padStart(2,"0"):"";
+ const invoiceDueAtLagos=lagosDateTime(dueIso,dueTime);
  const validTotal=Number.isSafeInteger(totalMinor)&&totalMinor>0;
  return <section aria-label="Invoice input" className="min-w-0 space-y-3">
   <div className="flex flex-wrap items-center justify-between gap-2 px-1">
@@ -38,7 +45,7 @@ export function InvoiceEditorSection({draft,setDraft}:Props){
    <button type="button" onClick={()=>setOpen(allOpen?[]:parts)} className="rounded-full border border-[#DCE7F5] px-3 py-2 text-xs font-semibold text-[#0064E0]">{allOpen?"Collapse all":"Expand all"}</button>
   </div>
   <Panel name="details" title="Invoice & customer details" description="Number, customer, dates, sender and payment method" open={open.includes("details")} onToggle={()=>toggle("details")}>
-   <InvoiceMetadataSection draft={draft} setDraft={setDraft}/>
+   <InvoiceMetadataSection draft={draft} setDraft={setDraft} dueTime={dueTime} setDueTime={setDueTime}/>
   </Panel>
   <Panel name="items" title="Products & services" description={draft.rows.length+" item"+(draft.rows.length===1?"":"s")+" · expand an item to edit it"} open={open.includes("items")} onToggle={()=>toggle("items")}>
    <InvoiceItemsSection draft={draft} setDraft={setDraft}/>
@@ -59,7 +66,7 @@ export function InvoiceEditorSection({draft,setDraft}:Props){
    <p className="mt-3 rounded-lg bg-[#F2F7FD] p-3 text-xs text-[#355D82]">Check your payment method and business bank details before sharing an invoice. Online payment options require activation.</p>
   </Panel>
   <Panel name="workflow" title="Payment plan & communication" description="Installments, draft messages and customer-sharing options" open={open.includes("workflow")} onToggle={()=>toggle("workflow")}>
-   {validTotal?<InvoiceWorkflowPanel invoice={{id:"unsaved-draft",reference:draft.invoiceNo,customer:draft.clientName||"Customer",email:draft.clientEmail,amount:(totalMinor/100).toFixed(2),date:"",dueDate:"",status:"draft",paymentMode}} currency={draft.currency}/>:
+   {validTotal?<InvoiceWorkflowPanel invoice={{id:"unsaved-draft",reference:draft.invoiceNo,customer:draft.clientName||"Customer",email:draft.clientEmail,amount:(totalMinor/100).toFixed(2),date:"",dueDate:"",status:"draft",paymentMode}} currency={draft.currency} invoiceDueAtLagos={invoiceDueAtLagos}/>:
    <p role="alert" className="text-xs text-red-700">Add an item with a positive amount before planning installments.</p>}
   </Panel>
   <div className="flex flex-wrap gap-2 rounded-xl bg-white p-4">
