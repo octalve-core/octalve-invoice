@@ -1,6 +1,6 @@
 {
   "updatedAt": "2026-10-19",
-  "phase": "Phase 0I Batch S Payment Received + exception UX Review-only technical release VERIFIED; owner visual sign-off open.",
+  "phase": "Phase 0I Batch T NRS readiness and complete invoice journey REVIEW candidate; source qualification in progress.",
   "branch": "review/phase-0i",
   "mainBootstrapSha": "87ad423dba3ced2445e109baa85114aea3d30037",
   "latestMigration": null,
@@ -94,7 +94,7 @@
     "Backend-approved authority needed before staff approvals, money posting, NRS, persistent finance ledgers, customer access, recurring issuance or communication delivery.",
     "Source and browser regressions pass; visual goldens and customer UX review still need owner sign-off."
   ],
-  "nextPhase": "Owner visual review for Batch S; then Phase 0I Batch T NRS UI/readiness and complete journey verification, no real NRS submission, real payment integrations or Phase1. Main/Production promotion requires explicit separate approval.",
+  "nextPhase": "Verify Batch T exact source CI/CodeQL/189+64+7P+7Q+7R+7S+7T browser, publish Review only, check independent merged CI and Vercel READY; collect owner visual review of R/S/T and decide Phase 1 separately. No Phase 1 or R/S/T Production.",
   "currentCodeCheckpoint": "1fa854cd65074fe0aea3ec02c4cdbd46b8d40261",
   "lastVerifiedApplicationCommit": "eac710ddadb80e6ed032ee209de434e0efe514e1",
   "exactNextPhase": "Phase 0I Batch R — client and merchant invoice template/issued-record Preview authority; then S Payment Received cross-provider ledger and expired-account exceptions; T NRS/compliance UX. Do not start without owner direction; Phase 1 still explicitly blocked.",
@@ -167,5 +167,9 @@
   "batchSReviewPR": "https://github.com/octalve-core/octalve-invoice/pull/33",
   "batchSReviewMerge": "eb9cfab311004075423446224f047730a28305c3",
   "batchSReviewDeployment": "dpl_9GrFVMBRTs1AqfzN5T4NmJDDNdPJ READY exact Review merge",
-  "batchSReviewEvidence": "39265447844 Node,39265447873 CodeQL,39265447802 browser 189+64+7P+7Q+7R+7S PASS; independently merged 39266277879 Node,39266277946 CodeQL,39266278074 browser PASS 189+64+7P+7Q+7R+7S, artifact 12192523362."
+  "batchSReviewEvidence": "39265447844 Node,39265447873 CodeQL,39265447802 browser 189+64+7P+7Q+7R+7S PASS; independently merged 39266277879 Node,39266277946 CodeQL,39266278074 browser PASS 189+64+7P+7Q+7R+7S, artifact 12192523362.",
+  "batchTBranch": "phase/0i-batch-t-nrs-readiness-journey",
+  "batchTSourceCheckpoint": "653761fce45a618c5272d71fedd7fcfcd257c245",
+  "batchTStatus": "New NRS readiness/journey route and Tax Centre link implemented with pure authority checks; no real connection or filing; qualification and final Review publication to verify.",
+  "batchTDecisionAuthority": "D146-D147: entered taxpayer data is unverified, NRS SI/APP not accredited; official IRN/QR and PARTIAL/PAID require authorised NRS route plus verified payment truth, never draft or receipt."
 }
