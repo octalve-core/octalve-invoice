@@ -1,6 +1,6 @@
 {
   "updatedAt": "2026-10-19",
-  "phase": "Phase 0I Batch S Payment Received UI candidate, Review-only qualification",
+  "phase": "Phase 0I Batch S Payment Received + exception UX Review-only technical release VERIFIED; owner visual sign-off open.",
   "branch": "review/phase-0i",
   "mainBootstrapSha": "87ad423dba3ced2445e109baa85114aea3d30037",
   "latestMigration": null,
@@ -94,7 +94,7 @@
     "Backend-approved authority needed before staff approvals, money posting, NRS, persistent finance ledgers, customer access, recurring issuance or communication delivery.",
     "Source and browser regressions pass; visual goldens and customer UX review still need owner sign-off."
   ],
-  "nextPhase": "Complete exact Batch S CodeQL/browser 189 routes +64 baseline +7 Batch P +7 Batch Q +7 Batch R +7 Batch S; reviewed PR to review/phase-0i; exact merged SHA CI/Vercel; owner screenshot acceptance. Then Phase 0I Batch T NRS readiness. No Phase1/main/Production.",
+  "nextPhase": "Owner visual review for Batch S; then Phase 0I Batch T NRS UI/readiness and complete journey verification, no real NRS submission, real payment integrations or Phase1. Main/Production promotion requires explicit separate approval.",
   "currentCodeCheckpoint": "1fa854cd65074fe0aea3ec02c4cdbd46b8d40261",
   "lastVerifiedApplicationCommit": "eac710ddadb80e6ed032ee209de434e0efe514e1",
   "exactNextPhase": "Phase 0I Batch R — client and merchant invoice template/issued-record Preview authority; then S Payment Received cross-provider ledger and expired-account exceptions; T NRS/compliance UX. Do not start without owner direction; Phase 1 still explicitly blocked.",
@@ -161,7 +161,11 @@
   "batchRReviewDeployment": "dpl_CKtiF4mzBahqF4Z2vH65WTkdo26e READY same app SHA.",
   "batchREvidence": "Source 74c11435 Node 39056100897 CodeQL 39056100893 browser 39056100881 PASS; merged Review 077db13d Node 39056453847 CodeQL 39056453836 browser 39056453830 PASS 189/189+64/64+7/7P+7/7Q+7/7R artifact 12110220543.",
   "batchSBranch": "phase/0i-batch-s-payment-received-preview",
-  "batchSSourceHead": "693ec2acfd486359410334e04ad5f46f8609cdea",
-  "batchSStatus": "Source implemented: preview-only six lifecycle categories, provider and search filters, cross-provider event examples, read-only keyboard-escapable activity detail, correct ledger-based verified totals. Node24 qualification PASS run 39264870243; CodeQL and browser QA pending. No real reconciliation or issuance.",
-  "batchSAuthority": "Only financeProjection of existing verified ledger/payment events contributes to cash; sample pending/intent/settlement/refund rows do not. Real backend, provider API and manual-bank approval still blocked."
+  "batchSSourceHead": "fe5a6dd3d6abf0013442f0dd59992166379bedc5",
+  "batchSStatus": "REVIEW TECHNICAL PASS via PR #33 at eb9cfab311004075423446224f047730a28305c3; all merged CI/CodeQL/browser and Vercel READY at same SHA. No real provider data/financial backend. Owner screenshot review still pending.",
+  "batchSAuthority": "Only financeProjection of existing verified ledger/payment events contributes to cash; sample pending/intent/settlement/refund rows do not. Real backend, provider API and manual-bank approval still blocked.",
+  "batchSReviewPR": "https://github.com/octalve-core/octalve-invoice/pull/33",
+  "batchSReviewMerge": "eb9cfab311004075423446224f047730a28305c3",
+  "batchSReviewDeployment": "dpl_9GrFVMBRTs1AqfzN5T4NmJDDNdPJ READY exact Review merge",
+  "batchSReviewEvidence": "39265447844 Node,39265447873 CodeQL,39265447802 browser 189+64+7P+7Q+7R+7S PASS; independently merged 39266277879 Node,39266277946 CodeQL,39266278074 browser PASS 189+64+7P+7Q+7R+7S, artifact 12192523362."
 }
