@@ -273,7 +273,7 @@ const routes=[
    if(await external.getAttribute("rel")!=="noopener noreferrer")throw Error("Unsafe external NRS reference");
    if(await page.locator("html").evaluate(el=>el.scrollWidth>el.clientWidth+2))throw Error("Batch T horizontal overflow");
    await page.screenshot({path:path.join(out,"batch-t-nrs-journey-"+width+".png"),fullPage:true,animations:"disabled"});
-   await page.getByRole("link",{name:"Payment Received"}).click();
+   await page.locator('main[aria-label="NRS and invoice lifecycle review"]').getByRole("link",{name:"Payment Received"}).click();
    await page.getByRole("heading",{name:"Payment Received",level:1}).waitFor();
    if(await page.locator("html").evaluate(el=>el.scrollWidth>el.clientWidth+2))throw Error("Batch T Payment Received overflow");
    batchT.status="PASS";
