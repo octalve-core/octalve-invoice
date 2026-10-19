@@ -1,6 +1,6 @@
 {
-  "updatedAt": "2026-10-17",
-  "phase": "Phase 0I Batch R customer/merchant invoice PREVIEW technically completed on Review; owner visual sign-off open.",
+  "updatedAt": "2026-10-19",
+  "phase": "Phase 0I Batch S Payment Received UI candidate, Review-only qualification",
   "branch": "review/phase-0i",
   "mainBootstrapSha": "87ad423dba3ced2445e109baa85114aea3d30037",
   "latestMigration": null,
@@ -94,7 +94,7 @@
     "Backend-approved authority needed before staff approvals, money posting, NRS, persistent finance ledgers, customer access, recurring issuance or communication delivery.",
     "Source and browser regressions pass; visual goldens and customer UX review still need owner sign-off."
   ],
-  "nextPhase": "Owner visual inspection of Batch R merchant/client demo and any corrections; proceed to Phase 0I Batch S Payment Received UI, followed by T NRS. Review-only release for R; main/Production not authorised for R. Phase1/real payment/NRS/issuance blocked.",
+  "nextPhase": "Complete exact Batch S CodeQL/browser 189 routes +64 baseline +7 Batch P +7 Batch Q +7 Batch R +7 Batch S; reviewed PR to review/phase-0i; exact merged SHA CI/Vercel; owner screenshot acceptance. Then Phase 0I Batch T NRS readiness. No Phase1/main/Production.",
   "currentCodeCheckpoint": "1fa854cd65074fe0aea3ec02c4cdbd46b8d40261",
   "lastVerifiedApplicationCommit": "eac710ddadb80e6ed032ee209de434e0efe514e1",
   "exactNextPhase": "Phase 0I Batch R — client and merchant invoice template/issued-record Preview authority; then S Payment Received cross-provider ledger and expired-account exceptions; T NRS/compliance UX. Do not start without owner direction; Phase 1 still explicitly blocked.",
@@ -159,5 +159,9 @@
     "https://github.com/octalve-core/octalve-invoice/pull/31"
   ],
   "batchRReviewDeployment": "dpl_CKtiF4mzBahqF4Z2vH65WTkdo26e READY same app SHA.",
-  "batchREvidence": "Source 74c11435 Node 39056100897 CodeQL 39056100893 browser 39056100881 PASS; merged Review 077db13d Node 39056453847 CodeQL 39056453836 browser 39056453830 PASS 189/189+64/64+7/7P+7/7Q+7/7R artifact 12110220543."
+  "batchREvidence": "Source 74c11435 Node 39056100897 CodeQL 39056100893 browser 39056100881 PASS; merged Review 077db13d Node 39056453847 CodeQL 39056453836 browser 39056453830 PASS 189/189+64/64+7/7P+7/7Q+7/7R artifact 12110220543.",
+  "batchSBranch": "phase/0i-batch-s-payment-received-preview",
+  "batchSSourceHead": "693ec2acfd486359410334e04ad5f46f8609cdea",
+  "batchSStatus": "Source implemented: preview-only six lifecycle categories, provider and search filters, cross-provider event examples, read-only keyboard-escapable activity detail, correct ledger-based verified totals. Node24 qualification PASS run 39264870243; CodeQL and browser QA pending. No real reconciliation or issuance.",
+  "batchSAuthority": "Only financeProjection of existing verified ledger/payment events contributes to cash; sample pending/intent/settlement/refund rows do not. Real backend, provider API and manual-bank approval still blocked."
 }

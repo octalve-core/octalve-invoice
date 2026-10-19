@@ -213,15 +213,53 @@ const routes=[
   results.push({batchR});
   await page.close();
  }
+
+ // Batch S: cross-provider activity/read-only investigation UX and responsive checks.
+ const sWidths=[320,360,390,430,768,1024,1440];
+ for(const width of sWidths){
+  const page=await browser.newPage({viewport:{width,height:width>=1024?650:780},deviceScaleFactor:1});
+  const batchS={width,status:"unknown"};
+  try{
+   const response=await page.goto(base+"/dashboard/payment-received",{waitUntil:"domcontentloaded",timeout:18000});
+   if(response?.status()!==200)throw Error("Payment activity HTTP "+response?.status());
+   await page.getByRole("heading",{name:"Payment Received"}).waitFor();
+   await page.getByText("Example records · No connections").waitFor();
+   await page.getByRole("region",{name:"Verified payment example totals"}).waitFor();
+   await page.getByRole("tab",{name:"Verified collections"}).click();
+   await page.getByText("Initialized/pending/expired attempts are not counted as collections.",{exact:false}).waitFor();
+   await page.getByRole("tab",{name:"Exceptions"}).click();
+   await page.getByRole("button",{name:"View activity EXC-EX-006"}).click();
+   const dialog=page.getByRole("dialog",{name:"Payment activity details"});
+   await dialog.waitFor();
+   await dialog.getByText("Post-expiry transfer alleged.",{exact:false}).waitFor();
+   await page.keyboard.press("Escape");
+   await dialog.waitFor({state:"hidden"});
+   await page.getByRole("tab",{name:"Refunds & credits"}).click();
+   await page.getByRole("button",{name:"View activity REF-EX-011"}).waitFor();
+   await page.getByRole("tab",{name:"All activity"}).click();
+   await page.getByRole("textbox",{name:"Search payment activity"}).fill("EXAMPLE-LATE-006");
+   if(await page.getByRole("button",{name:/View activity/}).count()!==1)throw Error("Payment search must match one reference");
+   await page.getByRole("textbox",{name:"Search payment activity"}).fill("");
+   await page.getByRole("combobox",{name:"Provider filter"}).selectOption("Monnify (example)");
+   if(await page.getByRole("button",{name:/View activity/}).count()<1)throw Error("Provider filter returned nothing");
+   if(await page.locator("html").evaluate(el=>el.scrollWidth>el.clientWidth+2))throw Error("Batch S horizontal overflow");
+   await page.screenshot({path:path.join(out,"batch-s-payment-received-"+width+".png"),fullPage:true,animations:"disabled"});
+   batchS.status="PASS";
+  }catch(e){errors++;batchS.status="FAIL";batchS.error=String(e?.message||e).slice(0,680);}
+  results.push({batchS});
+  await page.close();
+ }
  }finally{await browser.close();}
  fs.writeFileSync(path.join(out,"report.json"),JSON.stringify({head:process.env.GITHUB_SHA||"local",results},null,2));
- console.log("Phase 0I viewport checks:",results.filter(x=>!x.batchP&&!x.batchQ&&!x.batchR&&x.status==="PASS").length,"/",results.filter(x=>!x.batchP&&!x.batchQ&&!x.batchR).length);
+ console.log("Phase 0I viewport checks:",results.filter(x=>!x.batchP&&!x.batchQ&&!x.batchR&&!x.batchS&&x.status==="PASS").length,"/",results.filter(x=>!x.batchP&&!x.batchQ&&!x.batchR&&!x.batchS).length);
  console.log("Batch P payment setup checks:",results.filter(x=>x.batchP?.status==="PASS").length,"/",results.filter(x=>x.batchP).length);
  console.log("Batch Q invoice due and milestone checks:",results.filter(x=>x.batchQ?.status==="PASS").length,"/",results.filter(x=>x.batchQ).length);
  console.log("Batch R merchant/client template checks:",results.filter(x=>x.batchR?.status==="PASS").length,"/",results.filter(x=>x.batchR).length);
+ console.log("Batch S payment activity checks:",results.filter(x=>x.batchS?.status==="PASS").length,"/",results.filter(x=>x.batchS).length);
  for(const failed of results.filter(x=>x.status==="FAIL"))console.error("VIEWPORT FAIL",failed.width,failed.route,failed.error);
  for(const failed of results.filter(x=>x.batchP?.status==="FAIL"))console.error("BATCH P FAIL",failed.batchP.width,failed.batchP.error);
  for(const failed of results.filter(x=>x.batchQ?.status==="FAIL"))console.error("BATCH Q FAIL",failed.batchQ.width,failed.batchQ.error);
  for(const failed of results.filter(x=>x.batchR?.status==="FAIL"))console.error("BATCH R FAIL",failed.batchR.width,failed.batchR.error);
+ for(const failed of results.filter(x=>x.batchS?.status==="FAIL"))console.error("BATCH S FAIL",failed.batchS.width,failed.batchS.error);
  if(errors)process.exitCode=1;
 })().catch(e=>{console.error(e);process.exitCode=1;});
