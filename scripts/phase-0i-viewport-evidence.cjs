@@ -249,17 +249,51 @@ const routes=[
   results.push({batchS});
   await page.close();
  }
+
+ // Batch T: official NRS readiness boundaries and complete merchant/customer journey.
+ const tWidths=[320,360,390,430,768,1024,1440];
+ for(const width of tWidths){
+  const page=await browser.newPage({viewport:{width,height:width>=1024?650:780},deviceScaleFactor:1});
+  const batchT={width,status:"unknown"};
+  try{
+   const response=await page.goto(base+"/dashboard/tax-centre",{waitUntil:"domcontentloaded",timeout:18000});
+   if(response?.status()!==200)throw Error("Tax Centre HTTP "+response?.status());
+   await page.getByRole("button",{name:"NRS e-invoices"}).click();
+   await page.getByRole("link",{name:/View full NRS journey/}).click();
+   await page.getByRole("heading",{name:"NRS & invoice journey",level:1}).waitFor();
+   await page.getByText("Not connected",{exact:true}).first().waitFor();
+   const flow=page.getByRole("list",{name:"Eight-stage user journey"});
+   if(await flow.locator("li").count()!==8)throw Error("Eight-stage journey incomplete");
+   await page.getByRole("heading",{name:"What each record proves"}).waitFor();
+   await page.getByRole("heading",{name:"NRS connection milestones"}).waitFor();
+   await page.getByText("No NRS submissions or IRNs yet.",{exact:false}).waitFor();
+   await page.getByText("PARTIAL",{exact:true}).waitFor();
+   await page.getByText("No taxpayer link, accreditation, official IRN, fiscal QR, submission, or payment update exists in this Preview.",{exact:true}).waitFor();
+   const external=page.getByRole("link",{name:/Official NRS onboarding/});
+   if(await external.getAttribute("rel")!=="noopener noreferrer")throw Error("Unsafe external NRS reference");
+   if(await page.locator("html").evaluate(el=>el.scrollWidth>el.clientWidth+2))throw Error("Batch T horizontal overflow");
+   await page.screenshot({path:path.join(out,"batch-t-nrs-journey-"+width+".png"),fullPage:true,animations:"disabled"});
+   await page.locator('main[aria-label="NRS and invoice lifecycle review"]').getByRole("link",{name:"Payment Received"}).click();
+   await page.getByRole("heading",{name:"Payment Received",level:1}).waitFor();
+   if(await page.locator("html").evaluate(el=>el.scrollWidth>el.clientWidth+2))throw Error("Batch T Payment Received overflow");
+   batchT.status="PASS";
+  }catch(e){errors++;batchT.status="FAIL";batchT.error=String(e?.message||e).slice(0,690);}
+  results.push({batchT});
+  await page.close();
+ }
  }finally{await browser.close();}
  fs.writeFileSync(path.join(out,"report.json"),JSON.stringify({head:process.env.GITHUB_SHA||"local",results},null,2));
- console.log("Phase 0I viewport checks:",results.filter(x=>!x.batchP&&!x.batchQ&&!x.batchR&&!x.batchS&&x.status==="PASS").length,"/",results.filter(x=>!x.batchP&&!x.batchQ&&!x.batchR&&!x.batchS).length);
+ console.log("Phase 0I viewport checks:",results.filter(x=>!x.batchP&&!x.batchQ&&!x.batchR&&!x.batchS&&!x.batchT&&x.status==="PASS").length,"/",results.filter(x=>!x.batchP&&!x.batchQ&&!x.batchR&&!x.batchS&&!x.batchT).length);
  console.log("Batch P payment setup checks:",results.filter(x=>x.batchP?.status==="PASS").length,"/",results.filter(x=>x.batchP).length);
  console.log("Batch Q invoice due and milestone checks:",results.filter(x=>x.batchQ?.status==="PASS").length,"/",results.filter(x=>x.batchQ).length);
  console.log("Batch R merchant/client template checks:",results.filter(x=>x.batchR?.status==="PASS").length,"/",results.filter(x=>x.batchR).length);
  console.log("Batch S payment activity checks:",results.filter(x=>x.batchS?.status==="PASS").length,"/",results.filter(x=>x.batchS).length);
+ console.log("Batch T NRS journey checks:",results.filter(x=>x.batchT?.status==="PASS").length,"/",results.filter(x=>x.batchT).length);
  for(const failed of results.filter(x=>x.status==="FAIL"))console.error("VIEWPORT FAIL",failed.width,failed.route,failed.error);
  for(const failed of results.filter(x=>x.batchP?.status==="FAIL"))console.error("BATCH P FAIL",failed.batchP.width,failed.batchP.error);
  for(const failed of results.filter(x=>x.batchQ?.status==="FAIL"))console.error("BATCH Q FAIL",failed.batchQ.width,failed.batchQ.error);
  for(const failed of results.filter(x=>x.batchR?.status==="FAIL"))console.error("BATCH R FAIL",failed.batchR.width,failed.batchR.error);
  for(const failed of results.filter(x=>x.batchS?.status==="FAIL"))console.error("BATCH S FAIL",failed.batchS.width,failed.batchS.error);
+ for(const failed of results.filter(x=>x.batchT?.status==="FAIL"))console.error("BATCH T FAIL",failed.batchT.width,failed.batchT.error);
  if(errors)process.exitCode=1;
 })().catch(e=>{console.error(e);process.exitCode=1;});
