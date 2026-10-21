@@ -2,6 +2,7 @@
 
 import {useMerchantPreview} from "@/src/features/merchant-preview/MerchantPreviewProvider";
 import Tabs from "@/components/dashboard/ui/Tabs";
+import {MerchantPageHeading} from "@/components/dashboard/ui/MerchantPageHeading";
 import {OverviewMetrics} from "@/src/features/dashboard/OverviewMetrics";
 import {QuickCreatePanel} from "@/src/features/dashboard/QuickCreatePanel";
 import ReceivableChart from "@/components/dashboard/charts/ReceivableChart";
@@ -20,15 +21,7 @@ export default function DashboardPage() {
       {/* Tabs */}
       <div className="hidden lg:block"><Tabs tabs={tabs} /></div>
 
-      {/* Welcome Section */}
-      <div>
-        <h1 className="text-xl font-bold leading-snug text-gray-900 sm:text-2xl">
-          Welcome{user.fullName ? ` back, ${user.fullName}` : " to your dashboard"}
-        </h1>
-        <p className="text-gray-500 mt-1">
-          Here’s your business overview.
-        </p>
-      </div>
+      <MerchantPageHeading title={user.fullName?`Welcome back, ${user.fullName}`:"Welcome to your dashboard"} description="Here’s your business overview."/>
 
       <QuickCreatePanel/>
 
