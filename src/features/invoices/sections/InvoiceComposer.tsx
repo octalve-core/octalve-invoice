@@ -2,7 +2,7 @@
 import Link from "next/link";
 import {useParams,usePathname} from "next/navigation";
 import {useState} from "react";
-import {ArrowLeft,ArrowRight,CheckCircle2,FileText,LockKeyhole} from "lucide-react";
+import {ArrowLeft,ArrowRight,FileText,LockKeyhole} from "lucide-react";
 import {getPreviewInvoice} from "@/src/features/invoices/lib/preview-records";
 import {formatDocumentNumber} from "@/src/features/invoices/lib/document-number";
 import {calculateInvoiceTotals} from "@/src/features/invoice/lib/calculations";
@@ -75,7 +75,7 @@ export function InvoiceComposer({mode="create",invoiceId}:{mode?:"create"|"edit"
       (step===item.id?"border-[#0064E0] bg-[#E9F3FF] text-[#0064E0] shadow-[inset_0_3px_0_#0064E0]":"border-[#E5ECF5] bg-white text-[#677B93] hover:border-[#BAD9FF] hover:bg-[#F6FAFF]")}>
       <span className={"grid h-7 w-7 shrink-0 place-items-center rounded-full text-xs font-bold "+
        (step===item.id?"bg-[#0064E0] text-white":index<currentIndex?"bg-[#DCEBFF] text-[#0064E0]":"bg-[#EDF2F8] text-[#7489A0]")}>
-       {index<currentIndex?<CheckCircle2 size={16}/>:index+1}
+       {index+1}
       </span>
       <span className="truncate text-[10px] font-semibold sm:text-xs">{item.short}</span>
     </Link>)}
@@ -109,7 +109,7 @@ export function InvoiceComposer({mode="create",invoiceId}:{mode?:"create"|"edit"
       <div><dt className="text-slate-500">Reference</dt><dd className="mt-1 break-all font-semibold text-[#173652]">{draft.invoiceNo}</dd></div>
      </dl>
      <Link href={href("preview")} className="inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-full bg-[#0064E0] px-4 text-xs font-semibold text-white"><FileText size={16}/> Review invoice</Link>
-     <p className="text-[11px] leading-5 text-slate-500">Your changes remain on this invoice while you move between steps.</p>
+     <p className="text-[11px] leading-5 text-slate-500">Your edits stay in place while you switch steps.</p>
     </aside>}
   </div>
 
