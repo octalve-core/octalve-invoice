@@ -136,8 +136,9 @@ const routes=[
   try{
    const response=await page.goto(base+"/dashboard/invoice/create",{waitUntil:"domcontentloaded",timeout:20000});
    if(response?.status()!==200)throw Error("Invoice composer HTTP "+response?.status());
-   await page.getByRole("button",{name:/Payment plan & communication/}).click();
+   await page.getByRole("navigation",{name:"Invoice steps"}).getByRole("link",{name:/Payments/}).click();
    await page.getByRole("heading",{name:"Invoice workflow"}).waitFor();
+   if(await page.getByRole("navigation",{name:"Invoice steps"}).getByRole("link",{name:/Payments/}).getAttribute("aria-current")!=="step")throw Error("Payment step is not visibly active");
    const method=page.getByRole("combobox",{name:"Collection method preview"});
    const review=page.getByRole("button",{name:"Review proposed split"});
    const dueTime=page.locator('input[aria-label="Invoice due time Africa/Lagos"]');
