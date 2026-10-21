@@ -202,18 +202,24 @@ const origin = process.env.OCTALVE_BASE_URL || "http://127.0.0.1:3000";
             const layout=await page.evaluate(()=>{
               const sidebar=document.querySelector('aside[aria-label="Desktop workspace sidebar"]');
               const panel=sidebar?.nextElementSibling;
+              const content=panel?.querySelector('main[data-merchant-scroll-region]');
+              const header=panel?.querySelector('header input[aria-label="Find a workspace page"]')?.closest("header");
+              const logo=sidebar?.querySelector("div.h-16");
               const nav=sidebar?.querySelector('nav[aria-label="Desktop main navigation"]');
               const footer=sidebar?.querySelector('footer[aria-label="Sidebar account and billing"]');
-              if(!(sidebar instanceof HTMLElement)||!(panel instanceof HTMLElement)||!(nav instanceof HTMLElement)||!(footer instanceof HTMLElement))return {ok:false};
-              const start=sidebar.getBoundingClientRect();
-              panel.scrollTop=panel.scrollHeight;
+              if(!(sidebar instanceof HTMLElement)||!(panel instanceof HTMLElement)||!(content instanceof HTMLElement)||!(header instanceof HTMLElement)||!(logo instanceof HTMLElement)||!(nav instanceof HTMLElement)||!(footer instanceof HTMLElement))return {ok:false};
+              const start=sidebar.getBoundingClientRect(),top=header.getBoundingClientRect(),logoTop=logo.getBoundingClientRect();
+              content.scrollTop=content.scrollHeight;
               nav.scrollTop=nav.scrollHeight;
-              const end=sidebar.getBoundingClientRect(),bottom=footer.getBoundingClientRect();
+              const end=sidebar.getBoundingClientRect(),endHeader=header.getBoundingClientRect(),bottom=footer.getBoundingClientRect();
               const bg=getComputedStyle(sidebar).backgroundColor;
-              const result={ok:Math.abs(start.top-end.top)<1&&Math.abs(start.left-end.left)<1&&bottom.bottom<=innerHeight+1&&bottom.bottom>innerHeight-100, bg,scroller:panel.scrollHeight>panel.clientHeight,navScrollable:nav.scrollHeight>nav.clientHeight,navScrolled:nav.scrollTop};
-              panel.scrollTop=0;nav.scrollTop=0;return result;
+              const aligned=Math.abs(top.bottom-logoTop.bottom)<1&&Math.abs(top.height-64)<1&&Math.abs(logoTop.height-64)<1;
+              const result={ok:Math.abs(start.top-end.top)<1&&Math.abs(start.left-end.left)<1&&Math.abs(top.top-endHeader.top)<1&&Math.abs(top.bottom-endHeader.bottom)<1&&bottom.bottom<=innerHeight+1&&bottom.bottom>innerHeight-100&&aligned,
+                bg,scroller:content.scrollHeight>content.clientHeight,navScrollable:nav.scrollHeight>nav.clientHeight,navScrolled:nav.scrollTop,
+                panelScrollable:panel.scrollHeight>panel.clientHeight,headerHeight:top.height,logoHeight:logoTop.height};
+              content.scrollTop=0;nav.scrollTop=0;return result;
             });
-            if(!layout.ok||layout.bg!=="rgb(0, 10, 22)"||!layout.scroller)throw Error("Desktop sidebar must be fixed at #000A16 and have an independent scrolling page: "+JSON.stringify(layout));
+            if(!layout.ok||layout.bg!=="rgb(0, 10, 22)"||!layout.scroller||layout.panelScrollable)throw Error("Desktop sidebar must be fixed at #000A16 and have an independent scrolling page: "+JSON.stringify(layout));
             record.desktopSidebarAnchored="PASS";
             record.sidebarSubscriptionFooter="PASS";
           }
