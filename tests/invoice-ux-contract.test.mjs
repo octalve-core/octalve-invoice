@@ -66,7 +66,7 @@ test("unsaved and edit-mode browser previews are watermarked and cannot download
  assert.match(composer,/invoicePreferences/);
  assert.match(composer,/applyNewInvoicePreferences/);
  assert.match(composer,/aria-current=\{step===item\.id\?"step":undefined\}/);
- assert.match(composer,/step:"preview"/);
+ assert.match(composer,/id:"preview"/);
 });
 test("invoice settings use shared merchant state without invented default tax",()=>{
  const settings=read("app/(dashboard)/dashboard/settings/invoice/page.tsx");
