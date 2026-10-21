@@ -19,9 +19,23 @@ const output=path.resolve("artifacts/phase-0x-walkthrough");
     const url=new URL(page.url()).pathname;
     const overflow=await page.evaluate(()=>document.documentElement.scrollWidth>window.innerWidth+2);
     steps.push({action:label,route:url,overflow});
-    if(overflow)issues.push({step:label,error:"Document horizontal overflow",route:url});
+    if(overflow){
+     const culprits=await page.evaluate(()=>[...document.body.querySelectorAll("*")].filter(el=>{
+      const rect=el.getBoundingClientRect(),style=getComputedStyle(el);
+      return rect.width>0&&style.display!=="none"&&style.visibility!=="hidden"&&rect.right>window.innerWidth+2;
+     }).slice(0,8).map(el=>({tag:el.tagName,role:el.getAttribute("role"),className:String(el.className).slice(0,160),right:Math.round(el.getBoundingClientRect().right)})));
+     issues.push({step:label,error:"Document horizontal overflow",route:url,culprits});
+    }
    };
-   const click=async(locator,label)=>{await locator.click({timeout:15000});await record(label);};
+   const click=async(locator,label)=>{
+    const href=await locator.getAttribute("href").catch(()=>null);
+    await locator.click({timeout:15000});
+    if(href?.startsWith("/")){
+     const target=new URL(href,origin).pathname;
+     await page.waitForURL(url=>url.pathname===target,{timeout:15000});
+    }
+    await record(label);
+   };
    const customerNav=page.getByRole("navigation",{name:"Customer workspace navigation"});
    const adminNav=page.getByRole("navigation",{name:"Octalve operations navigation"});
    const customerMobile=page.getByRole("navigation",{name:"Customer workspace mobile navigation"});
