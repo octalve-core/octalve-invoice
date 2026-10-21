@@ -1,0 +1,61 @@
+import test from "node:test";
+import assert from "node:assert/strict";
+import {readFileSync} from "node:fs";
+const read=p=>readFileSync(new URL("../"+p,import.meta.url),"utf8");
+test("existing merchant dashboard layout and paths remain intact",()=>{
+ const merchant=read("app/(dashboard)/layout.tsx");
+ const route=read("app/(dashboard)/dashboard/invoice/page.tsx");
+ assert.match(merchant,/<MerchantPreviewProvider>/);
+ assert.match(merchant,/<Sidebar \/>/);
+ assert.match(route,/<InvoiceListSection\/>/);
+});
+test("independent customer and platform admin route groups have different shells",()=>{
+ const base="app/(customer)/customer/";
+ const admin="app/(platform)/admin/";
+ const shell=read("src/features/experience-preview/PreviewShell.tsx");
+ assert.match(read(base+"layout.tsx"),/experience="customer"/);
+ assert.match(read(admin+"layout.tsx"),/experience="admin"/);
+ assert.match(read(base+"page.tsx"),/CustomerWorkspace/);
+ assert.match(read(admin+"page.tsx"),/AdminWorkspace/);
+ assert.match(read(base+"[section]/page.tsx"),/notFound\(\)/);
+ assert.match(read(admin+"[section]/page.tsx"),/notFound\(\)/);
+ assert.match(read(base+"invoices/[id]/page.tsx"),/notFound\(\)/);
+ assert.match(shell,/bg-\[#000A16\]/);
+ assert.match(shell,/bg-\[#0064E0\]/);
+ assert.match(shell,/lg:hidden/);
+ assert.match(shell,/aria-current=/);
+ assert.match(shell,/\/workspaces/);
+});
+test("customer figures are self-contained fictional data and not a merchant record feed",async()=>{
+ const samples=read("src/features/customer-portal/sample-data.ts");
+ const customer=read("src/features/customer-portal/CustomerWorkspace.tsx");
+ const {sampleCustomerInvoices,sampleCustomerSummary}=await import("../src/features/customer-portal/sample-data.ts");
+ assert.ok(sampleCustomerInvoices.length>=4);
+ assert.equal(new Set(sampleCustomerInvoices.map(x=>x.id)).size,sampleCustomerInvoices.length);
+ assert.equal(new Set(sampleCustomerInvoices.map(x=>x.reference)).size,sampleCustomerInvoices.length);
+ assert.ok(sampleCustomerInvoices.every(x=>x.amountMinor>=x.paidMinor&&x.paidMinor>=0));
+ assert.equal(sampleCustomerSummary().outstandingMinor,sampleCustomerInvoices.reduce((sum,i)=>sum+i.amountMinor-i.paidMinor,0));
+ assert.match(samples,/synthetic UI examples/);
+ assert.doesNotMatch(customer,/previewInvoices|financeProjection|fetch\(|localStorage|sessionStorage/);
+ assert.match(customer,/Sample data/);
+ assert.match(customer,/disabled title="Available after authorised issuance/);
+});
+test("admin sample cannot modify subscriptions, verify identities, grant staff access or read merchant finances",()=>{
+ const admin=read("src/features/platform-admin/AdminWorkspace.tsx");
+ assert.match(admin,/disabled title="Requires an authorised staff session/);
+ assert.match(admin,/Interface sample/);
+ assert.doesNotMatch(admin,/setVerified\(|setMembership\(|markPaid\(|issueRefund\(|fetch\(|localStorage|sessionStorage/);
+ assert.match(admin,/requires a verified case/);
+ assert.match(admin,/Pricing not activated/);
+});
+test("UI chooser grants no roles and identity design specifies deny-by-default negative tests",()=>{
+ const chooser=read("app/workspaces/page.tsx");
+ const doc=read("docs/project/THREE_EXPERIENCES_IDENTITY_AND_AUTHORITY_2026-10-21.md");
+ assert.match(chooser,/not a sign-in or an access-granting mechanism/);
+ assert.match(doc,/CustomerAccessGrant/);
+ assert.match(doc,/PlatformStaffMembership/);
+ assert.match(doc,/negative authorisation tests/i);
+ assert.match(doc,/matching email but no confirmed portal grant/);
+ assert.match(doc,/case-authorised/);
+ assert.match(doc,/NOT Phase 1 permission/);
+});
