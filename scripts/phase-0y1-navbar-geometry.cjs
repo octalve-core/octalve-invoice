@@ -81,7 +81,17 @@ function compare(before,after,width,label){
       if(!before.main)throw Error("Missing main for "+route.name);
       await page.mouse.move(Math.max(before.main.left+20,Math.min(width-60,before.main.left+120)),Math.min(height-40,before.main.top+130));
       await page.mouse.wheel(0,9000);
-      await page.waitForTimeout(120);
+      // Chromium may defer wheel scrolling until a subsequent frame. Wait for
+      // the actual rendered scroll position, then retry with a visible hover.
+      if(before.mainScrollable && before.mainScrollTop===0){
+       try{
+        await page.waitForFunction(()=>((document.querySelector('main[data-merchant-scroll-region]'))?.scrollTop||0)>0,null,{timeout:1800});
+       }catch{
+        await page.locator('main[data-merchant-scroll-region]').hover({position:{x:24,y:24}});
+        await page.mouse.wheel(0,9000);
+        await page.waitForTimeout(450);
+       }
+      }else await page.waitForTimeout(160);
       const after=await geometry(page);
       const errors=compare(before,after,width+"x"+height,route.name);
       cases.push({route:route.path,label:route.name,before,after,errors});
