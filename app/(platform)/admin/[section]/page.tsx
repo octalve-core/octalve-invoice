@@ -1,8 +1,9 @@
 import {notFound} from "next/navigation";
-import {AdminWorkspace,adminSections,type AdminSection} from "@/src/features/platform-admin/AdminWorkspace";
-export function generateStaticParams(){return adminSections.filter(s=>s!=="overview").map(section=>({section}));}
+import {AdminWorkspace,type AdminSection} from "@/src/features/platform-admin/AdminWorkspace";
+const sections=["merchants","customers","subscriptions","verifications","support","notifications","updates","staff","security","audit"] as const;
+export function generateStaticParams(){return sections.map(section=>({section}));}
 export default async function AdminArea({params}:{params:Promise<{section:string}>}){
  const {section}=await params;
- if(!adminSections.includes(section as AdminSection)||section==="overview")notFound();
+ if(!sections.some(value=>value===section))notFound();
  return <AdminWorkspace section={section as AdminSection}/>;
 }
