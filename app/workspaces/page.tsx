@@ -9,7 +9,7 @@ const areas=[
 export default function WorkspaceChooser(){
  return <main className="min-h-dvh bg-[#F7F9FC] px-4 py-10 text-[#173652] sm:py-16">
   <div className="mx-auto max-w-4xl space-y-7">
-   <header className="flex items-center gap-3"><BrandWordmark width={150}/><p className="border-l border-[#DCE7F4] pl-3 text-xs text-slate-500">One platform · Three experiences</p></header>
+   <header className="flex flex-wrap items-center gap-3"><BrandWordmark width={150}/><p className="border-l border-[#DCE7F4] pl-3 text-xs text-slate-500">One platform · Three experiences</p></header>
    <div><h1 className="text-3xl font-bold tracking-tight sm:text-4xl">Explore your workspace</h1>
     <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-600">Choose an experience to review. A single account with authorised access to each workspace will be introduced when secure sign-in is available.</p></div>
    <div className="grid gap-4 md:grid-cols-3">{areas.map(({name,desc,href,Icon})=><Link href={href} key={href}
