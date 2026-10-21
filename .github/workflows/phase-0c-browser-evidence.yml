@@ -43,6 +43,11 @@ jobs:
             sudo apt-get update
             sudo apt-get install -y poppler-utils
           fi
+      - name: Merchant shared header and isolated search browser evidence
+        env:
+          NODE_PATH: /tmp/octalve-playwright/node_modules
+          OCTALVE_BASE_URL: http://127.0.0.1:3000
+        run: node scripts/phase-0y-merchant-nav-evidence.cjs
       - name: Browser/screenshots regression
         env:
           NODE_PATH: /tmp/octalve-playwright/node_modules
@@ -76,5 +81,6 @@ jobs:
             artifacts/phase-0i-viewports/
             artifacts/phase-0uvw/
             artifacts/phase-0x-walkthrough/
+            artifacts/phase-0y-navigation/
           if-no-files-found: warn
           retention-days: 14
