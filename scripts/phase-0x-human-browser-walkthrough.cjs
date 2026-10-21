@@ -45,7 +45,7 @@ const output=path.resolve("artifacts/phase-0x-walkthrough");
      await search.fill("expenses");await record("Type global navigation search (not record search)");
      await click(page.getByRole("navigation",{name:"Workspace search results"}).getByRole("link",{name:"Expenses"}),"Use global search suggestion");
      const filter=page.getByRole("button",{name:"Filters",exact:true});
-     if(await filter.count()){await click(filter.first(),"Open local expenses filter");}
+     if(await filter.count()){await click(filter.first(),"Open local expenses filter");await click(page.getByRole("dialog",{name:"Filters"}).getByRole("button",{name:"Cancel"}),"Dismiss local filter before navigation");}
      await click(page.getByRole("navigation",{name:"Desktop main navigation"}).getByRole("link",{name:"Overview"}),"Return to merchant overview");
     }else{
      await click(page.getByRole("navigation",{name:"Primary mobile navigation"}).getByRole("link",{name:"Home"}),"Return to merchant overview");
