@@ -47,9 +47,9 @@ export default function Sidebar(){
   <aside aria-label="Desktop workspace sidebar"
    className="hidden w-64 shrink-0 flex-col bg-[#000A16] text-white lg:flex lg:h-dvh lg:min-h-0 lg:overflow-hidden">
    {/* Keep the original approved Octalve PNG intact and legible. */}
-   <div className="flex h-16 shrink-0 items-center border-b border-slate-100 bg-white px-5">
+   <div className="flex h-16 shrink-0 items-center border-b border-slate-100 bg-white px-4">
     <Link href="/dashboard" aria-label="Octalve dashboard" className="inline-flex items-center rounded-lg focus-visible:outline-2 focus-visible:outline-[#0064E0]">
-     <BrandWordmark width={164}/>
+     <BrandWordmark width={136}/>
     </Link>
    </div>
 
