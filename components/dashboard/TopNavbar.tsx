@@ -40,6 +40,7 @@ export default function TopNavbar(){
     {open?<div role="menu" className="absolute right-0 top-12 z-50 w-56 rounded-xl border bg-white p-2 shadow-xl">
       <p className="px-3 py-2 text-xs text-gray-500">Preview workspace · no live session</p>
       <Link role="menuitem" href="/dashboard/settings/profile" onClick={()=>setOpen(false)} className="flex gap-2 rounded-lg px-3 py-2 text-sm hover:bg-gray-50"><UserRound size={17}/>Profile Settings</Link>
+      <Link role="menuitem" href="/workspaces" onClick={()=>setOpen(false)} className="flex gap-2 rounded-lg px-3 py-2 text-sm hover:bg-gray-50"><Settings size={17}/> Switch workspace</Link>
       <Link role="menuitem" href="/dashboard/settings" onClick={()=>setOpen(false)} className="flex gap-2 rounded-lg px-3 py-2 text-sm hover:bg-gray-50"><Settings size={17}/>Settings</Link>
       <PreviewLogoutButton className="w-full rounded-lg px-3 py-2 text-sm text-red-600 hover:bg-red-50"/>
      </div>:null}
