@@ -8,9 +8,10 @@ test("invoice payment planning belongs to create/edit and never issued detail",(
  const detail=read("app/(dashboard)/dashboard/invoice/[id]/page.tsx");
  assert.match(editor,/<InvoiceWorkflowPanel\b/);
  assert.doesNotMatch(detail,/<InvoiceWorkflowPanel\b/);
- assert.match(editor,/aria-expanded=\{open\}/);
- assert.match(editor,/hidden=\{!open\}/);
- assert.match(editor,/Expand all/);
+ assert.match(editor,/hidden=\{!active\}/);
+ assert.match(editor,/data-invoice-step=\{name\}/);
+ assert.match(editor,/step:InvoiceStep/);
+ assert.doesNotMatch(editor,/Expand all|Collapse all/);
  assert.match(editor,/Number\.isSafeInteger\(totalMinor\)&&totalMinor>0/);
  assert.match(editor,/Add an item with a positive amount before planning installments/);
 });
@@ -57,12 +58,15 @@ test("unsaved and edit-mode browser previews are watermarked and cannot download
  const preview=read("src/features/invoices/sections/InvoiceDocumentPreviewSection.tsx");
  const composer=read("src/features/invoices/sections/InvoiceComposer.tsx");
  assert.match(preview,/data-testid="draft-preview-watermark"/);
- assert.match(preview,/DRAFT · NOT ISSUED/);
  assert.match(preview,/DRAFT — NOT ISSUED/);
+ assert.doesNotMatch(preview,/Array\.from\(\{length:5\}/);
+ assert.match(preview,/grid place-items-center/);
  assert.doesNotMatch(preview,/performDownload|exportNativeInvoicePdf|exportClassicLedgerPdf|exportRenderedDocumentPng/);
  assert.doesNotMatch(preview,/Download preview PDF|Download preview PNG/);
  assert.match(composer,/invoicePreferences/);
  assert.match(composer,/applyNewInvoicePreferences/);
+ assert.match(composer,/aria-current=\{step===item\.id\?"step":undefined\}/);
+ assert.match(composer,/step:"preview"/);
 });
 test("invoice settings use shared merchant state without invented default tax",()=>{
  const settings=read("app/(dashboard)/dashboard/settings/invoice/page.tsx");
