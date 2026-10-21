@@ -10,10 +10,10 @@ function InactiveAction({label,Icon}:{label:string;Icon:typeof Printer}){
   className={buttonStyle}><Icon size={15}/>{label}</button>;
 }
 function paymentNotice(mode:PaymentMode){
- if(mode==="manual")return {title:"Company bank transfer",description:"Payment instructions require a verified merchant-owned bank account. None is available for this Preview."};
- if(mode==="monnify")return {title:"Monnify collection",description:"Checkout and Dynamic Invoice are separate products. No verified account, provider expiry or checkout exists here."};
- if(mode==="flutterwave")return {title:"Flutterwave checkout",description:"The gateway is disconnected. Dynamic account eligibility and actual expiry have not been verified."};
- return {title:"Paystack checkout",description:"The gateway is disconnected. Pay with Transfer is short-lived and no invoice account was issued."};
+ if(mode==="manual")return {title:"Company bank transfer",description:"Add a verified company account to show bank details."};
+ if(mode==="monnify")return {title:"Monnify collection",description:"No verified account or payment link yet."};
+ if(mode==="flutterwave")return {title:"Flutterwave checkout",description:"Set up Flutterwave to receive payments."};
+ return {title:"Paystack checkout",description:"Set up Paystack to receive payments."};
 }
 /** Same owner-approved sample record for merchant/client, differing only in authority-safe controls. */
 export function InvoiceAudienceToolbar({invoice,audience}:{invoice:PreviewInvoice;audience:InvoiceAudience}){
@@ -21,7 +21,7 @@ export function InvoiceAudienceToolbar({invoice,audience}:{invoice:PreviewInvoic
  return <section aria-label={audience==="merchant"?"Merchant invoice controls":"Client invoice controls"} className="space-y-3">
   <div className="flex flex-wrap items-center justify-between gap-3">
    <div className="flex min-w-0 flex-wrap items-center gap-2">
-    <span className="rounded-full bg-[#EAF3FF] px-3 py-1.5 text-xs font-semibold text-[#0064E0]">{audience==="merchant"?"Merchant Facing":"Client Facing"} · Preview</span>
+    <span className="rounded-full bg-[#EAF3FF] px-3 py-1.5 text-xs font-semibold text-[#0064E0]">{audience==="merchant"?"Merchant view":"Customer view"}</span>
     <span className="rounded-full border border-[#F1D4D4] bg-[#FFF3F3] px-3 py-1.5 text-[11px] font-semibold text-[#8F3030]">DRAFT — NOT ISSUED</span>
    </div>
    {audience==="client"?<Link href={`/dashboard/invoice/${invoice.id}`} className="inline-flex min-h-10 items-center gap-1.5 text-xs font-semibold text-[#0064E0]"><ArrowLeft size={16}/> Merchant view</Link>:
@@ -44,13 +44,13 @@ export function InvoiceAudienceToolbar({invoice,audience}:{invoice:PreviewInvoic
     <p className="mt-1 text-xs leading-5 text-[#526B83]">{method.description}</p>
    </div>
    <div className="rounded-2xl border border-[#E2E9F2] bg-white p-4">
-    <p className="flex items-center gap-2 text-xs font-bold text-[#173652]"><LockKeyhole size={16} className="text-[#0064E0]"/>Fiscal and payment verification</p>
-    <p className="mt-1 text-xs leading-5 text-[#526B83]">No NRS-issued IRN/QR, verified collection or payment receipt is available in this demonstration.</p>
+    <p className="flex items-center gap-2 text-xs font-bold text-[#173652]"><LockKeyhole size={16} className="text-[#0064E0]"/>Verification</p>
+    <p className="mt-1 text-xs leading-5 text-[#526B83]">No NRS-issued IRN/QR or confirmed payment yet.</p>
    </div>
   </div>
   <p role="status" className="flex items-start gap-2 rounded-xl border border-amber-200 bg-amber-50 px-3 py-2.5 text-xs leading-5 text-amber-900">
    <ShieldAlert size={16} className="mt-0.5 shrink-0"/>
-   Both previews use the same draft data and existing invoice renderer. This is not a customer payment link, financial record or printable issued invoice.
+   This invoice is not issued. Downloads, sharing and payment actions become available after setup and issuance.
   </p>
  </section>;
 }
