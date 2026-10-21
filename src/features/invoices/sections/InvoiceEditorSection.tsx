@@ -45,7 +45,8 @@ export function InvoiceEditorSection({draft,setDraft,step}:Props){
    <InvoiceItemsSection draft={draft} setDraft={setDraft}/>
   </StepPanel>
   <StepPanel name="charges" title="Totals, tax & notes" description="Review charges and add a note" active={step==="charges"}>
-toggle("charges")}>
+
+
    <div className="grid grid-cols-2 gap-3">
     <label className="text-xs">Discount %
      <input aria-label="Overall discount percentage" value={draft.discount} onChange={e=>update("discount",e.target.value)} className="mt-1 h-10 w-full rounded-xl bg-gray-50 px-3 text-sm"/>
@@ -54,11 +55,11 @@ toggle("charges")}>
      <input aria-label="Tax percentage" value={draft.tax} onChange={e=>update("tax",e.target.value)} className="mt-1 h-10 w-full rounded-xl bg-gray-50 px-3 text-sm"/>
     </label>
    </div>
-   <p className="mt-2 text-[11px] leading-5 text-slate-500">Enter the tax rate applicable to this transaction; it is not selected automatically.</p>
+   <p className="mt-2 text-[11px] leading-5 text-slate-500">Enter the tax rate that applies to this invoice.</p>
    <label className="mt-4 block space-y-1 text-xs"><span className="font-medium">Mail for customer / Notes</span>
     <textarea value={draft.notes} onChange={e=>update("notes",e.target.value)} className="min-h-20 w-full resize-y rounded-xl bg-gray-50 p-3 text-sm focus:outline-blue-500"/>
    </label>
-   <p className="mt-3 rounded-lg bg-[#F2F7FD] p-3 text-xs text-[#355D82]">Check your payment method and business bank details before sharing an invoice. Online payment options require activation.</p>
+   <p className="mt-3 rounded-lg bg-[#F2F7FD] p-3 text-xs text-[#355D82]">Check payment details before issuing.</p>
   </StepPanel>
   <StepPanel name="workflow" title="Payment plan & communication" description="Set terms and prepare customer messages" active={step==="workflow"}>
    {validTotal?<InvoiceWorkflowPanel invoice={{id:"unsaved-draft",reference:draft.invoiceNo,customer:draft.clientName||"Customer",email:draft.clientEmail,amount:(totalMinor/100).toFixed(2),date:"",dueDate:"",status:"draft",paymentMode}} currency={draft.currency} invoiceDueAtLagos={invoiceDueAtLagos}/>:
