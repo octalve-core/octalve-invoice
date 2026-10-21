@@ -9,6 +9,7 @@ import {RecordActionDialog,type RecordAction} from "./RecordActionDialog";
 import {RecordFilterDialog,type FilterCriteria} from "./RecordFilterDialog";
 import {RecordDetailDialog} from "./RecordDetailDialog";
 import {formatDocumentNumber} from "@/src/features/invoices/lib/document-number";
+import {MerchantPageHeading} from "@/components/dashboard/ui/MerchantPageHeading";
 
 function tableValue(record:PreviewRecord,field:RecordField):string{
  switch(field){case "title":return record.title;case "date":return record.date;case "status":return statusLabels[record.status];
@@ -79,7 +80,7 @@ export function RecordDirectory({kind,onCreate,onView,onEdit,showDesktopHeader=t
  function tab(next:RecordStatus|"all"){setStatus(next);setPage(1);}
  function query(next:string){setSearch(next);setPage(1);}
  return <section aria-label={def.title+" history"} className="min-w-0 space-y-3">
-  {showDesktopHeader?<div className="hidden lg:block"><h1 className="text-2xl font-bold text-[#1d2838]">{def.title}</h1><p className="mt-1 text-sm text-gray-500">{def.description}</p></div>:null}
+  {showDesktopHeader?<MerchantPageHeading title={def.title} description={def.description} hideOnMobile/>:null}
   <div className="lg:hidden">
    <div className="relative mb-4 flex items-center justify-center border-b border-gray-200 py-3">
      <button aria-label="Back" onClick={()=>router.push("/dashboard")} className="absolute left-0 rounded-md p-1 text-gray-700"><ArrowLeft size={21}/></button>
