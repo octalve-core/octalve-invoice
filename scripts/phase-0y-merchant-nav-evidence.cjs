@@ -36,31 +36,45 @@ const output=path.resolve("artifacts/phase-0y-navigation");
     const entry=await page.goto(origin+"/workspaces",{waitUntil:"domcontentloaded",timeout:30000});
     if(entry?.status()!==200)throw Error("Workspace entry HTTP "+entry?.status());
     await page.getByRole("link",{name:/Merchant workspace/}).click();
+    await page.waitForURL(url=>url.pathname==="/dashboard",{timeout:15000});
+    if(desktop){
+     await page.getByRole("searchbox",{name:"Find a workspace page"}).waitFor({state:"visible"});
+     await page.locator("[data-merchant-page-heading] h1").getByText(/Welcome/).waitFor({state:"visible"});
+    }
     await check("Entered merchant from workspace selection",{requiresHeading:desktop});
     if(desktop){
      const nav=page.getByRole("navigation",{name:"Desktop main navigation"});
      const sections=[["Quotation","Quotation"],["Expenses","Expenses"],["Invoice","Invoice"],["Receipt","Receipt"],["Payment Received","Payment Received"],["Credit note","Credit Note"],["Other Services","More"],["Settings","Me & Settings"],["Customer","Customers"],["Items","Items"]];
      for(const [link,title] of sections){
-      await nav.getByRole("link",{name:link,exact:true}).click();
-      await page.locator("[data-merchant-page-heading]").waitFor({state:"visible"});
+      const anchor=nav.getByRole("link",{name:link,exact:true});
+      const target=await anchor.getAttribute("href");
+      if(!target)throw Error("Navigation link missing href for "+link);
+      await anchor.click();
+      await page.waitForURL(url=>url.pathname===target,{timeout:15000});
+      await page.locator("[data-merchant-page-heading] h1").getByText(title,{exact:true}).waitFor({state:"visible"});
       await check("Clicked "+link,{expectedTitle:title});
       if(["Quotation","Invoice","Expenses","Receipt"].includes(link)){
        await page.screenshot({path:path.join(output,width+"-"+link.toLowerCase()+".png"),fullPage:true,animations:"disabled"});
       }
      }
      await nav.getByRole("link",{name:"Expenses",exact:true}).click();
+     await page.waitForURL(url=>url.pathname==="/dashboard/expenses");
+     await page.locator("[data-merchant-page-heading] h1").getByText("Expenses",{exact:true}).waitFor({state:"visible"});
      const global=page.getByRole("searchbox",{name:"Find a workspace page"});
      const local=page.getByRole("searchbox",{name:"Search expenses"});
      const count=await page.locator('tr[role="link"]').count();
+     if(count<2)throw Error("Expected at least two Expenses preview rows before search isolation");
      await global.fill("Invoice");
      await page.getByRole("navigation",{name:"Workspace search results"}).getByRole("link",{name:"Invoice"}).waitFor();
-     if(await page.getByRole("row",{name:/View /}).count()!==count)throw Error("Global search incorrectly filtered Expense records");
+     if(await page.locator('tr[role="link"]').count()!==count)throw Error("Global search incorrectly filtered Expense records");
      await local.fill("MTN");
      if(await global.inputValue()!=="Invoice")throw Error("Local search changed global page finder");
      if(await local.inputValue()!=="MTN")throw Error("Expense filter did not retain local value");
-     if(await page.locator('tr[role="link"]').count()>=count)throw Error("Expense local search did not filter records");
+     await page.waitForFunction(expected=>document.querySelectorAll('tr[role="link"]').length<expected,count,{timeout:10000});
      await check("Global and local searches isolated");
      await page.getByRole("navigation",{name:"Workspace search results"}).getByRole("link",{name:"Invoice"}).click();
+     await page.waitForURL(url=>url.pathname==="/dashboard/invoice");
+     await page.locator("[data-merchant-page-heading] h1").getByText("Invoice",{exact:true}).waitFor({state:"visible"});
      await check("Navigated to Invoice from global search",{expectedTitle:"Invoice"});
     }else{
      const nav=page.getByRole("navigation",{name:"Primary mobile navigation"});
