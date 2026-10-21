@@ -60,6 +60,12 @@ jobs:
           NODE_PATH: /tmp/octalve-playwright/node_modules
           OCTALVE_BASE_URL: http://127.0.0.1:3000
         run: node scripts/phase-0uvw-browser-evidence.cjs
+      - name: Human-path browser-only walkthrough
+        if: success()
+        env:
+          NODE_PATH: /tmp/octalve-playwright/node_modules
+          OCTALVE_BASE_URL: http://127.0.0.1:3000
+        run: node scripts/phase-0x-human-browser-walkthrough.cjs
       - name: Upload browser evidence regardless of result
         if: always()
         uses: actions/upload-artifact@v4
@@ -69,5 +75,6 @@ jobs:
             artifacts/phase-0c/
             artifacts/phase-0i-viewports/
             artifacts/phase-0uvw/
+            artifacts/phase-0x-walkthrough/
           if-no-files-found: warn
           retention-days: 14
