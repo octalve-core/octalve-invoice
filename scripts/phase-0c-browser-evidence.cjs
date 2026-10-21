@@ -6,7 +6,7 @@ async function qualifyBrowserPng(page) {
   const preview = page.locator('section[aria-label="Live document preview"]');
   await preview.getByTestId("draft-preview-watermark").waitFor();
   if(await preview.getByRole("button",{name:/Download preview PNG/}).count())throw Error("Unissued invoice exposed PNG download");
-  if(!await preview.getByText("PDF and PNG available after issue").isVisible())throw Error("Missing draft export lock explanation");
+  if(!await preview.getByText("Download available after issue").isVisible())throw Error("Missing draft export lock explanation");
   return { draftExportBlocked:"PASS",watermark:"PASS" };
 }
 async function qualifyNativePdf(page) {
@@ -457,10 +457,15 @@ const origin = process.env.OCTALVE_BASE_URL || "http://127.0.0.1:3000";
             record.report="PASS";
           }
                     if (route === "/dashboard/invoice/create") {
-            await page.getByRole("heading", { name: "Create invoice" }).waitFor();
-            await page.getByRole("heading", { name: "Live Modern Invoice preview" }).waitFor();
-            if(await page.getByRole("button",{name:/Invoice & customer details/}).getAttribute("aria-expanded")!=="true")throw Error("Customer details should open initially");
-            if(await page.getByRole("button",{name:/Products & services/}).getAttribute("aria-expanded")!=="false")throw Error("Items accordion should start collapsed");
+            await page.getByRole("heading",{name:"Create invoice"}).waitFor();
+            const nav=page.getByRole("navigation",{name:"Invoice steps"});
+            const activeStep=async label=>{
+              const link=nav.getByRole("link",{name:new RegExp(label)});
+              if(await link.getAttribute("aria-current")!=="step")throw Error("Invoice step did not show the active state: "+label);
+              return link;
+            };
+            await activeStep("Details");
+            if(await page.getByRole("heading",{name:"Invoice & customer details"}).count()!==1)throw Error("Invoice details page missing");
             await page.locator('section[aria-label="Invoice details"]').getByRole("button",{name:"Sample Customer"}).click();
             await page.getByRole("dialog",{name:"Select customer"}).getByRole("button",{name:/Add new customer/}).click();
             await page.getByRole("dialog",{name:"Select customer"}).getByLabel("Customer name *").fill("Golden Preview Customer");
@@ -468,62 +473,55 @@ const origin = process.env.OCTALVE_BASE_URL || "http://127.0.0.1:3000";
             await page.getByRole("dialog",{name:"Select customer"}).getByLabel("city",{exact:true}).fill("Akure");
             await page.getByRole("dialog",{name:"Select customer"}).getByLabel("country",{exact:true}).fill("Nigeria");
             await page.getByRole("button",{name:"Add and select customer"}).click();
-            await page.locator('#invoice-document').getByRole("textbox",{name:"Customer name"}).waitFor();
-              if(await page.locator('#invoice-document').getByRole("textbox",{name:"Customer name"}).inputValue()!=="Golden Preview Customer")throw new Error("Customer picker did not update the selected-template document");
-            if(await page.getByRole("textbox",{name:"Customer Tax ID"}).inputValue()!=="DEMO-TAX-ID")throw Error("Selected customer Tax ID did not populate");
-            if(await page.getByRole("textbox",{name:"Customer city"}).inputValue()!=="Akure")throw Error("Customer billing city did not populate");
-            if(await page.getByRole("textbox",{name:"Customer country"}).inputValue()!=="Nigeria")throw Error("Customer billing country did not populate");
+            if(await page.getByRole("textbox",{name:"Customer Tax ID"}).inputValue()!=="DEMO-TAX-ID")throw Error("Selected customer Tax ID missing");
+            if(await page.getByRole("textbox",{name:"Customer city"}).inputValue()!=="Akure")throw Error("Selected customer city missing");
+            if(await page.getByRole("textbox",{name:"Customer country"}).inputValue()!=="Nigeria")throw Error("Selected customer country missing");
             record.customerBillingAutoFill="PASS";
-            await page.locator('#invoice-document').waitFor();
-            await page.locator('#invoice-document').getByText("Octalve Limited").waitFor();
-            if(await page.locator('#invoice-document').getByText("Sapphire Quest").count()) throw new Error("Legacy merchant branding remains");
-            const logoNotice=page.getByText("Your business logo has not been added.",{exact:false});
-            await logoNotice.waitFor();
-            // Regression: a deleted row must not cause later rows to share identifiers.
-            // This also exercises invoice-item input -> both live template presentations.
-            const itemsSectionButton=page.getByRole("button",{name:/Products & services/});
-            await itemsSectionButton.click();
-            if(await itemsSectionButton.getAttribute("aria-expanded")!=="true")throw Error("Products & services did not open");
-            const itemEditor = page.locator('section[aria-label="Invoice products and services"]');
-            if(!await itemEditor.getByRole("button",{name:"+ Add row"}).isVisible())throw Error("Add row button is not visible when products section opens");
-            await itemEditor.getByRole("button", { name: "+ Add row" }).click();
-            await itemEditor.getByRole("button", { name: "Edit item 1" }).click();
-            await itemEditor.getByRole("button", { name: "Remove row" }).click();
-            await itemEditor.getByRole("button", { name: "+ Add row" }).click();
-            await itemEditor.getByRole("button", { name: "Expand items" }).click();
+
+            await nav.getByRole("link",{name:/Items/}).click();
+            await activeStep("Items");
+            if(!await page.getByRole("heading",{name:"Products & services"}).isVisible())throw Error("Items did not receive its own page");
+            const itemEditor=page.locator('section[aria-label="Invoice products and services"]');
+            await itemEditor.getByRole("button",{name:"+ Add row"}).click();
+            await itemEditor.getByRole("button",{name:"Edit item 1"}).click();
+            await itemEditor.getByRole("button",{name:"Remove row"}).click();
+            await itemEditor.getByRole("button",{name:"+ Add row"}).click();
+            await itemEditor.getByRole("button",{name:"Expand items"}).click();
             await itemEditor.getByLabel("Product or service 1").fill("Golden Item One");
             await itemEditor.getByLabel("Product or service 2").fill("Golden Item Two");
-            if (await itemEditor.getByLabel("Product or service 1").inputValue() !== "Golden Item One") throw Error("Invoice draft row identifiers collided after remove/add");
             await itemEditor.getByLabel("Rate for item 1").fill("1500");
             await itemEditor.getByLabel("Rate for item 2").fill("2750");
-            await page.getByRole("button",{name:/Totals, tax & notes/}).click();
+            if(await itemEditor.getByLabel("Product or service 1").inputValue()!=="Golden Item One")throw Error("Row identities collided");
+
+            await nav.getByRole("link",{name:/Totals/}).click();
+            await activeStep("Totals");
             await page.getByLabel("Mail for customer / Notes").fill("PHASE ZERO NOTE WITHOUT BANK DETAILS");
-            if(await page.locator('section[aria-label="Invoice products and services"]').isVisible())throw Error("Opening charges must collapse product rows");
-            await page.getByRole("button",{name:/Products & services/}).click();
-            await itemEditor.getByRole("button",{name:"Edit item 1"}).click();
-            await itemEditor.getByRole("button",{name:"Edit item 2"}).click();
-            record.invoiceAccordion="PASS";
-            if (await page.locator('#invoice-document').getByText("Editable sample line item").count()) throw Error("Removed description still visible on modern document");
-          if(route==="/dashboard/invoice/create"){
-            await page.getByRole("button",{name:/Payment plan & communication/}).click();
+            if(await itemEditor.isVisible())throw Error("Items should be hidden on the totals page");
+            await nav.getByRole("link",{name:/Items/}).click();
+            if(await itemEditor.getByLabel("Product or service 1").inputValue()!=="Golden Item One")throw Error("Invoice item lost between pages");
+            await nav.getByRole("link",{name:/Totals/}).click();
+            if(await page.getByLabel("Mail for customer / Notes").inputValue()!=="PHASE ZERO NOTE WITHOUT BANK DETAILS")throw Error("Invoice notes lost between pages");
+            record.invoicePageNavigation="PASS";
+
+            await nav.getByRole("link",{name:/Payments/}).click();
+            await activeStep("Payments");
             await page.getByRole("heading",{name:"Invoice workflow"}).waitFor();
             await page.getByRole("tab",{name:"Installments"}).click();
             await page.getByRole("button",{name:"Review proposed split"}).click();
             await page.getByText("No payment schedule was saved or communicated.",{exact:false}).waitFor();
             await page.getByRole("button",{name:"Custom milestones"}).click();
-            await page.getByText("Total allocation: 100%",{exact:false}).waitFor();
             await page.getByRole("button",{name:"Add milestone"}).click();
-            if(await page.getByRole("button",{name:"Review proposed split"}).isEnabled())throw Error("Unbalanced stages were accepted");
+            if(await page.getByRole("button",{name:"Review proposed split"}).isEnabled())throw Error("Unbalanced plan was accepted");
             await page.getByRole("spinbutton",{name:"Milestone 1 percentage"}).fill("40");
             await page.getByRole("spinbutton",{name:"Milestone 4 percentage"}).fill("10");
             await page.getByText("Total allocation: 100%",{exact:false}).waitFor();
-            if(!await page.getByRole("button",{name:"Review proposed split"}).isEnabled())throw Error("Balanced milestone schedule was rejected");
+            if(!await page.getByRole("button",{name:"Review proposed split"}).isEnabled())throw Error("Balanced plan rejected");
             await page.getByRole("button",{name:"Review proposed split"}).click();
             record.customMilestoneValidation="PASS";
-            await page.getByRole("button",{name:/Invoice & customer details/}).click();
-            if(await page.getByRole("spinbutton",{name:"Milestone 1 percentage"}).isVisible())throw Error("Collapsed invoice workflow remained visible");
-            await page.getByRole("button",{name:/Payment plan & communication/}).click();
-            if(await page.getByRole("spinbutton",{name:"Milestone 1 percentage"}).inputValue()!=="40")throw Error("Collapsing invoice workflow lost the merchant's installment plan");
+            await nav.getByRole("link",{name:/Totals/}).click();
+            if(await page.getByRole("spinbutton",{name:"Milestone 1 percentage"}).isVisible())throw Error("Payment panel stayed visible on totals page");
+            await nav.getByRole("link",{name:/Payments/}).click();
+            if(await page.getByRole("spinbutton",{name:"Milestone 1 percentage"}).inputValue()!=="40")throw Error("Payment milestones lost when moving between pages");
             record.invoiceWorkflowStateRetained="PASS";
             await page.getByRole("tab",{name:"Communication"}).click();
             await page.getByRole("button",{name:"Payment reminder"}).click();
@@ -532,25 +530,29 @@ const origin = process.env.OCTALVE_BASE_URL || "http://127.0.0.1:3000";
             await composeInvoice.getByRole("button",{name:"Review draft (not sent)"}).click();
             await page.getByText("No email, SMS or reminder was sent or queued.",{exact:false}).waitFor();
             record.installmentAndMailPreview="PASS";
-          }
 
-            record.itemRowIdentityAndNotes = "PASS";
-            record.merchantIdentity="PASS";
-            if(view==="desktop"){
-              const left=await page.locator('section[aria-label="Invoice input"]').boundingBox();
-              const right=await page.locator('section[aria-label="Live document preview"]').boundingBox();
-              if(!left||!right||Math.abs(left.width-right.width)>12)throw new Error("Desktop invoice columns are not approximately 50/50");
-            }
-            if(await page.getByTestId("draft-preview-watermark").count()!==1)throw Error("Visible watermark missing from unissued document");
-            if(await page.getByTestId("draft-preview-watermark").getByText("DRAFT · NOT ISSUED").count()<5)throw Error("Repeated watermark not present across paper");
+            await nav.getByRole("link",{name:/Preview/}).click();
+            await activeStep("Preview");
+            await page.getByRole("heading",{name:"Invoice preview"}).waitFor();
+            await page.locator('#invoice-document').waitFor();
+            if(await page.locator('#invoice-document').getByRole("textbox",{name:"Customer name"}).inputValue()!=="Golden Preview Customer")throw Error("Invoice lost customer details");
+            await page.locator('#invoice-document').getByText("Octalve Limited").waitFor();
+            if(await page.locator('#invoice-document').getByText("Sapphire Quest").count())throw Error("Wrong merchant brand");
+            if(await page.locator('#invoice-document').getByText("Editable sample line item").count())throw Error("Old sample row remains");
+            await page.getByText("No business logo yet.").waitFor();
+            const watermark=page.getByTestId("draft-preview-watermark");
+            if(await watermark.count()!==1||await watermark.locator("span").count()!==1)throw Error("Draft watermark must appear once");
+            if(await watermark.getByText("DRAFT — NOT ISSUED").count()!==1)throw Error("Single diagonal watermark missing");
             record.draftWatermark="PASS";
-            await page.screenshot({ path: path.join(output, view+"-invoice-modern.png"), fullPage: true, animations: "disabled" });
-            if (view === "desktop") { record.browserModernPng = await qualifyBrowserPng(page, output, view, "modern"); record.nativeModernPdf = await qualifyNativePdf(page, output, view, "modern"); }
+            await page.screenshot({path:path.join(output,view+"-invoice-modern.png"),fullPage:true,animations:"disabled"});
+            if(view==="desktop"){record.browserModernPng=await qualifyBrowserPng(page,output,view,"modern");record.nativeModernPdf=await qualifyNativePdf(page,output,view,"modern");}
             await page.getByLabel("Template").selectOption("ledger");
             await page.locator('[data-invoice-renderer="classic-ledger-v1"]').waitFor();
-            record.templateSwitch = "PASS";
-            await page.screenshot({ path: path.join(output, view+"-invoice-classic-ledger.png"), fullPage: true, animations: "disabled" });
-            if (view === "desktop") { record.browserClassicPng = await qualifyBrowserPng(page, output, view, "ledger"); record.nativeClassicPdf = await qualifyNativePdf(page, output, view, "ledger"); }
+            record.templateSwitch="PASS";
+            await page.screenshot({path:path.join(output,view+"-invoice-classic-ledger.png"),fullPage:true,animations:"disabled"});
+            if(view==="desktop"){record.browserClassicPng=await qualifyBrowserPng(page,output,view,"ledger");record.nativeClassicPdf=await qualifyNativePdf(page,output,view,"ledger");}
+            record.itemRowIdentityAndNotes="PASS";
+            record.merchantIdentity="PASS";
           }
           await page.screenshot({ path: path.join(output, record.screenshot), fullPage: true, animations: "disabled" });
           if(route==="/dashboard/invoice" && view==="mobile"){
