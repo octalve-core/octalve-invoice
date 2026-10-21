@@ -26,6 +26,7 @@ export const customerNavigation:PreviewNavigation[]=[
  {label:"Receipts",path:"/customer/receipts",icon:"receipts"},
  {label:"Merchants",path:"/customer/merchants",icon:"merchants"},
  {label:"Messages",path:"/customer/messages",icon:"messages"},
+ {label:"Support",path:"/customer/support",icon:"support"},
  {label:"Notifications",path:"/customer/notifications",icon:"notifications"},
  {label:"Settings",path:"/customer/settings",icon:"settings"},
 ];
