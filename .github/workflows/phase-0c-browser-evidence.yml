@@ -54,6 +54,12 @@ jobs:
           NODE_PATH: /tmp/octalve-playwright/node_modules
           OCTALVE_BASE_URL: http://127.0.0.1:3000
         run: node scripts/phase-0i-viewport-evidence.cjs
+      - name: Independent customer and admin route regression
+        if: success()
+        env:
+          NODE_PATH: /tmp/octalve-playwright/node_modules
+          OCTALVE_BASE_URL: http://127.0.0.1:3000
+        run: node scripts/phase-0uvw-browser-evidence.cjs
       - name: Upload browser evidence regardless of result
         if: always()
         uses: actions/upload-artifact@v4
@@ -62,5 +68,6 @@ jobs:
           path: |
             artifacts/phase-0c/
             artifacts/phase-0i-viewports/
+            artifacts/phase-0uvw/
           if-no-files-found: warn
           retention-days: 14
