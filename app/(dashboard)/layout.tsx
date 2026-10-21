@@ -15,7 +15,7 @@ export default function DashboardLayout({
       <Sidebar />
 
       {/* Main Content Area */}
-      <div className="flex min-w-0 flex-1 flex-col min-h-screen lg:h-full lg:min-h-0 lg:overflow-y-auto lg:overscroll-contain">
+      <div className="flex min-h-screen min-w-0 flex-1 flex-col lg:h-full lg:min-h-0 lg:overflow-hidden">
         {/* Mobile Header */}
         <MobileHeader />
 
@@ -23,7 +23,7 @@ export default function DashboardLayout({
         <TopNavbar />
 
         {/* Page Content */}
-        <main className="min-w-0 flex-1 overflow-x-clip p-3 pb-24 sm:p-4 lg:p-6 lg:pb-6">
+        <main data-merchant-scroll-region aria-label="Merchant page content" className="min-h-0 min-w-0 flex-1 overflow-x-clip p-3 pb-24 sm:p-4 lg:overflow-y-auto lg:overscroll-contain lg:p-6 lg:pb-6">
           {children}
         </main>
 
