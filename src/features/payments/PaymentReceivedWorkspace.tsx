@@ -41,9 +41,8 @@ export function PaymentReceivedWorkspace(){
  const projections=useMemo(()=>activityProjection(claims,paymentPreview),[]);
  const selectTab=(id:ActivityFilter)=>{setFilter(id);};
  return <main className="min-w-0 space-y-5 pb-8">
-  <header className="flex flex-wrap items-start justify-between gap-3"><div><h1 className="text-xl font-bold text-[#173652] sm:text-2xl">Payment Received</h1><p className="mt-1 text-xs text-slate-500">Collections, provider settlement and payment exceptions</p></div>
-   <span className="rounded-full border border-blue-100 bg-blue-50 px-3 py-1.5 text-xs font-semibold text-[#0064E0]">Example records · No connections</span>
-  </header>
+  <MerchantPageHeading title="Payment Received" description="Collections, provider settlement and payment exceptions"
+   actions={<span className="rounded-full border border-blue-100 bg-blue-50 px-3 py-1.5 text-xs font-semibold text-[#0064E0]">Example records · No connections</span>}/>
   <section className="grid grid-cols-2 gap-3 lg:grid-cols-3" aria-label="Verified payment example totals">
    {[{label:"Example verified collections",value:projections.collectedMinor,Icon:ShieldCheck},
      {label:"Allocated to invoices",value:projections.allocatedMinor,Icon:ArrowLeftRight},
