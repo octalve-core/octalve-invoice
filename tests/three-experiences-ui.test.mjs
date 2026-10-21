@@ -45,7 +45,7 @@ test("admin sample cannot modify subscriptions, verify identities, grant staff a
  assert.match(admin,/disabled title="Requires an authorised staff session/);
  assert.match(admin,/Interface sample/);
  assert.doesNotMatch(admin,/setVerified\(|setMembership\(|markPaid\(|issueRefund\(|fetch\(|localStorage|sessionStorage/);
- assert.match(admin,/requires a verified case/);
+ assert.match(admin,/needs a verified case/);
  assert.match(admin,/Pricing not activated/);
 });
 test("UI chooser grants no roles and identity design specifies deny-by-default negative tests",()=>{
