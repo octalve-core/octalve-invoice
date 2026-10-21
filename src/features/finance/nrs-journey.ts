@@ -14,7 +14,7 @@ export const financeJourney:readonly JourneyStage[]=[
  {id:"report",title:"Report / retain audit",actor:"Octalve",summary:"Optional receipts and required fiscal status updates",dependency:"NRS payment update acceptance and lawful retention",mode:"specified"}
 ];
 export const nrsAuthorityBoundaries=[
- {id:"document",title:"Invoice number",detail:"Merchant document series (e.g., OL-00001-INV). Not an IRN."},
+ {id:"document",title:"Invoice number",detail:"Merchant document series (e.g., OL-00001INV). Not an IRN."},
  {id:"fiscal",title:"Official IRN and QR",detail:"Only valid after the required official NRS route and authenticated response."},
  {id:"payment",title:"Payment verification",detail:"Only trusted bank/provider confirmation establishes collection; never an NRS QR."},
  {id:"filing",title:"Tax filing and remittance",detail:"Separate legal obligations; not satisfied by issuing an invoice or receiving payment."}
