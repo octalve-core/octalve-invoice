@@ -59,7 +59,7 @@ export function PreviewShell({experience,children}:{experience:Experience;childr
     <Link href="/workspaces" className="flex h-16 items-center bg-white px-4" aria-label="Octalve Finance workspaces"><BrandWordmark width={132}/></Link>
     <p className="px-4 pb-3 pt-4 text-[10px] font-semibold uppercase tracking-[0.16em] text-[#7890A9]">{label}</p>
    </div>
-   <nav className="min-h-0 flex-1 space-y-1 overflow-y-auto px-3 py-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+   <nav aria-label={label+" navigation"} className="min-h-0 flex-1 space-y-1 overflow-y-auto px-3 py-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
     {navigation.map(item=>{const Icon=icons[item.icon];return <Link key={item.path} href={item.path} aria-current={highlighted(item)?"page":undefined}
      className={"flex min-h-11 items-center gap-3 rounded-xl px-3 text-xs font-semibold transition-colors "+
        (highlighted(item)?"bg-[#0064E0] text-white":"text-[#BECDDE] hover:bg-white/10 hover:text-white")}>
