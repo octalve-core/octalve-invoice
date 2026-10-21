@@ -22,8 +22,8 @@ test("Both audiences use exactly one preview source without duplicating issue au
 });
 test("Payment actions differ by audience and are fail-closed for every Preview",()=>{
  const actions=read("src/features/invoices/components/InvoiceAudienceToolbar.tsx");
- assert.match(actions,/Merchant Facing/);
- assert.match(actions,/Client Facing/);
+ assert.match(actions,/Merchant view/);
+ assert.match(actions,/Customer view/);
  assert.match(actions,/Send Reminder/);
  assert.match(actions,/Revalidate/);
  assert.match(actions,/Copy Client Link/);
