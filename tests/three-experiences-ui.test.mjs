@@ -40,13 +40,26 @@ test("customer figures are self-contained fictional data and not a merchant reco
  assert.match(customer,/Sample data/);
  assert.match(customer,/disabled title="Available after authorised issuance/);
 });
-test("admin sample cannot modify subscriptions, verify identities, grant staff access or read merchant finances",()=>{
+test("admin list, staff assignment and customer cases remain non-authoritative",()=>{
  const admin=read("src/features/platform-admin/AdminWorkspace.tsx");
- assert.match(admin,/disabled title="Requires an authorised staff session/);
+ const directory=read("src/features/platform-admin/AdminDirectory.tsx");
+ const detail=read("src/features/platform-admin/AdminRecordDetail.tsx");
+ const shell=read("src/features/experience-preview/PreviewShell.tsx");
+ const customer=read("src/features/customer-portal/CustomerSupport.tsx");
  assert.match(admin,/Interface sample/);
- assert.doesNotMatch(admin,/setVerified\(|setMembership\(|markPaid\(|issueRefund\(|fetch\(|localStorage|sessionStorage/);
- assert.match(admin,/needs a verified case/);
- assert.match(admin,/Pricing not activated/);
+ assert.match(admin,/<AdminDirectory kind="support"/);
+ assert.match(directory,/role="dialog"/);
+ assert.match(directory,/lg:items-center/);
+ assert.match(directory,/disabled className/);
+ assert.match(detail,/Save assignment/);
+ assert.match(detail,/disabled className/);
+ assert.match(detail,/no staff assignment is saved/i);
+ assert.match(customer,/No message has been delivered or case opened/);
+ assert.match(shell,/BrandWordmark/);
+ assert.match(shell,/MoreHorizontal/);
+ assert.match(read("app/(customer)/customer/more/page.tsx"),/ExperienceMore/);
+ assert.match(read("app/(platform)/admin/more/page.tsx"),/ExperienceMore/);
+ for(const content of [admin,directory,detail,customer])assert.doesNotMatch(content,/markPaid\(|issueRefund\(|fetch\(|localStorage|sessionStorage/);
 });
 test("UI chooser grants no roles and identity design specifies deny-by-default negative tests",()=>{
  const chooser=read("app/workspaces/page.tsx");
