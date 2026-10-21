@@ -11,21 +11,25 @@ const statusTone:Record<CustomerInvoice["status"],string>={
 const container="rounded-2xl border border-[#E3EBF5] bg-white p-4 sm:p-5";
 const sectionTitles:Record<CustomerSection,string>={overview:"Overview",invoices:"My invoices",payments:"Payments",receipts:"Receipts",merchants:"My merchants",messages:"Messages",notifications:"Notifications",settings:"My account"};
 function InvoiceRow({invoice}:{invoice:CustomerInvoice}){
- return <Link href={"/customer/invoices/"+invoice.id} className="flex min-w-0 items-center gap-3 rounded-xl border border-[#EAF0F7] bg-white px-3 py-4 transition-colors hover:border-[#B9D8FF] hover:bg-[#F8FBFF]">
-  <span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-[#EAF3FF] text-[#0064E0]"><FileText size={19}/></span>
-  <span className="min-w-0 flex-1">
-   <span className="block truncate text-sm font-bold text-[#18364F]">{invoice.merchant}</span>
-   <span className="mt-1 block truncate text-xs text-[#647B94]">{invoice.reference} · {invoice.title}</span>
-   <span className="mt-1 block text-[11px] text-[#8495A8]">Due {invoice.dueOn}</span>
-  </span>
-  <span className="shrink-0 text-right">
-   <span className="block text-xs font-bold text-[#18364F] sm:text-sm">{minorMoney(invoice.amountMinor)}</span>
-   <span className={"mt-2 inline-block rounded-full px-2.5 py-1 text-[10px] font-semibold capitalize "+statusTone[invoice.status]}>{invoice.status==="partial"?"Partially paid":invoice.status}</span>
-  </span><ChevronRight size={16} className="hidden text-[#9DB0C2] sm:block"/>
+ return <Link href={"/customer/invoices/"+invoice.id} className="block min-w-0 rounded-xl border border-[#EAF0F7] bg-white p-3 transition-colors hover:border-[#B9D8FF] hover:bg-[#F8FBFF]">
+  <div className="flex min-w-0 items-start gap-3">
+   <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-[#EAF3FF] text-[#0064E0]"><FileText size={18}/></span>
+   <div className="min-w-0 flex-1">
+    <div className="flex min-w-0 flex-wrap items-start justify-between gap-x-3 gap-y-1">
+     <span className="min-w-0 break-words text-sm font-bold leading-5 text-[#18364F]">{invoice.merchant}</span>
+     <span className="shrink-0 text-xs font-bold tabular-nums text-[#18364F] sm:text-sm">{minorMoney(invoice.amountMinor)}</span>
+    </div>
+    <p className="mt-1 break-words text-[11px] leading-4 text-[#647B94]">{invoice.reference} · {invoice.title}</p>
+    <div className="mt-2 flex min-w-0 flex-wrap items-center justify-between gap-2">
+     <span className="text-[11px] text-[#8495A8]">Due {invoice.dueOn}</span>
+     <span className={"rounded-full px-2.5 py-1 text-[10px] font-semibold capitalize "+statusTone[invoice.status]}>{invoice.status==="partial"?"Partially paid":invoice.status}</span>
+    </div>
+   </div>
+  </div>
  </Link>;
 }
 function EmptyAccess({icon:Icon,title,note}:{icon:typeof Bell;title:string;note:string}){
- return <section className={container+" flex min-h-[190px] flex-col items-center justify-center text-center"}>
+ return <section className={container+" min-w-0 flex min-h-[190px] flex-col items-center justify-center text-center"}>
   <span className="grid h-12 w-12 place-items-center rounded-2xl bg-[#EDF5FF] text-[#0064E0]"><Icon size={22}/></span>
   <h2 className="mt-3 text-sm font-bold text-[#173652]">{title}</h2>
   <p className="mt-1 max-w-sm text-xs leading-5 text-[#698099]">{note}</p>
@@ -56,19 +60,19 @@ export function CustomerWorkspace({section="overview"}:{section?:CustomerSection
      <p className="mt-1 break-words text-lg font-bold text-[#173652] sm:text-xl">{value}</p>
     </div>)}
    </div>
-   <div className="grid items-start gap-4 xl:grid-cols-[minmax(0,1.7fr)_minmax(260px,1fr)]">
-    <section className={container}>
+   <div className="grid min-w-0 items-start gap-4 xl:grid-cols-[minmax(0,1.7fr)_minmax(0,1fr)]">
+    <section className={container+" min-w-0"}>
      <div className="mb-4 flex items-center justify-between gap-2"><h2 className="font-bold text-[#173652]">Recent invoices</h2><Link href="/customer/invoices" className="text-xs font-semibold text-[#0064E0]">View all <ArrowRight size={13} className="inline"/></Link></div>
      <div className="space-y-2">{sampleCustomerInvoices.slice(0,3).map(i=><InvoiceRow key={i.id} invoice={i}/>)}</div>
     </section>
-    <section className={container}>
+    <section className={container+" min-w-0"}>
      <h2 className="font-bold text-[#173652]">Upcoming payments</h2>
      <p className="mt-1 text-xs text-slate-500">Dates on your sample invoices</p>
      <div className="mt-4 space-y-3">{sampleCustomerInvoices.filter(i=>i.status==="pending"||i.status==="partial").map(i=>
-      <Link key={i.id} href={"/customer/invoices/"+i.id} className="flex items-start gap-3 rounded-xl bg-[#F7FAFE] p-3 hover:bg-[#ECF5FF]">
+      <Link key={i.id} href={"/customer/invoices/"+i.id} className="flex min-w-0 items-start gap-2 rounded-xl bg-[#F7FAFE] p-3 hover:bg-[#ECF5FF]">
        <CalendarDays size={18} className="mt-1 shrink-0 text-[#0064E0]"/>
-       <span className="min-w-0 flex-1"><span className="block truncate text-xs font-semibold text-[#173652]">{i.merchant}</span><span className="mt-1 block text-[11px] text-slate-500">{i.dueOn} · {minorMoney(i.amountMinor-i.paidMinor)} due</span></span>
-       <ChevronRight size={16} className="text-[#9BADBF]"/>
+       <span className="min-w-0 flex-1"><span className="block break-words text-xs font-semibold text-[#173652]">{i.merchant}</span><span className="mt-1 block break-words text-[11px] leading-4 text-slate-500">{i.dueOn} · {minorMoney(i.amountMinor-i.paidMinor)} due</span></span>
+       <ChevronRight size={16} className="shrink-0 text-[#9BADBF]"/>
       </Link>)}</div>
     </section>
    </div>
