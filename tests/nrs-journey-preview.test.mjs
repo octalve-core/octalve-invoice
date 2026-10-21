@@ -18,6 +18,8 @@ test("Invoice numbering, NRS authority, actual cash and tax filing remain distin
  assert.equal(nrsAuthorityBoundaries.length,4);
  assert.equal(new Set(nrsAuthorityBoundaries.map(x=>x.id)).size,4);
  assert.match(nrsAuthorityBoundaries[0].detail,/Not an IRN/);
+ assert.match(nrsAuthorityBoundaries[0].detail,/OL-00001INV/);
+ assert.doesNotMatch(nrsAuthorityBoundaries[0].detail,/OL-00001-INV/);
  assert.match(nrsAuthorityBoundaries[1].detail,/authenticated response/);
  assert.match(nrsAuthorityBoundaries[2].detail,/trusted bank\/provider/);
  assert.match(nrsAuthorityBoundaries[3].detail,/Separate legal obligations/);
