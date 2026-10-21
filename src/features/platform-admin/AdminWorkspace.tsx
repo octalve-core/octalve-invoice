@@ -25,7 +25,7 @@ function RecordRow({primary,secondary,tag,href}:{primary:string;secondary:string
   <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-[#EBF3FF] text-[#0064E0]"><ClipboardList size={18}/></span>
   <div className="min-w-0 flex-1"><p className="truncate text-xs font-bold text-[#173652]">{primary}</p><p className="mt-1 truncate text-[11px] text-[#7B90A5]">{secondary}</p></div>
   <span className="max-w-[110px] rounded-full bg-[#F1F6FD] px-2.5 py-1 text-center text-[10px] font-semibold text-[#446B93]">{tag}</span>
- </div>;
+ </Link>;
 }
 export function AdminWorkspace({section="overview"}:{section?:AdminSection}){
  return <>
