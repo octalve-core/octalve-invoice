@@ -48,6 +48,11 @@ jobs:
           NODE_PATH: /tmp/octalve-playwright/node_modules
           OCTALVE_BASE_URL: http://127.0.0.1:3000
         run: node scripts/phase-0y-merchant-nav-evidence.cjs
+      - name: Merchant fixed-navbar and main-scroll geometry qualification
+        env:
+          NODE_PATH: /tmp/octalve-playwright/node_modules
+          OCTALVE_BASE_URL: http://127.0.0.1:3000
+        run: node scripts/phase-0y1-navbar-geometry.cjs
       - name: Browser/screenshots regression
         env:
           NODE_PATH: /tmp/octalve-playwright/node_modules
@@ -82,5 +87,6 @@ jobs:
             artifacts/phase-0uvw/
             artifacts/phase-0x-walkthrough/
             artifacts/phase-0y-navigation/
+            artifacts/phase-0y1-navbar/
           if-no-files-found: warn
           retention-days: 14
