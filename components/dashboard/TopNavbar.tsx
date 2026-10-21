@@ -19,7 +19,7 @@ export default function TopNavbar(){
   {label:"Settings",href:"/dashboard/settings"}
  ];
  const matches=query.trim()?destinations.filter(item=>item.label.toLowerCase().includes(query.toLowerCase().trim())).slice(0,6):[];
- return <header className="sticky top-0 z-40 hidden h-16 items-center justify-between gap-4 border-b border-gray-200 bg-white px-4 lg:flex lg:px-6">
+ return <header className="sticky top-0 z-40 hidden h-16 min-h-16 shrink-0 items-center justify-between gap-4 border-b border-gray-200 bg-white px-4 lg:flex lg:px-6">
   <div className="relative min-w-0 w-full max-w-md">
    <label className="relative block"><Search className="pointer-events-none absolute left-3 top-2.5 h-5 w-5 text-gray-400"/>
     <input type="search" aria-label="Find a workspace page" value={query} onChange={e=>setQuery(e.target.value)}
