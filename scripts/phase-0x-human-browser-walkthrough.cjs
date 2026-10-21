@@ -68,7 +68,7 @@ const output=path.resolve("artifacts/phase-0x-walkthrough");
     if(await page.getByRole("button",{name:"Issue invoice"}).isEnabled())throw Error("Draft incorrectly issuable");
     await page.screenshot({path:path.join(output,name+"-merchant-invoice.png"),fullPage:true,animations:"disabled"});
     if(mobile){
-     await click(page.getByRole("navigation",{name:"Primary mobile navigation"}).getByRole("link",{name:"Me"}),"Open merchant settings via footer");
+     await click(page.getByRole("navigation",{name:"Primary mobile navigation"}).getByRole("link",{name:"Me",exact:true}),"Open merchant settings via footer");
      await click(page.getByRole("link",{name:/Switch workspace/}).first(),"Switch workspace through settings");
     }else{
      await click(page.getByRole("button",{name:"Account menu"}),"Open merchant account menu");
