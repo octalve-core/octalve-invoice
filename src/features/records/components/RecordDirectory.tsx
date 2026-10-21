@@ -87,7 +87,7 @@ export function RecordDirectory({kind,onCreate,onView,onEdit,showDesktopHeader=t
      <h1 className="font-semibold text-[#1b2b41]">{def.title}</h1>
    </div>
    <div className="flex min-w-0 items-center gap-2">
-     <label className="relative min-w-0 flex-1"><Search size={17} className="absolute left-3 top-2.5 text-gray-400"/><input aria-label={"Search "+def.plural} placeholder="Search" value={search} onChange={e=>query(e.target.value)} className="h-10 w-full min-w-0 rounded-full border border-gray-100 bg-white pl-10 pr-2 text-sm"/></label>
+     <label className="relative min-w-0 flex-1"><Search size={17} className="absolute left-3 top-2.5 text-gray-400"/><input type="search" aria-label={"Search "+def.plural} placeholder="Search" value={search} onChange={e=>query(e.target.value)} className="h-10 w-full min-w-0 rounded-full border border-gray-100 bg-white pl-10 pr-2 text-sm"/></label>
      <button aria-label="Filter records" onClick={()=>setFiltersOpen(true)} className="rounded-full bg-white p-2.5 text-gray-500"><SlidersHorizontal size={18}/></button>
      <button aria-label="Export (preview unavailable)" onClick={()=>setNotice("Export is unavailable until real merchant records are available.")} className="flex items-center gap-1 text-xs font-medium text-[#0064E0]"><Download size={16}/>Export</button>
    </div>
@@ -102,7 +102,7 @@ export function RecordDirectory({kind,onCreate,onView,onEdit,showDesktopHeader=t
    <div className="hidden items-center gap-4 border-b border-gray-100 px-5 py-4 lg:flex">
     <span className="shrink-0 text-sm font-semibold text-gray-600">{filtered.length} {def.plural}</span>
     <label className="relative min-w-0 max-w-xs flex-1"><Search size={16} className="absolute left-3 top-3 text-gray-400"/>
-     <input aria-label={"Search "+def.plural} value={search} onChange={e=>query(e.target.value)} placeholder="Search" className="h-10 w-full rounded-lg border border-gray-200 bg-white pl-9 pr-3 text-sm outline-none focus:border-[#0064E0]"/></label>
+     <input type="search" aria-label={"Search "+def.plural} value={search} onChange={e=>query(e.target.value)} placeholder="Search" className="h-10 w-full rounded-lg border border-gray-200 bg-white pl-9 pr-3 text-sm outline-none focus:border-[#0064E0]"/></label>
     <div className="ml-auto flex items-center gap-2">
      <button onClick={()=>setNotice("Export is unavailable until real merchant records are available.")} className="inline-flex h-9 items-center gap-1 rounded-lg border px-3 text-xs"><Download size={16}/>Export</button>
      <button onClick={()=>setFiltersOpen(true)} className="inline-flex h-9 items-center gap-1 rounded-lg border px-3 text-xs"><SlidersHorizontal size={16}/>Filters</button>
