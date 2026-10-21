@@ -5,7 +5,7 @@ import {UserAvatar} from "@/src/features/merchant-preview/UserAvatar";
 import {PreviewLogoutButton} from "@/src/features/merchant-preview/PreviewLogoutButton";
 import {useMerchantPreview} from "@/src/features/merchant-preview/MerchantPreviewProvider";
 const sections=[
- {title:"Account & billing",rows:[["Manage Subscription","/dashboard/settings/subscription",WalletCards],["Sales Reports","/dashboard/report",BarChart3]]},
+ {title:"Account & billing",rows:[["Switch workspace","/workspaces",Building2],["Manage Subscription","/dashboard/settings/subscription",WalletCards],["Sales Reports","/dashboard/report",BarChart3]]},
  {title:"General settings",rows:[["Profile Settings","/dashboard/settings/profile",UserRound],["Customize Invoices","/dashboard/settings/invoice",FileText],["Business information","/dashboard/getting-started/business",Building2],["Payment connections","/dashboard/getting-started/payments",WalletCards]]},
  {title:"Preferences & support",rows:[["FAQs & Help","/dashboard/settings/faqs",HelpCircle],["Deleted Records","/dashboard/settings/deleted",Trash2]]},
  {title:"More workspace tools",rows:[["Quotations","/dashboard/quotation",FileSpreadsheet],["Expenses","/dashboard/expenses",WalletCards],["Items & Services","/dashboard/items",Package],["Staff","/dashboard/staff",UsersRound],["Credit Notes","/dashboard/credit-note",FileMinus],["Other Services","/dashboard/other-services",MoreHorizontal],["Recurring Expenses","/dashboard/recurring-expense",RefreshCcw],["Payments Received","/dashboard/payment-received",WalletCards]]}
