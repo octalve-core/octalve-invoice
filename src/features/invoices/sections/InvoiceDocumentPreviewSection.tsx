@@ -38,24 +38,23 @@ export function InvoiceDocumentPreviewSection({draft,setDraft,profile,setProfile
  return <section aria-label="Live document preview" className="min-w-0 space-y-3">
   <div className="flex flex-wrap items-start justify-between gap-3">
    <div><h2 className="font-semibold text-[#1D2838]">Live {template==="modern"?"Modern Invoice":"Classic Ledger"} preview</h2>
-    <p className="text-xs text-gray-500">Review your document. It cannot be downloaded or shared until it is issued.</p></div>
+    <p className="text-xs text-gray-500">Review the final look of your invoice.</p></div>
    <div className="flex items-center gap-2 rounded-xl border border-[#F2D7D7] bg-[#FFF8F8] px-3 py-2 text-xs font-medium text-[#8F3030]">
-    <LockKeyhole size={15}/> PDF and PNG available after issue
+    <LockKeyhole size={15}/> Download available after issue
    </div>
   </div>
-  {!merchantLogo?<p className="rounded-lg border border-blue-100 bg-white p-3 text-xs text-[#244766]">Your business logo has not been added. <Link href="/dashboard/settings/business" className="font-semibold text-[#0064E0] underline">Add it in Business Settings</Link> to include it in your documents.</p>:null}
-  {!paymentReady?<p className="rounded-lg border border-amber-100 bg-white p-3 text-xs text-[#805D2E]">{paymentMode==="manual"?"Company bank details are incomplete.":"This online payment option is not connected."} Payment instructions will not appear on this draft. <Link href="/dashboard/settings/business" className="font-semibold text-[#0064E0] underline">Payment Settings</Link></p>:null}
+  {!merchantLogo?<p className="rounded-lg border border-blue-100 bg-white p-3 text-xs text-[#244766]">No business logo yet. <Link href="/dashboard/settings/business" className="font-semibold text-[#0064E0] underline">Add it in Business Settings</Link> to include it in your documents.</p>:null}
+  {!paymentReady?<p className="rounded-lg border border-amber-100 bg-white p-3 text-xs text-[#805D2E]">{paymentMode==="manual"?"Set up a verified company bank account.":"Set up this payment method."} <Link href="/dashboard/settings/business" className="font-semibold text-[#0064E0] underline">Payment Settings</Link></p>:null}
   <div className="invoice-preview-viewport min-w-0 overflow-hidden rounded-xl border border-gray-200 bg-[#edf2f8] p-2 py-6">
    <div className="invoice-preview-paper relative isolate overflow-hidden" style={{pointerEvents:"none"}}>
     {template==="modern"?
      <SapphireInvoiceRenderer {...shared} companyProfile={profile} companyLogo={merchantLogo} accentColor={invoiceAppearance.accent} font={invoiceAppearance.font} density={invoiceAppearance.density} header={invoiceAppearance.header} logoPosition={invoiceAppearance.logoPosition} showFooter={invoiceAppearance.showFooter}/>:
      <ClassicLedgerRenderer {...shared} businessProfile={profile} companyLogo={merchantLogo} accentColor={invoiceAppearance.accent} onBusinessProfileChange={onProfileChange}/>}
-    <div data-testid="draft-preview-watermark" aria-hidden="true" className="pointer-events-none absolute inset-0 z-30 flex flex-col items-center justify-around overflow-hidden select-none">
-      <span className="self-end rounded-l-md border border-[#96383D] bg-[#FFF2F2]/95 px-3 py-2 text-[11px] font-extrabold tracking-wider text-[#8E292E]">DRAFT — NOT ISSUED</span>
-      {Array.from({length:5},(_,i)=><span key={i} className="w-[130%] -rotate-[27deg] whitespace-nowrap text-center text-[clamp(20px,3vw,42px)] font-extrabold tracking-[0.16em] text-[#972F36]/35">DRAFT · NOT ISSUED</span>)}
+    <div data-testid="draft-preview-watermark" aria-hidden="true" className="pointer-events-none absolute inset-0 z-30 grid place-items-center overflow-hidden select-none">
+      <span className="block w-[130%] -rotate-[34deg] whitespace-nowrap text-center text-[clamp(17px,4vw,42px)] font-extrabold tracking-[0.15em] text-[#9C3940]/30">DRAFT — NOT ISSUED</span>
     </div>
    </div>
   </div>
-  <p className="text-xs leading-5 text-slate-500">Draft previews are for checking information only. Screenshots cannot be blocked reliably, so the draft is visibly marked and cannot be used as an issued document.</p>
+  <p className="text-xs leading-5 text-slate-500">This invoice has not been issued.</p>
  </section>;
 }
