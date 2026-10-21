@@ -54,5 +54,5 @@ test("global route finder and page-level record filters have independent state a
  assert.match(other,/aria-label="Search More services"/);
  assert.doesNotMatch(nav,/Search payment activity|Search More services|Search "\+def/);
  assert.doesNotMatch(directory,/Workspace search results/);
- assert.match(nav,/setQuery\("“?”?\)/); // local navigation query resets after route selection
+ assert.match(nav,/setQuery\(""\)/); // local navigation query resets after route selection
 });
