@@ -6,6 +6,7 @@ import {useAccessibleDialog} from "@/src/features/records/components/useAccessib
 import {paymentPreview} from "./ledger";
 import {paymentActivityPreview,activityTabs,activityProjection,filterPaymentActivity,type PaymentActivity,type ActivityFilter} from "./activity-preview";
 import {previewInvoices} from "@/src/features/invoices/lib/preview-records";
+import {MerchantPageHeading} from "@/components/dashboard/ui/MerchantPageHeading";
 const money=(amount:number)=>new Intl.NumberFormat("en-NG",{style:"currency",currency:"NGN",minimumFractionDigits:2}).format(amount/100);
 const minor=(s:string)=>Math.round((Number(s.replace(/[^\d.]/g,""))||0)*100);
 const claims=previewInvoices.map(i=>({id:i.id,amountMinor:minor(i.amount),issued:i.status!=="draft"}));
