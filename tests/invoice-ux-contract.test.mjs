@@ -177,7 +177,8 @@ test("premium desktop sidebar is dark blue-active, separately scrollable and kee
  assert.match(sidebar,/<PreviewLogoutButton/);
  assert.match(sidebar,/aria-current=\{isActive\?"page":undefined\}/);
  assert.match(layout,/lg:h-dvh lg:min-h-0 lg:overflow-hidden/);
- assert.match(layout,/lg:h-full lg:min-h-0 lg:overflow-y-auto/);
+ assert.match(layout,/lg:h-full lg:min-h-0 lg:overflow-hidden/);
+ assert.match(layout,/main data-merchant-scroll-region[^>]*lg:overflow-y-auto/);
  assert.match(layout,/<BottomNavbar \/>/);
  assert.match(layout,/<MobileHeader \/>/);
 });
@@ -248,7 +249,8 @@ test("progressive checklist is not a duplicate workspace and uses the same Quick
  assert.doesNotMatch(home,/Open full workspace setup|href="\/dashboard"/);
  assert.match(home,/<QuickCreatePanel\/>/);
  assert.match(overview,/<QuickCreatePanel\/>/);
- assert.match(overview,/text-xl font-bold leading-snug text-gray-900 sm:text-2xl/);
+ assert.match(overview,/<MerchantPageHeading title=/);
+ assert.match(read("components/dashboard/ui/MerchantPageHeading.tsx"),/text-xl font-bold tracking-tight leading-7 sm:text-2xl/);
  assert.match(quick,/tone:"green"/);
  assert.match(quick,/tone:"red"/);
  assert.match(quick,/tone:"orange"/);
