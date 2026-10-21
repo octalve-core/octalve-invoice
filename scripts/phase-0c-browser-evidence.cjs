@@ -467,6 +467,12 @@ const origin = process.env.OCTALVE_BASE_URL || "http://127.0.0.1:3000";
             const nav=page.getByRole("navigation",{name:"Invoice steps"});
             const activeStep=async label=>{
               const link=nav.getByRole("link",{name:new RegExp(label)});
+              // Next.js client transitions complete asynchronously after the click.
+              // Test the rendered active step after the router updates, not the previous paint.
+              await page.waitForFunction(expected=>{
+                const links=document.querySelectorAll('nav[aria-label="Invoice steps"] a');
+                return [...links].some(a=>a.textContent?.includes(expected)&&a.getAttribute("aria-current")==="step");
+              },label,{timeout:15000});
               if(await link.getAttribute("aria-current")!=="step")throw Error("Invoice step did not show the active state: "+label);
               return link;
             };
