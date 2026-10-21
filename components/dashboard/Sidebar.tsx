@@ -93,6 +93,7 @@ export default function Sidebar(){
       <span className="min-w-0 flex-1"><span className="block text-xs font-semibold text-white">Subscription</span><span className="mt-0.5 block text-[11px] text-[#B3C5D9]">Review plans</span></span>
       <ArrowUpRight size={16} className="shrink-0 text-[#B3C5D9]"/>
     </Link>
+    <Link href="/workspaces" className="block rounded-xl px-3 py-2 text-xs font-semibold text-[#8DBCF4] hover:bg-white/10">Switch workspace →</Link>
     <PreviewLogoutButton className="flex min-h-10 w-full justify-start rounded-xl border border-transparent px-3 py-2 text-[13px] font-medium text-[#E0E7EF] transition-colors hover:border-white/[.08] hover:bg-white/[.08] focus-visible:outline-2 focus-visible:outline-[#66A9FF]"/>
    </footer>
   </aside>
