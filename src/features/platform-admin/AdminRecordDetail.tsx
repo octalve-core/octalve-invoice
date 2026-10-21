@@ -1,7 +1,7 @@
 "use client";
 import {useState} from "react";
 import Link from "next/link";
-import {ArrowLeft,ClipboardCheck,ShieldCheck,UserRoundCheck,ChevronDown} from "lucide-react";
+import {ArrowLeft,ClipboardCheck,ShieldCheck,ChevronDown} from "lucide-react";
 import {adminPreviewRecord,type AdminRecordKind} from "./admin-preview-data";
 export function AdminRecordDetail({kind,id}:{kind:AdminRecordKind;id:string}){
  const row=adminPreviewRecord(kind,id),[assignment,setAssignment]=useState("Unassigned"),[show,setShow]=useState(false);
