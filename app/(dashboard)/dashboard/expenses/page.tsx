@@ -2,12 +2,14 @@
 import {useState} from "react";
 import {RecordDirectory} from "@/src/features/records/components/RecordDirectory";
 import CreateExpenseModal from "@/components/dashboard/modals/CreateExpenseModal";
+import {MerchantPageHeading} from "@/components/dashboard/ui/MerchantPageHeading";
 export default function ExpensesPage(){
  const [creating,setCreating]=useState(false);
  const [notice,setNotice]=useState("");
  return <div className="min-w-0 space-y-5">
+  <MerchantPageHeading title="Expenses" description="Track and manage business expenses" hideOnMobile/>
   {notice?<p role="status" className="rounded-lg bg-blue-50 p-3 text-sm text-blue-800">{notice}</p>:null}
-  <RecordDirectory kind="expense" onCreate={()=>setCreating(true)}/>
+  <RecordDirectory kind="expense" showDesktopHeader={false} onCreate={()=>setCreating(true)}/>
   <CreateExpenseModal isOpen={creating} onClose={()=>setCreating(false)} onSubmit={()=>{setCreating(false);setNotice("Expense not saved. Expense recording will be available after secure setup.");}}/>
  </div>;
 }
