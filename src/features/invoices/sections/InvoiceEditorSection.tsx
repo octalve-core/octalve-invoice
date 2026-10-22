@@ -27,7 +27,7 @@ function StepPanel({name,title,description,active,children}:{name:Exclude<Invoic
 }
 
 export function InvoiceEditorSection({draft,setDraft,step}:Props){
- const {paymentMode}=useMerchantPreview();
+ const {paymentMode,taxPolicy}=useMerchantPreview();
  const [dueTime,setDueTime]=useState("23:59");
  const update=<K extends keyof InvoiceDraft>(key:K,value:InvoiceDraft[K])=>setDraft(p=>({...p,[key]:value}));
  const total=calculateDraftPreviewTotals(draft).total;
@@ -46,7 +46,7 @@ export function InvoiceEditorSection({draft,setDraft,step}:Props){
    <InvoiceItemsSection draft={draft} setDraft={setDraft}/>
   </StepPanel>
   <StepPanel name="charges" title="Totals, tax & notes" description="Review charges and add a note" active={step==="charges"}>
-   <p role="status" className="mb-3 rounded-xl border border-amber-100 bg-amber-50 p-3 text-xs leading-5 text-amber-900">Tax is not legally assessed in this preview. Verify all classifications and effective dates in Tax Centre before any future issuance.</p>
+   <p role="status" className="mb-3 rounded-xl border border-amber-100 bg-amber-50 p-3 text-xs leading-5 text-amber-900">Tax Centre ({taxPolicy.jurisdiction} · {taxPolicy.version}): verify the classifications and effective dates before any future issuance.</p>
 
 
    <div className="grid grid-cols-2 gap-3">
