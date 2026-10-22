@@ -549,7 +549,7 @@ const origin = process.env.OCTALVE_BASE_URL || "http://127.0.0.1:3000";
 
             await nav.getByRole("link",{name:/Preview/}).click();
             await activeStep("Preview");
-            await page.getByRole("heading",{name:"Invoice preview"}).waitFor();
+            await page.getByRole("heading",{name:"Invoice preview",exact:true}).waitFor();
             await page.locator('#invoice-document').waitFor();
             if(await page.locator('#invoice-document').getByRole("textbox",{name:"Customer name"}).inputValue()!=="Golden Preview Customer")throw Error("Invoice lost customer details");
             await page.locator('#invoice-document').getByText("Octalve Limited").waitFor();
