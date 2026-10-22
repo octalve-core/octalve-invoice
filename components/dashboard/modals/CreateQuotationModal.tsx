@@ -7,7 +7,7 @@ import {formatDocumentNumber} from "@/src/features/invoices/lib/document-number"
 import {newCatalogPreviewId,snapshotItem,isCatalogArchived} from "@/src/features/merchant-preview/catalog-contract";
 import {calculateClassifiedPreview,type TaxClassification,unclassifiedTax} from "@/src/features/tax/tax-domain";
 import {currencyCodes} from "@/src/features/invoice/types";
-import {QuickCustomerEditor,emptyQuickCustomer,createQuickCustomer,type QuickCustomerInput} from "@/src/features/catalog/QuickCustomerEditor";
+import {QuickCustomerEditor,emptyQuickCustomer,createQuickCustomer,quickCustomerInput,updateQuickCustomer,type QuickCustomerInput} from "@/src/features/catalog/QuickCustomerEditor";
 import {QuickItemEditor,emptyQuickItem,createQuickItem} from "@/src/features/catalog/QuickItemEditor";
 import type {CatalogItem} from "@/src/features/merchant-preview/MerchantPreviewProvider";
 
@@ -50,6 +50,7 @@ export default function CreateQuotationModal({
   const [addCustomerOpen,setAddCustomerOpen]=useState(false),[addItemOpen,setAddItemOpen]=useState(false);
   const [newItem,setNewItem]=useState<CatalogItem>(emptyQuickItem);
   const [newCustomer,setNewCustomer]=useState<QuickCustomerInput>(emptyQuickCustomer);
+ const [editingCustomerId,setEditingCustomerId]=useState<string|null>(null),[editingItemId,setEditingItemId]=useState<string|null>(null);
   const [formData, setFormData] = useState<QuotationData>({
     quotationNumber: formatDocumentNumber(settings.businessName||"Octalve Limited",1,"quotation"),
     customer: "",
@@ -204,7 +205,13 @@ export default function CreateQuotationModal({
                 </div>
               </div>
 
-              <button type="button" onClick={()=>setAddCustomerOpen(true)} className="flex items-center gap-1 rounded-full bg-blue-50 px-3 py-2 text-xs font-semibold text-[#0064E0]"><Plus size={15}/>Add new customer</button>
+              <div className="flex flex-wrap gap-2">
+               <button type="button" onClick={()=>{setEditingCustomerId(null);setNewCustomer(emptyQuickCustomer());setAddCustomerOpen(true);}} className="flex items-center gap-1 rounded-full bg-blue-50 px-3 py-2 text-xs font-semibold text-[#0064E0]"><Plus size={15}/>Add new customer</button>
+               {activeCustomers.some(c=>c.id===formData.customer)?<button type="button" onClick={()=>{
+                const current=customers.find(c=>c.id===formData.customer);if(!current)return;
+                setNewCustomer(quickCustomerInput(current));setEditingCustomerId(current.id);setAddCustomerOpen(true);
+               }} className="rounded-full border border-blue-200 px-3 py-2 text-xs text-[#0064E0]">Edit selected customer</button>:null}
+              </div>
                             {/* Quotation Period */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -300,6 +307,10 @@ export default function CreateQuotationModal({
                      className="h-9 w-full rounded-lg border border-gray-200 bg-white px-2 text-xs">
                      <option value="">Select catalogue item</option>{activeItems.map(x=><option key={x.id} value={x.id}>{x.name}</option>)}
                    </select>
+                    {item.catalogItemId&&activeItems.some(x=>x.id===item.catalogItemId)?<button type="button" className="mb-2 text-xs font-medium text-[#0064E0]" onClick={()=>{
+                     const current=items.find(x=>x.id===item.catalogItemId);if(!current)return;
+                     setNewItem({...current,taxClassification:current.taxClassification?{...current.taxClassification}:unclassifiedTax});setEditingItemId(current.id);setAddItemOpen(true);
+                    }}>Edit catalogue item</button>:null}
                     <div className="flex items-start justify-between mb-2">
                       <div className="flex items-center gap-2">
                         <div className="w-8 h-8 bg-white rounded flex items-center justify-center"><ImageOff size={17} className="text-gray-400"/></div>
@@ -331,7 +342,7 @@ export default function CreateQuotationModal({
                 ))}
               </div>
 
-              <button type="button" onClick={()=>setAddItemOpen(true)} className="mb-3 flex items-center gap-2 rounded-full border border-[#0064E0] px-4 py-2 text-xs font-semibold text-[#0064E0]"><Plus size={15}/> Add new catalogue item</button>
+              <button type="button" onClick={()=>{setEditingItemId(null);setNewItem(emptyQuickItem());setAddItemOpen(true);}} className="mb-3 flex items-center gap-2 rounded-full border border-[#0064E0] px-4 py-2 text-xs font-semibold text-[#0064E0]"><Plus size={15}/> Add new catalogue item</button>
               <button
                 onClick={addLineItem}
                 className="flex items-center gap-2 text-sm text-[#0064E0] hover:underline"
@@ -378,22 +389,41 @@ export default function CreateQuotationModal({
 
         {addItemOpen?<div role="presentation" className="fixed inset-0 z-[120] flex items-end justify-center bg-black/50 sm:items-center sm:p-4" onClick={()=>setAddItemOpen(false)}>
          <section role="dialog" aria-modal="true" aria-label="Add quotation catalogue item" onClick={e=>e.stopPropagation()} className="max-h-[92dvh] w-full max-w-lg overflow-y-auto rounded-t-2xl bg-white p-5 sm:rounded-2xl">
-          <div className="mb-3 flex items-center justify-between"><h3 className="font-semibold">Add product or service</h3><button type="button" aria-label="Close quotation item form" onClick={()=>setAddItemOpen(false)}><X size={19}/></button></div>
+          <div className="mb-3 flex items-center justify-between"><h3 className="font-semibold">{editingItemId?"Edit saved item":"Add product or service"}</h3><button type="button" aria-label="Close quotation item form" onClick={()=>setAddItemOpen(false)}><X size={19}/></button></div>
           <QuickItemEditor value={newItem} onChange={setNewItem}/>
           <button type="button" disabled={!newItem.name.trim()} onClick={()=>{
-           const item=createQuickItem(newItem);setItems(prev=>[...prev,item]);
-           setFormData(prev=>({...prev,lineItems:[...prev.lineItems,{
-            id:newCatalogPreviewId(),catalogItemId:item.id,description:item.name,quantity:1,rate:Number(item.rate),
-            discount:Number(item.discountPercent),amount:Number(item.rate)*(1-Number(item.discountPercent)/100),
-            taxClassification:item.taxClassification
-           }]}));setNewItem(emptyQuickItem());setAddItemOpen(false);
-          }} className="mt-4 w-full rounded-full bg-[#0064E0] p-3 text-sm font-semibold text-white disabled:opacity-40">Add and select item</button>
+            try{
+             const fresh=createQuickItem(newItem);
+             const existing=items.find(x=>x.id===editingItemId);
+             if(editingItemId&&!existing)return;
+             if(existing){
+              const updated={...existing,...fresh,id:existing.id};
+              setItems(prev=>prev.map(x=>x.id===existing.id?updated:x));
+              // Merchant catalogue edits must not silently change existing quotation line snapshots.
+             }else{
+              setItems(prev=>[...prev,fresh]);
+              setFormData(prev=>({...prev,lineItems:[...prev.lineItems,{
+               id:newCatalogPreviewId(),catalogItemId:fresh.id,description:fresh.name,quantity:1,rate:Number(fresh.rate),
+               discount:Number(fresh.discountPercent),amount:Number(fresh.rate)*(1-Number(fresh.discountPercent)/100),
+               taxClassification:fresh.taxClassification
+              }]}));
+             }
+             setNewItem(emptyQuickItem());setEditingItemId(null);setAddItemOpen(false);
+            }catch{ /* Invalid inputs remain visible for correction. */ }
+           }} className="mt-4 w-full rounded-full bg-[#0064E0] p-3 text-sm font-semibold text-white disabled:opacity-40">{editingItemId?"Update catalogue (quote unchanged)":"Add and select item"}</button>
          </section></div>:null}
         {addCustomerOpen?<div className="fixed inset-0 z-[110] flex items-end justify-center bg-black/50 sm:items-center sm:p-4" onClick={()=>setAddCustomerOpen(false)}>
          <section role="dialog" aria-modal="true" aria-label="Add quotation customer" onClick={e=>e.stopPropagation()} className="w-full max-w-md space-y-3 rounded-t-2xl bg-white p-5 sm:rounded-2xl">
-          <div className="flex items-center justify-between"><h3 className="font-semibold">New customer</h3><button onClick={()=>setAddCustomerOpen(false)} aria-label="Close customer form"><X size={19}/></button></div>
+          <div className="flex items-center justify-between"><h3 className="font-semibold">{editingCustomerId?"Edit customer catalogue":"New customer"}</h3><button onClick={()=>setAddCustomerOpen(false)} aria-label="Close customer form"><X size={19}/></button></div>
           <QuickCustomerEditor value={newCustomer} onChange={setNewCustomer}/>
-          <button disabled={!newCustomer.name.trim()} onClick={()=>{const next=createQuickCustomer(newCustomer);setCustomers(p=>[...p,next]);setFormData(p=>({...p,customer:next.id,address:next.address}));setAddCustomerOpen(false);setNewCustomer(emptyQuickCustomer());}} className="w-full rounded-full bg-[#0064E0] p-3 text-sm font-semibold text-white disabled:opacity-40">Add and select</button>
+          <button type="button" disabled={!newCustomer.name.trim()} onClick={()=>{
+           const existing=customers.find(c=>c.id===editingCustomerId);
+           if(editingCustomerId&&!existing)return;
+           const next=existing?updateQuickCustomer(existing,newCustomer):createQuickCustomer(newCustomer);
+           setCustomers(p=>existing?p.map(c=>c.id===next.id?next:c):[...p,next]);
+           if(!existing)setFormData(p=>({...p,customer:next.id,address:next.address}));
+           setAddCustomerOpen(false);setEditingCustomerId(null);setNewCustomer(emptyQuickCustomer());
+          }} className="w-full rounded-full bg-[#0064E0] p-3 text-sm font-semibold text-white disabled:opacity-40">{editingCustomerId?"Update catalogue (quote address unchanged)":"Add and select"}</button>
          </section></div>:null}
                 {/* Footer */}
         <div className="flex items-center justify-center gap-4 px-6 py-4 border-t border-gray-200">
