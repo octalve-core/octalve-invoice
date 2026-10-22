@@ -2,6 +2,7 @@
 import {useMemo,useState} from "react";
 import {CalendarDays,ChevronDown,Plus,Search,X,Users,UserRound,Wallet} from "lucide-react";
 import Link from "next/link";
+import {snapshotCustomer,newCatalogPreviewId} from "@/src/features/merchant-preview/catalog-contract";
 import type {InvoiceDraft} from "@/src/features/invoice/types";
 import {useMerchantPreview,type CatalogCustomer,type CatalogStaff,type PaymentMode} from "@/src/features/merchant-preview/MerchantPreviewProvider";
 type Props={draft:InvoiceDraft;setDraft:React.Dispatch<React.SetStateAction<InvoiceDraft>>;dueTime:string;setDueTime:(time:string)=>void;};
@@ -36,23 +37,14 @@ export function InvoiceMetadataSection({draft,setDraft,dueTime,setDueTime}:Props
   else setDraft(p=>({...p,dueDay:String(Number(d)),dueMonth:months[Number(m)-1]||"JAN",dueYear:y}));
  }
  function chooseCustomer(row:CatalogCustomer){
-  setDraft(p=>({...p,
-   clientCustomerId:row.id,
-   clientName:row.billingName?.trim()||row.name,
-   clientEmail:row.email,clientPhone:row.phone,
-   clientAddress:row.address||row.addressLine1||"",
-   clientType:row.customerType||"individual",clientTaxId:row.taxId||"",
-   clientCompanyRegistration:row.companyRegistration||"",
-   clientCity:row.city||"",clientState:row.state||"",
-   clientPostalCode:row.postalCode||"",clientCountry:row.country||""
-  }));
+  setDraft(p=>({...p,...snapshotCustomer(row)}));
   close();
  }
  function chooseStaff(row:CatalogStaff){setSelectedStaff(row.name);close();}
  function close(){setPicker(null);setQuery("");setAdding(false);}
  function addCustomer(){
   if(!customer.name.trim())return;
-  const next:CatalogCustomer={...customer,id:crypto.randomUUID(),
+  const next:CatalogCustomer={...customer,id:newCatalogPreviewId(),
     billingName:customer.customerType==="business"?(customer.company.trim()||customer.name):customer.name};
   setCustomers(p=>[...p,next]);chooseCustomer(next);setCustomer({name:"",email:"",phone:"",address:"",company:"",customerType:"individual",taxId:"",country:"",city:"",state:""});
  }
