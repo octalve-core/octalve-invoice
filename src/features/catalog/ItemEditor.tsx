@@ -7,7 +7,7 @@ import {useMerchantPreview,type CatalogItem} from "@/src/features/merchant-previ
 import {newCatalogPreviewId} from "@/src/features/merchant-preview/catalog-contract";
 import {taxTreatments,unclassifiedTax} from "@/src/features/tax/tax-domain";
 export function ItemEditor({editId}:{editId?:string}){
- const router=useRouter(),{items,setItems}=useMerchantPreview();
+ const router=useRouter(),{items,setItems,taxPolicy}=useMerchantPreview();
  const existing=editId?items.find(x=>x.id===editId):undefined;
  const [form,setForm]=useState<CatalogItem>(()=>existing?{...existing}:{id:"",name:"",description:"",rate:"",taxPercent:"0",discountPercent:"0",category:"",type:"goods"});
  const [issue,setIssue]=useState("");
@@ -19,7 +19,7 @@ export function ItemEditor({editId}:{editId?:string}){
   const rate=Number(form.rate),disc=Number(form.discountPercent);
   if(!form.name.trim()||!Number.isFinite(rate)||rate<0||!Number.isFinite(disc)||disc<0||disc>100){setIssue("Enter a name, non-negative price and percentage values from 0 to 100.");return;}
   if(editId&&!existing){setIssue("This item is not in the current workspace.");return;}
-  const row={...form,id:editId||newCatalogPreviewId()};
+  const row={...form,id:editId||newCatalogPreviewId(),taxClassification:{...(form.taxClassification||unclassifiedTax),jurisdiction:taxPolicy.jurisdiction,review:"needs-review" as const,ruleVersion:"unverified"}};
   setItems(p=>editId?p.map(x=>x.id===editId?row:x):[...p,row]);router.push("/dashboard/items");
  }
  return <main className="mx-auto max-w-3xl space-y-5">
@@ -31,7 +31,7 @@ export function ItemEditor({editId}:{editId?:string}){
     <input type={type||"text"} min={type==="number"?0:undefined} max={key==="discountPercent"?100:undefined} step={type==="number"?"any":undefined}
       value={form[key]} onChange={e=>setForm(p=>({...p,[key]:e.target.value}))} className="h-11 rounded-xl border border-gray-200 bg-gray-50 px-3 text-sm outline-none focus:border-[#0064E0]"/></label>)}</div>
    <label className="mt-4 block space-y-1.5 text-xs font-medium text-[#1d344b]">Tax treatment — pending Tax Centre review
-    <select aria-label="Item tax treatment" value={form.taxClassification?.treatment||"unclassified"} onChange={e=>setForm(p=>({...p,taxClassification:{...unclassifiedTax,treatment:e.target.value as typeof taxTreatments[number]}}))} className="block h-11 w-full rounded-xl border border-gray-200 bg-gray-50 px-3 text-sm">
+    <select aria-label="Item tax treatment" value={form.taxClassification?.treatment||"unclassified"} onChange={e=>setForm(p=>({...p,taxClassification:{...unclassifiedTax,jurisdiction:taxPolicy.jurisdiction,treatment:e.target.value as typeof taxTreatments[number]}}))} className="block h-11 w-full rounded-xl border border-gray-200 bg-gray-50 px-3 text-sm">
      {taxTreatments.map(t=><option value={t} key={t}>{t.replaceAll("-"," ")}</option>)}
     </select></label>
    <label className="mt-4 block space-y-1.5 text-xs font-medium text-[#1d344b]">Description (optional)
