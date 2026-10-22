@@ -16,6 +16,18 @@ export function createQuickCustomer(value:QuickCustomerInput):CatalogCustomer{
  if(!name)throw new Error("Customer name required");
  return {...value,id:newCatalogPreviewId(),name,billingName:value.customerType==="business"?(value.company.trim()||name):name};
 }
+/** Normalised editor view over the single merchant customer catalogue. */
+export function quickCustomerInput(record:CatalogCustomer):QuickCustomerInput{
+ return {name:record.name,email:record.email,phone:record.phone,company:record.company,
+  address:record.address||record.addressLine1||"",customerType:record.customerType||"individual",
+  taxId:record.taxId||"",city:record.city||"",state:record.state||"",country:record.country||""};
+}
+/** Catalogue edit does not mutate the current document's snapshotted billing details. */
+export function updateQuickCustomer(record:CatalogCustomer,value:QuickCustomerInput):CatalogCustomer{
+ const name=value.name.trim();
+ if(!name)throw new Error("Customer name required");
+ return {...record,...value,name,billingName:value.customerType==="business"?(value.company.trim()||name):name};
+}
 export function QuickCustomerEditor({value,onChange}:{value:QuickCustomerInput;onChange:(next:QuickCustomerInput)=>void}){
  const field=(key:Exclude<keyof QuickCustomerInput,"customerType">)=>(
   <label key={key} className="block min-w-0 text-xs capitalize text-[#193955]">{key==="taxId"?"Tax ID (if applicable)":key}
