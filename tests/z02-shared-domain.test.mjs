@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import {readFileSync} from "node:fs";
-import {calculateClassifiedPreview,unclassifiedTax,requiresTaxReview} from "../src/features/tax/tax-domain.ts";
+import {calculateClassifiedPreview,calculateUntaxedPreview,unclassifiedTax,requiresTaxReview} from "../src/features/tax/tax-domain.ts";
 import {newDraftPaymentPlan,proposedStagesFromDraft} from "../src/features/invoices/lib/draft-payment-plan.ts";
 import {snapshotCustomer,snapshotItem} from "../src/features/merchant-preview/catalog-contract.ts";
 const read=p=>readFileSync(new URL("../"+p,import.meta.url),"utf8");
@@ -83,4 +83,16 @@ test("UI tax calculation remains guarded and overall percentage cannot bypass tr
  assert.match(editor,/calculateDraftPreviewTotals/);
  assert.doesNotMatch(editor,/aria-label="Tax percentage"/);
  assert.match(read("src/features/tax/tax-domain.ts"),/requiresTaxReview/);
+});
+
+test("unclassified drafts retain exact pre-tax cents without claiming a tax assessment",()=>{
+ const lines=[{id:"1",quantity:"3",unitPrice:"0.01",discount:"0",taxClassification:unclassifiedTax}];
+ const untaxed=calculateUntaxedPreview(lines,"0");
+ assert.deepEqual(untaxed.netMinor,3);
+ const flagged=calculateClassifiedPreview(lines,"0");
+ assert.equal(flagged.ready,false);
+ assert.equal(flagged.netMinor,3);
+ assert.equal(flagged.taxMinor,null);
+ assert.equal(flagged.totalMinor,null);
+ assert.equal(calculateUntaxedPreview([{...lines[0],unitPrice:"1.234"}],"0").ready,false);
 });
