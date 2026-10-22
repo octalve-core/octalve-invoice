@@ -12,6 +12,7 @@ import {InvoiceEditorSection,type InvoiceStep} from "./InvoiceEditorSection";
 import {InvoiceDocumentPreviewSection} from "./InvoiceDocumentPreviewSection";
 import {createPreviewInvoice} from "@/src/features/invoices/lib/preview-fixture";
 import {applyNewInvoicePreferences} from "@/src/features/invoices/lib/invoice-preferences";
+import {newDraftPaymentPlan} from "@/src/features/invoices/lib/draft-payment-plan";
 
 const steps:{id:InvoiceStep;label:string;short:string}[]=[
  {id:"details",label:"Invoice details",short:"Details"},
@@ -32,7 +33,7 @@ export function InvoiceComposer({mode="create",invoiceId}:{mode?:"create"|"edit"
  const base=mode==="edit"?"/dashboard/invoice/"+currentInvoiceId+"/edit":"/dashboard/invoice/create";
  const {settings,setSettings,logoPreview,paymentMode,invoiceAppearance,invoicePreferences}=useMerchantPreview();
  const [draft,setDraft]=useState(()=>{
-  const initial=mode==="create"?applyNewInvoicePreferences(createPreviewInvoice(),invoicePreferences):createPreviewInvoice();
+  const initial={...(mode==="create"?applyNewInvoicePreferences(createPreviewInvoice(),invoicePreferences):createPreviewInvoice()),paymentPlan:newDraftPaymentPlan()};
   const matching=mode==="edit"&&currentInvoiceId?getPreviewInvoice(currentInvoiceId):undefined;
   return matching?{...initial,invoiceNo:matching.reference,clientName:matching.customer,clientEmail:matching.email}:
    {...initial,invoiceNo:formatDocumentNumber(settings.businessName||"Octalve Limited",1,"invoice")};
