@@ -1,4 +1,6 @@
 "use client";
+import type {TaxClassification,TaxCentrePolicy} from "../tax/tax-domain";
+import {defaultTaxCentrePolicy} from "../tax/tax-domain";
 import {createContext,useContext,useMemo,useState,type Dispatch,type ReactNode,type SetStateAction} from "react";
 export interface MerchantPreviewSettings {
  businessName:string;businessAddress:string;businessPhone:string;businessDescription:string;
@@ -53,7 +55,7 @@ export interface CatalogCustomer {
  addressLine1?:string;city?:string;state?:string;postalCode?:string;country?:string;
  currency?:string;website?:string;
 }
-export interface CatalogItem {id:string;name:string;description:string;rate:string;taxPercent:string;discountPercent:string;category:string;type:"goods"|"service";}
+export interface CatalogItem {id:string;name:string;description:string;rate:string;taxPercent:string;discountPercent:string;category:string;type:"goods"|"service";taxClassification?:TaxClassification;}
 export interface CatalogStaff {id:string;name:string;email:string;role:string;phone:string;}
 export const starterCustomers:CatalogCustomer[]=[
  {id:"1",name:"Olamide Ismail",email:"olamide@example.invalid",phone:"",address:"",company:"Bi Creativity"},
@@ -82,6 +84,7 @@ type ContextValue={
  receiptAutoMode:ReceiptAutoMode;setReceiptAutoMode:Dispatch<SetStateAction<ReceiptAutoMode>>;
  invoicePreferences:InvoicePreferences;setInvoicePreferences:Dispatch<SetStateAction<InvoicePreferences>>;
  invoiceAppearance:InvoiceAppearance;setInvoiceAppearance:Dispatch<SetStateAction<InvoiceAppearance>>;
+ taxPolicy:TaxCentrePolicy;setTaxPolicy:Dispatch<SetStateAction<TaxCentrePolicy>>;
  archivedRecords:ArchivedPreviewRecord[];setArchivedRecords:Dispatch<SetStateAction<ArchivedPreviewRecord[]>>;
  readNotificationIds:string[];setReadNotificationIds:Dispatch<SetStateAction<string[]>>;
  user:PreviewUser;setUser:Dispatch<SetStateAction<PreviewUser>>;
@@ -109,11 +112,12 @@ export function MerchantPreviewProvider({children}:{children:ReactNode}){
  const [receiptAutoMode,setReceiptAutoMode]=useState<ReceiptAutoMode>("off");
  const [invoicePreferences,setInvoicePreferences]=useState<InvoicePreferences>(defaultInvoicePreferences);
  const [invoiceAppearance,setInvoiceAppearance]=useState<InvoiceAppearance>(defaultInvoiceAppearance);
+ const [taxPolicy,setTaxPolicy]=useState<TaxCentrePolicy>(defaultTaxCentrePolicy);
  const [archivedRecords,setArchivedRecords]=useState<ArchivedPreviewRecord[]>([]);
  const [readNotificationIds,setReadNotificationIds]=useState<string[]>([]);
  const [userImage,setUserImage]=useState<string|null>(null);
- const resetPreview=()=>{setSettings(defaults);setLogoPreview(null);setSignaturePreview(null);setPaymentMode("manual");setCollectionSetup(defaultPreviewCollectionSetup);setUser(defaultPreviewUser);setUserImage(null);setCustomers(starterCustomers);setItems(starterItems);setStaff(starterStaff);setReceiptAutoMode("off");setInvoicePreferences(defaultInvoicePreferences);setInvoiceAppearance(defaultInvoiceAppearance);setArchivedRecords([]);setReadNotificationIds([]);};
- const value=useMemo(()=>({settings,setSettings,logoPreview,setLogoPreview,signaturePreview,setSignaturePreview,paymentMode,setPaymentMode,collectionSetup,setCollectionSetup,customers,setCustomers,items,setItems,staff,setStaff,receiptAutoMode,setReceiptAutoMode,invoicePreferences,setInvoicePreferences,invoiceAppearance,setInvoiceAppearance,archivedRecords,setArchivedRecords,readNotificationIds,setReadNotificationIds,user,setUser,userImage,setUserImage,resetPreview}),[settings,logoPreview,signaturePreview,paymentMode,collectionSetup,customers,items,staff,receiptAutoMode,invoicePreferences,invoiceAppearance,archivedRecords,readNotificationIds,user,userImage]);
+ const resetPreview=()=>{setSettings(defaults);setLogoPreview(null);setSignaturePreview(null);setPaymentMode("manual");setCollectionSetup(defaultPreviewCollectionSetup);setUser(defaultPreviewUser);setUserImage(null);setCustomers(starterCustomers);setItems(starterItems);setStaff(starterStaff);setReceiptAutoMode("off");setInvoicePreferences(defaultInvoicePreferences);setInvoiceAppearance(defaultInvoiceAppearance);setTaxPolicy(defaultTaxCentrePolicy);setArchivedRecords([]);setReadNotificationIds([]);};
+ const value=useMemo(()=>({settings,setSettings,logoPreview,setLogoPreview,signaturePreview,setSignaturePreview,paymentMode,setPaymentMode,collectionSetup,setCollectionSetup,customers,setCustomers,items,setItems,staff,setStaff,receiptAutoMode,setReceiptAutoMode,invoicePreferences,setInvoicePreferences,invoiceAppearance,setInvoiceAppearance,taxPolicy,setTaxPolicy,archivedRecords,setArchivedRecords,readNotificationIds,setReadNotificationIds,user,setUser,userImage,setUserImage,resetPreview}),[settings,logoPreview,signaturePreview,paymentMode,collectionSetup,customers,items,staff,receiptAutoMode,invoicePreferences,invoiceAppearance,taxPolicy,archivedRecords,readNotificationIds,user,userImage]);
  return <C.Provider value={value}>{children}</C.Provider>;
 }
 export function useMerchantPreview(){const ctx=useContext(C);if(!ctx)throw new Error("Merchant preview provider missing");return ctx;}
