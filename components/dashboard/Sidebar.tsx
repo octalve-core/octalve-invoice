@@ -47,9 +47,9 @@ export default function Sidebar(){
   <aside aria-label="Desktop workspace sidebar"
    className="hidden w-64 shrink-0 flex-col bg-[#000A16] text-white lg:flex lg:h-dvh lg:min-h-0 lg:overflow-hidden">
    {/* Keep the original approved Octalve PNG intact and legible. */}
-   <div className="flex h-16 shrink-0 items-center border-b border-slate-100 bg-white px-5">
+   <div className="flex h-16 shrink-0 items-center border-b border-slate-100 bg-white px-4">
     <Link href="/dashboard" aria-label="Octalve dashboard" className="inline-flex items-center rounded-lg focus-visible:outline-2 focus-visible:outline-[#0064E0]">
-     <BrandWordmark width={164}/>
+     <BrandWordmark width={136}/>
     </Link>
    </div>
 
@@ -93,6 +93,7 @@ export default function Sidebar(){
       <span className="min-w-0 flex-1"><span className="block text-xs font-semibold text-white">Subscription</span><span className="mt-0.5 block text-[11px] text-[#B3C5D9]">Review plans</span></span>
       <ArrowUpRight size={16} className="shrink-0 text-[#B3C5D9]"/>
     </Link>
+    <Link href="/workspaces" className="block rounded-xl px-3 py-2 text-xs font-semibold text-[#8DBCF4] hover:bg-white/10">Switch workspace →</Link>
     <PreviewLogoutButton className="flex min-h-10 w-full justify-start rounded-xl border border-transparent px-3 py-2 text-[13px] font-medium text-[#E0E7EF] transition-colors hover:border-white/[.08] hover:bg-white/[.08] focus-visible:outline-2 focus-visible:outline-[#66A9FF]"/>
    </footer>
   </aside>

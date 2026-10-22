@@ -8,9 +8,10 @@ test("invoice payment planning belongs to create/edit and never issued detail",(
  const detail=read("app/(dashboard)/dashboard/invoice/[id]/page.tsx");
  assert.match(editor,/<InvoiceWorkflowPanel\b/);
  assert.doesNotMatch(detail,/<InvoiceWorkflowPanel\b/);
- assert.match(editor,/aria-expanded=\{open\}/);
- assert.match(editor,/hidden=\{!open\}/);
- assert.match(editor,/Expand all/);
+ assert.match(editor,/hidden=\{!active\}/);
+ assert.match(editor,/data-invoice-step=\{name\}/);
+ assert.match(editor,/step:InvoiceStep/);
+ assert.doesNotMatch(editor,/Expand all|Collapse all/);
  assert.match(editor,/Number\.isSafeInteger\(totalMinor\)&&totalMinor>0/);
  assert.match(editor,/Add an item with a positive amount before planning installments/);
 });
@@ -57,12 +58,15 @@ test("unsaved and edit-mode browser previews are watermarked and cannot download
  const preview=read("src/features/invoices/sections/InvoiceDocumentPreviewSection.tsx");
  const composer=read("src/features/invoices/sections/InvoiceComposer.tsx");
  assert.match(preview,/data-testid="draft-preview-watermark"/);
- assert.match(preview,/DRAFT · NOT ISSUED/);
  assert.match(preview,/DRAFT — NOT ISSUED/);
+ assert.doesNotMatch(preview,/Array\.from\(\{length:5\}/);
+ assert.match(preview,/grid place-items-center/);
  assert.doesNotMatch(preview,/performDownload|exportNativeInvoicePdf|exportClassicLedgerPdf|exportRenderedDocumentPng/);
  assert.doesNotMatch(preview,/Download preview PDF|Download preview PNG/);
  assert.match(composer,/invoicePreferences/);
  assert.match(composer,/applyNewInvoicePreferences/);
+ assert.match(composer,/aria-current=\{step===item\.id\?"step":undefined\}/);
+ assert.match(composer,/id:"preview"/);
 });
 test("invoice settings use shared merchant state without invented default tax",()=>{
  const settings=read("app/(dashboard)/dashboard/settings/invoice/page.tsx");
@@ -173,7 +177,8 @@ test("premium desktop sidebar is dark blue-active, separately scrollable and kee
  assert.match(sidebar,/<PreviewLogoutButton/);
  assert.match(sidebar,/aria-current=\{isActive\?"page":undefined\}/);
  assert.match(layout,/lg:h-dvh lg:min-h-0 lg:overflow-hidden/);
- assert.match(layout,/lg:h-full lg:min-h-0 lg:overflow-y-auto/);
+ assert.match(layout,/lg:h-full lg:min-h-0 lg:overflow-hidden/);
+ assert.match(layout,/main data-merchant-scroll-region[^>]*lg:overflow-y-auto/);
  assert.match(layout,/<BottomNavbar \/>/);
  assert.match(layout,/<MobileHeader \/>/);
 });
@@ -244,7 +249,8 @@ test("progressive checklist is not a duplicate workspace and uses the same Quick
  assert.doesNotMatch(home,/Open full workspace setup|href="\/dashboard"/);
  assert.match(home,/<QuickCreatePanel\/>/);
  assert.match(overview,/<QuickCreatePanel\/>/);
- assert.match(overview,/text-xl font-bold leading-snug text-gray-900 sm:text-2xl/);
+ assert.match(overview,/<MerchantPageHeading title=/);
+ assert.match(read("components/dashboard/ui/MerchantPageHeading.tsx"),/text-xl font-bold tracking-tight leading-7 sm:text-2xl/);
  assert.match(quick,/tone:"green"/);
  assert.match(quick,/tone:"red"/);
  assert.match(quick,/tone:"orange"/);

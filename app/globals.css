@@ -433,3 +433,39 @@ body {
 .invoice-preview-viewport { container-type: inline-size; width:100%; }
 .invoice-preview-paper { margin-inline:auto; transform-origin:top center; }
 @container (max-width:793px) { .invoice-preview-paper { zoom:calc(100cqw / 794px); } }
+
+
+/* Phase 0I — dialog and bottom-sheet scrolling without visible scroll tracks.
+ * This is a presentation rule, not overflow:hidden: mouse wheel, touch, page
+ * keys and focus scrolling must remain functional. Covers nested pickers as well
+ * as their optional scrollable backdrops. No change to main page/table scrollbars.
+ */
+:where([role="dialog"][aria-modal="true"], [role="alertdialog"][aria-modal="true"]) {
+  max-height: min(94dvh, calc(100dvh - 1rem));
+  overflow-y: auto;
+  overscroll-behavior-y: contain;
+  -webkit-overflow-scrolling: touch;
+}
+:is(
+  [role="dialog"][aria-modal="true"],
+  [role="alertdialog"][aria-modal="true"],
+  [role="dialog"][aria-modal="true"] *,
+  [role="alertdialog"][aria-modal="true"] *,
+  .fixed:has(> [role="dialog"][aria-modal="true"]),
+  .fixed:has(> [role="alertdialog"][aria-modal="true"])
+) {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+:is(
+  [role="dialog"][aria-modal="true"],
+  [role="alertdialog"][aria-modal="true"],
+  [role="dialog"][aria-modal="true"] *,
+  [role="alertdialog"][aria-modal="true"] *,
+  .fixed:has(> [role="dialog"][aria-modal="true"]),
+  .fixed:has(> [role="alertdialog"][aria-modal="true"])
+)::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
+}

@@ -2,6 +2,8 @@ name: Phase 0C browser evidence
 on:
   push:
     branches: [phase/00-finzefy-authority-ui-bootstrap, phase/0i-frontend-finance-workflows, 'review/**']
+  pull_request:
+    branches: ['phase/**', 'review/**']
   workflow_dispatch:
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -43,6 +45,27 @@ jobs:
             sudo apt-get update
             sudo apt-get install -y poppler-utils
           fi
+      - name: Dialog and bottom-sheet invisible scrollbars browser evidence
+        env:
+          NODE_PATH: /tmp/octalve-playwright/node_modules
+          OCTALVE_BASE_URL: http://127.0.0.1:3000
+        run: node scripts/phase-0i-dialog-scroll-acceptance.cjs
+      - name: Merchant shared header and isolated search browser evidence
+        env:
+          NODE_PATH: /tmp/octalve-playwright/node_modules
+          OCTALVE_BASE_URL: http://127.0.0.1:3000
+        run: node scripts/phase-0y-merchant-nav-evidence.cjs
+      - name: Merchant fixed-navbar and main-scroll geometry qualification
+        env:
+          NODE_PATH: /tmp/octalve-playwright/node_modules
+          OCTALVE_BASE_URL: http://127.0.0.1:3000
+        run: node scripts/phase-0y1-navbar-geometry.cjs
+      - name: Human-path browser-only walkthrough
+        if: success()
+        env:
+          NODE_PATH: /tmp/octalve-playwright/node_modules
+          OCTALVE_BASE_URL: http://127.0.0.1:3000
+        run: node scripts/phase-0x-human-browser-walkthrough.cjs
       - name: Browser/screenshots regression
         env:
           NODE_PATH: /tmp/octalve-playwright/node_modules
@@ -54,6 +77,12 @@ jobs:
           NODE_PATH: /tmp/octalve-playwright/node_modules
           OCTALVE_BASE_URL: http://127.0.0.1:3000
         run: node scripts/phase-0i-viewport-evidence.cjs
+      - name: Independent customer and admin route regression
+        if: success()
+        env:
+          NODE_PATH: /tmp/octalve-playwright/node_modules
+          OCTALVE_BASE_URL: http://127.0.0.1:3000
+        run: node scripts/phase-0uvw-browser-evidence.cjs
       - name: Upload browser evidence regardless of result
         if: always()
         uses: actions/upload-artifact@v4
@@ -62,5 +91,10 @@ jobs:
           path: |
             artifacts/phase-0c/
             artifacts/phase-0i-viewports/
+            artifacts/phase-0uvw/
+            artifacts/phase-0x-walkthrough/
+            artifacts/phase-0y-navigation/
+            artifacts/phase-0y1-navbar/
+            artifacts/phase-0i-dialog-scroll/
           if-no-files-found: warn
           retention-days: 14

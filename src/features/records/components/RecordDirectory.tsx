@@ -9,6 +9,7 @@ import {RecordActionDialog,type RecordAction} from "./RecordActionDialog";
 import {RecordFilterDialog,type FilterCriteria} from "./RecordFilterDialog";
 import {RecordDetailDialog} from "./RecordDetailDialog";
 import {formatDocumentNumber} from "@/src/features/invoices/lib/document-number";
+import {MerchantPageHeading} from "@/components/dashboard/ui/MerchantPageHeading";
 
 function tableValue(record:PreviewRecord,field:RecordField):string{
  switch(field){case "title":return record.title;case "date":return record.date;case "status":return statusLabels[record.status];
@@ -79,14 +80,14 @@ export function RecordDirectory({kind,onCreate,onView,onEdit,showDesktopHeader=t
  function tab(next:RecordStatus|"all"){setStatus(next);setPage(1);}
  function query(next:string){setSearch(next);setPage(1);}
  return <section aria-label={def.title+" history"} className="min-w-0 space-y-3">
-  {showDesktopHeader?<div className="hidden lg:block"><h1 className="text-2xl font-bold text-[#1d2838]">{def.title}</h1><p className="mt-1 text-sm text-gray-500">{def.description}</p></div>:null}
+  {showDesktopHeader?<MerchantPageHeading title={def.title} description={def.description} hideOnMobile/>:null}
   <div className="lg:hidden">
    <div className="relative mb-4 flex items-center justify-center border-b border-gray-200 py-3">
      <button aria-label="Back" onClick={()=>router.push("/dashboard")} className="absolute left-0 rounded-md p-1 text-gray-700"><ArrowLeft size={21}/></button>
      <h1 className="font-semibold text-[#1b2b41]">{def.title}</h1>
    </div>
    <div className="flex min-w-0 items-center gap-2">
-     <label className="relative min-w-0 flex-1"><Search size={17} className="absolute left-3 top-2.5 text-gray-400"/><input aria-label={"Search "+def.plural} placeholder="Search" value={search} onChange={e=>query(e.target.value)} className="h-10 w-full min-w-0 rounded-full border border-gray-100 bg-white pl-10 pr-2 text-sm"/></label>
+     <label className="relative min-w-0 flex-1"><Search size={17} className="absolute left-3 top-2.5 text-gray-400"/><input type="search" aria-label={"Search "+def.plural} placeholder="Search" value={search} onChange={e=>query(e.target.value)} className="h-10 w-full min-w-0 rounded-full border border-gray-100 bg-white pl-10 pr-2 text-sm"/></label>
      <button aria-label="Filter records" onClick={()=>setFiltersOpen(true)} className="rounded-full bg-white p-2.5 text-gray-500"><SlidersHorizontal size={18}/></button>
      <button aria-label="Export (preview unavailable)" onClick={()=>setNotice("Export is unavailable until real merchant records are available.")} className="flex items-center gap-1 text-xs font-medium text-[#0064E0]"><Download size={16}/>Export</button>
    </div>
@@ -101,7 +102,7 @@ export function RecordDirectory({kind,onCreate,onView,onEdit,showDesktopHeader=t
    <div className="hidden items-center gap-4 border-b border-gray-100 px-5 py-4 lg:flex">
     <span className="shrink-0 text-sm font-semibold text-gray-600">{filtered.length} {def.plural}</span>
     <label className="relative min-w-0 max-w-xs flex-1"><Search size={16} className="absolute left-3 top-3 text-gray-400"/>
-     <input aria-label={"Search "+def.plural} value={search} onChange={e=>query(e.target.value)} placeholder="Search" className="h-10 w-full rounded-lg border border-gray-200 bg-white pl-9 pr-3 text-sm outline-none focus:border-[#0064E0]"/></label>
+     <input type="search" aria-label={"Search "+def.plural} value={search} onChange={e=>query(e.target.value)} placeholder="Search" className="h-10 w-full rounded-lg border border-gray-200 bg-white pl-9 pr-3 text-sm outline-none focus:border-[#0064E0]"/></label>
     <div className="ml-auto flex items-center gap-2">
      <button onClick={()=>setNotice("Export is unavailable until real merchant records are available.")} className="inline-flex h-9 items-center gap-1 rounded-lg border px-3 text-xs"><Download size={16}/>Export</button>
      <button onClick={()=>setFiltersOpen(true)} className="inline-flex h-9 items-center gap-1 rounded-lg border px-3 text-xs"><SlidersHorizontal size={16}/>Filters</button>

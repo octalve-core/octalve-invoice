@@ -4,6 +4,7 @@ import {useState} from "react";
 import {useRouter} from "next/navigation";
 import {ArrowLeft,Search,FileText,Users,Wallet,FileSpreadsheet,BarChart3,Scale,ScrollText,Package,RefreshCw,ReceiptText,Calculator,ContactRound,TrendingUp,WalletCards,IdCard,BookOpen,ShieldCheck,Clock3,Files,MessagesSquare,Landmark,ShieldAlert,Coins,PanelsTopLeft,UserCog,type LucideIcon} from "lucide-react";
 import {otherServiceItems} from "@/src/features/other-services/feature-links";
+import {MerchantPageHeading} from "@/components/dashboard/ui/MerchantPageHeading";
 const icons:Record<(typeof otherServiceItems)[number]["icon"],LucideIcon>={
  "chart-no-axes-column":BarChart3,
  "scale":Scale,
@@ -45,10 +46,8 @@ export default function OtherServicesPage(){
  const router=useRouter();
  const [search,setSearch]=useState("");
  return <div className="mx-auto min-w-0 max-w-7xl space-y-3 pb-8">
-  <header className="flex items-center gap-4 border-b border-gray-200 pb-4">
-    <button onClick={()=>router.back()} aria-label="Go back" className="rounded-full p-2 text-slate-800 hover:bg-gray-100"><ArrowLeft size={23}/></button>
-    <div><h1 className="text-xl font-semibold text-slate-800">More</h1><p className="text-xs text-slate-500">Explore tools and services</p></div>
-  </header>
+  <MerchantPageHeading title="More" description="Explore tools and services"
+   actions={<button type="button" onClick={()=>router.back()} aria-label="Go back" className="inline-flex min-h-10 items-center gap-2 rounded-xl border border-[#E1EAF5] bg-white px-3 text-xs font-semibold text-[#42627F] hover:bg-[#F0F6FF]"><ArrowLeft size={17}/> Back</button>}/>
   <section aria-label="Quick Create" className="rounded-2xl bg-white p-3 shadow-sm sm:p-6">
    <h2 className="mb-5 text-lg font-medium text-slate-700">⚡ Quick Create</h2>
    <div className="grid grid-cols-4 gap-2 sm:gap-5">{quick.map(item=><Link key={item.label} href={item.href} className="flex min-w-0 flex-col items-center gap-2 text-center hover:opacity-80">

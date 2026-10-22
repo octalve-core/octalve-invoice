@@ -136,8 +136,9 @@ const routes=[
   try{
    const response=await page.goto(base+"/dashboard/invoice/create",{waitUntil:"domcontentloaded",timeout:20000});
    if(response?.status()!==200)throw Error("Invoice composer HTTP "+response?.status());
-   await page.getByRole("button",{name:/Payment plan & communication/}).click();
+   await page.getByRole("navigation",{name:"Invoice steps"}).getByRole("link",{name:/Payments/}).click();
    await page.getByRole("heading",{name:"Invoice workflow"}).waitFor();
+   if(await page.getByRole("navigation",{name:"Invoice steps"}).getByRole("link",{name:/Payments/}).getAttribute("aria-current")!=="step")throw Error("Payment step is not visibly active");
    const method=page.getByRole("combobox",{name:"Collection method preview"});
    const review=page.getByRole("button",{name:"Review proposed split"});
    const dueTime=page.locator('input[aria-label="Invoice due time Africa/Lagos"]');
@@ -167,13 +168,133 @@ const routes=[
   results.push({batchQ});
   await page.close();
  }
+
+ // Batch R: customer vs merchant render parity and non-operational controls, responsive.
+ const rWidths=[320,360,390,430,768,1024,1440];
+ for(const width of rWidths){
+  const page=await browser.newPage({viewport:{width,height:width>=1024?650:780},deviceScaleFactor:1});
+  const batchR={width,status:"unknown"};
+  try{
+   const visit=async route=>{
+    const response=await page.goto(base+route,{waitUntil:"domcontentloaded",timeout:18000});
+    if(response?.status()!==200)throw Error("Invoice audience HTTP "+response?.status()+" "+route);
+   };
+   const noOverflow=async label=>{
+    const overflow=await page.locator("html").evaluate(el=>el.scrollWidth>el.clientWidth+2);
+    if(overflow)throw Error(label+" horizontal overflow");
+   };
+   await visit("/dashboard/invoice/1");
+   await page.getByRole("region",{name:"Merchant invoice controls"}).waitFor();
+   if(!await page.getByRole("button",{name:"Send Reminder"}).isDisabled())throw Error("Unissued reminder became active");
+   if(!await page.getByRole("button",{name:"Copy Client Link"}).isDisabled())throw Error("Client link copied before issuance");
+   const merchantNumber=await page.locator(".invoice-preview-paper .sq-v4-invoice-number").innerText();
+   const merchantAmount=await page.locator(".invoice-preview-paper .sq-v4-amount-line strong").innerText();
+   await noOverflow("merchant");
+   await page.screenshot({path:path.join(out,"batch-r-merchant-"+width+".png"),fullPage:true,animations:"disabled"});
+   await page.getByRole("link",{name:"Client-facing preview"}).click();
+   await page.getByRole("heading",{name:"Client-facing invoice preview",level:1}).waitFor();
+   await page.getByRole("region",{name:"Client invoice controls"}).waitFor();
+   if(await page.locator('[data-testid="draft-preview-watermark"]').count()!==1)throw Error("Client invoice lacks draft watermark");
+   for(const label of ["Download","Print Invoice","Report Transfer"]){
+    if(!await page.getByRole("button",{name:label,exact:true}).isDisabled())throw Error("Premature client action "+label);
+   }
+   if(await page.locator(".invoice-preview-paper .sq-v4-invoice-number").innerText()!==merchantNumber)throw Error("Audience invoice reference mismatch");
+   if(await page.locator(".invoice-preview-paper .sq-v4-amount-line strong").innerText()!==merchantAmount)throw Error("Audience invoice total mismatch");
+   await page.getByText("No NRS-issued IRN/QR",{exact:false}).waitFor();
+   await noOverflow("client");
+   await page.screenshot({path:path.join(out,"batch-r-client-"+width+".png"),fullPage:true,animations:"disabled"});
+   await visit("/dashboard/invoice/2/client-preview");
+   await page.getByText("Monnify collection",{exact:true}).waitFor();
+   if(!await page.getByRole("button",{name:"Check Payment"}).isDisabled())throw Error("False payment confirmation");
+   await visit("/dashboard/invoice/4/client-preview");
+   await page.getByText("Paystack checkout",{exact:true}).waitFor();
+   if(!await page.getByRole("button",{name:"Pay Now"}).isDisabled())throw Error("Disconnected checkout activated");
+   batchR.status="PASS";
+  }catch(e){errors++;batchR.status="FAIL";batchR.error=String(e?.message||e).slice(0,690);}
+  results.push({batchR});
+  await page.close();
+ }
+
+ // Batch S: cross-provider activity/read-only investigation UX and responsive checks.
+ const sWidths=[320,360,390,430,768,1024,1440];
+ for(const width of sWidths){
+  const page=await browser.newPage({viewport:{width,height:width>=1024?650:780},deviceScaleFactor:1});
+  const batchS={width,status:"unknown"};
+  try{
+   const response=await page.goto(base+"/dashboard/payment-received",{waitUntil:"domcontentloaded",timeout:18000});
+   if(response?.status()!==200)throw Error("Payment activity HTTP "+response?.status());
+   await page.getByRole("heading",{name:"Payment Received"}).waitFor();
+   await page.getByText("Example records · No connections").waitFor();
+   await page.getByRole("region",{name:"Verified payment example totals"}).waitFor();
+   await page.getByRole("tab",{name:"Verified collections"}).click();
+   await page.getByText("Initialized/pending/expired attempts are not counted as collections.",{exact:false}).waitFor();
+   await page.getByRole("tab",{name:"Exceptions"}).click();
+   await page.getByRole("button",{name:"View activity EXC-EX-006"}).click();
+   const dialog=page.getByRole("dialog",{name:"Payment activity details"});
+   await dialog.waitFor();
+   await dialog.getByText("Post-expiry transfer alleged.",{exact:false}).waitFor();
+   await page.keyboard.press("Escape");
+   await dialog.waitFor({state:"hidden"});
+   await page.getByRole("tab",{name:"Refunds & credits"}).click();
+   await page.getByRole("button",{name:"View activity REF-EX-011"}).waitFor();
+   await page.getByRole("tab",{name:"All activity"}).click();
+   await page.getByRole("textbox",{name:"Search payment activity"}).fill("EXAMPLE-LATE-006");
+   if(await page.getByRole("button",{name:/View activity/}).count()!==1)throw Error("Payment search must match one reference");
+   await page.getByRole("textbox",{name:"Search payment activity"}).fill("");
+   await page.getByRole("combobox",{name:"Provider filter"}).selectOption("Monnify (example)");
+   if(await page.getByRole("button",{name:/View activity/}).count()<1)throw Error("Provider filter returned nothing");
+   if(await page.locator("html").evaluate(el=>el.scrollWidth>el.clientWidth+2))throw Error("Batch S horizontal overflow");
+   await page.screenshot({path:path.join(out,"batch-s-payment-received-"+width+".png"),fullPage:true,animations:"disabled"});
+   batchS.status="PASS";
+  }catch(e){errors++;batchS.status="FAIL";batchS.error=String(e?.message||e).slice(0,680);}
+  results.push({batchS});
+  await page.close();
+ }
+
+ // Batch T: official NRS readiness boundaries and complete merchant/customer journey.
+ const tWidths=[320,360,390,430,768,1024,1440];
+ for(const width of tWidths){
+  const page=await browser.newPage({viewport:{width,height:width>=1024?650:780},deviceScaleFactor:1});
+  const batchT={width,status:"unknown"};
+  try{
+   const response=await page.goto(base+"/dashboard/tax-centre",{waitUntil:"domcontentloaded",timeout:18000});
+   if(response?.status()!==200)throw Error("Tax Centre HTTP "+response?.status());
+   await page.getByRole("button",{name:"NRS e-invoices"}).click();
+   await page.getByRole("link",{name:/View full NRS journey/}).click();
+   await page.getByRole("heading",{name:"NRS & invoice journey",level:1}).waitFor();
+   await page.getByText("Not connected",{exact:true}).first().waitFor();
+   const flow=page.getByRole("list",{name:"Eight-stage user journey"});
+   if(await flow.locator("li").count()!==8)throw Error("Eight-stage journey incomplete");
+   await page.getByRole("heading",{name:"What each record proves"}).waitFor();
+   await page.getByRole("heading",{name:"NRS connection milestones"}).waitFor();
+   await page.getByText("No NRS submissions or IRNs yet.",{exact:false}).waitFor();
+   await page.getByText("PARTIAL",{exact:true}).waitFor();
+   await page.getByText("No taxpayer link, accreditation, official IRN, fiscal QR, submission, or payment update exists in this Preview.",{exact:true}).waitFor();
+   const external=page.getByRole("link",{name:/Official NRS onboarding/});
+   if(await external.getAttribute("rel")!=="noopener noreferrer")throw Error("Unsafe external NRS reference");
+   if(await page.locator("html").evaluate(el=>el.scrollWidth>el.clientWidth+2))throw Error("Batch T horizontal overflow");
+   await page.screenshot({path:path.join(out,"batch-t-nrs-journey-"+width+".png"),fullPage:true,animations:"disabled"});
+   await page.locator('main[aria-label="NRS and invoice lifecycle review"]').getByRole("link",{name:"Payment Received"}).click();
+   await page.getByRole("heading",{name:"Payment Received",level:1}).waitFor();
+   if(await page.locator("html").evaluate(el=>el.scrollWidth>el.clientWidth+2))throw Error("Batch T Payment Received overflow");
+   batchT.status="PASS";
+  }catch(e){errors++;batchT.status="FAIL";batchT.error=String(e?.message||e).slice(0,690);}
+  results.push({batchT});
+  await page.close();
+ }
  }finally{await browser.close();}
  fs.writeFileSync(path.join(out,"report.json"),JSON.stringify({head:process.env.GITHUB_SHA||"local",results},null,2));
- console.log("Phase 0I viewport checks:",results.filter(x=>!x.batchP&&!x.batchQ&&x.status==="PASS").length,"/",results.filter(x=>!x.batchP&&!x.batchQ).length);
+ console.log("Phase 0I viewport checks:",results.filter(x=>!x.batchP&&!x.batchQ&&!x.batchR&&!x.batchS&&!x.batchT&&x.status==="PASS").length,"/",results.filter(x=>!x.batchP&&!x.batchQ&&!x.batchR&&!x.batchS&&!x.batchT).length);
  console.log("Batch P payment setup checks:",results.filter(x=>x.batchP?.status==="PASS").length,"/",results.filter(x=>x.batchP).length);
  console.log("Batch Q invoice due and milestone checks:",results.filter(x=>x.batchQ?.status==="PASS").length,"/",results.filter(x=>x.batchQ).length);
+ console.log("Batch R merchant/client template checks:",results.filter(x=>x.batchR?.status==="PASS").length,"/",results.filter(x=>x.batchR).length);
+ console.log("Batch S payment activity checks:",results.filter(x=>x.batchS?.status==="PASS").length,"/",results.filter(x=>x.batchS).length);
+ console.log("Batch T NRS journey checks:",results.filter(x=>x.batchT?.status==="PASS").length,"/",results.filter(x=>x.batchT).length);
  for(const failed of results.filter(x=>x.status==="FAIL"))console.error("VIEWPORT FAIL",failed.width,failed.route,failed.error);
  for(const failed of results.filter(x=>x.batchP?.status==="FAIL"))console.error("BATCH P FAIL",failed.batchP.width,failed.batchP.error);
  for(const failed of results.filter(x=>x.batchQ?.status==="FAIL"))console.error("BATCH Q FAIL",failed.batchQ.width,failed.batchQ.error);
+ for(const failed of results.filter(x=>x.batchR?.status==="FAIL"))console.error("BATCH R FAIL",failed.batchR.width,failed.batchR.error);
+ for(const failed of results.filter(x=>x.batchS?.status==="FAIL"))console.error("BATCH S FAIL",failed.batchS.width,failed.batchS.error);
+ for(const failed of results.filter(x=>x.batchT?.status==="FAIL"))console.error("BATCH T FAIL",failed.batchT.width,failed.batchT.error);
  if(errors)process.exitCode=1;
 })().catch(e=>{console.error(e);process.exitCode=1;});
