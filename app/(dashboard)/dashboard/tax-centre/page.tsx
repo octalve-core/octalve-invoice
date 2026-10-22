@@ -14,7 +14,7 @@ type View="overview"|"invoices"|"calendar"|"nrs";
 const views:{value:View;label:string}[]=[{value:"overview",label:"Overview"},{value:"invoices",label:"Invoice tax review"},{value:"calendar",label:"Tax calendar"},{value:"nrs",label:"NRS e-invoices"}];
 const periods=["2024","2025","2026"] as const;
 export default function TaxCentre(){
- const {settings,taxPolicy}=useMerchantPreview();
+ const {settings,taxPolicy,setTaxPolicy}=useMerchantPreview();
  const reference=(id:string)=>formatDocumentNumber(settings.businessName||"Octalve Limited",Number(id),"invoice");
  const [view,setView]=useState<View>("overview"),[period,setPeriod]=useState<string>("2026"),[query,setQuery]=useState(""),[detail,setDetail]=useState<string|null>(null),[filterOpen,setFilterOpen]=useState(false);
  useAccessibleDialog(Boolean(filterOpen||detail),()=>{setFilterOpen(false);setDetail(null);});
@@ -30,6 +30,21 @@ export default function TaxCentre(){
     <span className="rounded-full bg-amber-50 px-3 py-1.5 text-xs text-amber-800">{taxPolicy.status==="research-pending"?"Legal review pending":"Owner-reviewed proposal"}</span></div>
    <p className="mt-3 text-xs text-slate-600">Jurisdiction: {taxPolicy.jurisdiction} · Policy: {taxPolicy.version} · Effective date: {taxPolicy.effectiveFrom||"Not confirmed"}</p>
    <div className="mt-3 flex flex-wrap gap-2">{taxTreatments.map(t=><span key={t} className="rounded-full border border-[#E2EBF5] bg-[#F7FAFE] px-3 py-1.5 text-[11px] capitalize text-[#315A7E]">{t.replaceAll("-"," ")}</span>)}</div>
+   <div className="mt-4 grid min-w-0 gap-3 sm:grid-cols-3">
+    <label className="text-xs text-[#193955]">Jurisdiction code
+     <input aria-label="Tax Centre jurisdiction" maxLength={3} value={taxPolicy.jurisdiction} onChange={e=>setTaxPolicy(p=>({...p,jurisdiction:e.target.value.toUpperCase(),status:"research-pending"}))}
+      className="mt-1 h-10 w-full min-w-0 rounded-xl border border-slate-200 px-3 text-sm"/>
+    </label>
+    <label className="text-xs text-[#193955]">Proposed policy reference
+     <input aria-label="Tax Centre policy reference" maxLength={80} value={taxPolicy.version} onChange={e=>setTaxPolicy(p=>({...p,version:e.target.value,status:"research-pending"}))}
+      className="mt-1 h-10 w-full min-w-0 rounded-xl border border-slate-200 px-3 text-sm"/>
+    </label>
+    <label className="text-xs text-[#193955]">Proposed effective date
+     <input type="date" aria-label="Tax Centre proposed effective date" value={taxPolicy.effectiveFrom} onChange={e=>setTaxPolicy(p=>({...p,effectiveFrom:e.target.value,status:"research-pending"}))}
+      className="mt-1 h-10 w-full min-w-0 rounded-xl border border-slate-200 px-3 text-sm"/>
+    </label>
+   </div>
+   <p className="mt-3 text-xs leading-5 text-amber-900">These merchant preferences are session-only and do not approve tax rates, classifications or NRS submissions.</p>
    <p className="mt-3 text-xs leading-5 text-amber-900">Product categories are not automatically taxable, zero-rated or exempt. The merchant must verify controlling law, conditions and effective dates before tax treatment is authoritative.</p>
   </section>
   <div className="grid grid-cols-2 gap-3 xl:grid-cols-4">{[
