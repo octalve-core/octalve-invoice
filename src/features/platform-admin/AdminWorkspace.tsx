@@ -5,7 +5,7 @@ import {AdminDirectory} from "./AdminDirectory";
 export type AdminSection="overview"|"merchants"|"customers"|"subscriptions"|"verifications"|"support"|"notifications"|"updates"|"staff"|"security"|"audit";
 export const adminSections:readonly AdminSection[]=["overview","merchants","customers","subscriptions","verifications","support","notifications","updates","staff","security","audit"];
 const labels:Record<AdminSection,string>={overview:"Operations overview",merchants:"Merchants",customers:"Customers",subscriptions:"Subscriptions",verifications:"Verifications",support:"Support",notifications:"Notifications",updates:"Product updates",staff:"Octalve staff",security:"Security",audit:"Audit trail"};
-const cards="rounded-2xl border border-[#E2EBF5] bg-white p-4 sm:p-5";
+const cards="min-w-0 rounded-2xl border border-[#E2EBF5] bg-white p-4 sm:p-5";
 const sampleCases=[
  {id:"SUP-001",title:"Update company information",merchant:"Bluehaven Ventures",priority:"Normal",state:"Open"},
  {id:"SUP-002",title:"Subscription question",merchant:"Atlas Supply Co.",priority:"Low",state:"Pending"},
@@ -21,7 +21,7 @@ const quickNav:{id:AdminSection;note:string;icon:typeof Activity}[]=[
 ];
 function UnavailableAction({label}:{label:string}){return <button type="button" disabled title="Requires an authorised staff session and server audit" className="rounded-full border border-[#CCDCF0] px-3 py-2 text-xs font-semibold text-[#0064E0] opacity-50">{label}</button>;}
 function RecordRow({primary,secondary,tag,href}:{primary:string;secondary:string;tag:string;href?:string}){
- return <Link href={href||"/admin/support"} className="flex min-w-0 items-center gap-3 rounded-xl border border-[#EDF2F8] bg-[#FCFDFE] px-4 py-3 hover:border-[#BAD9FF]">
+ return <Link href={href||"/admin/support"} className="flex w-full min-w-0 items-center gap-3 rounded-xl border border-[#EDF2F8] bg-[#FCFDFE] px-3 py-3 hover:border-[#BAD9FF] sm:px-4">
   <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-[#EBF3FF] text-[#0064E0]"><ClipboardList size={18}/></span>
   <div className="min-w-0 flex-1"><p className="truncate text-xs font-bold text-[#173652]">{primary}</p><p className="mt-1 truncate text-[11px] text-[#7B90A5]">{secondary}</p></div>
   <span className="max-w-[110px] rounded-full bg-[#F1F6FD] px-2.5 py-1 text-center text-[10px] font-semibold text-[#446B93]">{tag}</span>
@@ -46,9 +46,9 @@ export function AdminWorkspace({section="overview"}:{section?:AdminSection}){
      <span className={"grid h-10 w-10 place-items-center rounded-xl "+tone}><Icon size={20}/></span>
      <p className="mt-4 text-[11px] text-[#70869D]">{title}</p><p className="mt-1 text-xl font-bold text-[#173652]">{value}</p>
     </section>)}</div>
-   <div className="grid gap-4 xl:grid-cols-[minmax(0,1.5fr)_minmax(280px,1fr)]">
+   <div className="grid min-w-0 grid-cols-1 gap-4 xl:grid-cols-[minmax(0,1.5fr)_minmax(280px,1fr)]">
     <section className={cards}>
-     <div className="mb-4 flex items-center justify-between"><h2 className="text-sm font-bold">Support queue</h2><Link href="/admin/support" className="text-xs font-semibold text-[#0064E0]">View cases <ArrowRight size={13} className="inline"/></Link></div>
+     <div className="mb-4 flex min-w-0 flex-wrap items-center justify-between gap-2"><h2 className="text-sm font-bold">Support queue</h2><Link href="/admin/support" className="text-xs font-semibold text-[#0064E0]">View cases <ArrowRight size={13} className="inline"/></Link></div>
      <div className="space-y-2">{sampleCases.map(c=><RecordRow key={c.id} href={"/admin/support/"+c.id} primary={c.title} secondary={c.merchant+" · "+c.id} tag={c.state}/>)}</div>
     </section>
     <section className={cards}><h2 className="text-sm font-bold">Operations readiness</h2>
