@@ -32,7 +32,7 @@ export function InvoiceComposer({mode="create",invoiceId}:{mode?:"create"|"edit"
  const step:InvoiceStep=isStep(leaf)?leaf:"details";
  const currentIndex=steps.findIndex(item=>item.id===step);
  const base=mode==="edit"?"/dashboard/invoice/"+currentInvoiceId+"/edit":"/dashboard/invoice/create";
- const {settings,setSettings,logoPreview,paymentMode,collectionSetup,invoiceAppearance,invoicePreferences}=useMerchantPreview();
+ const {settings,setSettings,logoPreview,paymentMode,collectionSetup,invoiceAppearance,invoicePreferences,taxPolicy}=useMerchantPreview();
  const [draft,setDraft]=useState<InvoiceDraft>(()=>{
   const initial={...(mode==="create"?applyNewInvoicePreferences(createPreviewInvoice(),invoicePreferences):createPreviewInvoice()),paymentPlan:newDraftPaymentPlan(collectionSetup)};
   const matching=mode==="edit"&&currentInvoiceId?getPreviewInvoice(currentInvoiceId):undefined;
@@ -52,7 +52,7 @@ export function InvoiceComposer({mode="create",invoiceId}:{mode?:"create"|"edit"
   const changed=typeof value==="function"?value(merchantPayment(old)):value;
   return {...old,bankName:changed.bankName,accountNumber:changed.accountNumber};
  });
- const totals=calculateDraftPreviewTotals(draft);
+ const totals=calculateDraftPreviewTotals(draft,taxPolicy);
  const formattedTotal=Number.isFinite(totals.total)?new Intl.NumberFormat("en-NG",{style:"currency",currency:draft.currency,maximumFractionDigits:2}).format(totals.total):"Check amounts";
  const href=(value:InvoiceStep)=>base+"/"+value;
  const previous=currentIndex>0?steps[currentIndex-1]:null;
