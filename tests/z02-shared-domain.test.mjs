@@ -96,3 +96,21 @@ test("unclassified drafts retain exact pre-tax cents without claiming a tax asse
  assert.equal(flagged.totalMinor,null);
  assert.equal(calculateUntaxedPreview([{...lines[0],unitPrice:"1.234"}],"0").ready,false);
 });
+
+
+test("quotation billing fields are copied snapshots and not live customer-directory lookups",()=>{
+ const quote=read("components/dashboard/modals/CreateQuotationModal.tsx");
+ assert.match(quote,/customerSnapshot\?:ReturnType<typeof snapshotCustomer>/);
+ assert.match(quote,/customerSnapshot:selected\?snapshotCustomer\(selected\)/);
+ assert.match(quote,/formData\.customerSnapshot\?\.clientName/);
+ assert.match(quote,/formData\.customerSnapshot\?\.clientEmail/);
+ assert.doesNotMatch(quote,/activeCustomers\.find\(c=>c\.id===formData\.customer\)\?\.name/);
+});
+test("Tax Centre is one provisional policy owner across invoice, quote and item editors",()=>{
+ const taxCentre=read("app/(dashboard)/dashboard/tax-centre/page.tsx");
+ assert.match(taxCentre,/setTaxPolicy/);
+ for(const path of ["src/features/invoices/sections/InvoiceEditorSection.tsx","components/dashboard/modals/CreateQuotationModal.tsx","src/features/catalog/QuickItemEditor.tsx"])
+  assert.match(read(path),/taxPolicy/,path);
+ assert.match(taxCentre,/status:"research-pending"/);
+ assert.match(read("src/features/catalog/ItemEditor.tsx"),/<QuickItemEditor/);
+});
