@@ -2,7 +2,7 @@
 import {useMemo,useState} from "react";
 import {CalendarDays,ChevronDown,Plus,Search,X,Users,UserRound,Wallet} from "lucide-react";
 import Link from "next/link";
-import {snapshotCustomer} from "@/src/features/merchant-preview/catalog-contract";
+import {snapshotCustomer,isCatalogArchived} from "@/src/features/merchant-preview/catalog-contract";
 import {QuickCustomerEditor,emptyQuickCustomer,createQuickCustomer,type QuickCustomerInput} from "@/src/features/catalog/QuickCustomerEditor";
 import type {InvoiceDraft} from "@/src/features/invoice/types";
 import {useMerchantPreview,type CatalogCustomer,type CatalogStaff,type PaymentMode} from "@/src/features/merchant-preview/MerchantPreviewProvider";
@@ -24,7 +24,7 @@ function NativeDate({label,value,onChange}:{label:string;value:string;onChange:(
   </span></label>;
 }
 export function InvoiceMetadataSection({draft,setDraft,dueTime,setDueTime}:Props){
- const {customers,setCustomers,staff,setStaff,paymentMode,setPaymentMode}=useMerchantPreview();
+ const {customers,setCustomers,staff,setStaff,paymentMode,setPaymentMode,archivedRecords}=useMerchantPreview();
  const [picker,setPicker]=useState<Picker>(null),[query,setQuery]=useState(""),[adding,setAdding]=useState(false);
  const [customer,setCustomer]=useState<QuickCustomerInput>(emptyQuickCustomer);
  const [person,setPerson]=useState({name:"",email:"",phone:"",role:"Salesperson"});
@@ -53,7 +53,7 @@ export function InvoiceMetadataSection({draft,setDraft,dueTime,setDueTime}:Props
   const next:CatalogStaff={...person,id:String(staff.length+1)};
   setStaff(p=>[...p,next]);chooseStaff(next);setPerson({name:"",email:"",phone:"",role:"Salesperson"});
  }
- const filtered=useMemo(()=>picker==="customer"?customers.filter(c=>[c.name,c.company,c.email].some(v=>v.toLowerCase().includes(query.toLowerCase()))):staff.filter(s=>[s.name,s.role,s.email].some(v=>v.toLowerCase().includes(query.toLowerCase()))),[picker,customers,staff,query]);
+ const filtered=useMemo(()=>picker==="customer"?customers.filter(c=>!isCatalogArchived("customer",c.id,archivedRecords)&&[c.name,c.company,c.email].some(v=>v.toLowerCase().includes(query.toLowerCase()))):staff.filter(s=>[s.name,s.role,s.email].some(v=>v.toLowerCase().includes(query.toLowerCase()))),[picker,customers,staff,query,archivedRecords]);
  const input="h-10 w-full rounded-xl border border-gray-200 bg-gray-50 px-3 text-sm outline-none focus:border-[#0064E0]";
  const payments:{value:PaymentMode;label:string;note:string}[]=[
   {value:"manual",label:"Bank transfer to company account",note:"Merchant records transfer after checking bank evidence"},
