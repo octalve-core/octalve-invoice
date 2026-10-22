@@ -3,14 +3,14 @@ import {useState} from "react";
 import {ChevronDown,Package,Plus,Search,X} from "lucide-react";
 import {useMerchantPreview,type CatalogItem} from "@/src/features/merchant-preview/MerchantPreviewProvider";
 import type {InvoiceDraft,InvoiceLine} from "@/src/features/invoice/types";
-import {snapshotItem} from "@/src/features/merchant-preview/catalog-contract";
+import {snapshotItem,isCatalogArchived} from "@/src/features/merchant-preview/catalog-contract";
 import {QuickItemEditor,createQuickItem,emptyQuickItem} from "@/src/features/catalog/QuickItemEditor";
 type Props={draft:InvoiceDraft;setDraft:React.Dispatch<React.SetStateAction<InvoiceDraft>>};
 function Small({label,value,onChange}:{label:string;value:string;onChange:(v:string)=>void}){return <label className="min-w-0 space-y-1 text-xs"><span className="block truncate text-gray-600">{label}</span>
  <input value={value} onChange={e=>onChange(e.target.value)} aria-label={label} className="h-10 w-full min-w-0 rounded-xl bg-gray-50 px-2 text-xs outline-none focus:ring-2 focus:ring-blue-100"/></label>;}
 
 export function InvoiceItemsSection({draft,setDraft}:Props){
- const {items,setItems}=useMerchantPreview();
+ const {items,setItems,archivedRecords}=useMerchantPreview();
  const [selection,setSelection]=useState<string|null>(null),[search,setSearch]=useState(""),[adding,setAdding]=useState(false),[form,setForm]=useState<CatalogItem>(emptyQuickItem);
  const [expanded,setExpanded]=useState<string[]>(()=>[draft.rows[0]?.id||""]);
  const allExpanded=draft.rows.length>0&&draft.rows.every(r=>expanded.includes(r.id));
@@ -60,7 +60,7 @@ export function InvoiceItemsSection({draft,setDraft}:Props){
      <label className="relative block"><Search className="absolute left-3 top-3 text-gray-400" size={17}/><input value={search} onChange={e=>setSearch(e.target.value)}
        placeholder="Search products / services" className="h-11 w-full rounded-xl border pl-10 text-sm"/></label>
      <button onClick={()=>setAdding(true)} className="my-3 flex w-full items-center justify-center gap-2 rounded-full bg-[#0064E0] px-3 py-3 text-sm font-semibold text-white"><Plus size={16}/>Add new product or service</button>
-     <div className="max-h-72 space-y-2 overflow-auto">{items.filter(x=>[x.name,x.category].some(y=>y.toLowerCase().includes(search.toLowerCase()))).map(x=>
+     <div className="max-h-72 space-y-2 overflow-auto">{items.filter(x=>!isCatalogArchived("item",x.id,archivedRecords)&&[x.name,x.category].some(y=>y.toLowerCase().includes(search.toLowerCase()))).map(x=>
       <button key={x.id} onClick={()=>pick(x)} className="flex w-full items-center gap-3 rounded-xl bg-[#f8f8f8] p-3 text-left hover:bg-blue-50">
        <span className="grid h-10 w-10 rounded-full bg-blue-100 text-[#0064E0] place-items-center"><Package size={20}/></span>
        <span className="min-w-0 flex-1"><span className="block truncate text-sm font-semibold">{x.name}</span><span className="block truncate text-xs text-gray-500">{x.category} · ₦{Number(x.rate).toLocaleString("en-NG")} · {x.discountPercent}% discount</span></span></button>)}</div>
