@@ -77,13 +77,16 @@ export function calculateUntaxedPreview(lines:readonly ClassifiedTaxLine[],overa
  return netMinor===null?{ready:false,reason:"Amount exceeds safe money range",netMinor:null}:
   {ready:true,reason:"Pre-tax amount only; not a legal assessment",netMinor};
 }
-export function calculateClassifiedPreview(lines:readonly ClassifiedTaxLine[],overallDiscount:string){
+export function calculateClassifiedPreview(lines:readonly ClassifiedTaxLine[],overallDiscount:string,policy?:TaxCentrePolicy){
  const preTax=calculateUntaxedPreview(lines,overallDiscount);
  if(!preTax.ready)return {ready:false,reason:preTax.reason,netMinor:null,taxMinor:null,totalMinor:null};
+ if(policy&&(policy.status!=="owner-reviewed"||!policy.effectiveFrom||!policy.version.trim()||policy.version==="research-pending"))
+  return {ready:false,reason:"Tax Centre policy requires legal review",netMinor:preTax.netMinor,taxMinor:null,totalMinor:null};
  const discount=percentBasis(overallDiscount)!;
  let tax=BigInt(0);
  for(const line of lines){
-  if(requiresTaxReview(line.taxClassification))return {ready:false,reason:"Tax classification requires review",netMinor:preTax.netMinor,taxMinor:null,totalMinor:null};
+  if(requiresTaxReview(line.taxClassification)||policy&&(line.taxClassification?.jurisdiction!==policy.jurisdiction||line.taxClassification?.ruleVersion!==policy.version))
+   return {ready:false,reason:"Tax classification requires matching reviewed Tax Centre policy",netMinor:preTax.netMinor,taxMinor:null,totalMinor:null};
   if(line.taxClassification?.treatment==="standard"){
    const base=lineBaseMinor(line,discount)!;
    const rate=percentBasis(line.taxClassification.proposedRatePercent||"");
