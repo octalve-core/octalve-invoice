@@ -29,7 +29,7 @@ export function InvoiceItemsSection({draft,setDraft}:Props){
   try {
    const previous=items.find(x=>x.id===editingItemId);
    if(editingItemId&&!previous){setFormError("Selected catalogue item is no longer available.");return;}
-   const item=previous?{...previous,...form,id:previous.id,taxClassification:{...form.taxClassification??unclassifiedTax,review:"needs-review" as const,ruleVersion:"unverified"}}:createQuickItem(form);
+   const item=previous?{...previous,...form,id:previous.id,taxClassification:{...(form.taxClassification??unclassifiedTax),review:"needs-review" as const,ruleVersion:"unverified"}}:createQuickItem(form);
    // The only catalogue owner is MerchantPreviewProvider; explicitly selecting copies this version.
    setItems(p=>previous?p.map(x=>x.id===previous.id?item:x):[...p,item]);
    pick(item);
