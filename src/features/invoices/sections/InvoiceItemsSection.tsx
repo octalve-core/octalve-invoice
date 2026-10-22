@@ -11,7 +11,7 @@ function Small({label,value,onChange}:{label:string;value:string;onChange:(v:str
  <input value={value} onChange={e=>onChange(e.target.value)} aria-label={label} className="h-10 w-full min-w-0 rounded-xl bg-gray-50 px-2 text-xs outline-none focus:ring-2 focus:ring-blue-100"/></label>;}
 
 export function InvoiceItemsSection({draft,setDraft}:Props){
- const {items,setItems,archivedRecords}=useMerchantPreview();
+ const {items,setItems,archivedRecords,taxPolicy}=useMerchantPreview();
  const [selection,setSelection]=useState<string|null>(null),[search,setSearch]=useState(""),[adding,setAdding]=useState(false),[form,setForm]=useState<CatalogItem>(emptyQuickItem);
  const [expanded,setExpanded]=useState<string[]>(()=>[draft.rows[0]?.id||""]);
  const [editingItemId,setEditingItemId]=useState<string|null>(null),[formError,setFormError]=useState("");
@@ -29,7 +29,7 @@ export function InvoiceItemsSection({draft,setDraft}:Props){
   try {
    const previous=items.find(x=>x.id===editingItemId);
    if(editingItemId&&!previous){setFormError("Selected catalogue item is no longer available.");return;}
-   const item=previous?{...previous,...form,id:previous.id,taxClassification:{...(form.taxClassification??unclassifiedTax),review:"needs-review" as const,ruleVersion:"unverified"}}:createQuickItem(form);
+   const item=previous?{...previous,...form,id:previous.id,taxClassification:{...(form.taxClassification??unclassifiedTax),jurisdiction:taxPolicy.jurisdiction,review:"needs-review" as const,ruleVersion:"unverified"}}:createQuickItem(form);
    // The only catalogue owner is MerchantPreviewProvider; explicitly selecting copies this version.
    setItems(p=>previous?p.map(x=>x.id===previous.id?item:x):[...p,item]);
    pick(item);
