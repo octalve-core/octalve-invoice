@@ -55,7 +55,7 @@ export function InvoiceItemsSection({draft,setDraft}:Props){
     <div className="mx-auto mb-3 h-1 w-10 rounded-full bg-gray-200 md:hidden"/>
     <div className="mb-3 flex justify-between"><h3 className="font-semibold">Select product or service</h3><button onClick={close} aria-label="Close item picker"><X size={20}/></button></div>
     {adding?<div className="space-y-3">{(["name","description","rate","category","discountPercent"] as const).map(key=>
-      <label key={key} className="block text-xs capitalize">{key==="taxPercent"?"Preset tax %":key==="discountPercent"?"Preset discount %":key}
+      <label key={key} className="block text-xs capitalize">{key==="discountPercent"?"Preset discount %":key}
        <input value={form[key]} onChange={e=>setForm(p=>({...p,[key]:e.target.value}))} className="mt-1 h-10 w-full rounded-xl border bg-gray-50 px-3 text-sm"/></label>)}
       <label className="block text-xs">Tax classification (requires Tax Centre review)
        <select aria-label="Item tax classification" value={form.taxClassification?.treatment||"unclassified"} onChange={e=>setForm(p=>({...p,taxClassification:{...unclassifiedTax,treatment:e.target.value as typeof taxTreatments[number]}}))} className="mt-1 h-10 w-full rounded-xl border bg-gray-50 px-3 text-sm">
