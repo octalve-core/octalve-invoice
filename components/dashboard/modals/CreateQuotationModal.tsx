@@ -8,6 +8,8 @@ import {newCatalogPreviewId,snapshotItem} from "@/src/features/merchant-preview/
 import {calculateClassifiedPreview,type TaxClassification,unclassifiedTax} from "@/src/features/tax/tax-domain";
 import {currencyCodes} from "@/src/features/invoice/types";
 import {QuickCustomerEditor,emptyQuickCustomer,createQuickCustomer,type QuickCustomerInput} from "@/src/features/catalog/QuickCustomerEditor";
+import {QuickItemEditor,emptyQuickItem,createQuickItem} from "@/src/features/catalog/QuickItemEditor";
+import type {CatalogItem} from "@/src/features/merchant-preview/MerchantPreviewProvider";
 
 interface CreateQuotationModalProps {
   isOpen: boolean;
@@ -42,8 +44,9 @@ export default function CreateQuotationModal({
   onClose,
   onSubmit,
 }: CreateQuotationModalProps) {
-  const {settings,customers,setCustomers,items,invoicePreferences}=useMerchantPreview();
-  const [addCustomerOpen,setAddCustomerOpen]=useState(false);
+  const {settings,customers,setCustomers,items,setItems,invoicePreferences}=useMerchantPreview();
+  const [addCustomerOpen,setAddCustomerOpen]=useState(false),[addItemOpen,setAddItemOpen]=useState(false);
+  const [newItem,setNewItem]=useState<CatalogItem>(emptyQuickItem);
   const [newCustomer,setNewCustomer]=useState<QuickCustomerInput>(emptyQuickCustomer);
   const [formData, setFormData] = useState<QuotationData>({
     quotationNumber: formatDocumentNumber(settings.businessName||"Octalve Limited",1,"quotation"),
@@ -326,6 +329,7 @@ export default function CreateQuotationModal({
                 ))}
               </div>
 
+              <button type="button" onClick={()=>setAddItemOpen(true)} className="mb-3 flex items-center gap-2 rounded-full border border-[#0064E0] px-4 py-2 text-xs font-semibold text-[#0064E0]"><Plus size={15}/> Add new catalogue item</button>
               <button
                 onClick={addLineItem}
                 className="flex items-center gap-2 text-sm text-[#0064E0] hover:underline"
@@ -370,6 +374,19 @@ export default function CreateQuotationModal({
           </div>
         </div>
 
+        {addItemOpen?<div role="presentation" className="fixed inset-0 z-[120] flex items-end justify-center bg-black/50 sm:items-center sm:p-4" onClick={()=>setAddItemOpen(false)}>
+         <section role="dialog" aria-modal="true" aria-label="Add quotation catalogue item" onClick={e=>e.stopPropagation()} className="max-h-[92dvh] w-full max-w-lg overflow-y-auto rounded-t-2xl bg-white p-5 sm:rounded-2xl">
+          <div className="mb-3 flex items-center justify-between"><h3 className="font-semibold">Add product or service</h3><button type="button" aria-label="Close quotation item form" onClick={()=>setAddItemOpen(false)}><X size={19}/></button></div>
+          <QuickItemEditor value={newItem} onChange={setNewItem}/>
+          <button type="button" disabled={!newItem.name.trim()} onClick={()=>{
+           const item=createQuickItem(newItem);setItems(prev=>[...prev,item]);
+           setFormData(prev=>({...prev,lineItems:[...prev.lineItems,{
+            id:newCatalogPreviewId(),catalogItemId:item.id,description:item.name,quantity:1,rate:Number(item.rate),
+            discount:Number(item.discountPercent),amount:Number(item.rate)*(1-Number(item.discountPercent)/100),
+            taxClassification:item.taxClassification
+           }]}));setNewItem(emptyQuickItem());setAddItemOpen(false);
+          }} className="mt-4 w-full rounded-full bg-[#0064E0] p-3 text-sm font-semibold text-white disabled:opacity-40">Add and select item</button>
+         </section></div>:null}
         {addCustomerOpen?<div className="fixed inset-0 z-[110] flex items-end justify-center bg-black/50 sm:items-center sm:p-4" onClick={()=>setAddCustomerOpen(false)}>
          <section role="dialog" aria-modal="true" aria-label="Add quotation customer" onClick={e=>e.stopPropagation()} className="w-full max-w-md space-y-3 rounded-t-2xl bg-white p-5 sm:rounded-2xl">
           <div className="flex items-center justify-between"><h3 className="font-semibold">New customer</h3><button onClick={()=>setAddCustomerOpen(false)} aria-label="Close customer form"><X size={19}/></button></div>
