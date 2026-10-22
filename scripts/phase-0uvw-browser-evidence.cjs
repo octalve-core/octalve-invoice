@@ -25,7 +25,8 @@ const routes=[
       if(response?.status()!==200)throw Error("HTTP "+response?.status());
       if(await page.evaluate(()=>document.documentElement.scrollWidth>window.innerWidth+2))throw Error("Horizontal page overflow");
       if(route.startsWith("/customer")){
-       await page.getByText("Customer workspace",{exact:false}).first().waitFor();
+       // The desktop sidebar is hidden on mobile; assert the shared visible sample header instead.
+       await page.getByText("Sample workspace",{exact:true}).waitFor({state:"visible"});
        if(!await page.getByText("Sample data",{exact:false}).count()&&!await page.getByText("Sample invoice",{exact:false}).count())throw Error("Customer example indicator missing");
        if(route==="/customer/invoices/sample-1"){
         await page.getByRole("heading",{name:"WE-00001INV"}).waitFor();
