@@ -5,7 +5,7 @@ import {useState} from "react";
 import {ArrowLeft,ArrowRight,FileText,LockKeyhole} from "lucide-react";
 import {getPreviewInvoice} from "@/src/features/invoices/lib/preview-records";
 import {formatDocumentNumber} from "@/src/features/invoices/lib/document-number";
-import {calculateInvoiceTotals} from "@/src/features/invoice/lib/calculations";
+import {calculateDraftPreviewTotals} from "@/src/features/invoice/lib/draft-preview-totals";
 import {useMerchantPreview} from "@/src/features/merchant-preview/MerchantPreviewProvider";
 import {merchantCompany,merchantPayment} from "@/src/features/merchant-preview/merchant-presentation";
 import {InvoiceEditorSection,type InvoiceStep} from "./InvoiceEditorSection";
@@ -51,7 +51,7 @@ export function InvoiceComposer({mode="create",invoiceId}:{mode?:"create"|"edit"
   const changed=typeof value==="function"?value(merchantPayment(old)):value;
   return {...old,bankName:changed.bankName,accountNumber:changed.accountNumber};
  });
- const totals=calculateInvoiceTotals(draft.rows,draft.discount,draft.tax);
+ const totals=calculateDraftPreviewTotals(draft);
  const formattedTotal=Number.isFinite(totals.total)?new Intl.NumberFormat("en-NG",{style:"currency",currency:draft.currency,maximumFractionDigits:2}).format(totals.total):"Check amounts";
  const href=(value:InvoiceStep)=>base+"/"+value;
  const previous=currentIndex>0?steps[currentIndex-1]:null;
