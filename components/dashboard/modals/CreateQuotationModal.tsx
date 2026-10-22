@@ -136,7 +136,7 @@ export default function CreateQuotationModal({
 
   return (
     <div className="fixed inset-0 z-[70] flex items-end justify-center overflow-y-auto bg-black/50 p-0 sm:items-center sm:p-4">
-      <div className="bg-white rounded-t-2xl shadow-xl w-full max-w-4xl my-0 sm:my-8 sm:rounded-2xl">
+      <div role="dialog" aria-modal="true" aria-label="Create Quotation" className="bg-white rounded-t-2xl shadow-xl w-full max-w-4xl my-0 sm:my-8 sm:rounded-2xl">
         {/* Header */}
         <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200">
           <div className="flex items-center gap-2">
@@ -186,7 +186,7 @@ export default function CreateQuotationModal({
                   Customer
                 </label>
                 <div className="relative">
-                  <select
+                  <select aria-label="Quotation customer"
                     value={formData.customer}
                     onChange={(e) =>
                       setFormData({ ...formData, customer: e.target.value })
