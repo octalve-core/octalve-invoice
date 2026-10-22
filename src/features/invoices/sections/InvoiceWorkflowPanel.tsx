@@ -1,5 +1,6 @@
 "use client";
-import {useState} from "react";
+import {useState,type Dispatch,type SetStateAction} from "react";
+import {proposedStagesFromDraft,type DraftPaymentPlan} from "@/src/features/invoices/lib/draft-payment-plan";
 import Link from "next/link";
 import {ChevronRight,CircleHelp,FileText,LockKeyhole,Mail,MessageSquare,Percent,QrCode,Send,ShieldCheck,X} from "lucide-react";
 import type {PreviewInvoice} from "@/src/features/invoices/lib/preview-records";
@@ -16,16 +17,16 @@ const messageKinds:{kind:MessageKind;label:string;subject:string;body:string}[]=
  {kind:"update",label:"Account update",subject:"Update about your invoice",body:"Hello, we are writing to share an update about your invoice. Please contact us if you need clarification."},
  {kind:"paid",label:"Payment confirmation",subject:"Payment received – thank you",body:"Hello, thank you for your payment. A formal receipt can only be issued against a verified transaction."}
 ];
-export default function InvoiceWorkflowPanel({invoice,currency="NGN",invoiceDueAtLagos=""}:{invoice:PreviewInvoice;currency?:"NGN"|"USD"|"GBP"|"EUR";invoiceDueAtLagos?:string}){
+export default function InvoiceWorkflowPanel({invoice,currency="NGN",invoiceDueAtLagos="",plan,onPlanChange}:{invoice:PreviewInvoice;currency?:"NGN"|"USD"|"GBP"|"EUR";invoiceDueAtLagos?:string;plan:DraftPaymentPlan;onPlanChange:Dispatch<SetStateAction<DraftPaymentPlan>>}){
  const fmt=(n:number)=>new Intl.NumberFormat("en-NG",{style:"currency",currency,minimumFractionDigits:2,maximumFractionDigits:2}).format(n/100);
- const [tab,setTab]=useState<WorkflowTab>("payments"),[percent,setPercent]=useState(70),[messageKind,setMessageKind]=useState<MessageKind>("reminder");
- const [stageMode,setStageMode]=useState<"full"|"two"|"custom">("two");
- const [collectionMode,setCollectionMode]=useState<CollectionMode>("company-bank");
- const [dynamicProvider,setDynamicProvider]=useState<DynamicProvider>("monnify-invoice");
- const [twoDates,setTwoDates]=useState<[string,string]>(["",""]);
- const [stages,setStages]=useState<{id:string;share:number;due:string}[]>([
-  {id:"stage-1",share:50,due:""},{id:"stage-2",share:30,due:""},{id:"stage-3",share:20,due:""}
- ]);
+ const [tab,setTab]=useState<WorkflowTab>("payments"),[messageKind,setMessageKind]=useState<MessageKind>("reminder");
+ const {firstPercent:percent,stageMode,collectionMode,dynamicProvider,twoDueDates:twoDates,customStages:stages}=plan;
+ const setPercent=(v:number)=>onPlanChange(p=>({...p,firstPercent:v}));
+ const setStageMode=(v:DraftPaymentPlan["stageMode"])=>onPlanChange(p=>({...p,stageMode:v}));
+ const setCollectionMode=(v:CollectionMode)=>onPlanChange(p=>({...p,collectionMode:v}));
+ const setDynamicProvider=(v:DynamicProvider)=>onPlanChange(p=>({...p,dynamicProvider:v}));
+ const setTwoDates:Dispatch<SetStateAction<[string,string]>>=v=>onPlanChange(p=>({...p,twoDueDates:typeof v==="function"?v(p.twoDueDates):v}));
+ const setStages:Dispatch<SetStateAction<DraftPaymentPlan["customStages"]>>=v=>onPlanChange(p=>({...p,customStages:typeof v==="function"?v(p.customStages):v}));
  const [sheet,setSheet]=useState(false),[subject,setSubject]=useState(""),[body,setBody]=useState(""),[notice,setNotice]=useState("");
  useAccessibleDialog(sheet,()=>setSheet(false));
  const total=minorAmount(invoice.amount);
@@ -35,11 +36,7 @@ export default function InvoiceWorkflowPanel({invoice,currency="NGN",invoiceDueA
  const stageTotal=stages.reduce((sum,s)=>sum+s.share,0);
  const validSchedule=stages.length>=2&&stages.length<=6&&stageTotal===100&&stages.every(s=>Number.isInteger(s.share)&&s.share>0&&s.share<=99);
  const stageAmounts=validSchedule?allocateStages(total,stages.map(s=>s.share)):null;
- const proposedStages:ProposedStage[]=stageMode==="full"
-  ?[{id:"full",share:100,dueAtLagos:invoiceDueAtLagos}]
-  :stageMode==="two"
-   ?[{id:"first",share:percent,dueAtLagos:twoDates[0]},{id:"remaining",share:100-percent,dueAtLagos:twoDates[1]}]
-   :stages.map(s=>({id:s.id,share:s.share,dueAtLagos:s.due}));
+ const proposedStages:ProposedStage[]=proposedStagesFromDraft(plan,invoiceDueAtLagos);
  const planCheck=evaluateCollectionPlan({
   totalMinor:total,invoiceDueAtLagos,stages:proposedStages,mode:collectionMode,
   provider:collectionMode==="dynamic-account"?dynamicProvider:undefined
