@@ -47,3 +47,40 @@ test("merchant provider is the one catalogue, currency and policy owner",()=>{
  assert.match(p,/const \[invoicePreferences,setInvoicePreferences\]/);
  assert.match(read("src/features/invoices/sections/InvoiceComposer.tsx"),/applyNewInvoicePreferences/);
 });
+
+
+test("responsive customer/item pickers expose shared Add and Edit without duplicate merchant stores",()=>{
+ const metadata=read("src/features/invoices/sections/InvoiceMetadataSection.tsx");
+ const items=read("src/features/invoices/sections/InvoiceItemsSection.tsx");
+ const quote=read("components/dashboard/modals/CreateQuotationModal.tsx");
+ const customer=read("src/features/catalog/QuickCustomerEditor.tsx");
+ const item=read("src/features/catalog/QuickItemEditor.tsx");
+ assert.match(metadata,/Edit customer /);
+ assert.match(metadata,/QuickCustomerEditor/);
+ assert.match(metadata,/updateQuickCustomer/);
+ assert.match(items,/Edit catalogue item /);
+ assert.match(items,/QuickItemEditor/);
+ assert.match(quote,/Edit selected customer/);
+ assert.match(quote,/Edit catalogue item/);
+ assert.match(quote,/activeCustomers/);
+ assert.match(quote,/activeItems/);
+ assert.match(customer,/export function updateQuickCustomer/);
+ assert.match(item,/export function createQuickItem/);
+});
+test("archived master records excluded from selectors while document snapshots are isolated",()=>{
+ const helper=read("src/features/merchant-preview/catalog-contract.ts");
+ assert.match(helper,/export function isCatalogArchived/);
+ for(const path of ["src/features/invoices/sections/InvoiceMetadataSection.tsx","src/features/invoices/sections/InvoiceItemsSection.tsx","components/dashboard/modals/CreateQuotationModal.tsx"])
+  assert.match(read(path),/isCatalogArchived/,path);
+ const quote=read("components/dashboard/modals/CreateQuotationModal.tsx");
+ assert.match(quote,/quote unchanged/);
+ assert.match(quote,/quote address unchanged/);
+});
+test("UI tax calculation remains guarded and overall percentage cannot bypass treatment",()=>{
+ const composer=read("src/features/invoices/sections/InvoiceComposer.tsx");
+ const editor=read("src/features/invoices/sections/InvoiceEditorSection.tsx");
+ assert.match(composer,/calculateDraftPreviewTotals/);
+ assert.match(editor,/calculateDraftPreviewTotals/);
+ assert.doesNotMatch(editor,/aria-label="Tax percentage"/);
+ assert.match(read("src/features/tax/tax-domain.ts"),/requiresTaxReview/);
+});
