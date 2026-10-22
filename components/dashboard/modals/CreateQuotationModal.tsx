@@ -7,6 +7,7 @@ import {formatDocumentNumber} from "@/src/features/invoices/lib/document-number"
 import {newCatalogPreviewId,snapshotItem} from "@/src/features/merchant-preview/catalog-contract";
 import {calculateClassifiedPreview,type TaxClassification,unclassifiedTax} from "@/src/features/tax/tax-domain";
 import {currencyCodes} from "@/src/features/invoice/types";
+import {QuickCustomerEditor,emptyQuickCustomer,createQuickCustomer,type QuickCustomerInput} from "@/src/features/catalog/QuickCustomerEditor";
 
 interface CreateQuotationModalProps {
   isOpen: boolean;
@@ -43,7 +44,7 @@ export default function CreateQuotationModal({
 }: CreateQuotationModalProps) {
   const {settings,customers,setCustomers,items,invoicePreferences}=useMerchantPreview();
   const [addCustomerOpen,setAddCustomerOpen]=useState(false);
-  const [newCustomer,setNewCustomer]=useState({name:"",email:""});
+  const [newCustomer,setNewCustomer]=useState<QuickCustomerInput>(emptyQuickCustomer);
   const [formData, setFormData] = useState<QuotationData>({
     quotationNumber: formatDocumentNumber(settings.businessName||"Octalve Limited",1,"quotation"),
     customer: "",
@@ -372,9 +373,8 @@ export default function CreateQuotationModal({
         {addCustomerOpen?<div className="fixed inset-0 z-[110] flex items-end justify-center bg-black/50 sm:items-center sm:p-4" onClick={()=>setAddCustomerOpen(false)}>
          <section role="dialog" aria-modal="true" aria-label="Add quotation customer" onClick={e=>e.stopPropagation()} className="w-full max-w-md space-y-3 rounded-t-2xl bg-white p-5 sm:rounded-2xl">
           <div className="flex items-center justify-between"><h3 className="font-semibold">New customer</h3><button onClick={()=>setAddCustomerOpen(false)} aria-label="Close customer form"><X size={19}/></button></div>
-          <label className="block text-xs">Customer name<input value={newCustomer.name} onChange={e=>setNewCustomer(p=>({...p,name:e.target.value}))} className="mt-1 h-10 w-full rounded-lg border px-3 text-sm"/></label>
-          <label className="block text-xs">Email (optional)<input value={newCustomer.email} onChange={e=>setNewCustomer(p=>({...p,email:e.target.value}))} className="mt-1 h-10 w-full rounded-lg border px-3 text-sm"/></label>
-          <button disabled={!newCustomer.name.trim()} onClick={()=>{const id=newCatalogPreviewId();setCustomers(p=>[...p,{id,name:newCustomer.name,email:newCustomer.email,phone:"",address:"",company:""}]);setFormData(p=>({...p,customer:id}));setAddCustomerOpen(false);setNewCustomer({name:"",email:""});}} className="w-full rounded-full bg-[#0064E0] p-3 text-sm font-semibold text-white disabled:opacity-40">Add and select</button>
+          <QuickCustomerEditor value={newCustomer} onChange={setNewCustomer}/>
+          <button disabled={!newCustomer.name.trim()} onClick={()=>{const next=createQuickCustomer(newCustomer);setCustomers(p=>[...p,next]);setFormData(p=>({...p,customer:next.id,address:next.address}));setAddCustomerOpen(false);setNewCustomer(emptyQuickCustomer());}} className="w-full rounded-full bg-[#0064E0] p-3 text-sm font-semibold text-white disabled:opacity-40">Add and select</button>
          </section></div>:null}
                 {/* Footer */}
         <div className="flex items-center justify-center gap-4 px-6 py-4 border-t border-gray-200">
