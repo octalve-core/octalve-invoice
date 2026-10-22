@@ -1,7 +1,7 @@
 "use client";
 import {useState,type ReactNode} from "react";
 import type {InvoiceDraft} from "@/src/features/invoice/types";
-import {calculateInvoiceTotals} from "@/src/features/invoice/lib/calculations";
+import {calculateDraftPreviewTotals} from "@/src/features/invoice/lib/draft-preview-totals";
 import {useMerchantPreview} from "@/src/features/merchant-preview/MerchantPreviewProvider";
 import {InvoiceMetadataSection} from "./InvoiceMetadataSection";
 import {InvoiceItemsSection} from "./InvoiceItemsSection";
@@ -30,7 +30,7 @@ export function InvoiceEditorSection({draft,setDraft,step}:Props){
  const {paymentMode}=useMerchantPreview();
  const [dueTime,setDueTime]=useState("23:59");
  const update=<K extends keyof InvoiceDraft>(key:K,value:InvoiceDraft[K])=>setDraft(p=>({...p,[key]:value}));
- const total=calculateInvoiceTotals(draft.rows,draft.discount,draft.tax).total;
+ const total=calculateDraftPreviewTotals(draft).total;
  const totalMinor=Math.round(total*100);
  const months=["JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT","NOV","DEC"];
  const index=months.indexOf(draft.dueMonth.toUpperCase());
@@ -46,17 +46,16 @@ export function InvoiceEditorSection({draft,setDraft,step}:Props){
    <InvoiceItemsSection draft={draft} setDraft={setDraft}/>
   </StepPanel>
   <StepPanel name="charges" title="Totals, tax & notes" description="Review charges and add a note" active={step==="charges"}>
+   <p role="status" className="mb-3 rounded-xl border border-amber-100 bg-amber-50 p-3 text-xs leading-5 text-amber-900">Tax is not legally assessed in this preview. Verify all classifications and effective dates in Tax Centre before any future issuance.</p>
 
 
    <div className="grid grid-cols-2 gap-3">
     <label className="text-xs">Discount %
      <input aria-label="Overall discount percentage" value={draft.discount} onChange={e=>update("discount",e.target.value)} className="mt-1 h-10 w-full rounded-xl bg-gray-50 px-3 text-sm"/>
     </label>
-    <label className="text-xs">Tax %
-     <input aria-label="Tax percentage" value={draft.tax} onChange={e=>update("tax",e.target.value)} className="mt-1 h-10 w-full rounded-xl bg-gray-50 px-3 text-sm"/>
-    </label>
+    <div className="text-xs"><span className="font-medium">Tax status</span><div aria-label="Tax classification status" className="mt-1 flex h-10 items-center rounded-xl bg-amber-50 px-3 text-xs text-amber-900">Line-by-line review required</div></div>
    </div>
-   <p className="mt-2 text-[11px] leading-5 text-slate-500">Enter the tax rate that applies to this invoice.</p>
+   <p className="mt-2 text-[11px] leading-5 text-slate-500">Use the Tax Centre treatment assigned to each item. Unknown or conditional treatments require review; no blanket invoice tax is applied.</p>
    <label className="mt-4 block space-y-1 text-xs"><span className="font-medium">Mail for customer / Notes</span>
     <textarea value={draft.notes} onChange={e=>update("notes",e.target.value)} className="min-h-20 w-full resize-y rounded-xl bg-gray-50 p-3 text-sm focus:outline-blue-500"/>
    </label>
