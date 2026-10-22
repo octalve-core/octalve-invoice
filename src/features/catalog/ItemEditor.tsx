@@ -11,7 +11,7 @@ export function ItemEditor({editId}:{editId?:string}){
  const existing=editId?items.find(x=>x.id===editId):undefined;
  const [form,setForm]=useState<CatalogItem>(()=>existing?{...existing}:{id:"",name:"",description:"",rate:"",taxPercent:"0",discountPercent:"0",category:"",type:"goods"});
  const [issue,setIssue]=useState("");
- const fields:({key:keyof CatalogItem;label:string;type?:string})[]=[
+ const fields:({key:"name"|"rate"|"category"|"discountPercent";label:string;type?:string})[]=[
  {key:"name",label:"Item / service name"},{key:"rate",label:"Unit price / rate",type:"number"},
  {key:"category",label:"Category"},{key:"discountPercent",label:"Default discount (%)",type:"number"}
 ];
