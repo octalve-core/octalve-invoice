@@ -30,3 +30,13 @@ test("browser verifies wheel, keyboard, and hidden scrollbar at desktop and mobi
  assert.match(script,/getByRole\("dialog",\{name:"Recurring rule preview"\}\)/);
  assert.equal((script.match(/page\.goto\(/g)||[]).length,1,"Navigation must start at /workspaces only");
 });
+
+test("legacy customer and product selectors share the accessible modal scrollbar policy",()=>{
+ for(const [path,label] of [
+  ["components/dashboard/modals/SelectCustomerModal.tsx","Select Customer"],
+  ["components/dashboard/modals/SelectProductModal.tsx","Add New Product"]
+ ]){
+  const source=read(path);
+  assert.ok(source.includes('role="dialog" aria-modal="true" aria-label="'+label+'"'),path);
+ }
+});
