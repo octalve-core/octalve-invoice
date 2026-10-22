@@ -6,6 +6,7 @@ import {useMerchantPreview} from "@/src/features/merchant-preview/MerchantPrevie
 import {InvoiceMetadataSection} from "./InvoiceMetadataSection";
 import {InvoiceItemsSection} from "./InvoiceItemsSection";
 import InvoiceWorkflowPanel from "./InvoiceWorkflowPanel";
+import {newDraftPaymentPlan} from "@/src/features/invoices/lib/draft-payment-plan";
 import {lagosDateTime} from "@/src/features/invoices/lib/collection-expiry";
 
 export type InvoiceStep="details"|"items"|"charges"|"workflow"|"preview";
@@ -62,7 +63,7 @@ export function InvoiceEditorSection({draft,setDraft,step}:Props){
    <p className="mt-3 rounded-lg bg-[#F2F7FD] p-3 text-xs text-[#355D82]">Check payment details before issuing.</p>
   </StepPanel>
   <StepPanel name="workflow" title="Payment plan & communication" description="Set terms and prepare customer messages" active={step==="workflow"}>
-   {validTotal?<InvoiceWorkflowPanel invoice={{id:"unsaved-draft",reference:draft.invoiceNo,customer:draft.clientName||"Customer",email:draft.clientEmail,amount:(totalMinor/100).toFixed(2),date:"",dueDate:"",status:"draft",paymentMode}} currency={draft.currency} invoiceDueAtLagos={invoiceDueAtLagos}/>:
+   {validTotal?<InvoiceWorkflowPanel invoice={{id:"unsaved-draft",reference:draft.invoiceNo,customer:draft.clientName||"Customer",email:draft.clientEmail,amount:(totalMinor/100).toFixed(2),date:"",dueDate:"",status:"draft",paymentMode}} currency={draft.currency} invoiceDueAtLagos={invoiceDueAtLagos} plan={draft.paymentPlan??newDraftPaymentPlan()} onPlanChange={value=>setDraft(p=>({...p,paymentPlan:typeof value==="function"?value(p.paymentPlan??newDraftPaymentPlan()):value}))}/>:
    <p role="alert" className="text-xs text-red-700">Add an item with a positive amount before planning installments.</p>}
   </StepPanel>
  </div>;
