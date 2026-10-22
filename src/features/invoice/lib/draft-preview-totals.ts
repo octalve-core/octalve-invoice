@@ -1,13 +1,13 @@
 import type {InvoiceDraft,InvoiceTotals} from "../types";
 import {calculateInvoiceTotals} from "./calculations";
-import {calculateClassifiedPreview,calculateUntaxedPreview} from "../../tax/tax-domain";
+import {calculateClassifiedPreview,calculateUntaxedPreview,type TaxCentrePolicy} from "../../tax/tax-domain";
 
 /** Read-only frontend numbers. Unknown legal tax treatment never becomes a guessed tax rate. */
-export function calculateDraftPreviewTotals(draft:InvoiceDraft):InvoiceTotals & {taxAssessed:boolean;taxNotice:string}{
+export function calculateDraftPreviewTotals(draft:InvoiceDraft,policy?:TaxCentrePolicy):InvoiceTotals & {taxAssessed:boolean;taxNotice:string}{
  const legacy=calculateInvoiceTotals(draft.rows,draft.discount,"0");
  const preTax=calculateUntaxedPreview(draft.rows,draft.discount);
  const beforeTax={...legacy,total:preTax.netMinor===null?Number.NaN:preTax.netMinor/100};
- const proposal=calculateClassifiedPreview(draft.rows,draft.discount);
+ const proposal=calculateClassifiedPreview(draft.rows,draft.discount,policy);
  if(!proposal.ready||proposal.totalMinor===null||proposal.taxMinor===null){
   return {...beforeTax,taxAssessed:false,taxNotice:proposal.reason};
  }
