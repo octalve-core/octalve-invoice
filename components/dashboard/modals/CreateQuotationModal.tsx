@@ -117,20 +117,15 @@ export default function CreateQuotationModal({
     });
   };
 
-  const subtotal = formData.lineItems.reduce(
-    (sum, item) => sum + item.amount,
-    0
-  );
-  const discount = formData.lineItems.reduce(
-    (sum, item) => sum + (item.quantity * item.rate * item.discount) / 100,
-    0
-  );
+  const subtotal=formData.lineItems.reduce((sum,item)=>sum+item.quantity*item.rate,0);
+  const discountedSubtotal=formData.lineItems.reduce((sum,item)=>sum+item.amount,0);
+  const discount=subtotal-discountedSubtotal;
   // No legal tax classification has been verified: never insert a blanket VAT rate.
   const taxPreview=calculateClassifiedPreview(formData.lineItems.map(x=>({
    id:x.id,quantity:String(x.quantity),unitPrice:String(x.rate),discount:String(x.discount),
    taxClassification:x.taxClassification||unclassifiedTax
   })),"0");
-  const totalBeforeTax = subtotal;
+  const totalBeforeTax = discountedSubtotal;
   const formatAmount=(value:number)=>new Intl.NumberFormat("en-NG",{style:"currency",currency:formData.currency,minimumFractionDigits:2,maximumFractionDigits:2}).format(value);
 
   const handleSubmit = () => {
@@ -377,7 +372,7 @@ export default function CreateQuotationModal({
                   </span>
                 </div>
                 <div className="flex justify-between text-sm pt-2 border-t border-gray-200">
-                  <span className="font-medium text-gray-900">Total before unassessed tax</span>
+                  <span className="font-medium text-gray-900">{taxPreview.ready?"Illustrative total including reviewed tax":"Total before unassessed tax"}</span>
                   <span className="font-bold text-[#0064E0]">
                     {taxPreview.ready?formatAmount((taxPreview.totalMinor??0)/100):formatAmount(totalBeforeTax)}
                   </span>
