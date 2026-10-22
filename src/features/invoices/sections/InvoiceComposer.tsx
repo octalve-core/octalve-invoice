@@ -32,9 +32,9 @@ export function InvoiceComposer({mode="create",invoiceId}:{mode?:"create"|"edit"
  const step:InvoiceStep=isStep(leaf)?leaf:"details";
  const currentIndex=steps.findIndex(item=>item.id===step);
  const base=mode==="edit"?"/dashboard/invoice/"+currentInvoiceId+"/edit":"/dashboard/invoice/create";
- const {settings,setSettings,logoPreview,paymentMode,invoiceAppearance,invoicePreferences}=useMerchantPreview();
+ const {settings,setSettings,logoPreview,paymentMode,collectionSetup,invoiceAppearance,invoicePreferences}=useMerchantPreview();
  const [draft,setDraft]=useState<InvoiceDraft>(()=>{
-  const initial={...(mode==="create"?applyNewInvoicePreferences(createPreviewInvoice(),invoicePreferences):createPreviewInvoice()),paymentPlan:newDraftPaymentPlan()};
+  const initial={...(mode==="create"?applyNewInvoicePreferences(createPreviewInvoice(),invoicePreferences):createPreviewInvoice()),paymentPlan:newDraftPaymentPlan(collectionSetup)};
   const matching=mode==="edit"&&currentInvoiceId?getPreviewInvoice(currentInvoiceId):undefined;
   return matching?{...initial,invoiceNo:matching.reference,clientName:matching.customer,clientEmail:matching.email}:
    {...initial,invoiceNo:formatDocumentNumber(settings.businessName||"Octalve Limited",1,"invoice")};
