@@ -126,7 +126,7 @@ export default function CreateQuotationModal({
   const taxPreview=calculateClassifiedPreview(formData.lineItems.map(x=>({
    id:x.id,quantity:String(x.quantity),unitPrice:String(x.rate),discount:String(x.discount),
    taxClassification:x.taxClassification||unclassifiedTax
-  })),"0");
+  })),"0",taxPolicy);
   const totalBeforeTax = discountedSubtotal;
   const formatAmount=(value:number)=>new Intl.NumberFormat("en-NG",{style:"currency",currency:formData.currency,minimumFractionDigits:2,maximumFractionDigits:2}).format(value);
 
