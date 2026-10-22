@@ -6,7 +6,7 @@ import {taxTreatments,unclassifiedTax} from "../tax/tax-domain";
 /** Shared frontend item editor for draft invoice and quotation pickers. */
 export const emptyQuickItem=():CatalogItem=>({id:"",name:"",description:"",rate:"0",category:"",discountPercent:"0",taxPercent:"0",type:"goods",taxClassification:unclassifiedTax});
 export function createQuickItem(value:CatalogItem):CatalogItem{
- if(!value.name.trim()||!/^\d+(?:\.\d{1,2})?$/.test(value.rate)||!Number.isFinite(Number(value.rate))||Number(value.rate)<0)throw new Error("Item requires name and valid nonnegative price");
+ if(!value.name.trim()||!/^\d+(?:\.\d{1,2})?$/.test(value.rate)||!Number.isFinite(Number(value.rate))||Number(value.rate)<0||!/^\d{1,3}(?:\.\d{1,2})?$/.test(value.discountPercent)||Number(value.discountPercent)>100)throw new Error("Item requires a name, nonnegative price and discount between 0 and 100%.");
  return {...value,id:newCatalogPreviewId(),name:value.name.trim(),
   taxClassification:{...(value.taxClassification||unclassifiedTax),review:"needs-review",ruleVersion:"unverified"}};
 }
