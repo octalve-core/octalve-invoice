@@ -30,7 +30,7 @@ export function InvoiceEditorSection({draft,setDraft,step}:Props){
  const {paymentMode,taxPolicy}=useMerchantPreview();
  const [dueTime,setDueTime]=useState("23:59");
  const update=<K extends keyof InvoiceDraft>(key:K,value:InvoiceDraft[K])=>setDraft(p=>({...p,[key]:value}));
- const total=calculateDraftPreviewTotals(draft).total;
+ const total=calculateDraftPreviewTotals(draft,taxPolicy).total;
  const totalMinor=Math.round(total*100);
  const months=["JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT","NOV","DEC"];
  const index=months.indexOf(draft.dueMonth.toUpperCase());
