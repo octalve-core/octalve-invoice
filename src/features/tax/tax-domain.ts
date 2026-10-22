@@ -56,25 +56,42 @@ function percentBasis(v:string):bigint|null{
 }
 const round=(numerator:bigint,denominator:bigint)=> (numerator+denominator/BigInt(2))/denominator;
 const safe=(v:bigint)=>v>=BigInt(0)&&v<=BigInt(Number.MAX_SAFE_INTEGER)?Number(v):null;
-export function calculateClassifiedPreview(lines:readonly ClassifiedTaxLine[],overallDiscount:string){
+/** Shared exact-money foundation for both classified and not-yet-classified drafts. */
+function lineBaseMinor(line:ClassifiedTaxLine,overallDiscount:bigint):bigint|null{
+ const price=minor(line.unitPrice),qty=quantityMilli(line.quantity),itemDiscount=percentBasis(line.discount);
+ if(price===null||qty===null||itemDiscount===null)return null;
+ const gross=round(price*qty,BigInt(1000));
+ const afterItem=round(gross*(BigInt(10000)-itemDiscount),BigInt(10000));
+ return round(afterItem*(BigInt(10000)-overallDiscount),BigInt(10000));
+}
+export function calculateUntaxedPreview(lines:readonly ClassifiedTaxLine[],overallDiscount:string){
  const discount=percentBasis(overallDiscount);
- if(discount===null||!lines.length)return {ready:false,reason:"Invalid discount or empty document",netMinor:null,taxMinor:null,totalMinor:null};
- let net=BigInt(0),tax=BigInt(0);
+ if(discount===null||!lines.length)return {ready:false,reason:"Invalid discount or empty document",netMinor:null};
+ let net=BigInt(0);
  for(const line of lines){
-  const price=minor(line.unitPrice),qty=quantityMilli(line.quantity),itemDiscount=percentBasis(line.discount);
-  if(price===null||qty===null||itemDiscount===null)return {ready:false,reason:"Invalid item amount, quantity or discount",netMinor:null,taxMinor:null,totalMinor:null};
-  if(requiresTaxReview(line.taxClassification))return {ready:false,reason:"Tax classification requires review",netMinor:null,taxMinor:null,totalMinor:null};
-  const gross=round(price*qty,BigInt(1000));
-  const afterItemDiscount=round(gross*(BigInt(10000)-itemDiscount),BigInt(10000));
-  const base=round(afterItemDiscount*(BigInt(10000)-discount),BigInt(10000));
+  const base=lineBaseMinor(line,discount);
+  if(base===null)return {ready:false,reason:"Invalid item amount, quantity or discount",netMinor:null};
   net+=base;
+ }
+ const netMinor=safe(net);
+ return netMinor===null?{ready:false,reason:"Amount exceeds safe money range",netMinor:null}:
+  {ready:true,reason:"Pre-tax amount only; not a legal assessment",netMinor};
+}
+export function calculateClassifiedPreview(lines:readonly ClassifiedTaxLine[],overallDiscount:string){
+ const preTax=calculateUntaxedPreview(lines,overallDiscount);
+ if(!preTax.ready)return {ready:false,reason:preTax.reason,netMinor:null,taxMinor:null,totalMinor:null};
+ const discount=percentBasis(overallDiscount)!;
+ let tax=BigInt(0);
+ for(const line of lines){
+  if(requiresTaxReview(line.taxClassification))return {ready:false,reason:"Tax classification requires review",netMinor:preTax.netMinor,taxMinor:null,totalMinor:null};
   if(line.taxClassification?.treatment==="standard"){
+   const base=lineBaseMinor(line,discount)!;
    const rate=percentBasis(line.taxClassification.proposedRatePercent||"");
-   if(rate===null)return {ready:false,reason:"Invalid proposed tax rate",netMinor:null,taxMinor:null,totalMinor:null};
+   if(rate===null)return {ready:false,reason:"Invalid proposed tax rate",netMinor:preTax.netMinor,taxMinor:null,totalMinor:null};
    tax+=round(base*rate,BigInt(10000));
   }
  }
- const netMinor=safe(net),taxMinor=safe(tax),totalMinor=safe(net+tax);
- if(netMinor===null||taxMinor===null||totalMinor===null)return {ready:false,reason:"Amounts exceed safe money range",netMinor:null,taxMinor:null,totalMinor:null};
- return {ready:true,reason:"Illustrative only — not an official tax assessment",netMinor,taxMinor,totalMinor};
+ const taxMinor=safe(tax),totalMinor=safe(BigInt(preTax.netMinor!)+tax);
+ if(taxMinor===null||totalMinor===null)return {ready:false,reason:"Amounts exceed safe money range",netMinor:preTax.netMinor,taxMinor:null,totalMinor:null};
+ return {ready:true,reason:"Illustrative only — not an official tax assessment",netMinor:preTax.netMinor,taxMinor,totalMinor};
 }
