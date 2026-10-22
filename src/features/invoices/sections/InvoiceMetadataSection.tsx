@@ -2,7 +2,8 @@
 import {useMemo,useState} from "react";
 import {CalendarDays,ChevronDown,Plus,Search,X,Users,UserRound,Wallet} from "lucide-react";
 import Link from "next/link";
-import {snapshotCustomer,newCatalogPreviewId} from "@/src/features/merchant-preview/catalog-contract";
+import {snapshotCustomer} from "@/src/features/merchant-preview/catalog-contract";
+import {QuickCustomerEditor,emptyQuickCustomer,createQuickCustomer,type QuickCustomerInput} from "@/src/features/catalog/QuickCustomerEditor";
 import type {InvoiceDraft} from "@/src/features/invoice/types";
 import {useMerchantPreview,type CatalogCustomer,type CatalogStaff,type PaymentMode} from "@/src/features/merchant-preview/MerchantPreviewProvider";
 type Props={draft:InvoiceDraft;setDraft:React.Dispatch<React.SetStateAction<InvoiceDraft>>;dueTime:string;setDueTime:(time:string)=>void;};
@@ -25,7 +26,7 @@ function NativeDate({label,value,onChange}:{label:string;value:string;onChange:(
 export function InvoiceMetadataSection({draft,setDraft,dueTime,setDueTime}:Props){
  const {customers,setCustomers,staff,setStaff,paymentMode,setPaymentMode}=useMerchantPreview();
  const [picker,setPicker]=useState<Picker>(null),[query,setQuery]=useState(""),[adding,setAdding]=useState(false);
- const [customer,setCustomer]=useState({name:"",email:"",phone:"",address:"",company:"",customerType:"individual" as "individual"|"business",taxId:"",country:"",city:"",state:""});
+ const [customer,setCustomer]=useState<QuickCustomerInput>(emptyQuickCustomer);
  const [person,setPerson]=useState({name:"",email:"",phone:"",role:"Salesperson"});
  const [selectedStaff,setSelectedStaff]=useState("");
  const update=<K extends keyof InvoiceDraft>(key:K,value:InvoiceDraft[K])=>setDraft(prev=>({...prev,[key]:value}));
@@ -44,9 +45,8 @@ export function InvoiceMetadataSection({draft,setDraft,dueTime,setDueTime}:Props
  function close(){setPicker(null);setQuery("");setAdding(false);}
  function addCustomer(){
   if(!customer.name.trim())return;
-  const next:CatalogCustomer={...customer,id:newCatalogPreviewId(),
-    billingName:customer.customerType==="business"?(customer.company.trim()||customer.name):customer.name};
-  setCustomers(p=>[...p,next]);chooseCustomer(next);setCustomer({name:"",email:"",phone:"",address:"",company:"",customerType:"individual",taxId:"",country:"",city:"",state:""});
+  const next=createQuickCustomer(customer);
+  setCustomers(p=>[...p,next]);chooseCustomer(next);setCustomer(emptyQuickCustomer());
  }
  function addStaff(){
   if(!person.name.trim())return;
@@ -130,11 +130,7 @@ export function InvoiceMetadataSection({draft,setDraft,dueTime,setDueTime}:Props
          <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-green-100 text-green-600">{picker==="customer"?<Users size={19}/>:<UserRound size={19}/>}</span>
          <span className="min-w-0 flex-1"><span className="block truncate text-sm font-semibold text-[#19364f]">{entry.name}</span><span className="block truncate text-xs text-gray-500">{picker==="customer"?(entry as CatalogCustomer).company:(entry as CatalogStaff).role} · {entry.email}</span></span>
         </button>)}</div></>:picker==="customer"?<>
-        <label className="block text-xs">Customer name *<input value={customer.name} onChange={e=>setCustomer(p=>({...p,name:e.target.value}))} className={input}/></label>
-        <label className="block text-xs">Customer type
-          <select aria-label="New customer type" value={customer.customerType} onChange={e=>setCustomer(p=>({...p,customerType:e.target.value as "individual"|"business"}))} className={input}><option value="individual">Individual</option><option value="business">Business</option></select>
-        </label>
-        {(["email","phone","company","address","taxId","city","state","country"] as const).map(key=><label key={key} className="block text-xs capitalize">{key}<input value={customer[key]} onChange={e=>setCustomer(p=>({...p,[key]:e.target.value}))} className={input}/></label>)}
+        <QuickCustomerEditor value={customer} onChange={setCustomer}/>
         <button disabled={!customer.name.trim()} onClick={addCustomer} className="w-full rounded-full bg-[#0064E0] py-3 text-sm text-white disabled:opacity-40">Add and select customer</button>
        </>:<>
         {(["name","email","phone","role"] as const).map(key=><label key={key} className="block text-xs capitalize">{key}<input value={person[key]} onChange={e=>setPerson(p=>({...p,[key]:e.target.value}))} className={input}/></label>)}
