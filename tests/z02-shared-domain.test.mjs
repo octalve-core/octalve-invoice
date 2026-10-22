@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import {readFileSync} from "node:fs";
-import {calculateClassifiedPreview,calculateUntaxedPreview,unclassifiedTax,requiresTaxReview} from "../src/features/tax/tax-domain.ts";
+import {calculateClassifiedPreview,calculateUntaxedPreview,defaultTaxCentrePolicy,unclassifiedTax,requiresTaxReview} from "../src/features/tax/tax-domain.ts";
 import {newDraftPaymentPlan,proposedStagesFromDraft} from "../src/features/invoices/lib/draft-payment-plan.ts";
 import {snapshotCustomer,snapshotItem} from "../src/features/merchant-preview/catalog-contract.ts";
 const read=p=>readFileSync(new URL("../"+p,import.meta.url),"utf8");
@@ -23,6 +23,10 @@ test("mixed categories and exact cents use only explicitly reviewed rule fixture
  ];
  let d=calculateClassifiedPreview(lines,"0");
  assert.equal(d.ready,true);assert.equal(d.netMinor,7500);assert.equal(d.taxMinor,188);assert.equal(d.totalMinor,7688);
+ assert.equal(calculateClassifiedPreview(lines,"0",defaultTaxCentrePolicy).ready,false,"pending Tax Centre must block tax");
+ const policy={...defaultTaxCentrePolicy,version:"counsel-reviewed-fixture-v1",effectiveFrom:"2026-01-01",status:"owner-reviewed"};
+ assert.equal(calculateClassifiedPreview(lines,"0",policy).ready,true);
+ assert.equal(calculateClassifiedPreview(lines,"0",{...policy,version:"other-rule"}).ready,false);
  assert.equal(calculateClassifiedPreview(lines.map((x,i)=>i===1?{...x,taxClassification:unclassifiedTax}:x),"0").ready,false);
  assert.equal(calculateClassifiedPreview(lines,"5").ready,true);
 });
