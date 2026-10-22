@@ -44,7 +44,7 @@ export default function CreateQuotationModal({
   onClose,
   onSubmit,
 }: CreateQuotationModalProps) {
-  const {settings,customers,setCustomers,items,setItems,archivedRecords,invoicePreferences}=useMerchantPreview();
+  const {settings,customers,setCustomers,items,setItems,archivedRecords,invoicePreferences,taxPolicy}=useMerchantPreview();
   const activeCustomers=customers.filter(c=>!isCatalogArchived("customer",c.id,archivedRecords));
   const activeItems=items.filter(i=>!isCatalogArchived("item",i.id,archivedRecords));
   const [addCustomerOpen,setAddCustomerOpen]=useState(false),[addItemOpen,setAddItemOpen]=useState(false);
@@ -348,7 +348,7 @@ export default function CreateQuotationModal({
             </div>
           </div>
 
-          <p role="status" className="mt-4 rounded-xl bg-amber-50 p-3 text-xs leading-5 text-amber-900">Tax remains illustrative until all line classifications and merchant eligibility are reviewed. No official tax assessment or quotation has been issued.</p>
+          <p role="status" className="mt-4 rounded-xl bg-amber-50 p-3 text-xs leading-5 text-amber-900">Tax Centre ({taxPolicy.jurisdiction} · {taxPolicy.version}): tax remains illustrative until all line classifications and merchant eligibility are reviewed. No official tax assessment or quotation has been issued.</p>
           {/* Totals */}
           <div className="mt-6 pt-4 border-t border-gray-200">
             <div className="flex justify-end">
@@ -388,7 +388,7 @@ export default function CreateQuotationModal({
           <QuickItemEditor value={newItem} onChange={setNewItem}/>
           <button type="button" disabled={!newItem.name.trim()} onClick={()=>{
             try{
-             const fresh=createQuickItem(newItem);
+             const fresh=createQuickItem(newItem,taxPolicy.jurisdiction);
              const existing=items.find(x=>x.id===editingItemId);
              if(editingItemId&&!existing)return;
              if(existing){
