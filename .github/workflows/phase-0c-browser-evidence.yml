@@ -45,6 +45,11 @@ jobs:
             sudo apt-get update
             sudo apt-get install -y poppler-utils
           fi
+      - name: Dialog and bottom-sheet invisible scrollbars browser evidence
+        env:
+          NODE_PATH: /tmp/octalve-playwright/node_modules
+          OCTALVE_BASE_URL: http://127.0.0.1:3000
+        run: node scripts/phase-0i-dialog-scroll-acceptance.cjs
       - name: Merchant shared header and isolated search browser evidence
         env:
           NODE_PATH: /tmp/octalve-playwright/node_modules
@@ -90,5 +95,6 @@ jobs:
             artifacts/phase-0x-walkthrough/
             artifacts/phase-0y-navigation/
             artifacts/phase-0y1-navbar/
+            artifacts/phase-0i-dialog-scroll/
           if-no-files-found: warn
           retention-days: 14
