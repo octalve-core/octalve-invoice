@@ -4,7 +4,7 @@ import { useState } from "react";
 import { X, Plus, Trash2, ChevronDown, ImageOff } from "lucide-react";
 import {useMerchantPreview} from "@/src/features/merchant-preview/MerchantPreviewProvider";
 import {formatDocumentNumber} from "@/src/features/invoices/lib/document-number";
-import {newCatalogPreviewId,snapshotItem,isCatalogArchived} from "@/src/features/merchant-preview/catalog-contract";
+import {newCatalogPreviewId,snapshotItem,snapshotCustomer,isCatalogArchived} from "@/src/features/merchant-preview/catalog-contract";
 import {calculateClassifiedPreview,type TaxClassification,unclassifiedTax} from "@/src/features/tax/tax-domain";
 import {currencyCodes} from "@/src/features/invoice/types";
 import {QuickCustomerEditor,emptyQuickCustomer,createQuickCustomer,quickCustomerInput,updateQuickCustomer,type QuickCustomerInput} from "@/src/features/catalog/QuickCustomerEditor";
@@ -30,6 +30,7 @@ interface LineItem {
 
 interface QuotationData {
   quotationNumber: string;
+  customerSnapshot?:ReturnType<typeof snapshotCustomer>;
   customer: string;
   quotationPeriod: string;
   validUntil: string;
@@ -54,6 +55,7 @@ export default function CreateQuotationModal({
   const [formData, setFormData] = useState<QuotationData>({
     quotationNumber: formatDocumentNumber(settings.businessName||"Octalve Limited",1,"quotation"),
     customer: "",
+    customerSnapshot:undefined,
     quotationPeriod: "",
     validUntil: "",
     currency: invoicePreferences.currency,
@@ -168,14 +170,14 @@ export default function CreateQuotationModal({
                       Bill to
                     </label>
                     <p className="text-sm font-medium text-gray-900">
-                      {activeCustomers.find(c=>c.id===formData.customer)?.name||"Select a customer"}
+                      {formData.customerSnapshot?.clientName||"Select a customer"}
                     </p>
                   </div>
                   <div>
                     <label className="block text-xs text-gray-500 mb-1">
                       Email
                     </label>
-                    <p className="text-sm text-gray-600">{customers.find(c=>c.id===formData.customer)?.email||"No email selected"}</p>
+                    <p className="text-sm text-gray-600">{formData.customerSnapshot?.clientEmail||"No email selected"}</p>
                   </div>
                 </div>
               </div>
@@ -188,9 +190,13 @@ export default function CreateQuotationModal({
                 <div className="relative">
                   <select aria-label="Quotation customer"
                     value={formData.customer}
-                    onChange={(e) =>
-                      setFormData({ ...formData, customer: e.target.value })
-                    }
+                    onChange={(e)=>{
+                      const selected=activeCustomers.find(c=>c.id===e.target.value);
+                      setFormData(prev=>({...prev,customer:e.target.value,
+                       customerSnapshot:selected?snapshotCustomer(selected):undefined,
+                       address:selected?(selected.address||selected.addressLine1||""):prev.address
+                      }));
+                    }}
                     className="w-full h-11 px-4 pr-10 text-sm bg-gray-50 border border-gray-200 rounded-lg appearance-none focus:outline-none focus:ring-2 focus:ring-[#0064E0]/20 focus:border-[#0064E0]"
                   >
                     <option value="">Select Customer</option>
@@ -416,7 +422,7 @@ export default function CreateQuotationModal({
            if(editingCustomerId&&!existing)return;
            const next=existing?updateQuickCustomer(existing,newCustomer):createQuickCustomer(newCustomer);
            setCustomers(p=>existing?p.map(c=>c.id===next.id?next:c):[...p,next]);
-           if(!existing)setFormData(p=>({...p,customer:next.id,address:next.address}));
+           if(!existing)setFormData(p=>({...p,customer:next.id,customerSnapshot:snapshotCustomer(next),address:next.address}));
            setAddCustomerOpen(false);setEditingCustomerId(null);setNewCustomer(emptyQuickCustomer());
           }} className="w-full rounded-full bg-[#0064E0] p-3 text-sm font-semibold text-white disabled:opacity-40">{editingCustomerId?"Update catalogue (quote address unchanged)":"Add and select"}</button>
          </section></div>:null}
