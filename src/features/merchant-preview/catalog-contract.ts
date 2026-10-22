@@ -1,4 +1,4 @@
-import type {CatalogCustomer,CatalogItem} from "./MerchantPreviewProvider";
+import type {CatalogCustomer,CatalogItem,ArchivedPreviewRecord} from "./MerchantPreviewProvider";
 import type {InvoiceLine} from "../invoice/types";
 
 /** Frontend-only catalogue identity. Never an invoice/document sequence or server ID. */
@@ -32,4 +32,9 @@ export function snapshotItem(item:CatalogItem):Pick<InvoiceLine,"catalogItemId"|
   discount:item.discountPercent,
   taxClassification:item.taxClassification?{...item.taxClassification}:undefined
  };
+}
+
+/** Archived catalogue records stay in audit/restore view but cannot be reselected in a draft. */
+export function isCatalogArchived(kind:"customer"|"item",id:string,archived:readonly ArchivedPreviewRecord[]):boolean{
+ return archived.some(r=>r.kind===kind&&r.id===id);
 }
