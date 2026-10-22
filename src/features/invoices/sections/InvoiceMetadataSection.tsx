@@ -3,7 +3,7 @@ import {useMemo,useState} from "react";
 import {CalendarDays,ChevronDown,Plus,Search,X,Users,UserRound,Wallet} from "lucide-react";
 import Link from "next/link";
 import {snapshotCustomer,isCatalogArchived} from "@/src/features/merchant-preview/catalog-contract";
-import {QuickCustomerEditor,emptyQuickCustomer,createQuickCustomer,type QuickCustomerInput} from "@/src/features/catalog/QuickCustomerEditor";
+import {QuickCustomerEditor,emptyQuickCustomer,createQuickCustomer,quickCustomerInput,updateQuickCustomer,type QuickCustomerInput} from "@/src/features/catalog/QuickCustomerEditor";
 import type {InvoiceDraft} from "@/src/features/invoice/types";
 import {useMerchantPreview,type CatalogCustomer,type CatalogStaff,type PaymentMode} from "@/src/features/merchant-preview/MerchantPreviewProvider";
 type Props={draft:InvoiceDraft;setDraft:React.Dispatch<React.SetStateAction<InvoiceDraft>>;dueTime:string;setDueTime:(time:string)=>void;};
@@ -27,6 +27,7 @@ export function InvoiceMetadataSection({draft,setDraft,dueTime,setDueTime}:Props
  const {customers,setCustomers,staff,setStaff,paymentMode,setPaymentMode,archivedRecords}=useMerchantPreview();
  const [picker,setPicker]=useState<Picker>(null),[query,setQuery]=useState(""),[adding,setAdding]=useState(false);
  const [customer,setCustomer]=useState<QuickCustomerInput>(emptyQuickCustomer);
+ const [editingCustomerId,setEditingCustomerId]=useState<string|null>(null);
  const [person,setPerson]=useState({name:"",email:"",phone:"",role:"Salesperson"});
  const [selectedStaff,setSelectedStaff]=useState("");
  const update=<K extends keyof InvoiceDraft>(key:K,value:InvoiceDraft[K])=>setDraft(prev=>({...prev,[key]:value}));
@@ -42,11 +43,17 @@ export function InvoiceMetadataSection({draft,setDraft,dueTime,setDueTime}:Props
   close();
  }
  function chooseStaff(row:CatalogStaff){setSelectedStaff(row.name);close();}
- function close(){setPicker(null);setQuery("");setAdding(false);}
- function addCustomer(){
+ function close(){setPicker(null);setQuery("");setAdding(false);setEditingCustomerId(null);}
+ function saveCustomer(){
   if(!customer.name.trim())return;
-  const next=createQuickCustomer(customer);
-  setCustomers(p=>[...p,next]);chooseCustomer(next);setCustomer(emptyQuickCustomer());
+  const existing=customers.find(c=>c.id===editingCustomerId);
+  if(editingCustomerId&&!existing)return;
+  const next=existing?updateQuickCustomer(existing,customer):createQuickCustomer(customer);
+  setCustomers(p=>existing?p.map(c=>c.id===next.id?next:c):[...p,next]);
+  chooseCustomer(next);setCustomer(emptyQuickCustomer());
+ }
+ function editCustomer(record:CatalogCustomer){
+  setCustomer(quickCustomerInput(record));setEditingCustomerId(record.id);setAdding(true);
  }
  function addStaff(){
   if(!person.name.trim())return;
@@ -68,7 +75,7 @@ export function InvoiceMetadataSection({draft,setDraft,dueTime,setDueTime}:Props
    <div className="flex min-w-0 items-center gap-2">
     <button type="button" onClick={()=>setPicker("customer")} className="flex h-10 min-w-0 flex-1 items-center justify-between rounded-xl bg-gray-50 px-3 text-left text-sm text-[#29415b]">
      <span className="truncate">{draft.clientName||"Select Customer"}</span><ChevronDown size={17}/></button>
-    <button onClick={()=>{setPicker("customer");setAdding(true);}} className="flex h-10 shrink-0 items-center gap-1 rounded-full bg-[#0064E0] px-3 text-xs font-semibold text-white"><Plus size={15}/>Add New</button>
+    <button onClick={()=>{setPicker("customer");setAdding(true);setEditingCustomerId(null);setCustomer(emptyQuickCustomer());}} className="flex h-10 shrink-0 items-center gap-1 rounded-full bg-[#0064E0] px-3 text-xs font-semibold text-white"><Plus size={15}/>Add New</button>
    </div>
   </div>
   <Field label="Customer email" value={draft.clientEmail} onChange={v=>update("clientEmail",v)}/>
@@ -124,14 +131,17 @@ export function InvoiceMetadataSection({draft,setDraft,dueTime,setDueTime}:Props
      </div>:
      <div className="space-y-3">
       {!adding?<><label className="relative block"><Search size={17} className="absolute left-3 top-3 text-gray-400"/><input autoFocus value={query} onChange={e=>setQuery(e.target.value)} placeholder={"Search "+(picker==="customer"?"customers":"salespeople")} className={input+" pl-10"}/></label>
-       <button onClick={()=>setAdding(true)} className="flex w-full items-center justify-center gap-2 rounded-full bg-[#0064E0] px-3 py-3 text-sm font-semibold text-white"><Plus size={16}/>Add new {picker}</button>
-       <div className="max-h-72 space-y-2 overflow-auto">{filtered.map(entry=><button key={entry.id} onClick={()=>picker==="customer"?chooseCustomer(entry as CatalogCustomer):chooseStaff(entry as CatalogStaff)}
-         className="flex w-full items-center gap-3 rounded-xl bg-[#f8f8f8] p-3 text-left hover:bg-blue-50">
+       <button onClick={()=>{setAdding(true);setEditingCustomerId(null);setCustomer(emptyQuickCustomer());}} className="flex w-full items-center justify-center gap-2 rounded-full bg-[#0064E0] px-3 py-3 text-sm font-semibold text-white"><Plus size={16}/>Add new {picker}</button>
+       <div className="max-h-72 space-y-2 overflow-auto">{filtered.map(entry=><div key={entry.id} className="flex min-w-0 items-center gap-2 rounded-xl bg-[#f8f8f8] p-2">
+        <button type="button" onClick={()=>picker==="customer"?chooseCustomer(entry as CatalogCustomer):chooseStaff(entry as CatalogStaff)}
+          className="flex min-w-0 flex-1 items-center gap-3 rounded-xl p-1 text-left hover:bg-blue-50">
          <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-green-100 text-green-600">{picker==="customer"?<Users size={19}/>:<UserRound size={19}/>}</span>
          <span className="min-w-0 flex-1"><span className="block truncate text-sm font-semibold text-[#19364f]">{entry.name}</span><span className="block truncate text-xs text-gray-500">{picker==="customer"?(entry as CatalogCustomer).company:(entry as CatalogStaff).role} · {entry.email}</span></span>
-        </button>)}</div></>:picker==="customer"?<>
+        </button>
+        {picker==="customer"?<button type="button" aria-label={"Edit customer "+entry.name} onClick={()=>editCustomer(entry as CatalogCustomer)} className="shrink-0 rounded-full border border-blue-200 px-3 py-2 text-xs text-[#0064E0]">Edit</button>:null}
+       </div>)}</div></>:picker==="customer"?<>
         <QuickCustomerEditor value={customer} onChange={setCustomer}/>
-        <button disabled={!customer.name.trim()} onClick={addCustomer} className="w-full rounded-full bg-[#0064E0] py-3 text-sm text-white disabled:opacity-40">Add and select customer</button>
+        <button disabled={!customer.name.trim()} onClick={saveCustomer} className="w-full rounded-full bg-[#0064E0] py-3 text-sm text-white disabled:opacity-40">{editingCustomerId?"Update and select customer":"Add and select customer"}</button>
        </>:<>
         {(["name","email","phone","role"] as const).map(key=><label key={key} className="block text-xs capitalize">{key}<input value={person[key]} onChange={e=>setPerson(p=>({...p,[key]:e.target.value}))} className={input}/></label>)}
         <button disabled={!person.name.trim()} onClick={addStaff} className="w-full rounded-full bg-[#0064E0] py-3 text-sm text-white disabled:opacity-40">Add and select salesperson</button>
