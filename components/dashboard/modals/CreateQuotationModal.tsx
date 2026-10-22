@@ -4,7 +4,8 @@ import { useState } from "react";
 import { X, Plus, Trash2, ChevronDown, ImageOff } from "lucide-react";
 import {useMerchantPreview} from "@/src/features/merchant-preview/MerchantPreviewProvider";
 import {formatDocumentNumber} from "@/src/features/invoices/lib/document-number";
-import {newCatalogPreviewId,snapshotCustomer} from "@/src/features/merchant-preview/catalog-contract";
+import {newCatalogPreviewId,snapshotItem} from "@/src/features/merchant-preview/catalog-contract";
+import {calculateClassifiedPreview,type TaxClassification,unclassifiedTax} from "@/src/features/tax/tax-domain";
 import {currencyCodes} from "@/src/features/invoice/types";
 
 interface CreateQuotationModalProps {
@@ -15,6 +16,8 @@ interface CreateQuotationModalProps {
 
 interface LineItem {
   id: string;
+  catalogItemId?:string;
+  taxClassification?:TaxClassification;
   description: string;
   quantity: number;
   rate: number;
@@ -116,6 +119,10 @@ export default function CreateQuotationModal({
     0
   );
   // No legal tax classification has been verified: never insert a blanket VAT rate.
+  const taxPreview=calculateClassifiedPreview(formData.lineItems.map(x=>({
+   id:x.id,quantity:String(x.quantity),unitPrice:String(x.rate),discount:String(x.discount),
+   taxClassification:x.taxClassification||unclassifiedTax
+  })),"0");
   const totalBeforeTax = subtotal;
   const formatAmount=(value:number)=>new Intl.NumberFormat("en-NG",{style:"currency",currency:formData.currency,minimumFractionDigits:2,maximumFractionDigits:2}).format(value);
 
@@ -281,9 +288,9 @@ export default function CreateQuotationModal({
               <div className="space-y-3">
                 {formData.lineItems.map((item) => (
                   <div key={item.id} className="space-y-3 rounded-lg bg-[#eff6ff] p-3">
-                   <select aria-label="Choose quotation item" value={items.find(x=>x.name===item.description)?.id||""}
+                   <select aria-label="Choose quotation item" value={item.catalogItemId||""}
                      onChange={e=>{const chosen=items.find(x=>x.id===e.target.value);if(!chosen)return;updateLineItem(item.id,"description",chosen.name);
-                      setFormData(old=>({...old,lineItems:old.lineItems.map(x=>x.id===item.id?{...x,description:chosen.name,rate:Number(chosen.rate),discount:Number(chosen.discountPercent),amount:Number(chosen.rate)*x.quantity*(1-Number(chosen.discountPercent)/100)}:x)}));}}
+                      setFormData(old=>({...old,lineItems:old.lineItems.map(x=>x.id===item.id?{...x,catalogItemId:snapshotItem(chosen).catalogItemId,description:chosen.name,taxClassification:chosen.taxClassification?{...chosen.taxClassification}:unclassifiedTax,rate:Number(chosen.rate),discount:Number(chosen.discountPercent),amount:Number(chosen.rate)*x.quantity*(1-Number(chosen.discountPercent)/100)}:x)}));}}
                      className="h-9 w-full rounded-lg border border-gray-200 bg-white px-2 text-xs">
                      <option value="">Select catalogue item</option>{items.map(x=><option key={x.id} value={x.id}>{x.name}</option>)}
                    </select>
@@ -328,6 +335,7 @@ export default function CreateQuotationModal({
             </div>
           </div>
 
+          <p role="status" className="mt-4 rounded-xl bg-amber-50 p-3 text-xs leading-5 text-amber-900">Tax remains illustrative until all line classifications and merchant eligibility are reviewed. No official tax assessment or quotation has been issued.</p>
           {/* Totals */}
           <div className="mt-6 pt-4 border-t border-gray-200">
             <div className="flex justify-end">
@@ -347,13 +355,13 @@ export default function CreateQuotationModal({
                 <div className="flex justify-between text-sm">
                   <span className="text-gray-500">Tax classification</span>
                   <span className="font-medium text-gray-900">
-                    Requires Tax Centre review
+                    {taxPreview.ready?formatAmount((taxPreview.taxMinor??0)/100):"Requires Tax Centre review"}
                   </span>
                 </div>
                 <div className="flex justify-between text-sm pt-2 border-t border-gray-200">
                   <span className="font-medium text-gray-900">Total before unassessed tax</span>
                   <span className="font-bold text-[#0064E0]">
-                    {formatAmount(totalBeforeTax)}
+                    {taxPreview.ready?formatAmount((taxPreview.totalMinor??0)/100):formatAmount(totalBeforeTax)}
                   </span>
                 </div>
               </div>
