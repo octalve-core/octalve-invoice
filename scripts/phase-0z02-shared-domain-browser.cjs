@@ -28,7 +28,7 @@ async function navigateStep(page,label){
     await page.getByRole("heading",{name:"Create invoice"}).waitFor();
     await navigateStep(page,"Items");
     const region=page.getByRole("region",{name:"Invoice products and services"});
-    await region.getByRole("button",{name:/Professional services/}).click();
+    await region.getByRole("button",{name:"Professional services",exact:true}).click();
     const dialog=page.getByRole("dialog",{name:"Select product or service"});
     await dialog.waitFor({state:"visible"});
     const dims=await dialog.evaluate(el=>({left:el.getBoundingClientRect().left,right:el.getBoundingClientRect().right,screen:innerWidth,
@@ -48,7 +48,7 @@ async function navigateStep(page,label){
     await dialog.getByRole("button",{name:"Update and select"}).click();
     check("Explicit catalogue update copied to draft",await region.getByRole("textbox",{name:"Rate for item 1"}).inputValue()==="130.75");
     await navigateStep(page,"Totals");
-    check("Unverified blanket invoice tax removed",await page.getByRole("spinbutton",{name:"Tax percentage"}).count()===0);
+    check("Unverified blanket invoice tax removed",await page.getByRole("textbox",{name:"Tax percentage"}).count()===0&&await page.getByRole("spinbutton",{name:"Tax percentage"}).count()===0);
     await navigateStep(page,"Payments");
     await page.getByRole("button",{name:"Custom milestones"}).click();
     await page.getByRole("spinbutton",{name:"Milestone 1 percentage"}).fill("60");
