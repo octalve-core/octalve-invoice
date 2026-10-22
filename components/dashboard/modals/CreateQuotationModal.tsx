@@ -4,6 +4,8 @@ import { useState } from "react";
 import { X, Plus, Trash2, ChevronDown, ImageOff } from "lucide-react";
 import {useMerchantPreview} from "@/src/features/merchant-preview/MerchantPreviewProvider";
 import {formatDocumentNumber} from "@/src/features/invoices/lib/document-number";
+import {newCatalogPreviewId,snapshotCustomer} from "@/src/features/merchant-preview/catalog-contract";
+import {currencyCodes} from "@/src/features/invoice/types";
 
 interface CreateQuotationModalProps {
   isOpen: boolean;
@@ -36,7 +38,7 @@ export default function CreateQuotationModal({
   onClose,
   onSubmit,
 }: CreateQuotationModalProps) {
-  const {settings,customers,setCustomers,items}=useMerchantPreview();
+  const {settings,customers,setCustomers,items,invoicePreferences}=useMerchantPreview();
   const [addCustomerOpen,setAddCustomerOpen]=useState(false);
   const [newCustomer,setNewCustomer]=useState({name:"",email:""});
   const [formData, setFormData] = useState<QuotationData>({
@@ -44,7 +46,7 @@ export default function CreateQuotationModal({
     customer: "",
     quotationPeriod: "",
     validUntil: "",
-    currency: "NGN",
+    currency: invoicePreferences.currency,
     address: "",
     lineItems: [
       {
@@ -69,7 +71,7 @@ export default function CreateQuotationModal({
 
   const addLineItem = () => {
     const newItem: LineItem = {
-      id: String(formData.lineItems.length+1),
+      id: newCatalogPreviewId(),
       description: "",
       quantity: 1,
       rate: 0,
@@ -113,8 +115,9 @@ export default function CreateQuotationModal({
     (sum, item) => sum + (item.quantity * item.rate * item.discount) / 100,
     0
   );
-  const vat = subtotal * 0.075;
-  const total = subtotal + vat;
+  // No legal tax classification has been verified: never insert a blanket VAT rate.
+  const totalBeforeTax = subtotal;
+  const formatAmount=(value:number)=>new Intl.NumberFormat("en-NG",{style:"currency",currency:formData.currency,minimumFractionDigits:2,maximumFractionDigits:2}).format(value);
 
   const handleSubmit = () => {
     onSubmit(formData);
@@ -243,9 +246,7 @@ export default function CreateQuotationModal({
                     }
                     className="w-full h-11 px-4 pr-10 text-sm bg-gray-50 border border-gray-200 rounded-lg appearance-none focus:outline-none focus:ring-2 focus:ring-[#0064E0]/20 focus:border-[#0064E0]"
                   >
-                    <option value="NGN">NGN - Nigerian Naira</option>
-                    <option value="USD">USD - US Dollar</option>
-                    <option value="GBP">GBP - British Pound</option>
+                    {currencyCodes.map(code=><option key={code} value={code}>{code}</option>)}
                   </select>
                   <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 pointer-events-none" />
                 </div>
@@ -294,7 +295,7 @@ export default function CreateQuotationModal({
                             {item.description}
                           </p>
                           <p className="text-xs text-gray-500">
-                            Unit Price ₦{item.rate.toLocaleString()}
+                            Unit Price {formatAmount(item.rate)}
                           </p>
                         </div>
                       </div>
@@ -310,7 +311,7 @@ export default function CreateQuotationModal({
                        <input type="number" min="1" aria-label="Quotation item quantity" value={item.quantity} onChange={e=>updateLineItem(item.id,"quantity",Math.max(1,Number(e.target.value)))} className="w-16 rounded border bg-white px-2 py-1 text-xs"/>
                       </label>
                       <span className="text-sm font-semibold text-[#0064E0]">
-                        ₦{item.amount.toLocaleString()}
+                        {formatAmount(item.amount)}
                       </span>
                     </div>
                   </div>
@@ -334,25 +335,25 @@ export default function CreateQuotationModal({
                 <div className="flex justify-between text-sm">
                   <span className="text-gray-500">Subtotal</span>
                   <span className="font-medium text-gray-900">
-                    ₦{subtotal.toLocaleString()}
+                    {formatAmount(subtotal)}
                   </span>
                 </div>
                 <div className="flex justify-between text-sm">
                   <span className="text-gray-500">Discount</span>
                   <span className="font-medium text-gray-900">
-                    -₦{discount.toLocaleString()}
+                    -{formatAmount(discount)}
                   </span>
                 </div>
                 <div className="flex justify-between text-sm">
-                  <span className="text-gray-500">VAT (7.5%)</span>
+                  <span className="text-gray-500">Tax classification</span>
                   <span className="font-medium text-gray-900">
-                    ₦{vat.toLocaleString()}
+                    Requires Tax Centre review
                   </span>
                 </div>
                 <div className="flex justify-between text-sm pt-2 border-t border-gray-200">
-                  <span className="font-medium text-gray-900">Total</span>
+                  <span className="font-medium text-gray-900">Total before unassessed tax</span>
                   <span className="font-bold text-[#0064E0]">
-                    ₦{total.toLocaleString()}
+                    {formatAmount(totalBeforeTax)}
                   </span>
                 </div>
               </div>
@@ -365,7 +366,7 @@ export default function CreateQuotationModal({
           <div className="flex items-center justify-between"><h3 className="font-semibold">New customer</h3><button onClick={()=>setAddCustomerOpen(false)} aria-label="Close customer form"><X size={19}/></button></div>
           <label className="block text-xs">Customer name<input value={newCustomer.name} onChange={e=>setNewCustomer(p=>({...p,name:e.target.value}))} className="mt-1 h-10 w-full rounded-lg border px-3 text-sm"/></label>
           <label className="block text-xs">Email (optional)<input value={newCustomer.email} onChange={e=>setNewCustomer(p=>({...p,email:e.target.value}))} className="mt-1 h-10 w-full rounded-lg border px-3 text-sm"/></label>
-          <button disabled={!newCustomer.name.trim()} onClick={()=>{const id=String(customers.length+1);setCustomers(p=>[...p,{id,name:newCustomer.name,email:newCustomer.email,phone:"",address:"",company:""}]);setFormData(p=>({...p,customer:id}));setAddCustomerOpen(false);setNewCustomer({name:"",email:""});}} className="w-full rounded-full bg-[#0064E0] p-3 text-sm font-semibold text-white disabled:opacity-40">Add and select</button>
+          <button disabled={!newCustomer.name.trim()} onClick={()=>{const id=newCatalogPreviewId();setCustomers(p=>[...p,{id,name:newCustomer.name,email:newCustomer.email,phone:"",address:"",company:""}]);setFormData(p=>({...p,customer:id}));setAddCustomerOpen(false);setNewCustomer({name:"",email:""});}} className="w-full rounded-full bg-[#0064E0] p-3 text-sm font-semibold text-white disabled:opacity-40">Add and select</button>
          </section></div>:null}
                 {/* Footer */}
         <div className="flex items-center justify-center gap-4 px-6 py-4 border-t border-gray-200">
