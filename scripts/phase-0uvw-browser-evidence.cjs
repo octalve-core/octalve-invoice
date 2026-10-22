@@ -34,7 +34,8 @@ const routes=[
        }
       }
       if(route.startsWith("/admin")){
-       await page.getByText("Octalve operations",{exact:false}).first().waitFor();
+       // The desktop sidebar label is hidden at mobile widths; verify the shared visible preview header.
+       await page.getByText("Sample workspace",{exact:true}).waitFor({state:"visible"});
        await page.getByText("Interface sample",{exact:false}).first().waitFor();
        if(await page.getByRole("button",{name:"Manage plans"}).count()&&await page.getByRole("button",{name:"Manage plans"}).isEnabled())throw Error("Admin billing mutation enabled");
       }
