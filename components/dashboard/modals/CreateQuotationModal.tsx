@@ -4,7 +4,7 @@ import { useState } from "react";
 import { X, Plus, Trash2, ChevronDown, ImageOff } from "lucide-react";
 import {useMerchantPreview} from "@/src/features/merchant-preview/MerchantPreviewProvider";
 import {formatDocumentNumber} from "@/src/features/invoices/lib/document-number";
-import {newCatalogPreviewId,snapshotItem} from "@/src/features/merchant-preview/catalog-contract";
+import {newCatalogPreviewId,snapshotItem,isCatalogArchived} from "@/src/features/merchant-preview/catalog-contract";
 import {calculateClassifiedPreview,type TaxClassification,unclassifiedTax} from "@/src/features/tax/tax-domain";
 import {currencyCodes} from "@/src/features/invoice/types";
 import {QuickCustomerEditor,emptyQuickCustomer,createQuickCustomer,type QuickCustomerInput} from "@/src/features/catalog/QuickCustomerEditor";
@@ -44,7 +44,9 @@ export default function CreateQuotationModal({
   onClose,
   onSubmit,
 }: CreateQuotationModalProps) {
-  const {settings,customers,setCustomers,items,setItems,invoicePreferences}=useMerchantPreview();
+  const {settings,customers,setCustomers,items,setItems,archivedRecords,invoicePreferences}=useMerchantPreview();
+  const activeCustomers=customers.filter(c=>!isCatalogArchived("customer",c.id,archivedRecords));
+  const activeItems=items.filter(i=>!isCatalogArchived("item",i.id,archivedRecords));
   const [addCustomerOpen,setAddCustomerOpen]=useState(false),[addItemOpen,setAddItemOpen]=useState(false);
   const [newItem,setNewItem]=useState<CatalogItem>(emptyQuickItem);
   const [newCustomer,setNewCustomer]=useState<QuickCustomerInput>(emptyQuickCustomer);
@@ -170,7 +172,7 @@ export default function CreateQuotationModal({
                       Bill to
                     </label>
                     <p className="text-sm font-medium text-gray-900">
-                      {customers.find(c=>c.id===formData.customer)?.name||"Select a customer"}
+                      {activeCustomers.find(c=>c.id===formData.customer)?.name||"Select a customer"}
                     </p>
                   </div>
                   <div>
@@ -196,7 +198,7 @@ export default function CreateQuotationModal({
                     className="w-full h-11 px-4 pr-10 text-sm bg-gray-50 border border-gray-200 rounded-lg appearance-none focus:outline-none focus:ring-2 focus:ring-[#0064E0]/20 focus:border-[#0064E0]"
                   >
                     <option value="">Select Customer</option>
-                    {customers.map(c=><option key={c.id} value={c.id}>{c.name}</option>)}
+                    {activeCustomers.map(c=><option key={c.id} value={c.id}>{c.name}</option>)}
                   </select>
                   <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 pointer-events-none" />
                 </div>
@@ -293,10 +295,10 @@ export default function CreateQuotationModal({
                 {formData.lineItems.map((item) => (
                   <div key={item.id} className="space-y-3 rounded-lg bg-[#eff6ff] p-3">
                    <select aria-label="Choose quotation item" value={item.catalogItemId||""}
-                     onChange={e=>{const chosen=items.find(x=>x.id===e.target.value);if(!chosen)return;updateLineItem(item.id,"description",chosen.name);
+                     onChange={e=>{const chosen=activeItems.find(x=>x.id===e.target.value);if(!chosen)return;updateLineItem(item.id,"description",chosen.name);
                       setFormData(old=>({...old,lineItems:old.lineItems.map(x=>x.id===item.id?{...x,catalogItemId:snapshotItem(chosen).catalogItemId,description:chosen.name,taxClassification:chosen.taxClassification?{...chosen.taxClassification}:unclassifiedTax,rate:Number(chosen.rate),discount:Number(chosen.discountPercent),amount:Number(chosen.rate)*x.quantity*(1-Number(chosen.discountPercent)/100)}:x)}));}}
                      className="h-9 w-full rounded-lg border border-gray-200 bg-white px-2 text-xs">
-                     <option value="">Select catalogue item</option>{items.map(x=><option key={x.id} value={x.id}>{x.name}</option>)}
+                     <option value="">Select catalogue item</option>{activeItems.map(x=><option key={x.id} value={x.id}>{x.name}</option>)}
                    </select>
                     <div className="flex items-start justify-between mb-2">
                       <div className="flex items-center gap-2">
