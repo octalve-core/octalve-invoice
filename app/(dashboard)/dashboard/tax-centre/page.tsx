@@ -9,11 +9,12 @@ import {useAccessibleDialog} from "@/src/features/records/components/useAccessib
 import {RecordDataTable} from "@/src/features/records/components/RecordDataTable";
 import {NrsReadinessPanel} from "@/src/features/finance/NrsReadinessPanel";
 import {SetupInfoNote} from "@/src/features/merchant-setup/SetupInfoNote";
+import {taxTreatments} from "@/src/features/tax/tax-domain";
 type View="overview"|"invoices"|"calendar"|"nrs";
 const views:{value:View;label:string}[]=[{value:"overview",label:"Overview"},{value:"invoices",label:"Invoice tax review"},{value:"calendar",label:"Tax calendar"},{value:"nrs",label:"NRS e-invoices"}];
 const periods=["2024","2025","2026"] as const;
 export default function TaxCentre(){
- const {settings}=useMerchantPreview();
+ const {settings,taxPolicy}=useMerchantPreview();
  const reference=(id:string)=>formatDocumentNumber(settings.businessName||"Octalve Limited",Number(id),"invoice");
  const [view,setView]=useState<View>("overview"),[period,setPeriod]=useState<string>("2026"),[query,setQuery]=useState(""),[detail,setDetail]=useState<string|null>(null),[filterOpen,setFilterOpen]=useState(false);
  useAccessibleDialog(Boolean(filterOpen||detail),()=>{setFilterOpen(false);setDetail(null);});
@@ -23,6 +24,14 @@ export default function TaxCentre(){
  return <main className="min-w-0 space-y-5 pb-12">
   <div className="flex flex-wrap items-start justify-between gap-3"><div><Link href="/dashboard/other-services" className="inline-flex items-center gap-2 text-sm font-semibold text-[#0064E0]"><ArrowLeft size={16}/> More services</Link><h1 className="mt-2 text-2xl font-bold text-[#173652] sm:text-3xl">Tax Centre</h1><p className="mt-1 text-sm text-slate-500">Review tax records and NRS readiness.</p></div><span className="rounded-full bg-amber-50 px-3 py-2 text-xs font-semibold text-amber-800">Not connected to NRS</span></div>
   <div className="flex items-center gap-2 rounded-xl border border-[#F4E6C4] bg-[#FFFBF2] px-3 py-2.5 text-xs text-amber-900"><span className="font-medium">Tax totals await classification.</span><SetupInfoNote title="Why no tax estimate?" detail="An invoice or payment total cannot determine tax owed. Verify the business tax profile, item-level tax categories, eligible input credits and reporting periods first. No filings or NRS confirmations exist in this workspace."/></div>
+  <section aria-label="Shared tax classification contract" className="min-w-0 rounded-2xl border border-blue-100 bg-white p-4 sm:p-5">
+   <div className="flex flex-wrap items-start justify-between gap-3"><div><h2 className="text-sm font-semibold text-[#173652]">Tax classification reference</h2>
+    <p className="mt-1 text-xs text-slate-500">Used by item, invoice and quotation previews. No statutory eligibility is verified.</p></div>
+    <span className="rounded-full bg-amber-50 px-3 py-1.5 text-xs text-amber-800">{taxPolicy.status==="research-pending"?"Legal review pending":"Owner-reviewed proposal"}</span></div>
+   <p className="mt-3 text-xs text-slate-600">Jurisdiction: {taxPolicy.jurisdiction} · Policy: {taxPolicy.version} · Effective date: {taxPolicy.effectiveFrom||"Not confirmed"}</p>
+   <div className="mt-3 flex flex-wrap gap-2">{taxTreatments.map(t=><span key={t} className="rounded-full border border-[#E2EBF5] bg-[#F7FAFE] px-3 py-1.5 text-[11px] capitalize text-[#315A7E]">{t.replaceAll("-"," ")}</span>)}</div>
+   <p className="mt-3 text-xs leading-5 text-amber-900">Product categories are not automatically taxable, zero-rated or exempt. The merchant must verify controlling law, conditions and effective dates before tax treatment is authoritative.</p>
+  </section>
   <div className="grid grid-cols-2 gap-3 xl:grid-cols-4">{[
     ["Estimated output VAT","Needs classification"],["Eligible input VAT","Needs supporting records"],["Estimated payable","Unavailable"],["Filed / confirmed","0 live filings"]
    ].map(([label,value])=><article key={label} className="min-w-0 rounded-2xl border border-slate-100 bg-white p-4 shadow-sm"><p className="text-xs text-slate-500">{label}</p><p className="mt-2 break-words text-sm font-bold text-[#193955] sm:text-base">{value}</p></article>)}</div>
