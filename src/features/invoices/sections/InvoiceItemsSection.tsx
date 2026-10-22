@@ -5,6 +5,7 @@ import {useMerchantPreview,type CatalogItem} from "@/src/features/merchant-previ
 import type {InvoiceDraft,InvoiceLine} from "@/src/features/invoice/types";
 import {snapshotItem,isCatalogArchived} from "@/src/features/merchant-preview/catalog-contract";
 import {QuickItemEditor,createQuickItem,emptyQuickItem} from "@/src/features/catalog/QuickItemEditor";
+import {unclassifiedTax} from "@/src/features/tax/tax-domain";
 type Props={draft:InvoiceDraft;setDraft:React.Dispatch<React.SetStateAction<InvoiceDraft>>};
 function Small({label,value,onChange}:{label:string;value:string;onChange:(v:string)=>void}){return <label className="min-w-0 space-y-1 text-xs"><span className="block truncate text-gray-600">{label}</span>
  <input value={value} onChange={e=>onChange(e.target.value)} aria-label={label} className="h-10 w-full min-w-0 rounded-xl bg-gray-50 px-2 text-xs outline-none focus:ring-2 focus:ring-blue-100"/></label>;}
@@ -13,6 +14,7 @@ export function InvoiceItemsSection({draft,setDraft}:Props){
  const {items,setItems,archivedRecords}=useMerchantPreview();
  const [selection,setSelection]=useState<string|null>(null),[search,setSearch]=useState(""),[adding,setAdding]=useState(false),[form,setForm]=useState<CatalogItem>(emptyQuickItem);
  const [expanded,setExpanded]=useState<string[]>(()=>[draft.rows[0]?.id||""]);
+ const [editingItemId,setEditingItemId]=useState<string|null>(null),[formError,setFormError]=useState("");
  const allExpanded=draft.rows.length>0&&draft.rows.every(r=>expanded.includes(r.id));
  const toggle=(id:string)=>setExpanded(current=>current.includes(id)?current.filter(x=>x!==id):[id]);
  const patch=(id:string,partial:Partial<InvoiceLine>)=>setDraft(p=>({...p,rows:p.rows.map(x=>x.id===id?{...x,...partial}:x)}));
@@ -22,10 +24,20 @@ export function InvoiceItemsSection({draft,setDraft}:Props){
   setExpanded([selection]);
   close();
  }
- function close(){setSelection(null);setAdding(false);setSearch("");setForm(emptyQuickItem());}
+ function close(){setSelection(null);setAdding(false);setSearch("");setEditingItemId(null);setFormError("");setForm(emptyQuickItem());}
  function save(){
-  if(!form.name.trim()||!(Number(form.rate)>=0))return;
-  const item=createQuickItem(form);setItems(p=>[...p,item]);pick(item);
+  try {
+   const previous=items.find(x=>x.id===editingItemId);
+   if(editingItemId&&!previous){setFormError("Selected catalogue item is no longer available.");return;}
+   const item=previous?{...previous,...form,id:previous.id,taxClassification:{...form.taxClassification??unclassifiedTax,review:"needs-review" as const,ruleVersion:"unverified"}}:createQuickItem(form);
+   // The only catalogue owner is MerchantPreviewProvider; explicitly selecting copies this version.
+   setItems(p=>previous?p.map(x=>x.id===previous.id?item:x):[...p,item]);
+   pick(item);
+  } catch(error){setFormError(error instanceof Error?error.message:"Check the item fields.");}
+ }
+ function editItem(row:CatalogItem){
+  setForm({...row,taxClassification:row.taxClassification?{...row.taxClassification}:unclassifiedTax});
+  setEditingItemId(row.id);setFormError("");setAdding(true);
  }
  return <section aria-label="Invoice products and services" className="space-y-3">
   <div className="flex flex-wrap items-center justify-between gap-2"><h3 className="text-sm font-semibold text-[#1D2838]">Invoice items</h3><button type="button" onClick={()=>setExpanded(allExpanded?[]:draft.rows.map(r=>r.id))} className="text-xs font-semibold text-[#0064E0]">{allExpanded?"Collapse items":"Expand items"}</button></div>
@@ -55,15 +67,20 @@ export function InvoiceItemsSection({draft,setDraft}:Props){
     <div className="mx-auto mb-3 h-1 w-10 rounded-full bg-gray-200 md:hidden"/>
     <div className="mb-3 flex justify-between"><h3 className="font-semibold">Select product or service</h3><button onClick={close} aria-label="Close item picker"><X size={20}/></button></div>
     {adding?<div className="space-y-3"><QuickItemEditor value={form} onChange={setForm}/>
-      <div className="flex gap-2"><button onClick={()=>setAdding(false)} className="flex-1 rounded-full border border-gray-200 p-3 text-sm">Back</button><button disabled={!form.name.trim()} onClick={save} className="flex-1 rounded-full bg-[#0064E0] p-3 text-sm text-white disabled:opacity-40">Add and select</button></div>
+      {formError?<p role="alert" className="text-xs text-red-700">{formError}</p>:null}
+      <div className="flex gap-2"><button onClick={()=>setAdding(false)} className="flex-1 rounded-full border border-gray-200 p-3 text-sm">Back</button><button disabled={!form.name.trim()} onClick={save} className="flex-1 rounded-full bg-[#0064E0] p-3 text-sm text-white disabled:opacity-40">{editingItemId?"Update and select":"Add and select"}</button></div>
      </div>:<>
      <label className="relative block"><Search className="absolute left-3 top-3 text-gray-400" size={17}/><input value={search} onChange={e=>setSearch(e.target.value)}
        placeholder="Search products / services" className="h-11 w-full rounded-xl border pl-10 text-sm"/></label>
-     <button onClick={()=>setAdding(true)} className="my-3 flex w-full items-center justify-center gap-2 rounded-full bg-[#0064E0] px-3 py-3 text-sm font-semibold text-white"><Plus size={16}/>Add new product or service</button>
+     <button onClick={()=>{setAdding(true);setEditingItemId(null);setForm(emptyQuickItem());setFormError("");}} className="my-3 flex w-full items-center justify-center gap-2 rounded-full bg-[#0064E0] px-3 py-3 text-sm font-semibold text-white"><Plus size={16}/>Add new product or service</button>
      <div className="max-h-72 space-y-2 overflow-auto">{items.filter(x=>!isCatalogArchived("item",x.id,archivedRecords)&&[x.name,x.category].some(y=>y.toLowerCase().includes(search.toLowerCase()))).map(x=>
-      <button key={x.id} onClick={()=>pick(x)} className="flex w-full items-center gap-3 rounded-xl bg-[#f8f8f8] p-3 text-left hover:bg-blue-50">
-       <span className="grid h-10 w-10 rounded-full bg-blue-100 text-[#0064E0] place-items-center"><Package size={20}/></span>
-       <span className="min-w-0 flex-1"><span className="block truncate text-sm font-semibold">{x.name}</span><span className="block truncate text-xs text-gray-500">{x.category} · ₦{Number(x.rate).toLocaleString("en-NG")} · {x.discountPercent}% discount</span></span></button>)}</div>
+      <div key={x.id} className="flex min-w-0 items-center gap-2 rounded-xl bg-[#f8f8f8] p-2">
+       <button type="button" onClick={()=>pick(x)} className="flex min-w-0 flex-1 items-center gap-3 rounded-xl p-1 text-left hover:bg-blue-50">
+        <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-blue-100 text-[#0064E0]"><Package size={20}/></span>
+        <span className="min-w-0 flex-1"><span className="block truncate text-sm font-semibold">{x.name}</span><span className="block truncate text-xs text-gray-500">{x.category} · {new Intl.NumberFormat("en-NG",{style:"currency",currency:draft.currency}).format(Number(x.rate))} · {x.discountPercent}% discount</span></span>
+       </button>
+       <button type="button" aria-label={"Edit catalogue item "+x.name} onClick={()=>editItem(x)} className="shrink-0 rounded-full border border-blue-200 px-3 py-2 text-xs text-[#0064E0]">Edit</button>
+      </div>)}</div>
     </>}
    </section></div>:null}
  </section>;
