@@ -3,10 +3,12 @@ import {useState} from "react";
 import {ChevronDown,Package,Plus,Search,X} from "lucide-react";
 import {useMerchantPreview,type CatalogItem} from "@/src/features/merchant-preview/MerchantPreviewProvider";
 import type {InvoiceDraft,InvoiceLine} from "@/src/features/invoice/types";
+import {newCatalogPreviewId,snapshotItem} from "@/src/features/merchant-preview/catalog-contract";
+import {unclassifiedTax,taxTreatments} from "@/src/features/tax/tax-domain";
 type Props={draft:InvoiceDraft;setDraft:React.Dispatch<React.SetStateAction<InvoiceDraft>>};
 function Small({label,value,onChange}:{label:string;value:string;onChange:(v:string)=>void}){return <label className="min-w-0 space-y-1 text-xs"><span className="block truncate text-gray-600">{label}</span>
  <input value={value} onChange={e=>onChange(e.target.value)} aria-label={label} className="h-10 w-full min-w-0 rounded-xl bg-gray-50 px-2 text-xs outline-none focus:ring-2 focus:ring-blue-100"/></label>;}
-const empty:CatalogItem={id:"",name:"",description:"",rate:"0",taxPercent:"0",discountPercent:"0",category:"",type:"goods"};
+const empty:CatalogItem={id:"",name:"",description:"",rate:"0",taxPercent:"0",discountPercent:"0",category:"",type:"goods",taxClassification:unclassifiedTax};
 export function InvoiceItemsSection({draft,setDraft}:Props){
  const {items,setItems}=useMerchantPreview();
  const [selection,setSelection]=useState<string|null>(null),[search,setSearch]=useState(""),[adding,setAdding]=useState(false),[form,setForm]=useState<CatalogItem>(empty);
@@ -16,14 +18,14 @@ export function InvoiceItemsSection({draft,setDraft}:Props){
  const patch=(id:string,partial:Partial<InvoiceLine>)=>setDraft(p=>({...p,rows:p.rows.map(x=>x.id===id?{...x,...partial}:x)}));
  function pick(row:CatalogItem){
   if(!selection)return;
-  patch(selection,{serviceName:row.name,description:row.description,unitPrice:row.rate,discount:row.discountPercent});
+  patch(selection,snapshotItem(row));
   setExpanded([selection]);
   close();
  }
  function close(){setSelection(null);setAdding(false);setSearch("");setForm(empty);}
  function save(){
   if(!form.name.trim()||!(Number(form.rate)>=0))return;
-  const item={...form,id:String(items.length+1)};setItems(p=>[...p,item]);pick(item);
+  const item={...form,id:newCatalogPreviewId()};setItems(p=>[...p,item]);pick(item);
  }
  return <section aria-label="Invoice products and services" className="space-y-3">
   <div className="flex flex-wrap items-center justify-between gap-2"><h3 className="text-sm font-semibold text-[#1D2838]">Invoice items</h3><button type="button" onClick={()=>setExpanded(allExpanded?[]:draft.rows.map(r=>r.id))} className="text-xs font-semibold text-[#0064E0]">{allExpanded?"Collapse items":"Expand items"}</button></div>
@@ -52,9 +54,14 @@ export function InvoiceItemsSection({draft,setDraft}:Props){
      className="max-h-[88dvh] w-full max-w-lg overflow-y-auto rounded-t-2xl bg-white p-4 pb-8 shadow-2xl md:rounded-2xl md:p-5">
     <div className="mx-auto mb-3 h-1 w-10 rounded-full bg-gray-200 md:hidden"/>
     <div className="mb-3 flex justify-between"><h3 className="font-semibold">Select product or service</h3><button onClick={close} aria-label="Close item picker"><X size={20}/></button></div>
-    {adding?<div className="space-y-3">{(["name","description","rate","category","taxPercent","discountPercent"] as const).map(key=>
+    {adding?<div className="space-y-3">{(["name","description","rate","category","discountPercent"] as const).map(key=>
       <label key={key} className="block text-xs capitalize">{key==="taxPercent"?"Preset tax %":key==="discountPercent"?"Preset discount %":key}
        <input value={form[key]} onChange={e=>setForm(p=>({...p,[key]:e.target.value}))} className="mt-1 h-10 w-full rounded-xl border bg-gray-50 px-3 text-sm"/></label>)}
+      <label className="block text-xs">Tax classification (requires Tax Centre review)
+       <select aria-label="Item tax classification" value={form.taxClassification?.treatment||"unclassified"} onChange={e=>setForm(p=>({...p,taxClassification:{...unclassifiedTax,treatment:e.target.value as typeof taxTreatments[number]}}))} className="mt-1 h-10 w-full rounded-xl border bg-gray-50 px-3 text-sm">
+        {taxTreatments.map(t=><option key={t} value={t}>{t.replaceAll("-"," ")}</option>)}
+       </select>
+      </label>
       <div className="flex gap-2"><button onClick={()=>setAdding(false)} className="flex-1 rounded-full border border-gray-200 p-3 text-sm">Back</button><button disabled={!form.name.trim()} onClick={save} className="flex-1 rounded-full bg-[#0064E0] p-3 text-sm text-white disabled:opacity-40">Add and select</button></div>
      </div>:<>
      <label className="relative block"><Search className="absolute left-3 top-3 text-gray-400" size={17}/><input value={search} onChange={e=>setSearch(e.target.value)}
