@@ -85,7 +85,13 @@ test("UI tax calculation remains guarded and overall percentage cannot bypass tr
  const editor=read("src/features/invoices/sections/InvoiceEditorSection.tsx");
  assert.match(composer,/calculateDraftPreviewTotals/);
  assert.match(editor,/calculateDraftPreviewTotals/);
+ assert.match(editor,/Tax is not legally assessed/);
  assert.doesNotMatch(editor,/aria-label="Tax percentage"/);
+ const preview=read("src/features/invoices/sections/InvoiceDocumentPreviewSection.tsx");
+ assert.match(preview,/calculateDraftPreviewTotals/);
+ assert.doesNotMatch(preview,/calculateInvoiceTotals/);
+ assert.match(read("src/features/invoice/renderers/html/invoice-closing.tsx"),/Tax not assessed/);
+ assert.match(read("src/features/invoice/templates/classic-ledger/components/classic-ledger-closing.tsx"),/Tax not assessed/);
  assert.match(read("src/features/tax/tax-domain.ts"),/requiresTaxReview/);
 });
 
