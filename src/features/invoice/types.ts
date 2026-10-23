@@ -111,6 +111,8 @@ export interface BusinessPaymentSettings {
 }
 
 export interface InvoiceTotals {
+  /** Preview-only classification guard. Undefined retains legacy renderer behaviour. */
+  taxAssessed?: boolean;
   subtotal: number;
   discountPercent: number;
   discountAmount: number;
