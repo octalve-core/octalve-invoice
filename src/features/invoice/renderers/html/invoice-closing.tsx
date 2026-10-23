@@ -99,7 +99,7 @@ export function InvoiceClosing({
           <strong>- {formatMoney(totals.discountAmount, draft.currency)}</strong>
         </label>
 
-        <label className="sq-new-summary-row">
+        {totals.taxAssessed !== undefined ? <div className="sq-new-summary-row"><span>{totals.taxAssessed?"Illustrative line tax (not official)":"Tax not assessed"}</span><strong>{totals.taxAssessed ? `+ ${formatMoney(totals.taxAmount,draft.currency)}` : "—"}</strong></div> : <label className="sq-new-summary-row">
           <span className="sq-new-summary-label-with-input">
             Tax (
             <input
@@ -116,10 +116,10 @@ export function InvoiceClosing({
             %)
           </span>
           <strong>+ {formatMoney(totals.taxAmount, draft.currency)}</strong>
-        </label>
+        </label>}
 
         <div className="sq-new-summary-total">
-          <span>Total</span>
+          <span>{totals.taxAssessed===false?"Pre-tax amount":"Total"}</span>
           <strong>{formatMoney(totals.total, draft.currency)}</strong>
         </div>
       </div>
