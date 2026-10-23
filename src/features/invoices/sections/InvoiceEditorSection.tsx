@@ -30,7 +30,8 @@ export function InvoiceEditorSection({draft,setDraft,step}:Props){
  const {paymentMode,taxPolicy}=useMerchantPreview();
  const [dueTime,setDueTime]=useState("23:59");
  const update=<K extends keyof InvoiceDraft>(key:K,value:InvoiceDraft[K])=>setDraft(p=>({...p,[key]:value}));
- const total=calculateDraftPreviewTotals(draft,taxPolicy).total;
+ const previewTotals=calculateDraftPreviewTotals(draft,taxPolicy);
+ const total=previewTotals.total;
  const totalMinor=Math.round(total*100);
  const months=["JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT","NOV","DEC"];
  const index=months.indexOf(draft.dueMonth.toUpperCase());
@@ -46,7 +47,7 @@ export function InvoiceEditorSection({draft,setDraft,step}:Props){
    <InvoiceItemsSection draft={draft} setDraft={setDraft}/>
   </StepPanel>
   <StepPanel name="charges" title="Totals, tax & notes" description="Review charges and add a note" active={step==="charges"}>
-   <p role="status" className="mb-3 rounded-xl border border-amber-100 bg-amber-50 p-3 text-xs leading-5 text-amber-900">Tax Centre ({taxPolicy.jurisdiction} · {taxPolicy.version}): verify the classifications and effective dates before any future issuance.</p>
+   <p role="status" className="mb-3 rounded-xl border border-amber-100 bg-amber-50 p-3 text-xs leading-5 text-amber-900">{previewTotals.taxAssessed?"Tax is an illustrative proposal, not an official assessment.":`Tax is not legally assessed. ${previewTotals.taxNotice}`} Tax Centre ({taxPolicy.jurisdiction} · {taxPolicy.version}).</p>
 
 
    <div className="grid grid-cols-2 gap-3">
