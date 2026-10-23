@@ -102,7 +102,7 @@ export function InvoiceComposer({mode="create",invoiceId}:{mode?:"create"|"edit"
     <aside className="space-y-4 rounded-2xl border border-[#E2EBF6] bg-white p-4 lg:sticky lg:top-5">
      <div className="flex items-center gap-2"><FileText className="text-[#0064E0]" size={18}/><h2 className="text-sm font-bold text-[#173652]">Invoice summary</h2></div>
      <div className="rounded-xl bg-[#F4F8FF] p-4">
-      <p className="text-[11px] text-[#6B8198]">Total</p>
+      <p className="text-[11px] text-[#6B8198]">{totals.taxAssessed?"Illustrative total":"Pre-tax amount · tax not assessed"}</p>
       <p className="mt-1 break-words text-xl font-bold text-[#173652]">{formattedTotal}</p>
       <p className="mt-2 text-xs text-[#6B8198]">{draft.rows.length} item{draft.rows.length===1?"":"s"} · {draft.currency}</p>
      </div>
