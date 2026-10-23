@@ -58,7 +58,8 @@ const origin=process.env.OCTALVE_BASE_URL||"http://127.0.0.1:3000",out=path.reso
    if(width>=1024){
     await check(async()=>{
      await page.getByRole("navigation",{name:"Desktop main navigation"}).getByRole("link",{name:"Items",exact:true}).click();
-     await page.getByText("Z02 Repeatable Service",{exact:true}).first().waitFor();
+     await page.waitForURL(url=>url.pathname==="/dashboard/items");
+     await page.locator("table:visible").getByText("Z02 Repeatable Service",{exact:true}).waitFor();
     },"Created item appears on canonical Items page");
     await check(async()=>{
      await page.getByRole("navigation",{name:"Desktop main navigation"}).getByRole("link",{name:"Quotation",exact:true}).click();
