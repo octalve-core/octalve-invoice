@@ -38,6 +38,7 @@ export default function InvoiceDetailsPage(){
     <div className="flex flex-wrap gap-2">
     {invoice.status==="paid"?<Link href={`/dashboard/receipt/create?invoice=${id}`} className="rounded-full border border-[#0064E0] px-4 py-2 text-sm font-medium text-[#0064E0]">Generate receipt</Link>:null}
     {["pending","partial","overdue"].includes(invoice.status)? invoice.paymentMode==="manual"?<Link href={`/dashboard/invoice/${id}/record-payment`} className="rounded-full border border-[#0064E0] px-4 py-2 text-sm font-medium text-[#0064E0]">Record payment</Link>:<span className="rounded-full bg-amber-50 px-3 py-2 text-xs text-amber-800">Awaiting provider verification</span>:null}
+    <Link href={`/dashboard/invoice/${id}/delivery-preview`} className="rounded-full border border-[#0064E0] px-4 py-2 text-sm font-medium text-[#0064E0]">Delivery preview</Link>
     <Link href={`/dashboard/invoice/${id}/edit`} className="rounded-full bg-[#0064E0] px-4 py-2 text-sm font-medium text-white">Edit Invoice</Link></div>
   </div>
   <InvoiceAudienceToolbar invoice={invoice} audience="merchant"/>
