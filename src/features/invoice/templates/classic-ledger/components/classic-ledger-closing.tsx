@@ -46,7 +46,7 @@ export function ClassicLedgerClosing({
             </label>
             <strong>-{formatMoney(totals.discountAmount, draft.currency)}</strong>
           </div>
-          <div>
+          {totals.taxAssessed !== undefined ? <div><span>{totals.taxAssessed?"Illustrative line tax (not official)":"Tax not assessed"}</span><strong>{totals.taxAssessed?formatMoney(totals.taxAmount,draft.currency):"—"}</strong></div> : <div>
             <label>
               Tax
               <input
@@ -59,8 +59,8 @@ export function ClassicLedgerClosing({
               %
             </label>
             <strong>{formatMoney(totals.taxAmount, draft.currency)}</strong>
-          </div>
-          <div className={styles.grandTotal}><span>TOTAL</span><strong>{formatMoney(totals.total, draft.currency)}</strong></div>
+          </div>}
+          <div className={styles.grandTotal}><span>{totals.taxAssessed===false?"PRE-TAX AMOUNT":"TOTAL"}</span><strong>{formatMoney(totals.total, draft.currency)}</strong></div>
         </div>
       </section>
 

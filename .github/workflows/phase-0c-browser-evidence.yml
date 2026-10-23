@@ -45,11 +45,21 @@ jobs:
             sudo apt-get update
             sudo apt-get install -y poppler-utils
           fi
+      - name: Z02 catalogue and draft milestone browser acceptance
+        env:
+          NODE_PATH: /tmp/octalve-playwright/node_modules
+          OCTALVE_BASE_URL: http://127.0.0.1:3000
+        run: node scripts/phase-0z02-shared-domain-browser.cjs
       - name: Dialog and bottom-sheet invisible scrollbars browser evidence
         env:
           NODE_PATH: /tmp/octalve-playwright/node_modules
           OCTALVE_BASE_URL: http://127.0.0.1:3000
         run: node scripts/phase-0i-dialog-scroll-acceptance.cjs
+      - name: Z02 shared customer/item/tax/payment browser acceptance
+        env:
+          NODE_PATH: /tmp/octalve-playwright/node_modules
+          OCTALVE_BASE_URL: http://127.0.0.1:3000
+        run: node scripts/phase-0z02-domain-browser.cjs
       - name: Merchant shared header and isolated search browser evidence
         env:
           NODE_PATH: /tmp/octalve-playwright/node_modules
@@ -96,5 +106,7 @@ jobs:
             artifacts/phase-0y-navigation/
             artifacts/phase-0y1-navbar/
             artifacts/phase-0i-dialog-scroll/
+            artifacts/phase-0z02-shared-domain/
+            artifacts/z02-domain/
           if-no-files-found: warn
           retention-days: 14

@@ -5,7 +5,7 @@ import {LockKeyhole} from "lucide-react";
 import {useMerchantPreview,type PaymentMode} from "@/src/features/merchant-preview/MerchantPreviewProvider";
 import {SapphireInvoiceRenderer} from "@/src/features/invoice/renderers/sapphire-invoice-renderer";
 import {ClassicLedgerRenderer} from "@/src/features/invoice/templates/classic-ledger/classic-ledger-renderer";
-import {calculateInvoiceTotals} from "@/src/features/invoice/lib/calculations";
+import {calculateDraftPreviewTotals} from "@/src/features/invoice/lib/draft-preview-totals";
 import type {BusinessIdentityProfile,BusinessPaymentSettings,InvoiceDraft,InvoiceLine} from "@/src/features/invoice/types";
 
 type Props={
@@ -16,11 +16,11 @@ type Props={
 };
 /** Browser previews are never recorded invoices. Do not expose PDF/PNG issuance from this component. */
 export function InvoiceDocumentPreviewSection({draft,setDraft,profile,setProfile,payment,setPayment,template,merchantLogo=null,paymentMode="manual"}:Props){
- const {invoiceAppearance}=useMerchantPreview();
+ const {invoiceAppearance,taxPolicy}=useMerchantPreview();
  const hasBank=Boolean(payment.bankName.trim()&&payment.accountNumber.trim());
  const paymentReady=paymentMode==="manual"&&hasBank;
  const renderDraft={...draft,extraDetailsVisible:paymentReady};
- const totals=calculateInvoiceTotals(draft.rows,draft.discount,draft.tax);
+ const totals=calculateDraftPreviewTotals(draft,taxPolicy);
  const onDraftChange=<K extends keyof InvoiceDraft>(key:K,value:InvoiceDraft[K])=>
   setDraft(old=>({...old,[key]:value}));
  const onLineChange=(id:string,patch:Partial<Omit<InvoiceLine,"id">>)=>
@@ -45,6 +45,7 @@ export function InvoiceDocumentPreviewSection({draft,setDraft,profile,setProfile
   </div>
   {!merchantLogo?<p className="rounded-lg border border-blue-100 bg-white p-3 text-xs text-[#244766]">No business logo yet. <Link href="/dashboard/settings/business" className="font-semibold text-[#0064E0] underline">Add it in Business Settings</Link> to include it in your documents.</p>:null}
   {!paymentReady?<p className="rounded-lg border border-amber-100 bg-white p-3 text-xs text-[#805D2E]">{paymentMode==="manual"?"Set up a verified company bank account.":"Set up this payment method."} <Link href="/dashboard/settings/business" className="font-semibold text-[#0064E0] underline">Payment Settings</Link></p>:null}
+  <p role="status" className="rounded-lg border border-amber-100 bg-amber-50 p-3 text-xs leading-5 text-amber-900">{totals.taxAssessed?"Tax is an illustrative proposal, not an official assessment.":`Tax is not legally assessed. ${totals.taxNotice}`}</p>
   <div className="invoice-preview-viewport min-w-0 overflow-hidden rounded-xl border border-gray-200 bg-[#edf2f8] p-2 py-6">
    <div className="invoice-preview-paper relative isolate overflow-hidden" style={{pointerEvents:"none"}}>
     {template==="modern"?

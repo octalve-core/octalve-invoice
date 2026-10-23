@@ -44,8 +44,10 @@ test("customer master mapping retains tax ID distinct from company ID and regist
  assert.match(page,/taxId:data\.taxId\.trim\(\)/);
  assert.match(page,/companyRegistration:data\.companyRegistration\.trim\(\)/);
  assert.match(page,/companyId:data\.companyId\.trim\(\)/);
- assert.match(picker,/clientTaxId:row\.taxId\|\|""/);
- assert.match(picker,/clientCountry:row\.country\|\|""/);
+ const contract=source("src/features/merchant-preview/catalog-contract.ts");
+ assert.match(picker,/snapshotCustomer\(row\)/);
+ assert.match(contract,/clientTaxId:customer\.taxId\|\|""/);
+ assert.match(contract,/clientCountry:customer\.country\|\|""/);
  assert.match(picker,/Edits here affect this draft only/);
  assert.match(panel,/Not connected/);
  assert.match(panel,/No NRS submissions/);

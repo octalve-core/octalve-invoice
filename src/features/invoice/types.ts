@@ -1,3 +1,5 @@
+import type {TaxClassification} from "@/src/features/tax/tax-domain";
+import type {DraftPaymentPlan} from "@/src/features/invoices/lib/draft-payment-plan";
 export const currencyCodes = ["NGN", "USD", "GBP", "EUR"] as const;
 export type CurrencyCode = (typeof currencyCodes)[number];
 
@@ -26,6 +28,9 @@ export interface PaperDefinition {
 
 export interface InvoiceLine {
   id: string;
+  /** Only a reference for editing; prices and tax treatment are snapshotted per draft. */
+  catalogItemId?:string;
+  taxClassification?:TaxClassification;
   serviceName: string;
   description: string;
   quantity: string;
@@ -61,6 +66,7 @@ export interface InvoiceDraft {
   tinNo: string;
   rcNo: string;
   rows: InvoiceLine[];
+  paymentPlan?:DraftPaymentPlan;
   discount: string;
   tax: string;
   currency: CurrencyCode;
@@ -105,6 +111,8 @@ export interface BusinessPaymentSettings {
 }
 
 export interface InvoiceTotals {
+  /** Preview-only classification guard. Undefined retains legacy renderer behaviour. */
+  taxAssessed?: boolean;
   subtotal: number;
   discountPercent: number;
   discountAmount: number;

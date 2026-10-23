@@ -4,6 +4,12 @@ import { useState } from "react";
 import { X, Plus, Trash2, ChevronDown, ImageOff } from "lucide-react";
 import {useMerchantPreview} from "@/src/features/merchant-preview/MerchantPreviewProvider";
 import {formatDocumentNumber} from "@/src/features/invoices/lib/document-number";
+import {newCatalogPreviewId,snapshotItem,snapshotCustomer,isCatalogArchived} from "@/src/features/merchant-preview/catalog-contract";
+import {calculateClassifiedPreview,type TaxClassification,unclassifiedTax} from "@/src/features/tax/tax-domain";
+import {currencyCodes} from "@/src/features/invoice/types";
+import {QuickCustomerEditor,emptyQuickCustomer,createQuickCustomer,quickCustomerInput,updateQuickCustomer,type QuickCustomerInput} from "@/src/features/catalog/QuickCustomerEditor";
+import {QuickItemEditor,emptyQuickItem,createQuickItem} from "@/src/features/catalog/QuickItemEditor";
+import type {CatalogItem} from "@/src/features/merchant-preview/MerchantPreviewProvider";
 
 interface CreateQuotationModalProps {
   isOpen: boolean;
@@ -13,6 +19,8 @@ interface CreateQuotationModalProps {
 
 interface LineItem {
   id: string;
+  catalogItemId?:string;
+  taxClassification?:TaxClassification;
   description: string;
   quantity: number;
   rate: number;
@@ -22,6 +30,7 @@ interface LineItem {
 
 interface QuotationData {
   quotationNumber: string;
+  customerSnapshot?:ReturnType<typeof snapshotCustomer>;
   customer: string;
   quotationPeriod: string;
   validUntil: string;
@@ -36,15 +45,20 @@ export default function CreateQuotationModal({
   onClose,
   onSubmit,
 }: CreateQuotationModalProps) {
-  const {settings,customers,setCustomers,items}=useMerchantPreview();
-  const [addCustomerOpen,setAddCustomerOpen]=useState(false);
-  const [newCustomer,setNewCustomer]=useState({name:"",email:""});
+  const {settings,customers,setCustomers,items,setItems,archivedRecords,invoicePreferences,taxPolicy}=useMerchantPreview();
+  const activeCustomers=customers.filter(c=>!isCatalogArchived("customer",c.id,archivedRecords));
+  const activeItems=items.filter(i=>!isCatalogArchived("item",i.id,archivedRecords));
+  const [addCustomerOpen,setAddCustomerOpen]=useState(false),[addItemOpen,setAddItemOpen]=useState(false);
+  const [newItem,setNewItem]=useState<CatalogItem>(emptyQuickItem);
+  const [newCustomer,setNewCustomer]=useState<QuickCustomerInput>(emptyQuickCustomer);
+ const [editingCustomerId,setEditingCustomerId]=useState<string|null>(null),[editingItemId,setEditingItemId]=useState<string|null>(null);
   const [formData, setFormData] = useState<QuotationData>({
     quotationNumber: formatDocumentNumber(settings.businessName||"Octalve Limited",1,"quotation"),
     customer: "",
+    customerSnapshot:undefined,
     quotationPeriod: "",
     validUntil: "",
-    currency: "NGN",
+    currency: invoicePreferences.currency,
     address: "",
     lineItems: [
       {
@@ -69,7 +83,7 @@ export default function CreateQuotationModal({
 
   const addLineItem = () => {
     const newItem: LineItem = {
-      id: String(formData.lineItems.length+1),
+      id: newCatalogPreviewId(),
       description: "",
       quantity: 1,
       rate: 0,
@@ -105,16 +119,16 @@ export default function CreateQuotationModal({
     });
   };
 
-  const subtotal = formData.lineItems.reduce(
-    (sum, item) => sum + item.amount,
-    0
-  );
-  const discount = formData.lineItems.reduce(
-    (sum, item) => sum + (item.quantity * item.rate * item.discount) / 100,
-    0
-  );
-  const vat = subtotal * 0.075;
-  const total = subtotal + vat;
+  const subtotal=formData.lineItems.reduce((sum,item)=>sum+item.quantity*item.rate,0);
+  const discountedSubtotal=formData.lineItems.reduce((sum,item)=>sum+item.amount,0);
+  const discount=subtotal-discountedSubtotal;
+  // No legal tax classification has been verified: never insert a blanket VAT rate.
+  const taxPreview=calculateClassifiedPreview(formData.lineItems.map(x=>({
+   id:x.id,quantity:String(x.quantity),unitPrice:String(x.rate),discount:String(x.discount),
+   taxClassification:x.taxClassification||unclassifiedTax
+  })),"0",taxPolicy);
+  const totalBeforeTax = discountedSubtotal;
+  const formatAmount=(value:number)=>new Intl.NumberFormat("en-NG",{style:"currency",currency:formData.currency,minimumFractionDigits:2,maximumFractionDigits:2}).format(value);
 
   const handleSubmit = () => {
     onSubmit(formData);
@@ -124,7 +138,7 @@ export default function CreateQuotationModal({
 
   return (
     <div className="fixed inset-0 z-[70] flex items-end justify-center overflow-y-auto bg-black/50 p-0 sm:items-center sm:p-4">
-      <div className="bg-white rounded-t-2xl shadow-xl w-full max-w-4xl my-0 sm:my-8 sm:rounded-2xl">
+      <div role="dialog" aria-modal="true" aria-label="Create Quotation" className="bg-white rounded-t-2xl shadow-xl w-full max-w-4xl my-0 sm:my-8 sm:rounded-2xl">
         {/* Header */}
         <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200">
           <div className="flex items-center gap-2">
@@ -156,14 +170,14 @@ export default function CreateQuotationModal({
                       Bill to
                     </label>
                     <p className="text-sm font-medium text-gray-900">
-                      {customers.find(c=>c.id===formData.customer)?.name||"Select a customer"}
+                      {formData.customerSnapshot?.clientName||"Select a customer"}
                     </p>
                   </div>
                   <div>
                     <label className="block text-xs text-gray-500 mb-1">
                       Email
                     </label>
-                    <p className="text-sm text-gray-600">{customers.find(c=>c.id===formData.customer)?.email||"No email selected"}</p>
+                    <p className="text-sm text-gray-600">{formData.customerSnapshot?.clientEmail||"No email selected"}</p>
                   </div>
                 </div>
               </div>
@@ -174,21 +188,31 @@ export default function CreateQuotationModal({
                   Customer
                 </label>
                 <div className="relative">
-                  <select
+                  <select aria-label="Quotation customer"
                     value={formData.customer}
-                    onChange={(e) =>
-                      setFormData({ ...formData, customer: e.target.value })
-                    }
+                    onChange={(e)=>{
+                      const selected=activeCustomers.find(c=>c.id===e.target.value);
+                      setFormData(prev=>({...prev,customer:e.target.value,
+                       customerSnapshot:selected?snapshotCustomer(selected):undefined,
+                       address:selected?(selected.address||selected.addressLine1||""):prev.address
+                      }));
+                    }}
                     className="w-full h-11 px-4 pr-10 text-sm bg-gray-50 border border-gray-200 rounded-lg appearance-none focus:outline-none focus:ring-2 focus:ring-[#0064E0]/20 focus:border-[#0064E0]"
                   >
                     <option value="">Select Customer</option>
-                    {customers.map(c=><option key={c.id} value={c.id}>{c.name}</option>)}
+                    {activeCustomers.map(c=><option key={c.id} value={c.id}>{c.name}</option>)}
                   </select>
                   <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 pointer-events-none" />
                 </div>
               </div>
 
-              <button type="button" onClick={()=>setAddCustomerOpen(true)} className="flex items-center gap-1 rounded-full bg-blue-50 px-3 py-2 text-xs font-semibold text-[#0064E0]"><Plus size={15}/>Add new customer</button>
+              <div className="flex flex-wrap gap-2">
+               <button type="button" onClick={()=>{setEditingCustomerId(null);setNewCustomer(emptyQuickCustomer());setAddCustomerOpen(true);}} className="flex items-center gap-1 rounded-full bg-blue-50 px-3 py-2 text-xs font-semibold text-[#0064E0]"><Plus size={15}/>Add new customer</button>
+               {activeCustomers.some(c=>c.id===formData.customer)?<button type="button" onClick={()=>{
+                const current=customers.find(c=>c.id===formData.customer);if(!current)return;
+                setNewCustomer(quickCustomerInput(current));setEditingCustomerId(current.id);setAddCustomerOpen(true);
+               }} className="rounded-full border border-blue-200 px-3 py-2 text-xs text-[#0064E0]">Edit selected customer</button>:null}
+              </div>
                             {/* Quotation Period */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -243,9 +267,7 @@ export default function CreateQuotationModal({
                     }
                     className="w-full h-11 px-4 pr-10 text-sm bg-gray-50 border border-gray-200 rounded-lg appearance-none focus:outline-none focus:ring-2 focus:ring-[#0064E0]/20 focus:border-[#0064E0]"
                   >
-                    <option value="NGN">NGN - Nigerian Naira</option>
-                    <option value="USD">USD - US Dollar</option>
-                    <option value="GBP">GBP - British Pound</option>
+                    {currencyCodes.map(code=><option key={code} value={code}>{code}</option>)}
                   </select>
                   <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 pointer-events-none" />
                 </div>
@@ -280,12 +302,16 @@ export default function CreateQuotationModal({
               <div className="space-y-3">
                 {formData.lineItems.map((item) => (
                   <div key={item.id} className="space-y-3 rounded-lg bg-[#eff6ff] p-3">
-                   <select aria-label="Choose quotation item" value={items.find(x=>x.name===item.description)?.id||""}
-                     onChange={e=>{const chosen=items.find(x=>x.id===e.target.value);if(!chosen)return;updateLineItem(item.id,"description",chosen.name);
-                      setFormData(old=>({...old,lineItems:old.lineItems.map(x=>x.id===item.id?{...x,description:chosen.name,rate:Number(chosen.rate),discount:Number(chosen.discountPercent),amount:Number(chosen.rate)*x.quantity*(1-Number(chosen.discountPercent)/100)}:x)}));}}
+                   <select aria-label="Choose quotation item" value={item.catalogItemId||""}
+                     onChange={e=>{const chosen=activeItems.find(x=>x.id===e.target.value);if(!chosen)return;updateLineItem(item.id,"description",chosen.name);
+                      setFormData(old=>({...old,lineItems:old.lineItems.map(x=>x.id===item.id?{...x,catalogItemId:snapshotItem(chosen).catalogItemId,description:chosen.name,taxClassification:chosen.taxClassification?{...chosen.taxClassification}:unclassifiedTax,rate:Number(chosen.rate),discount:Number(chosen.discountPercent),amount:Number(chosen.rate)*x.quantity*(1-Number(chosen.discountPercent)/100)}:x)}));}}
                      className="h-9 w-full rounded-lg border border-gray-200 bg-white px-2 text-xs">
-                     <option value="">Select catalogue item</option>{items.map(x=><option key={x.id} value={x.id}>{x.name}</option>)}
+                     <option value="">Select catalogue item</option>{activeItems.map(x=><option key={x.id} value={x.id}>{x.name}</option>)}
                    </select>
+                    {item.catalogItemId&&activeItems.some(x=>x.id===item.catalogItemId)?<button type="button" className="mb-2 text-xs font-medium text-[#0064E0]" onClick={()=>{
+                     const current=items.find(x=>x.id===item.catalogItemId);if(!current)return;
+                     setNewItem({...current,taxClassification:current.taxClassification?{...current.taxClassification}:unclassifiedTax});setEditingItemId(current.id);setAddItemOpen(true);
+                    }}>Edit catalogue item</button>:null}
                     <div className="flex items-start justify-between mb-2">
                       <div className="flex items-center gap-2">
                         <div className="w-8 h-8 bg-white rounded flex items-center justify-center"><ImageOff size={17} className="text-gray-400"/></div>
@@ -294,7 +320,7 @@ export default function CreateQuotationModal({
                             {item.description}
                           </p>
                           <p className="text-xs text-gray-500">
-                            Unit Price ₦{item.rate.toLocaleString()}
+                            Unit Price {formatAmount(item.rate)}
                           </p>
                         </div>
                       </div>
@@ -310,13 +336,14 @@ export default function CreateQuotationModal({
                        <input type="number" min="1" aria-label="Quotation item quantity" value={item.quantity} onChange={e=>updateLineItem(item.id,"quantity",Math.max(1,Number(e.target.value)))} className="w-16 rounded border bg-white px-2 py-1 text-xs"/>
                       </label>
                       <span className="text-sm font-semibold text-[#0064E0]">
-                        ₦{item.amount.toLocaleString()}
+                        {formatAmount(item.amount)}
                       </span>
                     </div>
                   </div>
                 ))}
               </div>
 
+              <button type="button" onClick={()=>{setEditingItemId(null);setNewItem(emptyQuickItem());setAddItemOpen(true);}} className="mb-3 flex items-center gap-2 rounded-full border border-[#0064E0] px-4 py-2 text-xs font-semibold text-[#0064E0]"><Plus size={15}/> Add new catalogue item</button>
               <button
                 onClick={addLineItem}
                 className="flex items-center gap-2 text-sm text-[#0064E0] hover:underline"
@@ -327,6 +354,7 @@ export default function CreateQuotationModal({
             </div>
           </div>
 
+          <p role="status" className="mt-4 rounded-xl bg-amber-50 p-3 text-xs leading-5 text-amber-900">Tax Centre ({taxPolicy.jurisdiction} · {taxPolicy.version}): tax remains illustrative until all line classifications and merchant eligibility are reviewed. No official tax assessment or quotation has been issued.</p>
           {/* Totals */}
           <div className="mt-6 pt-4 border-t border-gray-200">
             <div className="flex justify-end">
@@ -334,25 +362,25 @@ export default function CreateQuotationModal({
                 <div className="flex justify-between text-sm">
                   <span className="text-gray-500">Subtotal</span>
                   <span className="font-medium text-gray-900">
-                    ₦{subtotal.toLocaleString()}
+                    {formatAmount(subtotal)}
                   </span>
                 </div>
                 <div className="flex justify-between text-sm">
                   <span className="text-gray-500">Discount</span>
                   <span className="font-medium text-gray-900">
-                    -₦{discount.toLocaleString()}
+                    -{formatAmount(discount)}
                   </span>
                 </div>
                 <div className="flex justify-between text-sm">
-                  <span className="text-gray-500">VAT (7.5%)</span>
+                  <span className="text-gray-500">Tax classification</span>
                   <span className="font-medium text-gray-900">
-                    ₦{vat.toLocaleString()}
+                    {taxPreview.ready?formatAmount((taxPreview.taxMinor??0)/100):"Requires Tax Centre review"}
                   </span>
                 </div>
                 <div className="flex justify-between text-sm pt-2 border-t border-gray-200">
-                  <span className="font-medium text-gray-900">Total</span>
+                  <span className="font-medium text-gray-900">{taxPreview.ready?"Illustrative total including reviewed tax":"Total before unassessed tax"}</span>
                   <span className="font-bold text-[#0064E0]">
-                    ₦{total.toLocaleString()}
+                    {taxPreview.ready?formatAmount((taxPreview.totalMinor??0)/100):formatAmount(totalBeforeTax)}
                   </span>
                 </div>
               </div>
@@ -360,12 +388,43 @@ export default function CreateQuotationModal({
           </div>
         </div>
 
+        {addItemOpen?<div role="presentation" className="fixed inset-0 z-[120] flex items-end justify-center bg-black/50 sm:items-center sm:p-4" onClick={()=>setAddItemOpen(false)}>
+         <section role="dialog" aria-modal="true" aria-label="Add quotation catalogue item" onClick={e=>e.stopPropagation()} className="max-h-[92dvh] w-full max-w-lg overflow-y-auto rounded-t-2xl bg-white p-5 sm:rounded-2xl">
+          <div className="mb-3 flex items-center justify-between"><h3 className="font-semibold">{editingItemId?"Edit saved item":"Add product or service"}</h3><button type="button" aria-label="Close quotation item form" onClick={()=>setAddItemOpen(false)}><X size={19}/></button></div>
+          <QuickItemEditor value={newItem} onChange={setNewItem}/>
+          <button type="button" disabled={!newItem.name.trim()} onClick={()=>{
+            try{
+             const fresh=createQuickItem(newItem,taxPolicy.jurisdiction);
+             const existing=items.find(x=>x.id===editingItemId);
+             if(editingItemId&&!existing)return;
+             if(existing){
+              const updated={...existing,...fresh,id:existing.id};
+              setItems(prev=>prev.map(x=>x.id===existing.id?updated:x));
+              // Merchant catalogue edits must not silently change existing quotation line snapshots.
+             }else{
+              setItems(prev=>[...prev,fresh]);
+              setFormData(prev=>({...prev,lineItems:[...prev.lineItems,{
+               id:newCatalogPreviewId(),catalogItemId:fresh.id,description:fresh.name,quantity:1,rate:Number(fresh.rate),
+               discount:Number(fresh.discountPercent),amount:Number(fresh.rate)*(1-Number(fresh.discountPercent)/100),
+               taxClassification:fresh.taxClassification
+              }]}));
+             }
+             setNewItem(emptyQuickItem());setEditingItemId(null);setAddItemOpen(false);
+            }catch{ /* Invalid inputs remain visible for correction. */ }
+           }} className="mt-4 w-full rounded-full bg-[#0064E0] p-3 text-sm font-semibold text-white disabled:opacity-40">{editingItemId?"Update catalogue (quote unchanged)":"Add and select item"}</button>
+         </section></div>:null}
         {addCustomerOpen?<div className="fixed inset-0 z-[110] flex items-end justify-center bg-black/50 sm:items-center sm:p-4" onClick={()=>setAddCustomerOpen(false)}>
          <section role="dialog" aria-modal="true" aria-label="Add quotation customer" onClick={e=>e.stopPropagation()} className="w-full max-w-md space-y-3 rounded-t-2xl bg-white p-5 sm:rounded-2xl">
-          <div className="flex items-center justify-between"><h3 className="font-semibold">New customer</h3><button onClick={()=>setAddCustomerOpen(false)} aria-label="Close customer form"><X size={19}/></button></div>
-          <label className="block text-xs">Customer name<input value={newCustomer.name} onChange={e=>setNewCustomer(p=>({...p,name:e.target.value}))} className="mt-1 h-10 w-full rounded-lg border px-3 text-sm"/></label>
-          <label className="block text-xs">Email (optional)<input value={newCustomer.email} onChange={e=>setNewCustomer(p=>({...p,email:e.target.value}))} className="mt-1 h-10 w-full rounded-lg border px-3 text-sm"/></label>
-          <button disabled={!newCustomer.name.trim()} onClick={()=>{const id=String(customers.length+1);setCustomers(p=>[...p,{id,name:newCustomer.name,email:newCustomer.email,phone:"",address:"",company:""}]);setFormData(p=>({...p,customer:id}));setAddCustomerOpen(false);setNewCustomer({name:"",email:""});}} className="w-full rounded-full bg-[#0064E0] p-3 text-sm font-semibold text-white disabled:opacity-40">Add and select</button>
+          <div className="flex items-center justify-between"><h3 className="font-semibold">{editingCustomerId?"Edit customer catalogue":"New customer"}</h3><button onClick={()=>setAddCustomerOpen(false)} aria-label="Close customer form"><X size={19}/></button></div>
+          <QuickCustomerEditor value={newCustomer} onChange={setNewCustomer}/>
+          <button type="button" disabled={!newCustomer.name.trim()} onClick={()=>{
+           const existing=customers.find(c=>c.id===editingCustomerId);
+           if(editingCustomerId&&!existing)return;
+           const next=existing?updateQuickCustomer(existing,newCustomer):createQuickCustomer(newCustomer);
+           setCustomers(p=>existing?p.map(c=>c.id===next.id?next:c):[...p,next]);
+           if(!existing)setFormData(p=>({...p,customer:next.id,customerSnapshot:snapshotCustomer(next),address:next.address}));
+           setAddCustomerOpen(false);setEditingCustomerId(null);setNewCustomer(emptyQuickCustomer());
+          }} className="w-full rounded-full bg-[#0064E0] p-3 text-sm font-semibold text-white disabled:opacity-40">{editingCustomerId?"Update catalogue (quote address unchanged)":"Add and select"}</button>
          </section></div>:null}
                 {/* Footer */}
         <div className="flex items-center justify-center gap-4 px-6 py-4 border-t border-gray-200">
