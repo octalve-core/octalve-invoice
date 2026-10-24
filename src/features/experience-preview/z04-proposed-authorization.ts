@@ -33,6 +33,8 @@ export type ScopedSupportGrant=Readonly<{
 export type ProposedAccessRequest=Readonly<{
  action:AccessAction;now:number;session:ProposedSession|null;
  organizationId?:string;customerPartyId?:string;documentId?:string;caseId?:string;
+ /** Future server-resolved record ownership. Must NOT come from a browser claim. */
+ recordOrganizationId?:string;recordCustomerPartyId?:string;
  merchantMemberships?:readonly MerchantMembership[];
  customerGrants?:readonly CustomerAccessGrant[];
  platformMemberships?:readonly PlatformStaffMembership[];
@@ -60,12 +62,14 @@ export function evaluateProposedAccess(x:ProposedAccessRequest):ProposedDecision
   return deny("Financial, fiscal and privilege mutations require separate source authority, MFA, audit and server approval.");
  const userId=s.userId,organizationId=x.organizationId;
  if(x.action==="merchant.invoice.read"){
-  if(!x.documentId?.trim())return deny("A merchant-scoped document is required.");
+  if(!x.documentId?.trim()||!x.recordOrganizationId||x.recordOrganizationId!==organizationId)
+   return deny("Record ownership must match the requested organization.");
   const matched=x.merchantMemberships?.some(m=>m.active&&m.invoiceRead&&m.userId===userId&&m.organizationId===organizationId);
   return matched?allow("Exact active merchant membership with invoice-read scope (proposed)."):deny("No active scoped merchant membership.");
  }
  if(x.action==="customer.document.read"){
-  if(!x.documentId?.trim()||!x.customerPartyId?.trim())return deny("An explicitly granted customer document is required.");
+  if(!x.documentId?.trim()||!x.customerPartyId?.trim()||x.recordOrganizationId!==organizationId||x.recordCustomerPartyId!==x.customerPartyId)
+   return deny("The record must match the granted organization and customer party.");
   const matched=x.customerGrants?.some(g=>
    g.userId===userId&&g.organizationId===organizationId&&
    g.customerPartyId===x.customerPartyId&&g.documentIds.includes(x.documentId!)&&
@@ -82,7 +86,8 @@ export function evaluateProposedAccess(x:ProposedAccessRequest):ProposedDecision
   g.caseId===x.caseId&&g.approved&&activeGrant(g.expiresAt,g.revokedAt,x.now));
  if(!caseGrant)return deny("No active case-bound support grant.");
  if(x.action==="platform.support.case.read")return allow("Assigned case-only read (proposed).");
- if(!x.documentId?.trim())return deny("A case-approved record is required.");
+ if(!x.documentId?.trim()||x.recordOrganizationId!==organizationId)
+  return deny("A case-approved record in the exact organization is required.");
  const recordGrant=x.supportGrants?.some(g=>g.staffUserId===userId&&g.organizationId===organizationId&&
   g.caseId===x.caseId&&g.recordIds.includes(x.documentId!)&&g.approved&&activeGrant(g.expiresAt,g.revokedAt,x.now));
  return recordGrant?allow("Case-bound minimum-necessary merchant record read (proposed)."):deny("The record is outside the approved case.");
