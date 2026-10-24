@@ -65,6 +65,11 @@ jobs:
           NODE_PATH: /tmp/octalve-playwright/node_modules
           OCTALVE_BASE_URL: http://127.0.0.1:3000
         run: node scripts/phase-0z03-lifecycle-browser.cjs
+      - name: Z04 three-experience access-readiness browser acceptance
+        env:
+          NODE_PATH: /tmp/octalve-playwright/node_modules
+          OCTALVE_BASE_URL: http://127.0.0.1:3000
+        run: node scripts/phase-0z04-access-browser.cjs
       - name: Merchant shared header and isolated search browser evidence
         env:
           NODE_PATH: /tmp/octalve-playwright/node_modules
@@ -114,5 +119,6 @@ jobs:
             artifacts/phase-0z02-shared-domain/
             artifacts/z02-domain/
             artifacts/z03-lifecycle/
+            artifacts/z04-access/
           if-no-files-found: warn
           retention-days: 14
