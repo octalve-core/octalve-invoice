@@ -38,7 +38,7 @@ const journeys={
 const card="rounded-2xl border border-[#E3ECF6] bg-white p-4 sm:p-5";
 export function AccessReadiness({experience}:{experience:AccessExperience}){
  const current=journeys[experience];
- return <main className="mx-auto min-w-0 max-w-[1080px] space-y-5 pb-8">
+ return <div className="mx-auto min-w-0 max-w-[1080px] space-y-5 pb-8">
   <header>
    <Link href={current.back} className="inline-flex min-h-10 items-center gap-2 text-xs font-medium text-[#0064E0]"><ArrowLeft size={16}/>{current.backLabel}</Link>
    <div className="mt-1 flex flex-wrap items-center justify-between gap-2">
@@ -71,5 +71,5 @@ export function AccessReadiness({experience}:{experience:AccessExperience}){
     <ul className="mt-3 space-y-2">{z04ReadinessChecklist.map(text=><li key={text} className="flex items-start gap-2 text-xs leading-5 text-slate-600"><span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-[#0064E0]"/>{text}</li>)}</ul>
    </section>
   </div>
- </main>;
+ </div>;
 }
